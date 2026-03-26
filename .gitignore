@@ -1,0 +1,68 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+/build
+
+# Serverless directories
+.serverless/
+.netlify/
+
+# vercel
+.vercel
+
+# misc OS/Editor files
+.DS_Store
+*.pem
+Thumbs.db
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# debug & logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+*.log
+
+# environments (NEVER COMMITTED)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env*.local
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# Prisma specific ignores
+/app/generated/prisma
+/prisma/dev.db
+/prisma/dev.db-journal
+
+# Temporary LLM/Agent texts & user logs inside root
+out.txt
+validate.txt
+lint-errors.txt
+context_for_switch_model.md
+*.tmp
+*.bak

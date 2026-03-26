@@ -1,0 +1,69 @@
+name: ADUTI CI
+
+# Déclenchement du workflow
+on:
+  push:
+    branches:
+      - dev
+      - main
+  pull_request:
+    branches:
+      - dev
+      - main
+
+jobs:
+  build-and-lint:
+    name: Build, Lint & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Checkout du code
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2️⃣ Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: "pnpm"
+
+      # 3️⃣ Installer pnpm
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      # 4️⃣ Installer les dépendances
+      - name: Install dependencies
+        run: pnpm install
+
+      # 5️⃣ Linter le code
+      - name: ESLint check
+        run: pnpm exec eslint "src/**/*.{ts,tsx,js,jsx}" --max-warnings=0
+
+      # 6️⃣ Format check
+      - name: Prettier check
+        run: pnpm exec prettier --check "src/**/*.{ts,tsx,js,jsx,json,md}"
+
+      # 7️⃣ Build TypeScript / Next.js
+      - name: Build project
+        run: pnpm exec next build
+
+      # 8️⃣ Tests unitaires (si tu ajoutes vitest/jest)
+      - name: Run tests
+        run: pnpm exec vitest run --coverage
+
+  # Optionnel : job de déploiement sur main uniquement
+  deploy:
+    name: Deploy to Coolify
+    needs: build-and-lint
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Trigger Coolify deployment
+        run: |
+          echo "Déploiement via Coolify automatique ici"
+          # Tu peux appeler l'API Coolify ou utiliser un CLI si disponible

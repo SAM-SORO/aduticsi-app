@@ -1,0 +1,42 @@
+# -----------------------------------------------------------------------------------
+# Ce fichier contrôle ce qui est inclus si jamais vous publiez/packagez pour NPM.
+# Pour les déploiements Vercel/NextJS, ce fichier est généralement ignoré, 
+# mais il est bonne pratique de le remplir pour exclure le code source original
+# et les secrets si npm pack est lancé.
+# -----------------------------------------------------------------------------------
+
+# Exclure le code source TypeScript original
+/app
+/components
+/lib
+/scripts
+/types
+/schemas
+/prisma
+
+# Exclure les configurations
+*.config.ts
+*.config.mjs
+*.config.js
+tsconfig.json
+eslint.config.mjs
+
+# Outils Dev & IDEs
+.github
+.agents
+.cursorrules
+.vscode
+.idea
+
+# Environnement et Secrets
+.env
+.env.*
+.vercel
+
+# Temporaire
+validate.txt
+lint-errors.txt
+out.txt
+context_for_switch_model.md
+*.log
+*.tmp

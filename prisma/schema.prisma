@@ -1,0 +1,203 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// Enums
+enum MemberRole {
+  MEMBER        // Aucun rôle de gestion
+  ADMIN         // Gestion limitée
+  SUPER_ADMIN   // Gestion totale
+}
+
+enum MemberStatus {
+  STUDENT       // Étudiant actuel
+  ALUMNI        // Ancien étudiant
+}
+
+model Poste {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  members     Member[]
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+}
+
+enum MemberFunction {
+  NONE                // Aucune fonction
+  GESTION_ACTIVITES   // Gestion des activités
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+// Table Promotions
+model Promotion {
+  id              String    @id @default(cuid())
+  name            String    @unique
+  is_current_promo Boolean  @default(false)
+  created_at      DateTime  @default(now())
+  updated_at      DateTime  @updatedAt
+  
+  // Relations
+  members         Member[]
+  activities      Activity[]
+  
+  @@index([is_current_promo])
+}
+
+// Table Members
+model Member {
+  id              String          @id @default(cuid())
+  email           String          @unique
+  name            String
+  promo_id        String
+  role            MemberRole      @default(MEMBER)
+  function        MemberFunction  @default(NONE)
+  status          MemberStatus    @default(STUDENT)
+  poste_id        String?
+  gender          Gender?
+  
+  // Informations générales
+  photo_url       String?
+  description     String?         @db.Text
+  
+  // Contacts et réseaux (pour étudiants)
+  phone           String?
+  portfolio_url   String?
+  youtube_url     String?
+  linkedin_url    String?
+  
+  // Informations alumni
+  current_job_title String?
+  current_job_description String? @db.Text
+  
+  // Metadata
+  created_at      DateTime        @default(now())
+  updated_at      DateTime        @updatedAt
+  
+  // Relations
+  promotion       Promotion       @relation(fields: [promo_id], references: [id], onDelete: Cascade)
+  poste           Poste?          @relation(fields: [poste_id], references: [id], onDelete: SetNull)
+  activities      Activity[]
+  publications    Publication[]
+  admin_assignments_given AdminAssignment[] @relation("AssignedBy")
+  admin_assignments_received AdminAssignment[] @relation("AssignedTo")
+  invitations     Invitation[]
+  
+  @@index([promo_id])
+  @@index([role])
+  @@index([status])
+  @@index([email])
+  @@index([poste_id])
+}
+ 
+// Table Activities
+model Activity {
+  id              String    @id @default(cuid())
+  title           String
+  description     String    @db.Text
+  promo_id        String
+  image_url       String?
+  created_by      String
+  date            DateTime?
+  created_at      DateTime  @default(now())
+  updated_at      DateTime  @updatedAt
+  
+  // Relations
+  promotion       Promotion @relation(fields: [promo_id], references: [id], onDelete: Cascade)
+  creator         Member    @relation(fields: [created_by], references: [id], onDelete: Cascade)
+  publications    Publication[]
+  
+  @@index([promo_id])
+  @@index([created_by])
+  @@index([created_at])
+}
+
+// Table Publications — Contenu lié à une activité (affiches, galeries, annonces)
+model Publication {
+  id          String   @id @default(cuid())
+  title       String
+  content     String?  @db.Text
+  images      String[] @default([])
+  activity_id String
+  created_by  String
+  date        DateTime?
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  // Relations
+  activity    Activity @relation(fields: [activity_id], references: [id], onDelete: Cascade)
+  creator     Member   @relation(fields: [created_by], references: [id], onDelete: Cascade)
+
+  @@index([activity_id])
+  @@index([created_by])
+  @@index([created_at])
+}
+
+// Table AdminAssignments - Traçabilité des attributions de rôle admin
+model AdminAssignment {
+  id              String    @id @default(cuid())
+  assigned_to_id  String    // ID du membre qui reçoit le rôle admin
+  assigned_by_id  String    // ID du membre qui attribue le rôle
+  assigned_at     DateTime  @default(now())
+  revoked_at      DateTime?
+  is_active       Boolean   @default(true)
+  
+  // Relations
+  assigned_to     Member    @relation("AssignedTo", fields: [assigned_to_id], references: [id], onDelete: Cascade)
+  assigned_by     Member    @relation("AssignedBy", fields: [assigned_by_id], references: [id], onDelete: Cascade)
+  
+  @@index([assigned_to_id])
+  @@index([assigned_by_id])
+  @@index([is_active])
+}
+
+// Table Invitation - Liens d'invitation uniques
+model Invitation {
+  id          String    @id @default(cuid())
+  title       String    // Nom du lien pour identification (ex: rentrée 2024)
+  token       String    @unique @default(cuid()) // Le jeton secret dans l'URL
+  expires_at  DateTime
+  created_by  String
+  created_at  DateTime  @default(now())
+
+  creator     Member    @relation(fields: [created_by], references: [id])
+
+  @@index([token])
+  @@index([expires_at])
+}
+
+// Table Partner - Gestion des partenaires
+model Partner {
+  id              String    @id @default(cuid())
+  name            String    @unique
+  logo_url        String    // URL de l'image (Supabase Storage: partenaire bucket)
+  is_active       Boolean   @default(true) // Permet d'afficher/masquer sans supprimer
+  
+  created_at      DateTime  @default(now())
+  updated_at      DateTime  @updatedAt
+  
+  @@index([is_active])
+}
+
+model ContactMessage {
+  id         String   @id @default(cuid())
+  email      String?
+  phone      String?
+  name       String
+  subject    String
+  message    String
+  ip_address String?
+  created_at DateTime @default(now())
+}

@@ -1,0 +1,24 @@
+[dotenv@17.2.4] injecting env (10) from .env.local -- tip: ✅ audit secrets and track compliance: https://dotenvx.com/ops
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma\schema.prisma.
+
+Error: Prisma schema validation - (validate wasm)
+Error code: P1012
+[1;91merror[0m: [1mThe datasource property `url` is no longer supported in schema files. Move connection URLs for Migrate to `prisma.config.ts` and pass either `adapter` for a direct database connection or `accelerateUrl` for Accelerate to the `PrismaClient` constructor. See https://pris.ly/d/config-datasource and https://pris.ly/d/prisma7-client-config[0m
+  [1;94m-->[0m  [4mprisma\schema.prisma:10[0m
+[1;94m   | [0m
+[1;94m 9 | [0m  provider  = "postgresql"
+[1;94m10 | [0m  [1;91murl       = env("POOLED_DATABASE_URL")[0m
+[1;94m   | [0m
+[1;91merror[0m: [1mThe datasource property `directUrl` is no longer supported in schema files. Move connection URLs to `prisma.config.ts`. See https://pris.ly/d/config-datasource[0m
+  [1;94m-->[0m  [4mprisma\schema.prisma:11[0m
+[1;94m   | [0m
+[1;94m10 | [0m  url       = env("POOLED_DATABASE_URL")
+[1;94m11 | [0m  [1;91mdirectUrl = env("DATABASE_URL")[0m
+[1;94m   | [0m
+
+Validation Error Count: 2
+[Context: validate]
+
+Prisma CLI Version : 7.3.0
