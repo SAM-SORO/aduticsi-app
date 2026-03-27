@@ -1,80 +1,71 @@
 # syntax=docker/dockerfile:1
 
+# 1. Install dependencies only when needed
 FROM node:20-alpine AS deps
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Prisma + Next build ont besoin que ces variables existent au moment du build.
-# Coolify injectera les vraies valeurs en runtime, mais pour la construction on met des defaults non sensibles.
-ARG DATABASE_URL="postgresql://user:pass@localhost:5432/db"
-ARG DIRECT_URL="postgresql://user:pass@localhost:5432/db"
-ARG NEXT_PUBLIC_SUPABASE_URL="https://example.supabase.co"
-ARG NEXT_PUBLIC_SUPABASE_ANON_KEY="anon-placeholder"
-ARG NEXT_PUBLIC_TURNSTILE_SITE_KEY="turnstile-placeholder"
-ENV DATABASE_URL=$DATABASE_URL
-ENV DIRECT_URL=$DIRECT_URL
-ENV NEXT_PUBLIC_SUPABASE_URL=$NEXT_PUBLIC_SUPABASE_URL
-ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=$NEXT_PUBLIC_SUPABASE_ANON_KEY
-ENV NEXT_PUBLIC_TURNSTILE_SITE_KEY=$NEXT_PUBLIC_TURNSTILE_SITE_KEY
+# Install pnpm
+RUN corepack enable && corepack prepare pnpm@10.28.2 --activate
 
-RUN apk add --no-cache libc6-compat
-
+# Copy lockfile and package.json
 COPY package.json pnpm-lock.yaml ./
-
-RUN corepack enable \
-  && corepack prepare pnpm@10.28.2 --activate
-
 RUN pnpm install --frozen-lockfile
 
+# 2. Rebuild the source code only when needed
 FROM node:20-alpine AS builder
 WORKDIR /app
-
-ARG DATABASE_URL="postgresql://user:pass@localhost:5432/db"
-ARG DIRECT_URL="postgresql://user:pass@localhost:5432/db"
-ARG NEXT_PUBLIC_SUPABASE_URL="https://example.supabase.co"
-ARG NEXT_PUBLIC_SUPABASE_ANON_KEY="anon-placeholder"
-ARG NEXT_PUBLIC_TURNSTILE_SITE_KEY="turnstile-placeholder"
-ENV DATABASE_URL=$DATABASE_URL
-ENV DIRECT_URL=$DIRECT_URL
-ENV NEXT_PUBLIC_SUPABASE_URL=$NEXT_PUBLIC_SUPABASE_URL
-ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=$NEXT_PUBLIC_SUPABASE_ANON_KEY
-ENV NEXT_PUBLIC_TURNSTILE_SITE_KEY=$NEXT_PUBLIC_TURNSTILE_SITE_KEY
-
-RUN apk add --no-cache libc6-compat
-
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-RUN corepack enable \
-  && corepack prepare pnpm@10.28.2 --activate
-
-# Génère le client Prisma (se base sur la schema, sans exiger une connexion DB).
-RUN pnpm exec prisma generate
+# Environment variables for build time
+ARG DATABASE_URL
+ARG DIRECT_URL
+ARG NEXT_PUBLIC_SUPABASE_URL
+ARG NEXT_PUBLIC_SUPABASE_ANON_KEY
+ARG NEXT_PUBLIC_TURNSTILE_SITE_KEY
 
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV DATABASE_URL=$DATABASE_URL
+ENV DIRECT_URL=$DIRECT_URL
+ENV NEXT_PUBLIC_SUPABASE_URL=$NEXT_PUBLIC_SUPABASE_URL
+ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=$NEXT_PUBLIC_SUPABASE_ANON_KEY
+ENV NEXT_PUBLIC_TURNSTILE_SITE_KEY=$NEXT_PUBLIC_TURNSTILE_SITE_KEY
 
-RUN pnpm exec next build
+# Install pnpm
+RUN corepack enable && corepack prepare pnpm@10.28.2 --activate
 
-# Retire les dépendances dev pour la phase runtime.
-RUN pnpm prune --prod
+# Build application
+RUN pnpm exec prisma generate
+RUN pnpm run build
 
+# 3. Production image, copy all the files and run next
 FROM node:20-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
-ENV PORT=3000
 
-RUN apk add --no-cache libc6-compat \
-  && addgroup -S nodejs && adduser -S app -G nodejs
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
 
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package.json ./package.json
 
-USER app
+# Set the correct permission for prerender cache
+RUN mkdir .next
+RUN chown nextjs:nodejs .next
+
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+USER nextjs
 
 EXPOSE 3000
 
-CMD ["sh", "-c", "pnpm exec next start --hostname 0.0.0.0 --port ${PORT:-3000}"]
+ENV PORT=3000
+# server.js is created by next build from the standalone output
+# https://nextjs.org/docs/pages/api-reference/next-config-js/output
+CMD ["node", "server.js"]
 

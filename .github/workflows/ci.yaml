@@ -70,23 +70,40 @@ jobs:
             --build-arg NEXT_PUBLIC_TURNSTILE_SITE_KEY="turnstile-placeholder" \
             -t aduti-app:ci .
 
-  deploy:
-    name: Deploy to Coolify
+  auto-merge-to-main:
+    name: Auto-merge to Main
     needs: build-and-lint
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/dev' && contains(github.event.head_commit.message, '[deploy]')
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Merge dev into main
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout main
+          git merge origin/dev --ff-only
+          git push origin main
+
+  deploy:
+    name: Deploy to Coolify
+    needs: [build-and-lint, auto-merge-to-main]
+    runs-on: ubuntu-latest
     
-    # 🔴 DIRECTIVE DE PUSH EN PRODUCTION:
-    # Ce job s'exécute UNIQUEMENT sur la branche `main` ET UNIQUEMENT 
-    # si le message de commit contient la directive "prod[deploy]"
-    if: github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, 'prod[deploy]')
+    # S'exécute sur main après le merge auto, ou directement si push sur main avec [deploy]
+    if: |
+      always() && 
+      (github.ref == 'refs/heads/main' || needs.auto-merge-to-main.result == 'success') &&
+      contains(github.event.head_commit.message, '[deploy]')
 
     steps:
       - name: Trigger Coolify Webhook
         run: |
           echo "🚀 Initialisation du webhook de déploiement Coolify..."
-          
-          # Appelez l'URL du Webhook fournie par votre dashboard Coolify
-          # Exemple avec CURL pour un Webhook standard de Coolify :
           curl --request GET '${{ secrets.COOLIFY_WEBHOOK_URL }}'
-          
           echo "✅ Signal de déploiement envoyé à Coolify avec succès!"
