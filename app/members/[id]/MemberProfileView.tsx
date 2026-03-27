@@ -1,8 +1,9 @@
 'use client'
 
 import Image from 'next/image'
-import { motion } from 'framer-motion'
+import { motion, Variants } from 'framer-motion'
 import type { Member, Poste, Promotion } from '@prisma/client'
+import { MaterialIcon } from '@/components/icons/material-icon'
 
 type MemberWithRelations = Member & {
   poste: Poste | null;
@@ -13,7 +14,7 @@ interface MemberProfileViewProps {
   member: MemberWithRelations;
 }
 
-const fadeUp = {
+const fadeUp: Variants = {
   hidden: { opacity: 0, y: 24 },
   show: (i: number) => ({
     opacity: 1,
@@ -23,6 +24,7 @@ const fadeUp = {
 }
 
 const STATUS_LABELS: Record<string, string> = { STUDENT: 'Étudiant', ALUMNI: 'Alumni' }
+const GENDER_LABELS: Record<string, string> = { MALE: 'Homme', FEMALE: 'Femme' }
 
 function SocialLink({ href, icon, label, color }: { href: string; icon: string; label: string; color: string }) {
   return (
@@ -32,9 +34,9 @@ function SocialLink({ href, icon, label, color }: { href: string; icon: string; 
       rel="noopener noreferrer"
       className={`flex items-center gap-3 px-5 py-3.5 rounded-2xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-lg group ${color}`}
     >
-      <span className="material-symbols-outlined text-xl">{icon}</span>
+      <MaterialIcon name={icon} className="w-5 h-5" />
       <span className="text-sm font-bold truncate max-w-[140px]">{label}</span>
-      <span className="material-symbols-outlined text-sm ml-auto opacity-0 group-hover:opacity-100 transition-opacity">open_in_new</span>
+      <MaterialIcon name="open_in_new" className="w-4 h-4 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
     </a>
   )
 }
@@ -43,7 +45,7 @@ function InfoChip({ icon, label, value }: { icon: string; label: string; value: 
   return (
     <div className="flex items-center gap-4 p-4 bg-slate-50/80 rounded-2xl border border-slate-100">
       <div className="w-10 h-10 rounded-xl bg-white border border-slate-100 flex items-center justify-center text-slate-500 flex-shrink-0">
-        <span className="material-symbols-outlined text-lg">{icon}</span>
+        <MaterialIcon name={icon} className="w-[18px] h-[18px]" />
       </div>
       <div className="min-w-0">
         <div className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">{label}</div>
@@ -59,57 +61,70 @@ export function MemberProfileView({ member }: MemberProfileViewProps) {
 
   return (
     <div className="w-full space-y-8 animate-in fade-in duration-700">
-      {/* Hero Card */}
+      {/* Hero Card Premium */}
       <motion.div
         custom={0}
         variants={fadeUp}
         initial="hidden"
         animate="show"
-        className="relative bg-gradient-to-br from-[var(--aduti-primary)]/5 via-white to-blue-50/30 rounded-[2.5rem] border border-slate-100 shadow-xl overflow-hidden p-8 md:p-12"
+        className="relative bg-white rounded-[2.5rem] border border-slate-100 shadow-xl overflow-hidden"
       >
-        <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--aduti-primary)]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-blue-50/60 via-slate-50/30 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
         
-        <div className="relative flex flex-col md:flex-row gap-8 items-center md:items-start">
-          {/* Avatar */}
-          <div className="relative flex-shrink-0">
-            <div className="w-32 h-32 md:w-40 md:h-40 rounded-[2rem] ring-8 ring-white shadow-2xl overflow-hidden bg-slate-100 border border-slate-100">
-              {member.photo_url ? (
-                <Image src={member.photo_url} alt={member.name} fill className="object-cover" />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center">
-                  <span className="material-symbols-outlined text-6xl text-slate-300">person</span>
-                </div>
-              )}
-            </div>
-            {/* Gender badge */}
-            {member.gender && (
-              <div className={`absolute -bottom-2 -right-2 w-9 h-9 rounded-full border-4 border-white flex items-center justify-center shadow-lg text-white text-sm ${member.gender === 'MALE' ? 'bg-blue-500' : 'bg-pink-500'}`}>
-                <span className="material-symbols-outlined text-base">{member.gender === 'MALE' ? 'man' : 'woman'}</span>
+        <div className="relative flex flex-col md:flex-row gap-8 md:gap-12 items-center md:items-start text-center md:text-left z-10 p-8 md:p-12">
+          {/* Avatar Section */}
+          <div className="relative group flex-shrink-0">
+            <div className="absolute inset-0 bg-gradient-to-tr from-[var(--aduti-primary)] to-blue-400 blur-xl opacity-20 transition-opacity duration-300 rounded-[2.5rem]"></div>
+            
+            <div className="relative w-36 h-36 md:w-44 md:h-44 p-1.5 bg-gradient-to-tr from-slate-100 via-white to-slate-100 rounded-[2.5rem] shadow-xl border border-white/80">
+              <div className="w-full h-full rounded-[2.2rem] overflow-hidden bg-slate-50 relative border border-slate-100/50">
+                {member.photo_url ? (
+                  <Image src={member.photo_url} alt={member.name} fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-b from-slate-50 to-slate-100">
+                    <MaterialIcon name="person" className="w-16 h-16 md:w-20 md:h-20 text-slate-300/80" />
+                  </div>
+                )}
               </div>
-            )}
+            </div>
           </div>
 
-          {/* Identity */}
-          <div className="flex-1 w-full text-center md:text-left space-y-4 min-w-0">
+          {/* Identity Section */}
+          <div className="space-y-4 py-2 flex-1 w-full min-w-0">
             <div>
               <h2 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight break-words">{member.name}</h2>
-              {hasJob && (
+              {member.current_job_title && (
                 <p className="text-[var(--aduti-primary)] font-bold text-lg mt-1 break-words">{member.current_job_title}</p>
               )}
             </div>
+            
+            <div className="flex items-center justify-center md:justify-start gap-3 text-slate-600 font-bold text-sm bg-slate-50 px-4 py-3 rounded-2xl w-fit mx-auto md:mx-0 border border-slate-100">
+              <div className="w-8 h-8 rounded-lg bg-blue-100/50 flex items-center justify-center">
+                <MaterialIcon name="mail" className="w-[18px] h-[18px] text-blue-600" />
+              </div>
+              <span className="truncate max-w-[200px] sm:max-w-xs">{member.email}</span>
+            </div>
 
-            {/* Badges */}
-            <div className="flex flex-wrap gap-2 justify-center md:justify-start">
-              <span className={`px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest ${member.status === 'ALUMNI' ? 'bg-emerald-500 text-white' : 'bg-[var(--aduti-primary)] text-white'}`}>
+            <div className="flex flex-wrap gap-2 mt-4 justify-center md:justify-start">
+              <span className={`px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-sm flex items-center gap-1.5 ${member.status === 'ALUMNI' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200/60' : 'bg-blue-50 text-blue-700 border border-blue-200/60'}`}>
+                <MaterialIcon name="workspace_premium" className="w-3.5 h-3.5" />
                 {STATUS_LABELS[member.status] ?? member.status}
               </span>
+              {member.gender && (
+                <span className="px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-slate-50 text-slate-600 border border-slate-200 flex items-center gap-1.5 shadow-sm">
+                  <MaterialIcon name={member.gender === 'MALE' ? 'male' : 'female'} className="w-3.5 h-3.5" />
+                  {GENDER_LABELS[member.gender] ?? member.gender}
+                </span>
+              )}
               {member.promotion && (
-                <span className="px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-slate-900 text-white">
+                <span className="px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-slate-900 text-white flex items-center gap-1.5 shadow-sm">
+                  <MaterialIcon name="school" className="w-3.5 h-3.5" />
                   Promo {member.promotion.name}
                 </span>
               )}
               {member.poste && (
-                <span className="px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-amber-100 text-amber-700">
+                <span className="px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-amber-50 text-amber-700 border border-amber-200/60 flex items-center gap-1.5 shadow-sm">
+                  <MaterialIcon name="badge" className="w-3.5 h-3.5" />
                   {member.poste.name}
                 </span>
               )}
@@ -117,7 +132,7 @@ export function MemberProfileView({ member }: MemberProfileViewProps) {
 
             {/* Description */}
             {member.description && (
-              <p className="text-slate-500 font-medium leading-relaxed w-full max-w-full break-all whitespace-pre-wrap">{member.description}</p>
+              <p className="text-slate-500 font-medium leading-relaxed w-full max-w-full break-all whitespace-pre-wrap pt-2">{member.description}</p>
             )}
           </div>
         </div>
@@ -131,7 +146,7 @@ export function MemberProfileView({ member }: MemberProfileViewProps) {
           className="bg-white rounded-[2rem] border border-slate-100 shadow-sm p-8 space-y-5">
           <div className="flex items-center gap-3 pb-4 border-b border-slate-50">
             <div className="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center text-[var(--aduti-primary)]">
-              <span className="material-symbols-outlined text-lg">contacts</span>
+              <MaterialIcon name="contacts" className="w-[18px] h-[18px]" />
             </div>
             <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">Coordonnées</h3>
           </div>
@@ -147,7 +162,7 @@ export function MemberProfileView({ member }: MemberProfileViewProps) {
             className="bg-white rounded-[2rem] border border-slate-100 shadow-sm p-8 space-y-5">
             <div className="flex items-center gap-3 pb-4 border-b border-slate-50">
               <div className="w-9 h-9 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600">
-                <span className="material-symbols-outlined text-lg">work</span>
+                <MaterialIcon name="work" className="w-[18px] h-[18px]" />
               </div>
               <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">Parcours Professionnel</h3>
             </div>
@@ -170,7 +185,7 @@ export function MemberProfileView({ member }: MemberProfileViewProps) {
           className="bg-white rounded-[2rem] border border-slate-100 shadow-sm p-8 space-y-6">
           <div className="flex items-center gap-3 pb-4 border-b border-slate-50">
             <div className="w-9 h-9 rounded-xl bg-violet-50 flex items-center justify-center text-violet-500">
-              <span className="material-symbols-outlined text-lg">share</span>
+              <MaterialIcon name="share" className="w-[18px] h-[18px]" />
             </div>
             <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">Réseaux & Liens</h3>
           </div>

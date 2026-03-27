@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import Image from "next/image";
 import { Plus, Building2 } from "lucide-react";
 
-import { DashboardShell } from "@/components/dashboard/DashboardShell";
+import { DashboardLayout } from "@/components/dashboard/DashboardShell";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
 
@@ -25,7 +25,10 @@ export default async function SuperAdminPartnersPage() {
     select: { id: true, role: true, name: true, email: true },
   });
 
-  if (!currentMember || currentMember.role !== "SUPER_ADMIN") {
+  if (
+    !currentMember ||
+    (currentMember.role !== "SUPER_ADMIN" && currentMember.role !== "ADMIN")
+  ) {
     redirect("/dashboard");
   }
 
@@ -34,10 +37,10 @@ export default async function SuperAdminPartnersPage() {
   });
 
   return (
-    <DashboardShell
+    <DashboardLayout
       member={currentMember}
       activePath="/dashboard/super-admin/partners"
-      title="Gestion des Partenaires"
+      title="Gestion des partenaires"
     >
       <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -126,6 +129,6 @@ export default async function SuperAdminPartnersPage() {
           </div>
         </div>
       </div>
-    </DashboardShell>
+    </DashboardLayout>
   );
 }

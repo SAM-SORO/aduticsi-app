@@ -14,13 +14,20 @@ const ITEMS_PER_PAGE = 6;
 
 // ─── Helpers ────────────────────────────────────────────
 
-async function requireSuperAdmin(): Promise<{ user: { id: string }; member: Member }> {
+async function requireActivityManager(): Promise<{ user: { id: string }; member: Member }> {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error("Unauthorized");
 
   const member = await prisma.member.findUnique({ where: { id: user.id } });
-  if (!member || member.role !== "SUPER_ADMIN") throw new Error("Unauthorized");
+  if (!member) throw new Error("Unauthorized");
+
+  const canManage =
+    member.role === "SUPER_ADMIN" ||
+    member.role === "ADMIN" ||
+    member.function === "GESTION_ACTIVITES";
+
+  if (!canManage) throw new Error("Unauthorized");
   return { user: { id: user.id }, member: member as Member };
 }
 
@@ -105,7 +112,7 @@ export async function getActivities(promoId?: string) {
 }
 
 export async function createActivity(formData: FormData) {
-  const { user } = await requireSuperAdmin();
+  const { user, member } = await requireActivityManager();
 
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
@@ -114,6 +121,9 @@ export async function createActivity(formData: FormData) {
 
   if (!title || !description || !promoId) {
     return { success: false, error: "Titre, description et promotion requis." };
+  }
+  if (member.role !== "SUPER_ADMIN" && promoId !== member.promo_id) {
+    return { success: false, error: "Vous ne pouvez creer des activites que pour votre promotion." };
   }
 
   let imageUrl: string | null = null;
@@ -137,16 +147,30 @@ export async function createActivity(formData: FormData) {
   });
 
   revalidatePath("/dashboard/super-admin/activities");
+  revalidatePath("/dashboard/admin");
+  revalidatePath("/dashboard/bureau");
   revalidatePath("/activities");
   return { success: true };
 }
 
 export async function updateActivity(id: string, formData: FormData) {
-  await requireSuperAdmin();
+  const { member } = await requireActivityManager();
 
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
   const promoId = formData.get("promoId") as string;
+  const current = await prisma.activity.findUnique({
+    where: { id },
+    select: { id: true, promo_id: true },
+  });
+  if (!current) return { success: false, error: "Activite introuvable." };
+  if (member.role !== "SUPER_ADMIN" && current.promo_id !== member.promo_id) {
+    return { success: false, error: "Action non autorisee sur cette activite." };
+  }
+  if (member.role !== "SUPER_ADMIN" && promoId !== member.promo_id) {
+    return { success: false, error: "Vous ne pouvez assigner que votre promotion." };
+  }
+
   const existingImageUrl = formData.get("existingImage") as string;
   const newImageFile = formData.get("image") as File;
 
@@ -191,16 +215,21 @@ export async function updateActivity(id: string, formData: FormData) {
   });
 
   revalidatePath("/dashboard/super-admin/activities");
+  revalidatePath("/dashboard/admin");
+  revalidatePath("/dashboard/bureau");
   revalidatePath("/activities");
   revalidatePath(`/activities/${id}`);
   return { success: true };
 }
 
 export async function deleteActivity(id: string) {
-  await requireSuperAdmin();
+  const { member } = await requireActivityManager();
 
   const activity = await prisma.activity.findUnique({ where: { id } }) as unknown as Activity | null;
   if (!activity) return { success: false, error: "Activité introuvable." };
+  if (member.role !== "SUPER_ADMIN" && activity.promo_id !== member.promo_id) {
+    return { success: false, error: "Action non autorisee sur cette activite." };
+  }
 
   if (activity.image_url) {
     const supabaseAdmin = createAdminClient();
@@ -213,6 +242,8 @@ export async function deleteActivity(id: string) {
   await prisma.activity.delete({ where: { id } });
 
   revalidatePath("/dashboard/super-admin/activities");
+  revalidatePath("/dashboard/admin");
+  revalidatePath("/dashboard/bureau");
   revalidatePath("/activities");
   return { success: true };
 }
@@ -227,7 +258,7 @@ export async function getPublications(activityId: string) {
 }
 
 export async function createPublication(formData: FormData) {
-  const { user } = await requireSuperAdmin();
+  const { user, member } = await requireActivityManager();
 
   const title = formData.get("title") as string;
   const content = formData.get("content") as string || "";
@@ -236,6 +267,14 @@ export async function createPublication(formData: FormData) {
 
   if (!title || !activityId) {
     return { success: false, error: "Titre et activité requis." };
+  }
+  const activity = await prisma.activity.findUnique({
+    where: { id: activityId },
+    select: { id: true, promo_id: true },
+  });
+  if (!activity) return { success: false, error: "Activite introuvable." };
+  if (member.role !== "SUPER_ADMIN" && activity.promo_id !== member.promo_id) {
+    return { success: false, error: "Action non autorisee sur cette activite." };
   }
 
   const imageUrls = await uploadImages(images, PUBLICATION_BUCKET);
@@ -255,14 +294,25 @@ export async function createPublication(formData: FormData) {
   });
 
   revalidatePath("/dashboard/super-admin/activities");
+  revalidatePath("/dashboard/admin");
+  revalidatePath("/dashboard/bureau");
   revalidatePath("/activities");
   return { success: true };
 }
 
 export async function updatePublication(id: string, formData: FormData) {
-  await requireSuperAdmin();
+  const { member } = await requireActivityManager();
 
   const title = formData.get("title") as string;
+  const publication = await prisma.publication.findUnique({
+    where: { id },
+    select: { activity: { select: { promo_id: true } } },
+  });
+  if (!publication) return { success: false, error: "Publication introuvable." };
+  if (member.role !== "SUPER_ADMIN" && publication.activity.promo_id !== member.promo_id) {
+    return { success: false, error: "Action non autorisee sur cette publication." };
+  }
+
   const content = formData.get("content") as string || "";
   const existingImages = JSON.parse(formData.get("existingImages") as string || "[]");
   const newImages = formData.getAll("images") as File[];
@@ -283,15 +333,23 @@ export async function updatePublication(id: string, formData: FormData) {
   });
 
   revalidatePath("/dashboard/super-admin/activities");
+  revalidatePath("/dashboard/admin");
+  revalidatePath("/dashboard/bureau");
   revalidatePath("/activities");
   return { success: true };
 }
 
 export async function deletePublication(id: string) {
-  await requireSuperAdmin();
+  const { member } = await requireActivityManager();
 
-  const pub = await prisma.publication.findUnique({ where: { id } });
+  const pub = await prisma.publication.findUnique({
+    where: { id },
+    include: { activity: { select: { promo_id: true } } },
+  });
   if (!pub) return { success: false, error: "Publication introuvable." };
+  if (member.role !== "SUPER_ADMIN" && pub.activity.promo_id !== member.promo_id) {
+    return { success: false, error: "Action non autorisee sur cette publication." };
+  }
 
   const supabaseAdmin = createAdminClient();
   const fileNames = pub.images.map(url => url.split("/").pop()).filter(Boolean) as string[];
@@ -302,6 +360,8 @@ export async function deletePublication(id: string) {
   await prisma.publication.delete({ where: { id } });
 
   revalidatePath("/dashboard/super-admin/activities");
+  revalidatePath("/dashboard/admin");
+  revalidatePath("/dashboard/bureau");
   revalidatePath("/activities");
   return { success: true };
 }

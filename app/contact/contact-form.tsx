@@ -1,10 +1,13 @@
 'use client'
 
 import { useTransition } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { toast } from 'sonner'
+import { Turnstile } from '@marsidev/react-turnstile'
+import { MaterialIcon } from '@/components/icons/material-icon'
 import { sendContactMessage } from './actions'
 
 const contactSchema = z.object({
@@ -22,6 +25,8 @@ type ContactFormData = z.infer<typeof contactSchema>
 
 export function ContactForm() {
   const [isPending, startTransition] = useTransition()
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null)
+  const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
   
   const {
     register,
@@ -33,12 +38,18 @@ export function ContactForm() {
   })
 
   const onSubmit = (data: ContactFormData) => {
+    if (!captchaToken) {
+      toast.error('Veuillez valider le captcha.')
+      return
+    }
+
     startTransition(async () => {
       // Clean empty strings to undefined
       const submissionData = {
         ...data,
         email: data.email || undefined,
         phone: data.phone || undefined,
+        captchaToken,
       }
       const result = await sendContactMessage(submissionData)
       if (result.error) {
@@ -46,6 +57,7 @@ export function ContactForm() {
       } else {
         toast.success(result.message)
         reset()
+        setCaptchaToken(null)
       }
     })
   }
@@ -134,6 +146,20 @@ export function ContactForm() {
       </div>
 
       <div className="pt-2">
+        {turnstileSiteKey ? (
+          <div className="mb-4 flex justify-center">
+            <Turnstile
+              siteKey={turnstileSiteKey}
+              onSuccess={(token) => setCaptchaToken(token)}
+              options={{ theme: 'light', size: 'normal' }}
+            />
+          </div>
+        ) : (
+          <p className="mb-4 text-xs text-amber-600 font-medium">
+            Captcha non configuré. Définissez <code>NEXT_PUBLIC_TURNSTILE_SITE_KEY</code>.
+          </p>
+        )}
+
         <button
           type="submit"
           disabled={isPending}
@@ -150,9 +176,7 @@ export function ContactForm() {
           ) : (
             <>
               Envoyer le message
-              <span className="material-symbols-outlined ml-2 text-[18px]">
-                send
-              </span>
+              <MaterialIcon name="send" className="ml-2 w-[18px] h-[18px]" />
             </>
           )}
         </button>

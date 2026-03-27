@@ -1,6 +1,7 @@
 "use client";
 
 import { useFormStatus } from "react-dom";
+import { MaterialIcon } from "@/components/icons/material-icon";
 
 export function SubmitButton() {
   const { pending } = useFormStatus();
@@ -13,7 +14,7 @@ export function SubmitButton() {
     >
       {pending ? (
         <>
-          <span className="animate-spin material-symbols-outlined text-[18px]">progress_activity</span>
+          <MaterialIcon name="progress_activity" className="w-[18px] h-[18px] animate-spin" />
           Ajout...
         </>
       ) : (

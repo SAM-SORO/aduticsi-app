@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import { Link2 as LinkIcon, Clock, ShieldCheck, Plus } from 'lucide-react'
 
-import { DashboardShell } from '@/components/dashboard/DashboardShell'
+import { DashboardLayout } from '@/components/dashboard/DashboardShell'
 import { prisma } from '@/lib/prisma'
 import { createClient } from '@/lib/supabase/server'
 
@@ -65,7 +65,7 @@ export default async function InvitationsPage() {
 
 
   return (
-    <DashboardShell
+    <DashboardLayout
       member={member}
       activePath="/dashboard/super-admin/invitations"
       title="Liens d'Invitation"
@@ -205,6 +205,6 @@ export default async function InvitationsPage() {
               </div>
             </div>
           </div>
-    </DashboardShell>
+    </DashboardLayout>
   )
 }

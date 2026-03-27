@@ -1,7 +1,8 @@
 import { redirect } from "next/navigation";
 import { Plus, Layout, ChevronRight, ArrowLeft } from "lucide-react";
 
-import { DashboardShell } from "@/components/dashboard/DashboardShell";
+import { DashboardLayout } from "@/components/dashboard/DashboardShell";
+import { MaterialIcon } from "@/components/icons/material-icon";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -37,21 +38,30 @@ export default async function ActivitiesAdminPage({
 
   const member = await prisma.member.findUnique({
     where: { id: user.id },
-    select: { id: true, role: true, name: true, email: true },
+    select: { id: true, role: true, function: true, promo_id: true, name: true, email: true },
   });
 
-  if (!member || member.role !== "SUPER_ADMIN") {
+  const canManage =
+    member &&
+    (member.role === "SUPER_ADMIN" ||
+      member.role === "ADMIN" ||
+      member.function === "GESTION_ACTIVITES");
+
+  if (!canManage || !member) {
     redirect("/dashboard");
   }
 
   const params = await searchParams;
-  const selectedPromoId = params.promo;
+  const requestedPromoId = params.promo;
   const selectedActivityId = params.activity;
+  const isSuperAdmin = member.role === "SUPER_ADMIN";
+  const selectedPromoId = isSuperAdmin ? requestedPromoId : member.promo_id;
 
   // Data fetching
-  const promotions = await prisma.promotion.findMany({ 
+  const promotions = await prisma.promotion.findMany({
+    where: isSuperAdmin ? undefined : { id: member.promo_id },
     orderBy: { name: "desc" },
-    include: { _count: { select: { activities: true } } }
+    include: { _count: { select: { activities: true } } },
   });
 
   let activities = null;
@@ -77,10 +87,10 @@ export default async function ActivitiesAdminPage({
   }
 
   return (
-    <DashboardShell
+    <DashboardLayout
       member={member}
       activePath="/dashboard/super-admin/activities"
-      title="Activités & Publications"
+      title={isSuperAdmin ? "Activites & Publications" : "Gestion des activites"}
     >
       <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
         <div className="flex items-center justify-end mb-4">
@@ -190,7 +200,7 @@ export default async function ActivitiesAdminPage({
                         className="mt-auto flex items-center justify-between pt-6 border-t border-slate-50 group/link cursor-pointer"
                       >
                         <div className="flex items-center gap-2 px-4 py-2 bg-slate-50 rounded-2xl border border-slate-100 group-hover/link:bg-blue-50 group-hover/link:border-[var(--aduti-primary)]/20 transition-all">
-                          <span className="material-symbols-outlined !text-[20px] text-[var(--aduti-primary)]">article</span>
+                          <MaterialIcon name="article" className="w-5 h-5 text-[var(--aduti-primary)]" />
                           <span className="text-xs font-black text-slate-700 uppercase tracking-widest">{act._count.publications} Publications</span>
                         </div>
                         <div className="size-11 bg-slate-900 text-white rounded-2xl flex items-center justify-center group-hover/link:bg-[var(--aduti-primary)] group-hover/link:rotate-[-5deg] transition-all shadow-xl shadow-slate-200">
@@ -240,7 +250,7 @@ export default async function ActivitiesAdminPage({
                       <h4 className="text-lg font-bold text-slate-900 mb-2">{pub.title}</h4>
                       <p className="text-slate-500 text-sm mb-6 leading-relaxed line-clamp-3">{pub.content}</p>
                       <div className="flex items-center gap-2 text-slate-400 font-bold text-[10px] uppercase tracking-widest pt-4 border-t border-slate-50">
-                        <span className="material-symbols-outlined !text-[16px]">calendar_today</span>
+                        <MaterialIcon name="calendar_today" className="w-4 h-4" />
                         {new Date(pub.date || pub.created_at).toLocaleDateString("fr-FR", { day: 'numeric', month: 'long', year: 'numeric' })}
                       </div>
                     </div>
@@ -251,6 +261,6 @@ export default async function ActivitiesAdminPage({
           </div>
         )}
       </div>
-    </DashboardShell>
+    </DashboardLayout>
   );
 }

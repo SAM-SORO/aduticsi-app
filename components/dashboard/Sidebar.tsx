@@ -1,16 +1,16 @@
 import { 
   LayoutDashboard, 
   Users, 
-  ShieldCheck, 
   Handshake, 
+  MessageSquare,
   Link2, 
   History, 
-  Settings, 
   LogOut, 
   School,
   Home,
   GraduationCap,
-  Briefcase
+  Briefcase,
+  User
 } from "lucide-react";
 
 import { logout } from "@/app/auth/actions";
@@ -26,17 +26,42 @@ interface SidebarProps {
 }
 
 export function Sidebar({ member, activePath, onCloseMobile }: SidebarProps) {
+  const isSuperAdmin = member.role === "SUPER_ADMIN";
+  const isAdmin = member.role === "ADMIN";
+  const hasActivityFunction = !isSuperAdmin && !isAdmin;
+
+  const rootPath = isSuperAdmin
+    ? "/dashboard/super-admin"
+    : isAdmin
+    ? "/dashboard/admin"
+    : "/dashboard/bureau";
+
+  const roleLabel = isSuperAdmin ? "Super Admin" : isAdmin ? "Admin" : "Gestion Activites";
+
   const menuItems = [
-    { name: "Retour à l'accueil", href: "/", icon: <Home className="w-5 h-5" />, path: "/" },
-    { name: "Tableau de Bord", href: "/dashboard/super-admin", icon: <LayoutDashboard className="w-5 h-5" />, path: "/dashboard/super-admin" },
-    { name: "Membres", href: "/dashboard/super-admin/members", icon: <Users className="w-5 h-5" />, path: "/dashboard/super-admin/members" },
-    { name: "Postes", href: "/dashboard/super-admin/postes", icon: <Briefcase className="w-5 h-5" />, path: "/dashboard/super-admin/postes" },
-    { name: "Gestion des Admins", href: "#", icon: <ShieldCheck className="w-5 h-5" />, path: "/admins" },
-    { name: "Promotions", href: "/dashboard/super-admin/promotions", icon: <GraduationCap className="w-5 h-5" />, path: "/dashboard/super-admin/promotions" },
+    { name: "Retour a l'accueil", href: "/", icon: <Home className="w-5 h-5" />, path: "/" },
+    { name: "Tableau de bord", href: rootPath, icon: <LayoutDashboard className="w-5 h-5" />, path: rootPath },
+    ...(isSuperAdmin
+      ? [
+          { name: "Membres", href: "/dashboard/super-admin/members", icon: <Users className="w-5 h-5" />, path: "/dashboard/super-admin/members" },
+          { name: "Postes", href: "/dashboard/super-admin/postes", icon: <Briefcase className="w-5 h-5" />, path: "/dashboard/super-admin/postes" },
+          { name: "Promotions", href: "/dashboard/super-admin/promotions", icon: <GraduationCap className="w-5 h-5" />, path: "/dashboard/super-admin/promotions" },
+          { name: "Liens d'invitation", href: "/dashboard/super-admin/invitations", icon: <Link2 className="w-5 h-5" />, path: "/dashboard/super-admin/invitations" },
+        ]
+      : []),
+    ...(isAdmin
+      ? [
+          { name: "Membres de ma promo", href: "/dashboard/admin", icon: <Users className="w-5 h-5" />, path: "/dashboard/admin" },
+        ]
+      : []),
+    { name: "Activites & Publications", href: "/dashboard/super-admin/activities", icon: <History className="w-5 h-5" />, path: "/dashboard/super-admin/activities" },
     { name: "Partenaires", href: "/dashboard/super-admin/partners", icon: <Handshake className="w-5 h-5" />, path: "/dashboard/super-admin/partners" },
-    { name: "Liens d'invitation", href: "/dashboard/super-admin/invitations", icon: <Link2 className="w-5 h-5" />, path: "/dashboard/super-admin/invitations" },
-    { name: "Activités & Publications", href: "/dashboard/super-admin/activities", icon: <History className="w-5 h-5" />, path: "/dashboard/super-admin/activities" },
-    { name: "Paramètres Globaux", href: "#", icon: <Settings className="w-5 h-5" />, path: "/settings" },
+    ...((isSuperAdmin || isAdmin)
+      ? [{ name: "Messages publics", href: "/dashboard/messages", icon: <MessageSquare className="w-5 h-5" />, path: "/dashboard/messages" }]
+      : []),
+    ...(hasActivityFunction
+      ? [{ name: "Mon profil", href: "/profile", icon: <User className="w-5 h-5" />, path: "/profile" }]
+      : []),
   ];
 
   return (
@@ -49,7 +74,7 @@ export function Sidebar({ member, activePath, onCloseMobile }: SidebarProps) {
           </div>
           <div>
             <h1 className="font-bold text-xl tracking-tight text-slate-900">ADUTI</h1>
-            <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">Super Admin</p>
+            <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">{roleLabel}</p>
           </div>
         </div>
       </div>
@@ -82,6 +107,14 @@ export function Sidebar({ member, activePath, onCloseMobile }: SidebarProps) {
 
     {/* Footer — fixed */}
     <div className="p-4 border-t border-slate-100 shrink-0">
+      <a
+        href="/profile"
+        onClick={onCloseMobile}
+        className="w-full mb-2 flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors text-left"
+      >
+        <User className="w-4 h-4 text-slate-400" />
+        <span className="text-sm font-medium text-slate-700">Mon profil</span>
+      </a>
       <form action={logout}>
         <button
           type="submit"
@@ -103,3 +136,6 @@ export function Sidebar({ member, activePath, onCloseMobile }: SidebarProps) {
   </aside>
 );
 }
+
+// Alias plus explicite pour éviter la confusion avec le layout complet.
+export { Sidebar as DashboardSidebar };

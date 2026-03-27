@@ -1,7 +1,7 @@
 import { Plus } from "lucide-react";
 import { redirect } from "next/navigation";
 
-import { DashboardShell } from "@/components/dashboard/DashboardShell";
+import { DashboardLayout } from "@/components/dashboard/DashboardShell";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -40,7 +40,7 @@ export default async function PromotionsPage() {
   const promotions = await getPromotions();
 
   return (
-    <DashboardShell
+    <DashboardLayout
       member={member}
       activePath="/dashboard/super-admin/promotions"
       title="Gestion des Promotions"
@@ -112,6 +112,6 @@ export default async function PromotionsPage() {
           </div>
         </div>
       </div>
-    </DashboardShell>
+    </DashboardLayout>
   );
 }

@@ -5,13 +5,17 @@ import type { FormEvent } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 
+import { Turnstile } from "@marsidev/react-turnstile";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 import { registerSchema, type RegisterInput } from "@/schemas/auth.schema";
 import { getPromotions, signup } from "@/app/auth/actions";
+import { MaterialIcon } from "@/components/icons/material-icon";
 import { cn } from "@/lib/utils";
+
+type SignupData = RegisterInput & { captchaToken: string; token: string };
 
 export default function RegisterPage() {
   return (
@@ -36,6 +40,7 @@ function RegisterContent() {
   const [loadingPromos, setLoadingPromos] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
 
   const {
     register,
@@ -72,9 +77,18 @@ function RegisterContent() {
   }, []);
 
   const onSubmit = (data: RegisterInput) => {
+    if (!captchaToken) {
+      toast.error("Veuillez valider le captcha.");
+      return;
+    }
+
     startTransition(async () => {
       try {
-        const result = await signup({ ...data, token: token || undefined });
+        const result = await signup({ 
+          ...data, 
+          token: token || "",
+          captchaToken: captchaToken || ""
+        } as SignupData);
         if (result?.error) {
           toast.error(result.error);
         }
@@ -142,7 +156,7 @@ function RegisterContent() {
               <div className="py-4">
                 <div className="text-center mb-8">
                   <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-blue-50 mb-4 ring-8 ring-blue-50/50">
-                    <span className="material-symbols-outlined text-[var(--aduti-primary)] text-5xl">vpn_key</span>
+                    <MaterialIcon name="vpn_key" className="w-12 h-12 text-[var(--aduti-primary)]" />
                   </div>
                   <h2 className="text-2xl font-black text-slate-800 mb-3 font-display">Accès sur invitation</h2>
                   <p className="text-sm font-medium text-slate-500 max-w-sm mx-auto leading-relaxed">
@@ -170,7 +184,7 @@ function RegisterContent() {
                     className="w-full flex justify-center items-center gap-3 py-4 px-6 rounded-2xl shadow-xl shadow-blue-100 text-sm font-black text-white bg-[var(--aduti-primary)] hover:bg-blue-600 focus:outline-none transition-all active:scale-[0.98] uppercase tracking-widest"
                   >
                     VALIDER L&apos;INVITATION
-                    <span className="material-symbols-outlined text-xl">arrow_forward</span>
+                    <MaterialIcon name="arrow_forward" className="w-5 h-5" />
                   </button>
                 </form>
 
@@ -187,7 +201,7 @@ function RegisterContent() {
               <>         
                 <div className="flex gap-4 mb-8 p-4 rounded-2xl bg-slate-50 border border-slate-100 text-slate-600 items-center">
                   <div className="w-10 h-10 rounded-xl bg-white border border-slate-100 flex items-center justify-center shadow-sm">
-                    <span className="material-symbols-outlined text-[var(--aduti-primary)]">info</span>
+                    <MaterialIcon name="info" className="w-5 h-5 text-[var(--aduti-primary)]" />
                   </div>
                   <div className="text-xs font-bold uppercase tracking-wider leading-tight">
                     Réservé aux membres de l&apos;ADUTI <span className="text-slate-400 font-medium tracking-normal normal-case">(DUT/DTS)</span> INPHB
@@ -204,7 +218,6 @@ function RegisterContent() {
                       <input
                         id="last_name"
                         type="text"
-                        placeholder="Ex: SORO"
                         className={cn(
                           "block w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 focus:outline-none focus:bg-white focus:ring-4 transition-all text-sm font-medium",
                           errors.last_name 
@@ -228,7 +241,6 @@ function RegisterContent() {
                       <input
                         id="first_name"
                         type="text"
-                        placeholder="Ex: Sékou"
                         className={cn(
                           "block w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 focus:outline-none focus:bg-white focus:ring-4 transition-all text-sm font-medium",
                           errors.first_name 
@@ -255,7 +267,6 @@ function RegisterContent() {
                       <input
                         id="email"
                         type="email"
-                        placeholder="Ex: soro@gmail.com"
                         className={cn(
                           "block w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 focus:outline-none focus:bg-white focus:ring-4 transition-all text-sm font-medium",
                           errors.email 
@@ -298,7 +309,7 @@ function RegisterContent() {
                           ))}
                         </select>
                         <div className="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-slate-400">
-                          <span className="material-symbols-outlined text-xl">expand_more</span>
+                          <MaterialIcon name="expand_more" className="w-5 h-5" />
                         </div>
                       </div>
                       {errors.promo_id && (
@@ -332,7 +343,7 @@ function RegisterContent() {
                           <option value="ALUMNI">Alumni</option>
                         </select>
                         <div className="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-slate-400">
-                          <span className="material-symbols-outlined text-xl">expand_more</span>
+                          <MaterialIcon name="expand_more" className="w-5 h-5" />
                         </div>
                       </div>
                       {errors.status && (
@@ -363,7 +374,7 @@ function RegisterContent() {
                           <option value="FEMALE">Femme</option>
                         </select>
                         <div className="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-slate-400">
-                          <span className="material-symbols-outlined text-xl">expand_more</span>
+                          <MaterialIcon name="expand_more" className="w-5 h-5" />
                         </div>
                       </div>
                       {errors.gender && (
@@ -384,7 +395,6 @@ function RegisterContent() {
                         <input
                           id="password"
                           type={showPassword ? "text" : "password"}
-                          placeholder="••••••••"
                           className={cn(
                             "block w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 focus:outline-none focus:bg-white focus:ring-4 transition-all text-sm font-medium placeholder:text-slate-300",
                             errors.password 
@@ -399,9 +409,10 @@ function RegisterContent() {
                           onClick={() => setShowPassword(!showPassword)}
                           className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 transition-colors"
                         >
-                          <span className="material-symbols-outlined text-xl">
-                            {showPassword ? "visibility" : "visibility_off"}
-                          </span>
+                          <MaterialIcon
+                            name={showPassword ? "visibility" : "visibility_off"}
+                            className="w-5 h-5"
+                          />
                         </button>
                       </div>
                       {errors.password && (
@@ -419,7 +430,6 @@ function RegisterContent() {
                         <input
                           id="confirmPassword"
                           type={showConfirmPassword ? "text" : "password"}
-                          placeholder="••••••••"
                           className={cn(
                             "block w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 focus:outline-none focus:bg-white focus:ring-4 transition-all text-sm font-medium placeholder:text-slate-300",
                             errors.confirmPassword 
@@ -434,9 +444,10 @@ function RegisterContent() {
                           onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                           className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 transition-colors"
                         >
-                          <span className="material-symbols-outlined text-xl">
-                            {showConfirmPassword ? "visibility" : "visibility_off"}
-                          </span>
+                          <MaterialIcon
+                            name={showConfirmPassword ? "visibility" : "visibility_off"}
+                            className="w-5 h-5"
+                          />
                         </button>
                       </div>
                       {errors.confirmPassword && (
@@ -445,6 +456,17 @@ function RegisterContent() {
                         </p>
                       )}
                     </div>
+                  </div>
+
+                  <div className="flex flex-col items-center gap-4 pt-2">
+                    <Turnstile
+                      siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+                      onSuccess={(token) => setCaptchaToken(token)}
+                      options={{
+                        theme: 'light',
+                        size: 'normal',
+                      }}
+                    />
                   </div>
 
                   <div className="pt-4">
@@ -456,7 +478,7 @@ function RegisterContent() {
                       {isPending ? (
                         <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                       ) : (
-                        <span className="material-symbols-outlined text-xl">check_circle</span>
+                        <MaterialIcon name="check_circle" className="w-5 h-5" />
                       )}
                       {isPending ? "Traitement..." : "S'enregistrer"}
                     </button>

@@ -5,6 +5,7 @@ import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { AutoSubmitSelect } from "@/components/ui/auto-submit-select";
 import { prisma } from "@/lib/prisma";
+import { MaterialIcon } from "@/components/icons/material-icon";
 
 const MEMBERS_PER_PAGE = 12;
 
@@ -149,7 +150,7 @@ export default async function MembersPage({
                     ))}
                   </AutoSubmitSelect>
                   <div className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-slate-400">
-                    <span className="material-symbols-outlined">expand_more</span>
+                    <MaterialIcon name="expand_more" className="w-5 h-5" />
                   </div>
                 </form>
               ))}
@@ -160,11 +161,11 @@ export default async function MembersPage({
             {/* Grille des membres */}
             {members.length === 0 ? (
               <div className="bg-slate-50 rounded-[3rem] p-16 text-center border-2 border-dashed border-slate-200">
-                <span className="material-symbols-outlined text-6xl text-slate-300 mb-4 block">group_off</span>
+                <MaterialIcon name="group_off" className="w-14 h-14 text-slate-300 mb-4 block mx-auto" />
                 <h2 className="text-2xl font-bold text-slate-900 mb-2">Aucun membre trouvé</h2>
                 <p className="text-slate-500 font-medium">Réinitialisez vos filtres pour voir toute la communauté.</p>
                 <Link href="/members" className="mt-6 inline-flex items-center gap-2 text-[var(--aduti-primary)] font-bold hover:underline">
-                  <span className="material-symbols-outlined text-sm">restart_alt</span>
+                  <MaterialIcon name="restart_alt" className="w-4 h-4" />
                   Effacer les filtres
                 </Link>
               </div>
@@ -223,10 +224,10 @@ export default async function MembersPage({
                     <h3 className="text-xl font-bold text-slate-900 group-hover:text-[var(--aduti-primary)] transition-colors tracking-tight truncate w-full flex items-center justify-center gap-2" title={member.name}>
                       {member.name}
                       {member.gender === "FEMALE" && (
-                        <span className="material-symbols-outlined text-rose-400 text-lg">female</span>
+                        <MaterialIcon name="female" className="w-[18px] h-[18px] text-rose-400" />
                       )}
                       {member.gender === "MALE" && (
-                        <span className="material-symbols-outlined text-blue-400 text-lg">male</span>
+                        <MaterialIcon name="male" className="w-[18px] h-[18px] text-blue-400" />
                       )}
                     </h3>
                     <p className="text-sm font-semibold text-slate-500 mt-1 mb-2 group-hover:text-slate-600 transition-colors truncate w-full pointer-events-none" title={member.current_job_title || member.poste?.name || "Membre ADUTI"}>
@@ -250,7 +251,7 @@ export default async function MembersPage({
                           className="w-9 h-9 flex items-center justify-center rounded-xl text-slate-400 hover:text-white hover:bg-[var(--aduti-primary)] hover:shadow-[0_4px_15px_rgba(37,99,235,0.2)] transition-all active:scale-90"
                           title="Envoyer un email"
                         >
-                          <span className="material-symbols-outlined text-[18px]">mail</span>
+                          <MaterialIcon name="mail" className="w-[18px] h-[18px]" />
                         </a>
                         {member.linkedin_url && (
                           <a
@@ -260,7 +261,7 @@ export default async function MembersPage({
                             className="w-9 h-9 flex items-center justify-center rounded-xl text-slate-400 hover:text-white hover:bg-[#0077b5] hover:shadow-[0_4px_15px_rgba(0,119,181,0.2)] transition-all active:scale-90"
                             title="LinkedIn"
                           >
-                            <span className="material-symbols-outlined text-[18px]">link</span>
+                            <MaterialIcon name="link" className="w-[18px] h-[18px]" />
                           </a>
                         )}
                       </div>
@@ -269,9 +270,7 @@ export default async function MembersPage({
                         className="text-xs font-black uppercase tracking-widest text-[var(--aduti-primary)] hover:text-blue-700 flex items-center gap-1 group/link group-hover:opacity-100 lg:opacity-0 transition-opacity active:scale-95"
                       >
                         PROFIL
-                        <span className="material-symbols-outlined text-[16px] group-hover/link:translate-x-0.5 transition-transform">
-                          arrow_forward
-                        </span>
+                        <MaterialIcon name="arrow_forward" className="w-4 h-4 group-hover/link:translate-x-0.5 transition-transform" />
                       </Link>
                     </div>
                   </div>

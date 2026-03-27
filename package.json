@@ -10,8 +10,8 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@fontsource/material-symbols-outlined": "^5.2.36",
     "@hookform/resolvers": "^5.2.2",
+    "@marsidev/react-turnstile": "^1.4.2",
     "@prisma/adapter-pg": "^7.4.1",
     "@prisma/client": "^7.3.0",
     "@prisma/client-runtime-utils": "^7.4.2",

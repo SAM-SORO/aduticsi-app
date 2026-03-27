@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { User, LogOut, Settings, LayoutDashboard } from "lucide-react";
+import { MaterialIcon } from "@/components/icons/material-icon";
 
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
@@ -294,9 +295,7 @@ export function SiteNavbar() {
               onClick={() => setIsOpen(!isOpen)}
               aria-label="Menu"
             >
-              <span className="material-symbols-outlined text-2xl">
-                {isOpen ? "close" : "menu"}
-              </span>
+              <MaterialIcon name={isOpen ? "close" : "menu"} className="w-6 h-6" />
             </Button>
           </div>
         </div>
@@ -330,7 +329,7 @@ export function SiteNavbar() {
             className="absolute top-4 right-4 p-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors shadow-sm bg-white"
             onClick={() => setIsOpen(false)}
           >
-            <span className="material-symbols-outlined text-xl">close</span>
+            <MaterialIcon name="close" className="w-5 h-5" />
           </button>
 
           {navLinks.map((link) => (

@@ -1,0 +1,24 @@
+node_modules
+.next
+
+# Git
+.git
+.github
+
+# Secrets / local env
+.env
+.env.*
+!.env.example
+
+# Logs
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# Local tooling / Cursor artifacts
+terminals
+agent-transcripts
+agent-tools
+

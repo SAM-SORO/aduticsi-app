@@ -7,6 +7,7 @@ export const memberBaseSchema = z.object({
   promo_id: z.string().min(1, 'Veuillez sélectionner une promotion'),
   status: z.enum(['STUDENT', 'ALUMNI']),
   poste: z.enum(['NONE', 'PRESIDENT', 'VICE_PRESIDENT', 'TREASURER', 'SECRETARY', 'MEMBER_BUREAU']).default('NONE'),
+  gender: z.enum(['MALE', 'FEMALE']).optional(),
   description: z.string().max(1000).optional(),
   photo_url: z.string().url().optional().or(z.literal('')),
 })
@@ -41,6 +42,7 @@ export const updateMemberSchema = z.object({
   promo_id: z.string().optional(),
   status: z.enum(['STUDENT', 'ALUMNI']).optional(),
   poste: z.enum(['NONE', 'PRESIDENT', 'VICE_PRESIDENT', 'TREASURER', 'SECRETARY', 'MEMBER_BUREAU']).optional(),
+  gender: z.enum(['MALE', 'FEMALE']).optional(),
   description: z.string().max(1000).optional(),
   photo_url: z.string().url().optional().or(z.literal('')),
   // Student fields

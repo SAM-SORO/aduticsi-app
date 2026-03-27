@@ -55,7 +55,13 @@ export async function getMembersPaginated(
 
 export async function updateMemberRole(memberId: string, newRole: "MEMBER" | "ADMIN" | "SUPER_ADMIN") {
   await requireSuperAdmin();
-  await prisma.member.update({ where: { id: memberId }, data: { role: newRole } });
+  await prisma.member.update({
+    where: { id: memberId },
+    data: {
+      role: newRole,
+      function: newRole === "MEMBER" ? "NONE" : "GESTION_ACTIVITES",
+    },
+  });
   revalidatePath("/dashboard/super-admin/members");
   return { success: true };
 }
@@ -89,6 +95,45 @@ export async function deleteMember(memberId: string) {
   await prisma.member.delete({ where: { id: memberId } });
   revalidatePath("/dashboard/super-admin/members");
   revalidatePath("/members");
+  return { success: true };
+}
+
+export async function updateMemberFunction(
+  memberId: string,
+  nextFunction: "NONE" | "GESTION_ACTIVITES"
+) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error("Unauthorized");
+
+  const actor = await prisma.member.findUnique({ where: { id: user.id } });
+  if (!actor) throw new Error("Unauthorized");
+
+  const target = await prisma.member.findUnique({
+    where: { id: memberId },
+    select: { id: true, promo_id: true, role: true },
+  });
+  if (!target) throw new Error("Member not found");
+
+  const isSuperAdmin = actor.role === "SUPER_ADMIN";
+  const isAdminSamePromo =
+    actor.role === "ADMIN" && actor.promo_id === target.promo_id;
+
+  if (!isSuperAdmin && !isAdminSamePromo) {
+    throw new Error("Unauthorized");
+  }
+
+  if (target.role !== "MEMBER") {
+    throw new Error("Action autorisée uniquement sur les membres simples.");
+  }
+
+  await prisma.member.update({
+    where: { id: memberId },
+    data: { function: nextFunction },
+  });
+
+  revalidatePath("/dashboard/admin");
+  revalidatePath("/dashboard/super-admin/members");
   return { success: true };
 }
 

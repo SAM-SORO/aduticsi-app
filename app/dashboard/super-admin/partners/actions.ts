@@ -11,11 +11,13 @@ const BUCKET_NAME = "partenaires_logo";
 export async function createPartner(formData: FormData) {
   const supabase = await createClient();
   
-  // Verify super admin
+  // Verify admin privileges
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error("Unauthorized");
   const member = await prisma.member.findUnique({ where: { id: user.id } });
-  if (member?.role !== "SUPER_ADMIN") throw new Error("Unauthorized");
+  if (!member || (member.role !== "SUPER_ADMIN" && member.role !== "ADMIN")) {
+    throw new Error("Unauthorized");
+  }
 
   const name = formData.get("name") as string;
   const file = formData.get("image") as File;
@@ -65,7 +67,9 @@ export async function togglePartner(id: string, currentStatus: boolean) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error("Unauthorized");
   const member = await prisma.member.findUnique({ where: { id: user.id } });
-  if (member?.role !== "SUPER_ADMIN") throw new Error("Unauthorized");
+  if (!member || (member.role !== "SUPER_ADMIN" && member.role !== "ADMIN")) {
+    throw new Error("Unauthorized");
+  }
 
   await prisma.partner.update({
     where: { id },
@@ -82,7 +86,9 @@ export async function deletePartner(id: string, logo_url: string) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error("Unauthorized");
   const member = await prisma.member.findUnique({ where: { id: user.id } });
-  if (member?.role !== "SUPER_ADMIN") throw new Error("Unauthorized");
+  if (!member || (member.role !== "SUPER_ADMIN" && member.role !== "ADMIN")) {
+    throw new Error("Unauthorized");
+  }
 
   const fileName = logo_url.split("/").pop();
 

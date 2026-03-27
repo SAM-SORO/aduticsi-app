@@ -1,4 +1,5 @@
 import { ContactForm } from './contact-form';
+import { MaterialIcon } from "@/components/icons/material-icon";
 
 export default function ContactPage() {
   return (
@@ -30,9 +31,7 @@ export default function ContactPage() {
             <ul className="space-y-6">
               <li className="flex items-start gap-4">
                 <div className="flex-shrink-0 w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-[var(--aduti-primary)] shadow-sm">
-                  <span className="material-symbols-outlined text-[20px]">
-                    location_on
-                  </span>
+                  <MaterialIcon name="location_on" className="w-[20px] h-[20px]" />
                 </div>
                 <div>
                   <h4 className="text-sm font-bold text-slate-900">Adresse</h4>
@@ -47,9 +46,7 @@ export default function ContactPage() {
 
               <li className="flex items-start gap-4">
                 <div className="flex-shrink-0 w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-[var(--aduti-primary)] shadow-sm">
-                  <span className="material-symbols-outlined text-[20px]">
-                    mail
-                  </span>
+                  <MaterialIcon name="mail" className="w-[20px] h-[20px]" />
                 </div>
                 <div>
                   <h4 className="text-sm font-bold text-slate-900">Email</h4>
@@ -64,9 +61,7 @@ export default function ContactPage() {
 
               <li className="flex items-start gap-4">
                 <div className="flex-shrink-0 w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-[var(--aduti-primary)] shadow-sm">
-                  <span className="material-symbols-outlined text-[20px]">
-                    call
-                  </span>
+                  <MaterialIcon name="call" className="w-[20px] h-[20px]" />
                 </div>
                 <div>
                   <h4 className="text-sm font-bold text-slate-900">Téléphone</h4>
@@ -113,9 +108,7 @@ export default function ContactPage() {
                   rel="noreferrer"
                   aria-label="Instagram"
                 >
-                  <span className="material-symbols-outlined text-[20px]">
-                    photo_camera
-                  </span>
+                  <MaterialIcon name="photo_camera" className="w-[20px] h-[20px]" />
                 </a>
               </div>
             </div>
@@ -140,7 +133,7 @@ export default function ContactPage() {
                 rel="noreferrer"
                 className="flex items-center gap-2 bg-white px-4 py-2 rounded-xl shadow-lg border border-slate-100 text-xs font-bold text-slate-800 hover:text-[var(--aduti-primary)] transition-all active:scale-95"
               >
-                <span className="material-symbols-outlined text-[18px]">open_in_new</span>
+                <MaterialIcon name="open_in_new" className="w-[18px] h-[18px]" />
                 Ouvrir dans Google Maps
               </a>
             </div>

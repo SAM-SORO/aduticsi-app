@@ -20,26 +20,73 @@ export async function login(data: LoginInput) {
   const { email, password } = result.data
 
   // 2. Authenticate with Supabase
-  const { error } = await supabase.auth.signInWithPassword({
+  const { data: authData, error } = await supabase.auth.signInWithPassword({
     email,
     password,
   })
 
   if (error) {
+    if (error.message.toLowerCase().includes('email not confirmed')) {
+      return { error: "Votre email n'est pas encore confirmé. Vérifiez votre boîte mail." }
+    }
     return { error: 'Email ou mot de passe incorrect' }
+  }
+
+  if (!authData.user) {
+    return { error: 'Connexion impossible. Veuillez réessayer.' }
+  }
+
+  // Only association members can access the platform.
+  const member = await prisma.member.findUnique({
+    where: { id: authData.user.id },
+    select: { id: true },
+  })
+
+  if (!member) {
+    await supabase.auth.signOut()
+    return { error: "Accès refusé. Seuls les membres de l'association peuvent se connecter." }
   }
 
   revalidatePath('/', 'layout')
   redirect('/')
 }
 
-export async function signup(data: RegisterInput) {
+async function verifyTurnstileToken(token: string) {
+  const secretKey = process.env.TURNSTILE_SECRET_KEY
+  if (!secretKey) return true
+
+  try {
+    const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ response: token, secret: secretKey }),
+    })
+    const data = await response.json()
+    return data.success
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('Captcha verification error:', error)
+    return false
+  }
+}
+
+export async function signup(data: RegisterInput & { captchaToken?: string }) {
   const supabase = await createClient()
 
   // 1. Validate data
   const result = registerSchema.safeParse(data)
   if (!result.success) {
     return { error: 'Données invalides' }
+  }
+
+  // 2. Verify Captcha
+  if (data.captchaToken) {
+    const isHuman = await verifyTurnstileToken(data.captchaToken)
+    if (!isHuman) {
+      return { error: 'Échec de la vérification captcha. Veuillez réessayer.' }
+    }
+  } else if (process.env.NODE_ENV === 'production') {
+    return { error: 'Le captcha est requis.' }
   }
 
   const { email, password, first_name, last_name, promo_id, status, gender, token } = result.data
@@ -75,6 +122,7 @@ export async function signup(data: RegisterInput) {
           status,
           gender,
           role: 'MEMBER', // Default role
+          invitation_token: token,
         },
       },
     });
@@ -84,6 +132,7 @@ export async function signup(data: RegisterInput) {
     }
 
   } catch (err) {
+    // eslint-disable-next-line no-console
     console.error('Unexpected signup error:', err);
     return { error: "Une erreur inattendue est survenue lors de l'enregistrement." };
   }
@@ -110,6 +159,7 @@ export async function getPromotions() {
     })
     return promotions
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Error fetching promotions:', error)
     return []
   }

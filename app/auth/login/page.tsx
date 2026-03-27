@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { loginSchema, type LoginInput } from "@/schemas/auth.schema";
 import { login } from "@/app/auth/actions";
+import { MaterialIcon } from "@/components/icons/material-icon";
 import { cn } from "@/lib/utils";
 
 export default function LoginPage() {
@@ -55,6 +56,10 @@ export default function LoginPage() {
               priority
             />
           </div>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--aduti-primary)]/5 border border-[var(--aduti-primary)]/20 backdrop-blur-sm mb-2">
+            <MaterialIcon name="lock" className="w-[15px] h-[15px] text-[var(--aduti-primary)]" />
+            <span className="text-[11px] font-black text-[var(--aduti-primary)] tracking-widest uppercase">Uniquement réservé aux membres</span>
+          </div>
           {/* <h1 className="text-3xl font-black text-slate-900 tracking-tight font-display">
             Se connecter
           </h1> */}
@@ -94,9 +99,7 @@ export default function LoginPage() {
                     {...register("email")}
                   />
                   {errors.email && (
-                    <span className="absolute right-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-red-500 text-lg">
-                      info
-                    </span>
+                    <MaterialIcon name="info" className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-red-500" />
                   )}
                 </div>
                 {errors.email && (
@@ -125,7 +128,7 @@ export default function LoginPage() {
                   <input
                     id="password"
                     type={showPassword ? "text" : "password"}
-                    placeholder="••••••••"
+                    // placeholder="••••••••"
                     autoComplete="current-password"
                     className={cn(
                       "block w-full px-5 py-3 tracking-wide bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 focus:outline-none focus:bg-white focus:ring-4 transition-all text-sm font-medium",
@@ -141,9 +144,10 @@ export default function LoginPage() {
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 transition-colors"
                   >
-                    <span className="material-symbols-outlined text-xl">
-                      {showPassword ? "visibility" : "visibility_off"}
-                    </span>
+                    <MaterialIcon
+                      name={showPassword ? "visibility" : "visibility_off"}
+                      className="w-5 h-5"
+                    />
                   </button>
                 </div>
                 {errors.password && (

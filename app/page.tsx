@@ -6,6 +6,7 @@ import { FadeInScroll } from "@/components/fade-in-scroll";
 import { Button } from "@/components/ui/button";
 import { Counter } from "@/components/ui/counter";
 import { PartnersCarousel } from "@/components/partners-carousel";
+import { MaterialIcon } from "@/components/icons/material-icon";
 
 export default function Home() {
   return (
@@ -50,7 +51,7 @@ export default function Home() {
             <Link href="/about">
               <Button className="w-full sm:w-auto h-14 px-10 rounded-2xl bg-[var(--aduti-primary)] hover:bg-blue-600 text-white font-bold transition-all shadow-[0_15px_30px_-10px_rgba(19,146,236,0.3)] hover:-translate-y-1">
                 {"Découvrir l'ADUTI"}
-                <span className="material-symbols-outlined ml-2 text-xl">arrow_forward</span>
+                <MaterialIcon name="arrow_forward" className="ml-2 w-5 h-5" />
               </Button>
             </Link>
             <Link href="/activities">
@@ -120,7 +121,7 @@ export default function Home() {
               <div key={i} className="group relative bg-white/70 backdrop-blur-xl p-10 rounded-[2.5rem] border border-white/60 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.05)] transition-all duration-500 hover:shadow-[0_30px_60px_-20px_rgba(0,0,0,0.1)] hover:-translate-y-2 hover:bg-white/90">
                 <div className={`absolute inset-0 bg-gradient-to-br ${item.glow} to-transparent opacity-0 group-hover:opacity-100 rounded-[2.5rem] transition-opacity duration-500`} />
                 <div className={`w-14 h-14 ${item.color} backdrop-blur-sm rounded-2xl flex items-center justify-center mb-8 relative z-10 shadow-sm transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3`}>
-                  <span className="material-symbols-outlined text-3xl">{item.icon}</span>
+                  <MaterialIcon name={item.icon} className="w-8 h-8" />
                 </div>
                 <h3 className="text-2xl font-bold text-slate-900 mb-4 relative z-10">{item.title}</h3>
                 <p className="text-slate-500 leading-relaxed relative z-10 text-balance group-hover:text-slate-600 transition-colors">
@@ -157,7 +158,7 @@ export default function Home() {
                 ].map((item, i) => (
                   <li key={i} className="flex items-center gap-4 text-slate-700 group cursor-default">
                     <span className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-[var(--aduti-primary)] transition-colors group-hover:bg-[var(--aduti-primary)] group-hover:text-white">
-                      <span className="material-symbols-outlined text-sm">check</span>
+                      <MaterialIcon name="check" className="w-4 h-4" />
                     </span>
                     <span className="font-semibold text-slate-800 transition-colors group-hover:text-[var(--aduti-primary)]">{item}</span>
                   </li>
@@ -170,7 +171,7 @@ export default function Home() {
                 <div className="bg-white rounded-[2.9rem] p-8 lg:p-14 space-y-12">
                   <div className="flex items-start gap-6">
                     <div className="flex-shrink-0 w-16 h-16 rounded-3xl bg-blue-50 flex items-center justify-center text-[var(--aduti-primary)] shadow-sm">
-                      <span className="material-symbols-outlined text-3xl">school</span>
+                      <MaterialIcon name="school" className="w-8 h-8" />
                     </div>
                     <div className="space-y-2">
                       <h3 className="text-2xl font-bold text-slate-900">Formation STIC</h3>
@@ -182,7 +183,7 @@ export default function Home() {
                   <div className="h-px bg-slate-100 w-full" />
                   <div className="flex items-start gap-6">
                     <div className="flex-shrink-0 w-16 h-16 rounded-3xl bg-red-50 flex items-center justify-center text-[var(--aduti-secondary)] shadow-sm">
-                      <span className="material-symbols-outlined text-3xl">diversity_3</span>
+                      <MaterialIcon name="diversity_3" className="w-8 h-8" />
                     </div>
                     <div className="space-y-2">
                       <h3 className="text-2xl font-bold text-slate-900">Le Réseau</h3>
@@ -233,7 +234,7 @@ export default function Home() {
               className="group flex items-center gap-3 py-3 px-6 rounded-2xl bg-slate-50 hover:bg-slate-900 hover:text-white transition-all duration-500 font-bold text-slate-900"
             >
               {"Voir nos activités"}
-              <span className="material-symbols-outlined transition-transform duration-500 group-hover:translate-x-1">arrow_forward</span>
+              <MaterialIcon name="arrow_forward" className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-1" />
             </Link>
           </div>
 
@@ -278,7 +279,7 @@ export default function Home() {
                   <Link href="/activities" className="flex items-center justify-between group/link">
                     <span className="font-bold text-slate-900 group-hover/link:text-[var(--aduti-primary)] transition-colors">{"Détails de l'activité"}</span>
                     <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center group-hover/link:bg-[var(--aduti-primary)] group-hover/link:text-white transition-all">
-                      <span className="material-symbols-outlined text-xl">east</span>
+                      <MaterialIcon name="east" className="w-5 h-5" />
                     </div>
                   </Link>
                 </div>

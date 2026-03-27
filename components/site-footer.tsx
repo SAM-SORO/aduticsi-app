@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { MaterialIcon } from "@/components/icons/material-icon";
 
 export function SiteFooter() {
   return (
@@ -124,9 +125,7 @@ export function SiteFooter() {
             </h4>
             <ul className="space-y-4 text-sm text-slate-500 flex flex-col items-center md:items-start">
               <li className="flex items-start gap-2">
-                <span className="material-symbols-outlined text-lg mt-0.5 text-[var(--aduti-primary)]">
-                  location_on
-                </span>
+                <MaterialIcon name="location_on" className="w-[18px] h-[18px] mt-0.5 text-[var(--aduti-primary)]" />
                 <span>
                   INP-HB Centre, Yamoussoukro,
                   <br />
@@ -134,7 +133,7 @@ export function SiteFooter() {
                 </span>
               </li>
               <li className="flex items-center gap-2 group">
-                <span className="material-symbols-outlined text-lg group-hover:scale-110 transition-transform text-[var(--aduti-primary)]">mail</span>
+                <MaterialIcon name="mail" className="w-[18px] h-[18px] group-hover:scale-110 transition-transform text-[var(--aduti-primary)]" />
                 <Link
                   href="mailto:contact@aduti.ci"
                   className="hover:text-[var(--aduti-primary)] transition-colors"

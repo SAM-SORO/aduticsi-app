@@ -8,7 +8,8 @@ import {
   Calendar,
 } from "lucide-react";
 
-import { DashboardShell } from "@/components/dashboard/DashboardShell";
+import { DashboardLayout } from "@/components/dashboard/DashboardShell";
+import { MaterialIcon } from "@/components/icons/material-icon";
 import { Input } from "@/components/ui/input";
 import { AutoSubmitSelect } from "@/components/ui/auto-submit-select";
 import { prisma } from "@/lib/prisma";
@@ -82,7 +83,7 @@ export default async function MembersAdminPage({
   const totalPages = Math.ceil(totalCount / pageSize);
 
   return (
-    <DashboardShell
+    <DashboardLayout
       member={currentMember}
       activePath="/dashboard/super-admin/members"
       title="Gestion des Membres"
@@ -209,12 +210,8 @@ export default async function MembersAdminPage({
                   
                   <h3 className="text-lg font-bold text-slate-900 group-hover:text-[var(--aduti-primary)] transition-colors truncate w-full flex items-center justify-center gap-1.5" title={m.name}>
                     {m.name}
-                    {m.gender === "FEMALE" && (
-                      <span className="material-symbols-outlined text-rose-400 text-base">female</span>
-                    )}
-                    {m.gender === "MALE" && (
-                      <span className="material-symbols-outlined text-blue-400 text-base">male</span>
-                    )}
+                    {m.gender === "FEMALE" && <MaterialIcon name="female" className="w-4 h-4 text-rose-400" />}
+                    {m.gender === "MALE" && <MaterialIcon name="male" className="w-4 h-4 text-blue-400" />}
                   </h3>
                   <p className="text-xs font-medium text-slate-500 mt-0.5 truncate w-full" title={m.email}>
                     {m.email}
@@ -273,6 +270,6 @@ export default async function MembersAdminPage({
           </div>
         )}
       </div>
-    </DashboardShell>
+    </DashboardLayout>
   );
 }

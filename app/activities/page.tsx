@@ -7,6 +7,7 @@ import { prisma } from "@/lib/prisma";
 import { Input } from "@/components/ui/input";
 import { AutoSubmitSelect } from "@/components/ui/auto-submit-select";
 import { getActivitiesPaginated } from "@/app/dashboard/super-admin/activities/actions";
+import { MaterialIcon } from "@/components/icons/material-icon";
 
 export const runtime = "nodejs";
 
@@ -97,7 +98,7 @@ export default async function ActivitiesPage({
                   ))}
                 </AutoSubmitSelect>
                 <div className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-slate-400">
-                  <span className="material-symbols-outlined">expand_more</span>
+                  <MaterialIcon name="expand_more" className="w-5 h-5" />
                 </div>
               </form>
             </div>
@@ -106,11 +107,11 @@ export default async function ActivitiesPage({
           <div className="mt-16">
             {activities.length === 0 ? (
               <div className="bg-slate-50 rounded-[3rem] p-16 text-center border-2 border-dashed border-slate-200">
-                <span className="material-symbols-outlined text-6xl text-slate-300 mb-4 block">event_busy</span>
+                <MaterialIcon name="event_busy" className="w-14 h-14 text-slate-300 mb-4 block mx-auto" />
                 <h2 className="text-2xl font-bold text-slate-900 mb-2">Aucune activité trouvée</h2>
                 <p className="text-slate-500 font-medium">Réinitialisez les filtres pour voir les événements passés.</p>
                 <Link href="/activities" className="mt-6 inline-flex items-center gap-2 text-[var(--aduti-primary)] font-bold hover:underline">
-                  <span className="material-symbols-outlined text-sm">restart_alt</span>
+                  <MaterialIcon name="restart_alt" className="w-4 h-4" />
                   Effacer les filtres
                 </Link>
               </div>
@@ -128,9 +129,7 @@ export default async function ActivitiesPage({
                       ) : (
                         <div className="absolute inset-0 bg-slate-900 flex items-center justify-center">
                           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/10 z-10" />
-                          <span className="material-symbols-outlined text-7xl text-white/10 scale-150 group-hover:scale-[2] transition-transform duration-1000">
-                            event
-                          </span>
+                          <MaterialIcon name="event" className="w-16 h-16 text-white/10 scale-150 group-hover:scale-[2] transition-transform duration-1000" />
                         </div>
                       )}
                       
@@ -145,9 +144,7 @@ export default async function ActivitiesPage({
                     {/* Content area */}
                     <div className="flex flex-col gap-3 p-8">
                       <div className="flex items-center text-slate-400 text-[10px] font-black uppercase tracking-widest gap-2.5">
-                        <span className="material-symbols-outlined text-[18px] text-[var(--aduti-primary)]">
-                          calendar_today
-                        </span>
+                        <MaterialIcon name="calendar_today" className="w-[18px] h-[18px] text-[var(--aduti-primary)]" />
                         {new Date(activity.date || activity.created_at).toLocaleDateString("fr-FR", {
                           day: "numeric",
                           month: "long",
@@ -166,7 +163,7 @@ export default async function ActivitiesPage({
                         className="mt-6 pt-6 border-t border-slate-50 flex items-center justify-between group/link cursor-pointer"
                       >
                         <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 rounded-xl group-hover/link:bg-blue-50 border border-transparent group-hover/link:border-[var(--aduti-primary)]/20 transition-all">
-                          <span className="material-symbols-outlined !text-[18px] text-[var(--aduti-primary)]">article</span>
+                          <MaterialIcon name="article" className="w-[18px] h-[18px] text-[var(--aduti-primary)]" />
                           <span className="text-[10px] font-black text-slate-600 uppercase tracking-widest">
                             {activity._count.publications} Publications
                           </span>
@@ -174,7 +171,7 @@ export default async function ActivitiesPage({
                         <div className="flex items-center gap-2 group/btn">
                           <span className="text-[var(--aduti-primary)] text-sm font-black group-hover/link:translate-x-1 transition-transform inline-flex items-center uppercase tracking-[0.1em] gap-1.5">
                             <span className="hover:underline decoration-2 underline-offset-4">Découvrir</span>
-                            <span className="material-symbols-outlined text-[18px]">east</span>
+                            <MaterialIcon name="east" className="w-[18px] h-[18px]" />
                           </span>
                         </div>
                       </Link>

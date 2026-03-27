@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { prisma } from "@/lib/prisma";
 import { ImageGallery } from "@/components/ui/ImageGallery";
+import { MaterialIcon } from "@/components/icons/material-icon";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -33,7 +34,7 @@ export default async function ActivityDetailPage({
             href="/activities"
             className="inline-flex items-center gap-2 text-slate-400 hover:text-[var(--aduti-primary)] text-xs font-bold uppercase tracking-widest transition-colors mb-6 group"
           >
-            <span className="material-symbols-outlined text-[18px] group-hover:-translate-x-1 transition-transform">arrow_back</span>
+            <MaterialIcon name="arrow_back" className="w-[18px] h-[18px] group-hover:-translate-x-1 transition-transform" />
             Retour aux activités
           </Link>
           
@@ -43,7 +44,7 @@ export default async function ActivityDetailPage({
                 Promotion {activity.promotion.name}
               </span>
               <span className="text-slate-400 text-[11px] font-bold uppercase tracking-widest flex items-center gap-1.5 px-3 py-1 bg-slate-50 rounded-full border border-slate-100">
-                <span className="material-symbols-outlined text-[16px]">calendar_month</span>
+                <MaterialIcon name="calendar_month" className="w-4 h-4" />
                 {new Date(activity.date || activity.created_at).toLocaleDateString("fr-FR", {
                   day: "numeric",
                   month: "long",
@@ -78,7 +79,7 @@ export default async function ActivityDetailPage({
 
           {activity.publications.length === 0 ? (
             <div className="text-center py-16 bg-white rounded-3xl border border-slate-100">
-              <span className="material-symbols-outlined text-5xl text-slate-200 mb-3 block">newspaper</span>
+              <MaterialIcon name="newspaper" className="w-12 h-12 text-slate-200 mb-3 block mx-auto" />
               <p className="text-slate-400 font-medium">Aucune publication pour cette activité.</p>
             </div>
           ) : (
@@ -90,9 +91,7 @@ export default async function ActivityDetailPage({
                 >
                   <div className="p-6 md:p-8 space-y-5">
                     <div className="flex items-center gap-3 text-slate-400 text-[11px] font-black uppercase tracking-widest">
-                      <span className="material-symbols-outlined text-[16px] text-[var(--aduti-primary)]">
-                        calendar_month
-                      </span>
+                      <MaterialIcon name="calendar_month" className="w-4 h-4 text-[var(--aduti-primary)]" />
                       {new Date(pub.date || pub.created_at).toLocaleDateString("fr-FR", {
                         day: "numeric",
                         month: "long",

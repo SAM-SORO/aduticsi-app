@@ -11,6 +11,25 @@ export type ContactInput = {
   phone?: string
   subject: string
   message: string
+  captchaToken?: string
+}
+
+async function verifyTurnstileToken(token: string) {
+  const secretKey = process.env.TURNSTILE_SECRET_KEY
+  if (!secretKey) return true
+
+  try {
+    const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ response: token, secret: secretKey }),
+    })
+    const verification = await response.json()
+    return verification.success
+  } catch (error) {
+    console.error('Contact captcha verification error:', error)
+    return false
+  }
 }
 
 export async function sendContactMessage(data: ContactInput) {
@@ -19,6 +38,15 @@ export async function sendContactMessage(data: ContactInput) {
 
   if (!data.email && !data.phone) {
     return { error: "Veuillez renseigner au moins un email ou un contact." }
+  }
+
+  if (data.captchaToken) {
+    const isHuman = await verifyTurnstileToken(data.captchaToken)
+    if (!isHuman) {
+      return { error: 'Échec de la vérification captcha. Veuillez réessayer.' }
+    }
+  } else if (process.env.NODE_ENV === 'production') {
+    return { error: 'Le captcha est requis.' }
   }
 
   try {

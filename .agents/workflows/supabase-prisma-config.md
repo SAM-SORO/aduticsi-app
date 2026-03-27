@@ -71,17 +71,17 @@ DIRECT_URL="postgresql://prisma.nqofzuoozxnwyylxidne:[PASSWORD]@aws-1-eu-west-1.
 
 ---
 
-## 4. schema.prisma — bloc datasource
+## 4. schema.prisma — bloc datasource (Prisma 7.5+)
+
+Depuis Prisma 7.5.0, avec `@prisma/config`, les URLs de connexion **doivent être retirées** du schéma car elles sont centralisées dans `prisma.config.ts`.
 
 ```prisma
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider = "postgresql"
 }
 ```
 
-> ⛔ Ne pas supprimer `url` ni `directUrl`. Ne pas ajouter `previewFeatures = ["driverAdapters"]` (déprécié dans Prisma 7, c'est le défaut).
+> ⛔ **Ne pas définir** `url` ni `directUrl` dans le schéma si `prisma.config.ts` existe. Le CLI refusera la génération avec l'erreur P1012.
 
 ---
 

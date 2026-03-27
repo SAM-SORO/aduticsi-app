@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { MaterialIcon } from "@/components/icons/material-icon";
 
 export default function AuthCodeErrorPage() {
   return (
@@ -16,7 +17,7 @@ export default function AuthCodeErrorPage() {
         </div>
         
         <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-50 text-red-500 mb-2">
-          <span className="material-symbols-outlined text-4xl">error</span>
+          <MaterialIcon name="error" className="w-10 h-10" />
         </div>
         
         <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Lien invalide ou expiré</h1>

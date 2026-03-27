@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 
-import { DashboardShell } from "@/components/dashboard/DashboardShell";
+import { DashboardLayout } from "@/components/dashboard/DashboardShell";
+import { MaterialIcon } from "@/components/icons/material-icon";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
 
@@ -58,7 +59,7 @@ export default async function SuperAdminDashboardPage() {
     ]);
 
   return (
-    <DashboardShell
+    <DashboardLayout
       member={member}
       activePath="/dashboard/super-admin"
       title="Vue d'ensemble - Super Admin"
@@ -80,9 +81,7 @@ export default async function SuperAdminDashboardPage() {
                 Total Membres
               </p>
               <span className="p-1.5 rounded-md bg-green-50 text-green-600 group-hover:bg-[var(--aduti-primary)]/10 group-hover:text-[var(--aduti-primary)] transition-colors">
-                <span className="material-symbols-outlined text-[20px]">
-                  groups
-                </span>
+                <MaterialIcon name="groups" className="w-5 h-5" />
               </span>
             </div>
             <div>
@@ -99,9 +98,7 @@ export default async function SuperAdminDashboardPage() {
             <div className="flex justify-between items-start">
               <p className="text-sm font-medium text-slate-500">Promotions</p>
               <span className="p-1.5 rounded-md bg-blue-50 text-blue-600 group-hover:bg-[var(--aduti-primary)]/10 group-hover:text-[var(--aduti-primary)] transition-colors">
-                <span className="material-symbols-outlined text-[20px]">
-                  school
-                </span>
+                <MaterialIcon name="school" className="w-5 h-5" />
               </span>
             </div>
             <div>
@@ -120,9 +117,7 @@ export default async function SuperAdminDashboardPage() {
                 Admins actifs
               </p>
               <span className="p-1.5 rounded-md bg-purple-50 text-purple-600 group-hover:bg-[var(--aduti-primary)]/10 group-hover:text-[var(--aduti-primary)] transition-colors">
-                <span className="material-symbols-outlined text-[20px]">
-                  security
-                </span>
+                <MaterialIcon name="security" className="w-5 h-5" />
               </span>
             </div>
             <div>
@@ -141,9 +136,7 @@ export default async function SuperAdminDashboardPage() {
                 Promotion active
               </p>
               <span className="p-1.5 rounded-md bg-orange-50 text-orange-600 group-hover:bg-[var(--aduti-primary)]/10 group-hover:text-[var(--aduti-primary)] transition-colors">
-                <span className="material-symbols-outlined text-[20px]">
-                  toggle_on
-                </span>
+                <MaterialIcon name="toggle_on" className="w-5 h-5" />
               </span>
             </div>
             <div>
@@ -183,9 +176,7 @@ export default async function SuperAdminDashboardPage() {
               />
               <div className="w-full sm:w-2/3 flex items-center gap-4 bg-slate-50 p-4 rounded-lg border border-slate-200">
                 <div className="p-3 bg-white rounded-full shadow-sm">
-                  <span className="material-symbols-outlined text-[var(--aduti-primary)]">
-                    toggle_on
-                  </span>
+                  <MaterialIcon name="toggle_on" className="w-6 h-6 text-[var(--aduti-primary)]" />
                 </div>
                 <div className="flex-1">
                   <h4 className="text-sm font-semibold text-slate-900">
@@ -206,7 +197,7 @@ export default async function SuperAdminDashboardPage() {
           </div>
         </section>
       </div>
-    </DashboardShell>
+    </DashboardLayout>
   );
 }
 

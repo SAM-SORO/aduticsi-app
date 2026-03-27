@@ -27,7 +27,22 @@ export async function GET(request: Request) {
       if (!existingMember) {
         // This is a new confirmed user, create in Prisma
         // The metadata was passed during signUp in auth/actions.ts
-        const { name, promo_id, status, role } = user.user_metadata
+        const { name, promo_id, status, role, gender, invitation_token } = user.user_metadata
+
+        if (!invitation_token) {
+          console.error('Missing invitation token in user metadata for user:', user.id)
+          return NextResponse.redirect(`${origin}/auth/auth-code-error`)
+        }
+
+        const invitation = await prisma.invitation.findUnique({
+          where: { token: invitation_token },
+          select: { token: true, expires_at: true },
+        })
+
+        if (!invitation || new Date() > invitation.expires_at) {
+          console.error('Invitation missing or expired during email confirmation for user:', user.id)
+          return NextResponse.redirect(`${origin}/auth/auth-code-error`)
+        }
 
         if (name && promo_id && status) {
           try {
@@ -38,8 +53,9 @@ export async function GET(request: Request) {
                 name,
                 promo_id,
                 status,
+                gender: gender || null,
                 role: role || 'MEMBER',
-                poste: 'NONE',
+                poste_id: null,
                 function: 'NONE',
               }
             })

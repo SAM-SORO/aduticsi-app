@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { logout } from "@/app/auth/actions";
 
-import { Sidebar } from "./Sidebar";
+import { DashboardSidebar } from "./Sidebar";
 
 interface DashboardShellProps {
   children: React.ReactNode;
@@ -53,7 +53,7 @@ export function DashboardShell({
           isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <Sidebar
+        <DashboardSidebar
           member={member}
           activePath={activePath}
           onCloseMobile={closeMobileMenu}
@@ -148,3 +148,6 @@ export function DashboardShell({
     </div>
   );
 }
+
+// Alias plus explicite pour éviter la confusion avec la barre latérale.
+export { DashboardShell as DashboardLayout };

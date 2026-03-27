@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
-import "./material-icons.css";
 import { Toaster } from "sonner";
 import { AppShell } from "@/components/app-shell";
 

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import { prisma } from "@/lib/prisma";
 import { MemberProfileView } from "./MemberProfileView";
+import { MaterialIcon } from "@/components/icons/material-icon";
 
 export const runtime = "nodejs";
 
@@ -35,17 +36,13 @@ export default async function MemberProfilePage({
                 href="/"
                 className="inline-flex items-center text-slate-500 hover:text-[var(--aduti-primary)] transition-colors"
               >
-                <span className="material-symbols-outlined text-lg mr-2">
-                  home
-                </span>
+                <MaterialIcon name="home" className="w-[18px] h-[18px] mr-2" />
                 Accueil
               </Link>
             </li>
             <li>
               <div className="flex items-center">
-                <span className="material-symbols-outlined text-slate-400 text-lg">
-                  chevron_right
-                </span>
+                <MaterialIcon name="chevron_right" className="w-[18px] h-[18px] text-slate-400" />
                 <Link
                   href="/members"
                   className="ml-1 text-slate-500 hover:text-[var(--aduti-primary)] md:ml-2 transition-colors"
@@ -56,9 +53,7 @@ export default async function MemberProfilePage({
             </li>
             <li aria-current="page">
               <div className="flex items-center">
-                <span className="material-symbols-outlined text-slate-400 text-lg">
-                  chevron_right
-                </span>
+                <MaterialIcon name="chevron_right" className="w-[18px] h-[18px] text-slate-400" />
                 <span className="ml-1 font-medium text-slate-900 md:ml-2">
                   Profil
                 </span>

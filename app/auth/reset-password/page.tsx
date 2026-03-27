@@ -7,6 +7,7 @@ import { toast } from 'sonner'
 
 import { createClient } from '@/lib/supabase/client'
 import { cn } from '@/lib/utils'
+import { MaterialIcon } from '@/components/icons/material-icon'
 
 export default function ResetPasswordPage() {
   const [isPending, startTransition] = useTransition()
@@ -52,9 +53,7 @@ export default function ResetPasswordPage() {
       <div className="w-full max-w-[550px] z-10 flex flex-col gap-6">
         <div className="text-center space-y-2 flex flex-col items-center">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white shadow-xl shadow-blue-100 text-[var(--aduti-primary)] mb-2 border border-slate-100 ring-4 ring-white/50">
-            <span className="material-symbols-outlined text-4xl">
-              security
-            </span>
+            <MaterialIcon name="security" className="w-10 h-10" />
           </div>
           <h1 className="text-3xl font-black text-slate-900 tracking-tight">Nouveau mot de passe</h1>
           <p className="text-slate-500 font-bold text-sm uppercase tracking-wider">
@@ -81,7 +80,7 @@ export default function ResetPasswordPage() {
                 <label className="block text-sm font-bold text-slate-700 ml-1">Nouveau mot de passe</label>
                 <div className="relative group">
                   <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
-                    <span className="material-symbols-outlined text-xl">lock</span>
+                    <MaterialIcon name="lock" className="w-5 h-5" />
                   </div>
                   <input
                     name="password"
@@ -95,9 +94,10 @@ export default function ResetPasswordPage() {
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute inset-y-0 right-3 px-2 flex items-center text-slate-400 hover:text-slate-600 transition-colors"
                   >
-                    <span className="material-symbols-outlined text-xl">
-                      {showPassword ? "visibility_off" : "visibility"}
-                    </span>
+                    <MaterialIcon
+                      name={showPassword ? "visibility_off" : "visibility"}
+                      className="w-5 h-5"
+                    />
                   </button>
                 </div>
               </div>
@@ -106,7 +106,7 @@ export default function ResetPasswordPage() {
                 <label className="block text-sm font-bold text-slate-700 ml-1">Confirmer le mot de passe</label>
                 <div className="relative group">
                   <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
-                    <span className="material-symbols-outlined text-xl">lock_clock</span>
+                    <MaterialIcon name="lock_clock" className="w-5 h-5" />
                   </div>
                   <input
                     name="confirmPassword"
@@ -120,9 +120,10 @@ export default function ResetPasswordPage() {
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                     className="absolute inset-y-0 right-3 px-2 flex items-center text-slate-400 hover:text-slate-600 transition-colors"
                   >
-                    <span className="material-symbols-outlined text-xl">
-                      {showConfirmPassword ? "visibility_off" : "visibility"}
-                    </span>
+                    <MaterialIcon
+                      name={showConfirmPassword ? "visibility_off" : "visibility"}
+                      className="w-5 h-5"
+                    />
                   </button>
                 </div>
               </div>
@@ -134,7 +135,7 @@ export default function ResetPasswordPage() {
                 {isPending ? (
                   <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 ) : (
-                  <span className="material-symbols-outlined text-xl">task_alt</span>
+                  <MaterialIcon name="task_alt" className="w-5 h-5" />
                 )}
                 {isPending ? 'Mise à jour...' : 'Réinitialiser le mot de passe'}
               </button>

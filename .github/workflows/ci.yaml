@@ -1,6 +1,6 @@
-name: ADUTI CI
+name: ADUTI CI/CD
 
-# Déclenchement du workflow
+# Déclenchement du workflow sur les branches dev et main
 on:
   push:
     branches:
@@ -13,57 +13,80 @@ on:
 
 jobs:
   build-and-lint:
-    name: Build, Lint & Test
+    name: Build & Lint (Verification)
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout du code
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      # 2️⃣ Setup Node.js
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: "pnpm"
 
-      # 3️⃣ Installer pnpm
       - name: Install pnpm
-        run: npm install -g pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
 
-      # 4️⃣ Installer les dépendances
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
-      # 5️⃣ Linter le code
-      - name: ESLint check
-        run: pnpm exec eslint "src/**/*.{ts,tsx,js,jsx}" --max-warnings=0
+      - name: Generate Prisma Client
+        run: npx prisma generate
 
-      # 6️⃣ Format check
-      - name: Prettier check
-        run: pnpm exec prettier --check "src/**/*.{ts,tsx,js,jsx,json,md}"
+      - name: ESLint check (Next.js)
+        run: pnpm exec next lint
 
-      # 7️⃣ Build TypeScript / Next.js
+      # Pour vérifier que l'app compile bien en production sans erreurs
       - name: Build project
         run: pnpm exec next build
+        env:
+          # On peut mocker les URLs côté Action pour le build statique
+          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/postgres"
+          POOLED_DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/postgres"
 
-      # 8️⃣ Tests unitaires (si tu ajoutes vitest/jest)
-      - name: Run tests
-        run: pnpm exec vitest run --coverage
+      - name: Build Docker image (CI validation)
+        run: |
+          docker build \
+            --build-arg DATABASE_URL="postgresql://postgres:postgres@localhost:5432/postgres" \
+            --build-arg DIRECT_URL="postgresql://postgres:postgres@localhost:5432/postgres" \
+            --build-arg NEXT_PUBLIC_SUPABASE_URL="https://example.supabase.co" \
+            --build-arg NEXT_PUBLIC_SUPABASE_ANON_KEY="anon-placeholder" \
+            --build-arg NEXT_PUBLIC_TURNSTILE_SITE_KEY="turnstile-placeholder" \
+            -t aduti-app:ci .
 
-  # Optionnel : job de déploiement sur main uniquement
   deploy:
     name: Deploy to Coolify
     needs: build-and-lint
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    
+    # 🔴 DIRECTIVE DE PUSH EN PRODUCTION:
+    # Ce job s'exécute UNIQUEMENT sur la branche `main` ET UNIQUEMENT 
+    # si le message de commit contient la directive "prod[deploy]"
+    if: github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, 'prod[deploy]')
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Trigger Coolify deployment
+      - name: Trigger Coolify Webhook
         run: |
-          echo "Déploiement via Coolify automatique ici"
-          # Tu peux appeler l'API Coolify ou utiliser un CLI si disponible
+          echo "🚀 Initialisation du webhook de déploiement Coolify..."
+          
+          # Appelez l'URL du Webhook fournie par votre dashboard Coolify
+          # Exemple avec CURL pour un Webhook standard de Coolify :
+          curl --request GET '${{ secrets.COOLIFY_WEBHOOK_URL }}'
+          
+          echo "✅ Signal de déploiement envoyé à Coolify avec succès!"

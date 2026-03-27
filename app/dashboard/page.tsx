@@ -53,6 +53,10 @@ export default async function DashboardPage() {
     redirect("/dashboard/admin");
   }
 
+  if (member?.function === "GESTION_ACTIVITES") {
+    redirect("/dashboard/bureau");
+  }
+
   const currentPromo = await prisma.promotion.findFirst({
     where: { is_current_promo: true },
   });

@@ -5,6 +5,7 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import { FadeInScroll } from "@/components/fade-in-scroll";
+import { MaterialIcon } from "@/components/icons/material-icon";
 
 export default function AboutPage() {
   const scrollToHistory = () => {
@@ -114,7 +115,7 @@ export default function AboutPage() {
                 onClick={scrollToHistory}
                 className="h-14 px-8 rounded-2xl bg-[var(--aduti-primary)] hover:bg-blue-600 text-white font-bold transition-all shadow-[0_15px_30px_-10px_rgba(19,146,236,0.3)] gap-3 hover:-translate-y-1 active:scale-95 text-sm"
               >
-                <span className="material-symbols-outlined text-xl">history_edu</span>
+                <MaterialIcon name="history_edu" className="w-5 h-5" />
                 Notre Histoire
               </Button>
               <Link href="/members">
@@ -122,7 +123,7 @@ export default function AboutPage() {
                   variant="outline"
                   className="h-14 px-8 rounded-2xl bg-white/50 backdrop-blur-sm border border-slate-200 hover:border-slate-300 text-slate-700 font-bold transition-all hover:bg-white gap-3 hover:-translate-y-1 text-sm w-full sm:w-auto"
                 >
-                  <span className="material-symbols-outlined text-[var(--aduti-primary)] text-xl">hub</span>
+                  <MaterialIcon name="hub" className="w-5 h-5 text-[var(--aduti-primary)]" />
                   Le Réseau
                 </Button>
               </Link>
@@ -226,7 +227,7 @@ export default function AboutPage() {
                 ].map((item, i) => (
                   <div key={i} className="flex gap-8 p-8 rounded-3xl bg-white shadow-[0_10px_40px_rgba(0,0,0,0.03)] border border-slate-100 hover:shadow-2xl transition-all duration-500 group">
                     <div className={`flex-shrink-0 w-16 h-16 rounded-[1.25rem] ${item.bg} flex items-center justify-center transition-transform group-hover:scale-110 group-hover:rotate-6`}>
-                      <span className={`material-symbols-outlined ${item.color} text-3xl`}>{item.icon}</span>
+                      <MaterialIcon name={item.icon} className={`w-8 h-8 ${item.color}`} />
                     </div>
                     <div className="space-y-2">
                       <h4 className="text-2xl font-bold text-slate-900">{item.title}</h4>
@@ -242,14 +243,14 @@ export default function AboutPage() {
               <div className="space-y-8 mt-16">
                 <div className="bg-white p-10 rounded-[3rem] shadow-2xl border border-slate-100 space-y-6 hover:-translate-y-3 transition-transform duration-500">
                   <div className="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center">
-                    <span className="material-symbols-outlined text-3xl">verified</span>
+                    <MaterialIcon name="verified" className="w-8 h-8" />
                   </div>
                   <h5 className="text-xl font-bold text-slate-900">Excellence</h5>
                   <p className="text-sm text-slate-500 font-semibold leading-relaxed">{"Standard de formation et de rigueur académique certifié."}</p>
                 </div>
                 <div className="bg-slate-900 p-10 rounded-[3rem] shadow-[0_30px_60px_rgba(0,0,0,0.3)] text-white space-y-6 hover:-translate-y-3 transition-transform duration-500">
                   <div className="w-14 h-14 bg-white/10 text-white rounded-2xl flex items-center justify-center">
-                    <span className="material-symbols-outlined text-3xl">history</span>
+                    <MaterialIcon name="history" className="w-8 h-8" />
                   </div>
                   <h5 className="text-xl font-bold text-white">Héritage</h5>
                   <p className="text-sm text-slate-400 font-semibold leading-relaxed">{"Plus de trois décennies de leadership étudiant."}</p>
@@ -258,14 +259,14 @@ export default function AboutPage() {
               <div className="space-y-8">
                 <div className="bg-indigo-600 p-10 rounded-[3rem] shadow-[0_30px_60px_rgba(79,70,229,0.3)] text-white space-y-6 hover:-translate-y-3 transition-transform duration-500">
                   <div className="w-14 h-14 bg-white/20 text-white rounded-2xl flex items-center justify-center">
-                    <span className="material-symbols-outlined text-3xl">diversity_1</span>
+                    <MaterialIcon name="diversity_1" className="w-8 h-8" />
                   </div>
                   <h5 className="text-xl font-bold text-white">Réseau</h5>
                   <p className="text-sm text-indigo-100 font-semibold leading-relaxed">{"Une force collective prête pour le monde pro."}</p>
                 </div>
                 <div className="bg-white p-10 rounded-[3rem] shadow-2xl border border-slate-100 space-y-6 hover:-translate-y-3 transition-transform duration-500">
                   <div className="w-14 h-14 bg-red-50 text-red-600 rounded-2xl flex items-center justify-center">
-                    <span className="material-symbols-outlined text-3xl">ads_click</span>
+                    <MaterialIcon name="ads_click" className="w-8 h-8" />
                   </div>
                   <h5 className="text-xl font-bold text-slate-900">Impact</h5>
                   <p className="text-sm text-slate-500 font-semibold leading-relaxed">{"Insertion professionnelle directe et privilégiée."}</p>
@@ -321,7 +322,7 @@ export default function AboutPage() {
               <FadeInScroll key={i} delay={i * 200} className="relative group">
                 <div className="h-full bg-white/40 backdrop-blur-sm p-10 rounded-[3rem] border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.03)] transition-all duration-700 hover:shadow-[0_40px_80px_rgba(0,0,0,0.08)] hover:-translate-y-4 group-hover:bg-white">
                   <div className={`w-16 h-16 ${chapter.bg} ${chapter.color} rounded-2xl flex items-center justify-center mb-10 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6`}>
-                    <span className="material-symbols-outlined text-3xl font-bold">{chapter.icon}</span>
+                    <MaterialIcon name={chapter.icon} className="w-8 h-8 font-bold" />
                   </div>
                   
                   <div className="space-y-6">
@@ -383,7 +384,7 @@ export default function AboutPage() {
               <div className="relative z-10 space-y-12">
                 <div className="flex items-center gap-6">
                   <div className="w-16 h-16 rounded-2xl bg-[#c2185b]/10 flex items-center justify-center text-[#c2185b]">
-                    <span className="material-symbols-outlined text-4xl">terminal</span>
+                    <MaterialIcon name="terminal" className="w-10 h-10" />
                   </div>
                   <h3 className="text-3xl font-bold text-slate-900">Cycle Technicien Supérieur</h3>
                 </div>
@@ -408,7 +409,7 @@ export default function AboutPage() {
               <div className="relative z-10 space-y-12">
                 <div className="flex items-center gap-6">
                   <div className="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center text-[var(--aduti-primary)]">
-                    <span className="material-symbols-outlined text-4xl">account_tree</span>
+                    <MaterialIcon name="account_tree" className="w-10 h-10" />
                   </div>
                   <h3 className="text-3xl font-bold text-slate-900">Continuité en cycle Ingénieur</h3>
                 </div>
