@@ -104,7 +104,10 @@ export default async function DashboardAdminPage() {
                         </span>
                       </td>
                       <td className="px-6 py-4 text-right">
-                        <form action={updateMemberFunction.bind(null, m.id, nextFunction)}>
+                        <form action={async () => {
+                          "use server";
+                          await updateMemberFunction(m.id, nextFunction as "NONE" | "GESTION_ACTIVITES");
+                        }}>
                           <button
                             type="submit"
                             className="px-3 py-2 rounded-lg text-xs font-bold bg-[var(--aduti-primary)] text-white hover:bg-blue-600 transition-colors"

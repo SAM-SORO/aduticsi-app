@@ -1,7 +1,7 @@
-import { MetadataRoute } from 'next'
+import type { MetadataRoute } from 'next'
 import { prisma } from '@/lib/prisma'
 
-export default async function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://aduti.org' // Remplacez par votre domaine réel
 
   // Pages statiques
@@ -33,7 +33,7 @@ export default async function sitemap(): MetadataRoute.Sitemap {
     }))
 
     return [...routes, ...memberRoutes]
-  } catch (error) {
+  } catch {
     return routes
   }
 }
