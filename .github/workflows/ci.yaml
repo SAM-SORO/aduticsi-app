@@ -49,6 +49,8 @@ jobs:
           # On peut mocker les URLs côté Action pour le build statique
           DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/postgres'
           POOLED_DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/postgres'
+          NEXT_PUBLIC_SUPABASE_URL: 'https://example.supabase.co'
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: 'anon-placeholder'
 
       - name: Build Docker image (CI validation)
         run: |
