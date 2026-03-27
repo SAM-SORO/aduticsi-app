@@ -14,34 +14,24 @@ on:
 jobs:
   build-and-lint:
     name: Build & Lint (Verification)
-    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+          run_install: false
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 9
-
-      - name: Get pnpm store directory
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-
-      - name: Setup pnpm cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+          node-version: 22
+          cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -74,6 +64,8 @@ jobs:
     name: Auto-merge to Main
     needs: build-and-lint
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     if: github.ref == 'refs/heads/dev' && contains(github.event.head_commit.message, '[deploy]')
     steps:
       - name: Checkout repository
@@ -94,6 +86,8 @@ jobs:
     name: Deploy to Coolify
     needs: [build-and-lint, auto-merge-to-main]
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     
     # S'exécute sur main après le merge auto, ou directement si push sur main avec [deploy]
     if: |
