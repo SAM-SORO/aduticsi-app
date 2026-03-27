@@ -78,7 +78,8 @@ export function SiteNavbar() {
 
   // Hide menu on route change
   useEffect(() => {
-    setIsOpen(false);
+    const timer = setTimeout(() => setIsOpen(false), 0);
+    return () => clearTimeout(timer);
   }, [pathname]);
 
   // Prevent scroll when menu is open

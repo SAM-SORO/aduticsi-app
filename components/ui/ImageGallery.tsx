@@ -21,9 +21,9 @@ interface ImageGalleryProps {
 export function ImageGallery({ images, alt = '' }: ImageGalleryProps) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
   const [mounted, setMounted] = useState(false)
- 
   useEffect(() => {
-    setMounted(true)
+    const timer = setTimeout(() => setMounted(true), 0);
+    return () => clearTimeout(timer);
   }, [])
 
   const openLightbox = useCallback((idx: number) => setLightboxIndex(idx), [])

@@ -39,7 +39,7 @@ jobs:
       - name: Generate Prisma Client
         run: npx prisma generate
 
-      - name: ESLint check (Next.js)
+      - name: ESLint check
         run: pnpm run lint
 
       # Pour vérifier que l'app compile bien en production sans erreurs
@@ -47,8 +47,8 @@ jobs:
         run: pnpm exec next build
         env:
           # On peut mocker les URLs côté Action pour le build statique
-          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/postgres"
-          POOLED_DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/postgres"
+          DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/postgres'
+          POOLED_DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/postgres'
 
       - name: Build Docker image (CI validation)
         run: |
@@ -88,7 +88,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-    
+
     # S'exécute sur main après le merge auto, ou directement si push sur main avec [deploy]
     if: |
       always() && 
