@@ -40,7 +40,7 @@ jobs:
         run: npx prisma generate
 
       - name: ESLint check (Next.js)
-        run: pnpm exec next lint
+        run: pnpm run lint
 
       # Pour vérifier que l'app compile bien en production sans erreurs
       - name: Build project
