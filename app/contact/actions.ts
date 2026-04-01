@@ -73,9 +73,13 @@ export async function sendContactMessage(data: ContactInput) {
     }
 
     // 2. Save to database
+    // Ignore captchaToken since it's not a column in the DB
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { captchaToken, ...dbData } = data
+    
     await prisma.contactMessage.create({
       data: {
-        ...data,
+        ...dbData,
         ip_address: ip
       }
     })

@@ -73,19 +73,22 @@ export default async function MembersPage({
       {/* Hero Section */}
       <section className="relative pt-12 md:pt-16 lg:pt-20 pb-12 px-4 shadow-[0_1px_0_0_rgba(0,0,0,0.02)]">
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
-          <div className="absolute top-[-10%] left-[-5%] w-[400px] h-[400px] bg-[var(--aduti-primary)]/5 rounded-full blur-3xl opacity-60" />
-          <div className="absolute bottom-[20%] right-[-10%] w-[300px] h-[300px] bg-[var(--aduti-secondary)]/5 rounded-full blur-3xl opacity-60" />
+          <div className="absolute top-0 left-0 w-[min(400px,80vw)] h-[min(400px,80vw)] bg-[var(--aduti-primary)]/5 rounded-full blur-3xl opacity-60 pointer-events-none" />
+          <div className="absolute bottom-[20%] right-0 w-[min(300px,70vw)] h-[min(300px,70vw)] bg-[var(--aduti-secondary)]/5 rounded-full blur-3xl opacity-60 pointer-events-none" />
         </div>
         
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-10 border-b border-slate-100 pb-12">
-            <div className="space-y-6 max-w-2xl text-center md:text-left">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 md:gap-10 border-b border-slate-100 pb-8 md:pb-12">
+            <div className="space-y-3 max-w-2xl text-center md:text-left">
               <div className="inline-flex items-center justify-center md:justify-start gap-2 px-3 py-1 rounded-full bg-blue-50 text-[var(--aduti-primary)] text-xs font-semibold tracking-wide uppercase border border-blue-100 w-fit mx-auto md:mx-0">
                 <span className="w-2 h-2 rounded-full bg-[var(--aduti-primary)] animate-pulse" />
                 Communauté ADUTI
               </div>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-[family-name:var(--font-display)] font-bold text-slate-900 tracking-tight">
+                Nos <span className="text-[var(--aduti-primary)]">Membres</span>
+              </h1>
             </div>
-            <div className="flex items-center justify-center md:justify-end gap-3 pb-2">
+            <div className="flex items-center justify-center md:justify-end gap-3 pb-0 md:pb-2">
               <span className="inline-flex items-center px-4 py-2 rounded-full text-xs font-bold bg-white text-slate-700 border border-slate-100 shadow-[0_4px_15px_rgba(0,0,0,0.03)] uppercase tracking-wide">
                 <span className="w-2 h-2 rounded-full bg-[var(--aduti-primary)] mr-2.5 shadow-[0_0_8px_var(--aduti-primary)]" />
                 {totalCount} Membre{totalCount > 1 ? "s" : ""} actif{totalCount > 1 ? "s" : ""}
@@ -116,7 +119,7 @@ export default async function MembersPage({
               <button type="submit" className="hidden" />
             </form>
 
-            <div className="flex flex-wrap md:flex-nowrap gap-4 w-full xl:w-auto">
+            <div className="flex flex-wrap gap-3 w-full xl:w-auto">
               {[
                 { name: "promo", defaultValue: promoId, options: [{ value: "", label: "Toutes Promotions" }, ...promotions.map(p => ({ value: p.id, label: p.name }))] },
                 { name: "status", defaultValue: status, options: [{ value: "", label: "Tous Statuts" }, { value: "STUDENT", label: "Étudiant" }, { value: "ALUMNI", label: "Alumni" }] },
@@ -130,7 +133,7 @@ export default async function MembersPage({
                     { value: "FEMALE", label: "Femmes" },
                   ] },
                 ].map((filter) => (
-                  <form key={filter.name} className="relative flex-1 md:min-w-[160px] group/select" method="GET">
+                  <form key={filter.name} className="relative flex-1 min-w-[calc(50%-6px)] sm:min-w-[160px] group/select" method="GET">
                   <input type="hidden" name="search" value={search} />
                   {filter.name !== "promo" && <input type="hidden" name="promo" value={promoId} />}
                   {filter.name !== "status" && <input type="hidden" name="status" value={status} />}
@@ -267,7 +270,7 @@ export default async function MembersPage({
                       </div>
                       <Link
                         href={`/members/${member.id}`}
-                        className="text-xs font-black uppercase tracking-widest text-[var(--aduti-primary)] hover:text-blue-700 flex items-center gap-1 group/link group-hover:opacity-100 lg:opacity-0 transition-opacity active:scale-95"
+                        className="text-xs font-black uppercase tracking-widest text-[var(--aduti-primary)] hover:text-blue-700 flex items-center gap-1 group/link transition-opacity active:scale-95"
                       >
                         PROFIL
                         <MaterialIcon name="arrow_forward" className="w-4 h-4 group-hover/link:translate-x-0.5 transition-transform" />

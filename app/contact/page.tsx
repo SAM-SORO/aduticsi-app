@@ -3,8 +3,8 @@ import { MaterialIcon } from "@/components/icons/material-icon";
 
 export default function ContactPage() {
   return (
-    <main className="flex-1 w-full max-w-7xl mx-auto px-6 py-12 lg:py-16">
-      <div className="flex flex-col lg:flex-row gap-16">
+    <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 lg:py-16">
+      <div className="flex flex-col lg:flex-row gap-8 lg:gap-16">
         <div className="flex-1 space-y-8">
           <div className="space-y-4">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-xs font-semibold text-[var(--aduti-primary)] uppercase tracking-wide">
@@ -114,7 +114,7 @@ export default function ContactPage() {
             </div>
           </div>
 
-          <div className="h-80 bg-slate-200 rounded-2xl overflow-hidden relative shadow-[0_4px_20px_-2px_rgba(0,0,0,0.05)] border border-slate-200 group">
+          <div className="h-56 sm:h-64 md:h-80 bg-slate-200 rounded-2xl overflow-hidden relative shadow-[0_4px_20px_-2px_rgba(0,0,0,0.05)] border border-slate-200 group">
             <iframe
               title="Localisation INP-HB"
               loading="lazy"

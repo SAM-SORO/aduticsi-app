@@ -27,7 +27,7 @@ export default async function MemberProfilePage({
   }
 
   return (
-    <main className="flex-1 bg-slate-50 py-8 lg:py-12">
+    <main className="flex-1 bg-slate-50 py-8 lg:py-12 overflow-x-hidden">
       <div className="max-w-6xl mx-auto px-4 lg:px-6">
         <nav aria-label="Fil d'Ariane" className="flex mb-8">
           <ol className="inline-flex items-center space-x-1 md:space-x-3 text-sm">

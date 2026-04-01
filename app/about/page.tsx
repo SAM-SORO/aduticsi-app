@@ -63,7 +63,7 @@ export default function AboutPage() {
           <div className="absolute bottom-[10%] left-[-10%] w-[500px] h-[500px] bg-[var(--aduti-secondary)]/5 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '2s' }} />
         </div>
 
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-12 grid lg:grid-cols-2 gap-16 lg:gap-24 items-center py-1 lg:py-1">
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-12 grid lg:grid-cols-2 gap-16 lg:gap-24 items-center py-5 lg:py-1">
 
           {/* ── LEFT: Text Content ── */}
           <div className="space-y-10 animate-fade-in-left">

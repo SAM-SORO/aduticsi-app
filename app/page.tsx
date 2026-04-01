@@ -10,13 +10,13 @@ import { MaterialIcon } from "@/components/icons/material-icon";
 
 export default function Home() {
   return (
-    <main className="flex-1 w-full">
+    <main className="flex-1 w-full overflow-x-hidden">
       {/* Hero */}
       <section className="relative overflow-hidden pt-8 pb-16 lg:pt-24 lg:pb-30 px-4">
-        {/* Animated Background Elements */}
+        {/* Animated Background Elements — overflow-hidden evite le scroll horizontal */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
-          <div className="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-[var(--aduti-primary)]/10 rounded-full blur-[120px] animate-pulse" />
-          <div className="absolute bottom-[10%] left-[-10%] w-[500px] h-[500px] bg-[var(--aduti-secondary)]/5 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '2s' }} />
+          <div className="absolute top-[-10%] right-0 w-[min(600px,90vw)] h-[min(600px,90vw)] bg-[var(--aduti-primary)]/10 rounded-full blur-[120px] animate-pulse" />
+          <div className="absolute bottom-[10%] left-0 w-[min(500px,80vw)] h-[min(500px,80vw)] bg-[var(--aduti-secondary)]/5 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '2s' }} />
         </div>
         
         <div className="max-w-7xl mx-auto text-center">
@@ -64,18 +64,18 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="pt-20 grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-10 max-w-5xl mx-auto">
+          <div className="pt-12 md:pt-20 grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-10 max-w-5xl mx-auto">
             {[
               { label: "d'histoire", value: 31, suffix: " ans" },
               { label: "2A-TS · 3A-TS · Alumnis", value: 3, suffix: " profils" },
               { label: "Promotions", value: 25, suffix: "+" },
               { label: "Insertion Pro", value: 100, suffix: "%" },
             ].map((stat, i) => (
-              <div key={i} className="relative group p-6 rounded-3xl bg-white border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.02)] transition-all hover:shadow-[0_20px_40px_rgba(0,0,0,0.04)] hover:-translate-y-1">
-                <div className="text-4xl md:text-5xl font-[family-name:var(--font-display)] font-black text-slate-900 mb-2">
+              <div key={i} className="relative group p-4 md:p-6 rounded-2xl md:rounded-3xl bg-white border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.02)] transition-all hover:shadow-[0_20px_40px_rgba(0,0,0,0.04)] hover:-translate-y-1">
+                <div className="text-3xl md:text-5xl font-[family-name:var(--font-display)] font-black text-slate-900 mb-1 md:mb-2">
                   <Counter end={stat.value} suffix={stat.suffix} />
                 </div>
-                <div className="text-xs font-bold text-slate-400 uppercase tracking-widest">{stat.label}</div>
+                <div className="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-widest leading-tight">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -83,10 +83,8 @@ export default function Home() {
       </section>
 
       {/* Mission & Vision - Luxury Cards */}
-      <section className="py-24 bg-[#fafbfc] px-4 relative overflow-hidden">
-        <FadeInScroll 
-          className="max-w-7xl mx-auto"
->
+      <section className="py-12 sm:py-16 md:py-24 px-4 bg-slate-50/80 relative overflow-hidden">
+        <FadeInScroll className="max-w-7xl mx-auto text-center">
           <div className="text-center mb-20 space-y-4 relative z-10">
             <span className="text-[var(--aduti-primary)] font-bold text-xs uppercase tracking-[0.3em]">Ambitions</span>
             <h2 className="text-3xl md:text-5xl font-[family-name:var(--font-display)] font-bold text-slate-900">
@@ -94,7 +92,7 @@ export default function Home() {
             </h2>
             <div className="w-12 h-1 bg-[var(--aduti-primary)]/20 mx-auto rounded-full" />
           </div>
-          <div className="grid md:grid-cols-3 gap-8 relative z-10">
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 relative z-10">
             {[
               {
                 title: "Notre Mission",
@@ -134,11 +132,11 @@ export default function Home() {
       </section>
 
       {/* Nos Objectifs - Interactive Layout */}
-      <section className="py-24 px-4 bg-white">
+      <section className="py-12 sm:py-16 md:py-24 px-4 bg-white">
         <FadeInScroll 
           className="max-w-7xl mx-auto"
 >
-          <div className="grid lg:grid-cols-2 gap-20 items-center">
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-20 items-center">
             <div className="space-y-10">
               <div className="space-y-4">
                 <h2 className="text-4xl md:text-5xl font-[family-name:var(--font-display)] font-bold text-slate-900 leading-[1.15]">
@@ -165,10 +163,11 @@ export default function Home() {
                 ))}
               </ul>
             </div>
-            <div className="relative">
-              <div className="absolute -top-20 -right-20 w-80 h-80 bg-[var(--aduti-primary)]/5 rounded-full blur-[100px]" />
+            <div className="relative overflow-hidden">
+              {/* Blob décoratif limité au conteneur */}
+              <div className="absolute -top-10 -right-10 w-48 h-48 sm:w-80 sm:h-80 bg-[var(--aduti-primary)]/5 rounded-full blur-[80px] sm:blur-[100px] pointer-events-none" />
               <div className="relative bg-slate-50 rounded-[3rem] p-1.5 shadow-2xl overflow-hidden border border-slate-100">
-                <div className="bg-white rounded-[2.9rem] p-8 lg:p-14 space-y-12">
+                <div className="bg-white rounded-[2.9rem] p-6 sm:p-8 lg:p-14 space-y-8 lg:space-y-12">
                   <div className="flex items-start gap-6">
                     <div className="flex-shrink-0 w-16 h-16 rounded-3xl bg-blue-50 flex items-center justify-center text-[var(--aduti-primary)] shadow-sm">
                       <MaterialIcon name="school" className="w-8 h-8" />
@@ -200,7 +199,7 @@ export default function Home() {
       </section>
 
       {/* Nos Partenaires - Elegant Background */}
-      <section className="py-24 px-4 bg-slate-50/80 border-y border-slate-100">
+      <section className="py-12 sm:py-16 md:py-24 px-4 bg-slate-50/80 border-y border-slate-100">
         <FadeInScroll 
           className="max-w-7xl mx-auto"
 >
@@ -218,11 +217,11 @@ export default function Home() {
       </section>
 
       {/* Activités Phares - Premium Video-like Cards */}
-      <section className="py-24 px-4 bg-white overflow-hidden">
+      <section className="py-12 sm:py-16 md:py-24 px-4 bg-white overflow-hidden">
         <FadeInScroll 
           className="max-w-7xl mx-auto"
 >
-          <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 md:mb-20 gap-6">
             <div className="space-y-4">
               <span className="text-[var(--aduti-secondary)] font-bold text-xs uppercase tracking-[0.3em]">Vie associative</span>
               <h2 className="text-4xl md:text-5xl font-[family-name:var(--font-display)] font-bold text-slate-900 leading-none">
@@ -238,7 +237,7 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-10">
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-10">
             {[
               {
                 title: "Hackathon",
@@ -290,16 +289,17 @@ export default function Home() {
       </section>
 
       {/* Final CTA - The "Wow" Exit */}
-      <section className="py-32 px-4 bg-slate-50 relative overflow-hidden border-t border-slate-100">
-        <div className="absolute top-0 right-[-10%] w-[800px] h-[800px] bg-[var(--aduti-primary)]/10 rounded-full blur-[120px]" />
-        <div className="absolute bottom-[-20%] left-[-10%] w-[600px] h-[600px] bg-[var(--aduti-secondary)]/10 rounded-full blur-[120px]" />
+      <section className="py-16 sm:py-24 md:py-32 px-4 bg-slate-50 relative overflow-hidden border-t border-slate-100">
+        {/* Blobs décoratifs confinés — pas de débordement */}
+        <div className="absolute top-0 right-0 w-[min(800px,100vw)] h-[min(800px,100vw)] bg-[var(--aduti-primary)]/10 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-[min(600px,80vw)] h-[min(600px,80vw)] bg-[var(--aduti-secondary)]/10 rounded-full blur-[120px] pointer-events-none" />
         
         <FadeInScroll className="max-w-4xl mx-auto text-center relative z-10 space-y-12">
           <div className="space-y-6">
-            <h2 className="text-5xl md:text-7xl font-[family-name:var(--font-display)] font-bold tracking-tight text-slate-900">
+            <h2 className="text-4xl sm:text-5xl md:text-7xl font-[family-name:var(--font-display)] font-bold tracking-tight text-slate-900">
               En Savoir <span className="text-[var(--aduti-primary)]">Plus</span>
             </h2>
-            <p className="text-slate-600 text-xl font-medium max-w-2xl mx-auto leading-relaxed">
+            <p className="text-slate-600 text-base sm:text-xl font-medium max-w-2xl mx-auto leading-relaxed">
               {"Vous Voulez en Savoir plus sur l'ADUTI et son histoire ?"}
             </p>
           </div>

@@ -11,11 +11,13 @@ import { MaterialIcon } from '@/components/icons/material-icon'
 import { sendContactMessage } from './actions'
 
 const contactSchema = z.object({
-  name: z.string().min(2, 'Le nom doit contenir au moins 2 caractères'),
-  email: z.string().email('Email invalide').optional().or(z.literal('')),
-  phone: z.string().min(8, 'Contact invalide (min 8 chiffres)').optional().or(z.literal('')),
-  subject: z.string().min(1, 'Veuillez sélectionner un sujet'),
-  message: z.string().min(10, 'Le message doit contenir au moins 10 caractères'),
+  name: z.string().min(2, 'Le nom doit contenir au moins 2 caractères').max(100, 'Le nom est trop long (max 100)'),
+  email: z.string().email('Email invalide').max(150, 'Email trop long').optional().or(z.literal('')),
+  phone: z.string().regex(/^\+?[0-9\s\-()]{8,20}$/, 'Format de téléphone invalide').optional().or(z.literal('')),
+  subject: z.enum(['information', 'partenariat', 'evenement', 'support', 'autre'], {
+    message: 'Veuillez sélectionner un sujet valide'
+  }),
+  message: z.string().min(10, 'Le message doit contenir au moins 10 caractères').max(2000, 'Message trop long (max 2000)'),
 }).refine(data => data.email || data.phone, {
   message: "Veuillez renseigner au moins un email ou un contact",
   path: ["email"]
@@ -26,6 +28,7 @@ type ContactFormData = z.infer<typeof contactSchema>
 export function ContactForm() {
   const [isPending, startTransition] = useTransition()
   const [captchaToken, setCaptchaToken] = useState<string | null>(null)
+  const [captchaKey, setCaptchaKey] = useState(0) // Forces Turnstile remount
   const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
   
   const {
@@ -52,12 +55,16 @@ export function ContactForm() {
         captchaToken,
       }
       const result = await sendContactMessage(submissionData)
+      
+      // Reset captcha visual widget no matter what
+      setCaptchaToken(null)
+      setCaptchaKey(prev => prev + 1)
+      
       if (result.error) {
         toast.error(result.error)
       } else {
         toast.success(result.message)
         reset()
-        setCaptchaToken(null)
       }
     })
   }
@@ -149,6 +156,7 @@ export function ContactForm() {
         {turnstileSiteKey ? (
           <div className="mb-4 flex justify-center">
             <Turnstile
+              key={captchaKey}
               siteKey={turnstileSiteKey}
               onSuccess={(token) => setCaptchaToken(token)}
               options={{ theme: 'light', size: 'normal' }}

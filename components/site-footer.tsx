@@ -7,9 +7,9 @@ export function SiteFooter() {
     <footer className="bg-white border-t border-slate-100 py-12">
       <div className="layout-container max-w-7xl mx-auto px-4">
         <div className="grid md:grid-cols-4 gap-8 mb-12">
-          <div className="col-span-1 md:col-span-1 flex flex-col items-center text-center space-y-4">
+          <div className="flex flex-col items-center md:items-start text-center md:text-left space-y-4">
             <Link href="/" className="flex items-center select-none">
-              <div className="relative h-20 w-64">
+              <div className="relative h-16 w-48 sm:h-20 sm:w-64">
                 <Image
                   src="/logo_association.jpeg"
                   alt="Logo ADUTI"

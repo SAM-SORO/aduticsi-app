@@ -1,21 +1,13 @@
 import { redirect } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
-import {
-  Users,
-  Search,
-  ShieldCheck,
-  Calendar,
-} from "lucide-react";
+import { Search } from "lucide-react";
 
 import { DashboardLayout } from "@/components/dashboard/DashboardShell";
-import { MaterialIcon } from "@/components/icons/material-icon";
 import { Input } from "@/components/ui/input";
 import { AutoSubmitSelect } from "@/components/ui/auto-submit-select";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
-
-import { MemberActions } from "./member-actions";
+import { MembersGrid } from "./MembersGrid";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -102,8 +94,8 @@ export default async function MembersAdminPage({
         </div>
 
         {/* Filters */}
-        <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="bg-white p-4 sm:p-6 rounded-3xl border border-slate-100 shadow-sm space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
             <form className="relative" method="GET">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
               <Input
@@ -151,91 +143,7 @@ export default async function MembersAdminPage({
         </div>
 
         {/* Grid */}
-        {members.length === 0 ? (
-          <div className="bg-white rounded-3xl p-16 text-center border-2 border-dashed border-slate-100">
-            <Users className="w-12 h-12 text-slate-200 mx-auto mb-4" />
-            <h2 className="text-xl font-bold text-slate-900 mb-1">Aucun membre trouvé</h2>
-            <p className="text-slate-400 text-sm">Essayez de modifier vos filtres ou termes de recherche.</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-in fade-in duration-700">
-            {members.map((m) => (
-              <div
-                key={m.id}
-                className="group bg-white rounded-3xl border border-slate-100 p-6 hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] hover:border-[var(--aduti-primary)]/20 transition-all duration-300 flex flex-col relative"
-              >
-                <div
-                   className={`absolute top-0 left-0 w-full h-1.5 rounded-t-3xl ${
-                    m.status === "ALUMNI"
-                      ? "bg-gradient-to-r from-[var(--aduti-primary)] to-[var(--aduti-secondary)] opacity-80"
-                      : "bg-slate-100"
-                  }`}
-                />
-                
-                {/* Header: Badges & Actions */}
-                <div className="flex items-start justify-between mb-4 mt-2">
-                  <div className="flex gap-1.5 flex-wrap flex-1 min-w-0">
-                    <span
-                      className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${
-                        m.status === "ALUMNI"
-                          ? "bg-emerald-50 text-emerald-600 border border-emerald-100"
-                          : "bg-blue-50 text-blue-600 border border-blue-100"
-                      }`}
-                    >
-                      {m.status === "ALUMNI" ? "Alumni" : "Étudiant"}
-                    </span>
-                    {m.role !== "MEMBER" && (
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-rose-50 text-rose-600 border border-rose-100 truncate max-w-[100px]" title={m.role}>
-                        <ShieldCheck className="w-3 h-3 shrink-0" />
-                        <span className="truncate">{m.role.replace("_", " ")}</span>
-                      </span>
-                    )}
-                  </div>
-                  <MemberActions member={m as any} postes={postes} />
-                </div>
-
-                {/* Avatar & Info */}
-                <div className="flex flex-col items-center text-center">
-                  <div className="w-24 h-24 rounded-full p-1 bg-slate-50 mb-4 relative shadow-sm">
-                    {m.photo_url ? (
-                      <div className="w-full h-full rounded-full overflow-hidden border-2 border-white bg-slate-100">
-                        <Image src={m.photo_url} alt={m.name} fill className="object-cover" />
-                      </div>
-                    ) : (
-                      <div className="w-full h-full rounded-full border-2 border-white bg-slate-200 flex items-center justify-center text-slate-400 font-bold text-3xl">
-                        {m.name.charAt(0).toUpperCase()}
-                      </div>
-                    )}
-                  </div>
-                  
-                  <h3 className="text-lg font-bold text-slate-900 group-hover:text-[var(--aduti-primary)] transition-colors truncate w-full flex items-center justify-center gap-1.5" title={m.name}>
-                    {m.name}
-                    {m.gender === "FEMALE" && <MaterialIcon name="female" className="w-4 h-4 text-rose-400" />}
-                    {m.gender === "MALE" && <MaterialIcon name="male" className="w-4 h-4 text-blue-400" />}
-                  </h3>
-                  <p className="text-xs font-medium text-slate-500 mt-0.5 truncate w-full" title={m.email}>
-                    {m.email}
-                  </p>
-                  <p className="text-xs text-slate-400 font-medium mt-1 uppercase tracking-widest bg-slate-50 px-2 py-1 rounded inline-block">
-                    {m.promotion.name}
-                  </p>
-                </div>
-
-                {/* Footer Infos */}
-                <div className="w-full pt-4 mt-auto border-t border-slate-50 flex items-center justify-between text-slate-400 text-xs mt-6">
-                  <div className="flex items-center gap-1.5" title={m.poste?.name || "Sans poste"}>
-                    <Users className="w-3.5 h-3.5" />
-                    <span className="truncate max-w-[100px]">{m.poste?.name || "Sans poste"}</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <Calendar className="w-3.5 h-3.5" />
-                    {new Date(m.created_at).toLocaleDateString("fr-FR", { month: 'short', year: 'numeric' })}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+        <MembersGrid members={members as any} postes={postes} />
 
         {/* Pagination Controls */}
         {totalPages > 1 && (

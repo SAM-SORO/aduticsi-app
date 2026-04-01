@@ -39,22 +39,22 @@ export default async function ActivitiesPage({
       {/* Hero */}
       <section className="relative pt-12 md:pt-16 lg:pt-20 pb-12 px-4 shadow-[0_1px_0_0_rgba(0,0,0,0.02)]">
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
-          <div className="absolute top-[-10%] right-[-5%] w-[400px] h-[400px] bg-[var(--aduti-primary)]/5 rounded-full blur-3xl opacity-60" />
-          <div className="absolute bottom-[20%] left-[-10%] w-[300px] h-[300px] bg-[var(--aduti-secondary)]/5 rounded-full blur-3xl opacity-60" />
+          <div className="absolute top-0 right-0 w-[min(400px,80vw)] h-[min(400px,80vw)] bg-[var(--aduti-primary)]/5 rounded-full blur-3xl opacity-60 pointer-events-none" />
+          <div className="absolute bottom-[20%] left-0 w-[min(300px,70vw)] h-[min(300px,70vw)] bg-[var(--aduti-secondary)]/5 rounded-full blur-3xl opacity-60 pointer-events-none" />
         </div>
 
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-10 border-b border-slate-100 pb-12 text-center md:text-left">
-            <div className="space-y-6 max-w-2xl">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 md:gap-10 border-b border-slate-100 pb-8 md:pb-12 text-center md:text-left">
+            <div className="space-y-3 max-w-2xl">
               <div className="inline-flex items-center justify-center md:justify-start gap-2 px-3 py-1 rounded-full bg-blue-50 text-[var(--aduti-primary)] text-xs font-semibold tracking-wide uppercase border border-blue-100 w-fit mx-auto md:mx-0">
                 <span className="w-2 h-2 rounded-full bg-[var(--aduti-primary)] animate-pulse" />
                 Vie Associative ADUTI
               </div>
-              {/* <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight text-balance">
-                Activités & <span className="text-[var(--aduti-primary)]">Événements</span>
-              </h1> */}
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-[family-name:var(--font-display)] font-bold text-slate-900 tracking-tight">
+                Nos <span className="text-[var(--aduti-primary)]">Activités</span>
+              </h1>
             </div>
-            <div className="flex items-center justify-center md:justify-end gap-3 pb-2">
+            <div className="flex items-center justify-center md:justify-end gap-3 pb-0 md:pb-2">
               <span className="inline-flex items-center px-4 py-2 rounded-full text-xs font-bold bg-white text-slate-700 border border-slate-100 shadow-[0_4px_15px_rgba(0,0,0,0.03)] uppercase tracking-wide">
                 <span className="w-2 h-2 rounded-full bg-[var(--aduti-primary)] mr-2.5 shadow-[0_0_8px_var(--aduti-primary)]" />
                 {total} Événement{total > 1 ? "s" : ""}
@@ -83,7 +83,7 @@ export default async function ActivitiesPage({
             </form>
 
             <div className="flex gap-4 w-full xl:w-auto">
-              <form className="relative flex-1 md:min-w-[280px] group/select" method="GET">
+              <form className="relative flex-1 min-w-full sm:min-w-[220px] xl:min-w-[280px] group/select" method="GET">
                 <input type="hidden" name="search" value={search} />
                 <AutoSubmitSelect
                   name="promo"

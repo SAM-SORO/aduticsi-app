@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
+import { DashboardLayout } from "@/components/dashboard/DashboardShell";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -70,13 +71,19 @@ export default async function DashboardPage() {
     : [];
 
   return (
-    <div className="bg-white py-8 text-slate-900 dark:bg-slate-950 dark:text-slate-50 sm:py-12 lg:py-14">
-      <div className="mx-auto max-w-6xl px-4 space-y-8">
-        <div className="space-y-2">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#13acfa]">
-            Tableau de bord
-          </p>
-          <h1 className="text-2xl font-black tracking-tight sm:text-3xl">
+    <DashboardLayout
+      member={{
+        name: member?.name || "Membre",
+        email: user.email || "",
+        role: member?.role || "MEMBER",
+      }}
+      activePath="/dashboard"
+      title="Tableau de bord"
+    >
+      <div className="bg-transparent py-2 sm:py-6 lg:py-8">
+        <div className="mx-auto max-w-6xl space-y-8">
+          <div className="space-y-2">
+            <h1 className="text-2xl font-black tracking-tight sm:text-3xl">
             Bonjour{member?.name ? `, ${member.name}` : ""} 👋
           </h1>
           <p className="text-sm font-medium text-slate-600 dark:text-slate-300">
@@ -153,7 +160,8 @@ export default async function DashboardPage() {
           )}
         </div>
       </div>
-    </div>
+      </div>
+    </DashboardLayout>
   );
 }
 

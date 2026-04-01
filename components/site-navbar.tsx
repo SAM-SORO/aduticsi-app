@@ -5,8 +5,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import { User, LogOut, Settings, LayoutDashboard } from "lucide-react";
-import { MaterialIcon } from "@/components/icons/material-icon";
+import { AnimatePresence, motion } from "framer-motion";
+import { User, LogOut, Settings, LayoutDashboard, Menu, X } from "lucide-react";
+
 
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
@@ -245,11 +246,11 @@ export function SiteNavbar() {
     <>
       <header 
         className={cn(
-          "sticky top-0 z-50 w-full border-b border-slate-100 bg-white/90 backdrop-blur-md px-4 py-4 transition-transform duration-300 ease-in-out",
+          "sticky top-0 z-50 w-full border-b border-slate-100 bg-white/95 backdrop-blur-md transition-transform duration-300 ease-in-out",
           isVisible ? "translate-y-0" : "-translate-y-full"
         )}
       >
-        <div className="layout-container flex items-center justify-between max-w-7xl mx-auto w-full">
+        <div className="px-4 py-4 layout-container flex items-center justify-between max-w-7xl mx-auto w-full">
           <Link
             href="/"
             className="flex items-center gap-2 select-none no-underline"
@@ -292,68 +293,65 @@ export function SiteNavbar() {
             <Button
               variant="ghost"
               size="icon"
-              className="text-slate-800 p-2 hover:bg-slate-100/50 rounded-full transition-colors relative z-[60]"
+              className="text-slate-800 p-2 hover:bg-slate-100/50 rounded-full transition-colors"
               onClick={() => setIsOpen(!isOpen)}
-              aria-label="Menu"
+              aria-label={isOpen ? "Fermer le menu" : "Ouvrir le menu"}
             >
-              <MaterialIcon name={isOpen ? "close" : "menu"} className="w-6 h-6" />
+              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </Button>
           </div>
         </div>
-      </header>
 
-      {/* Mobile Menu Overlay (Moved outside header to fix CSS stacking context from transform) */}
-      <div 
-        className={cn(
-          "fixed inset-0 z-[100] md:hidden overflow-hidden transition-all duration-300 ease-in-out",
-          isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-        )}
-      >
-        {/* Backdrop wrapper for better transition control */}
-        <div
-          className={cn(
-            "absolute inset-0 bg-slate-900/40 backdrop-blur-md transition-opacity duration-300",
-            isOpen ? "opacity-100" : "opacity-0"
-          )}
-          onClick={() => setIsOpen(false)}
-        />
-        
-        <nav
-          className={cn(
-            "absolute inset-x-4 top-24 max-h-[calc(100vh-120px)] overflow-y-auto bg-white/95 backdrop-blur-3xl border border-white/60 shadow-2xl rounded-3xl p-6 flex flex-col items-center gap-4 transition-all duration-400 ease-out",
-            isOpen ? "translate-y-0 opacity-100 scale-100" : "-translate-y-8 opacity-0 scale-95"
-          )}
-        >
-          {/* Close button inside the card for convenience */}
-          <button
-            type="button"
-            className="absolute top-4 right-4 p-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors shadow-sm bg-white"
-            onClick={() => setIsOpen(false)}
-          >
-            <MaterialIcon name="close" className="w-5 h-5" />
-          </button>
-
-          {navLinks.map((link) => (
-            <div key={link.href} className="w-full">
-              <Link
-                href={link.href}
+        {/* Mobile Dropdown Menu */}
+        <AnimatePresence>
+          {isOpen && (
+            <>
+              {/* Overlay pour fermer le menu au clic à côté */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="absolute top-full left-0 w-full h-[100vh] bg-slate-900/10 backdrop-blur-[2px] md:hidden"
                 onClick={() => setIsOpen(false)}
-                className={cn(
-                  "block text-xl font-semibold transition-all py-3 w-full text-center rounded-2xl active:scale-95",
-                  pathname === link.href
-                    ? "text-[var(--aduti-primary)] bg-[var(--aduti-primary)]/10"
-                    : "text-slate-600 hover:text-[var(--aduti-primary)] hover:bg-slate-50/80"
-                )}
+              />
+              
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                className="md:hidden overflow-hidden bg-white/95"
               >
-                {link.label}
-              </Link>
-            </div>
-          ))}
-          <div className="w-full pt-4 mt-2 border-t border-slate-100">
-            {!user && renderAuthButton("w-full h-14 rounded-2xl text-lg font-bold shadow-xl shadow-[var(--aduti-primary)]/20")}
-          </div>
-        </nav>
-      </div>
+              <div className="border-t border-slate-100">
+                <nav className="flex flex-col px-4 py-6 gap-2">
+                  {navLinks.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      onClick={() => setIsOpen(false)}
+                      className={cn(
+                        "block text-lg font-semibold transition-all py-3 px-4 w-full rounded-2xl active:scale-95",
+                        pathname === link.href
+                          ? "text-[var(--aduti-primary)] bg-[var(--aduti-primary)]/10"
+                          : "text-slate-600 hover:text-[var(--aduti-primary)] hover:bg-slate-50/80"
+                      )}
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                  {!user && (
+                    <div className="w-full pt-4 mt-2 border-t border-slate-100">
+                      {renderAuthButton("w-full h-14 rounded-2xl text-lg font-bold outline-none")}
+                    </div>
+                  )}
+                </nav>
+              </div>
+            </motion.div>
+            </>
+          )}
+        </AnimatePresence>
+      </header>
     </>
   );
 }

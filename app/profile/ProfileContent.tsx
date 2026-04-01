@@ -308,14 +308,15 @@ export function ProfileContent({ member }: ProfileContentProps) {
       )}
 
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-3xl font-black text-slate-900 tracking-tight">Mon Profil</h1>
+      <div className="flex items-start sm:items-center justify-between mb-6 sm:mb-8 gap-4">
+        <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Mon Profil</h1>
         <button
           onClick={handleLogout}
-          className="px-5 py-2.5 text-xs font-black text-red-500 hover:text-red-600 hover:bg-red-50 rounded-2xl transition-all flex items-center gap-2 uppercase tracking-widest border border-transparent hover:border-red-100"
+          className="px-3 sm:px-5 py-2 sm:py-2.5 text-xs font-black text-red-500 hover:text-red-600 hover:bg-red-50 rounded-xl sm:rounded-2xl transition-all flex items-center gap-1.5 sm:gap-2 uppercase tracking-widest border border-transparent hover:border-red-100 shrink-0"
         >
-          <MaterialIcon name="logout" className="w-[18px] h-[18px]" />
-          Quitter
+          <MaterialIcon name="logout" className="w-[16px] h-[16px] sm:w-[18px] sm:h-[18px]" />
+          <span className="hidden sm:inline">Quitter</span>
+          <span className="sm:hidden">Exit</span>
         </button>
       </div>
 
