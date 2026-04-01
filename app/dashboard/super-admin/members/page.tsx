@@ -2,12 +2,12 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Search } from "lucide-react";
 
+import { MembersGrid } from "./MembersGrid";
 import { DashboardLayout } from "@/components/dashboard/DashboardShell";
 import { Input } from "@/components/ui/input";
 import { AutoSubmitSelect } from "@/components/ui/auto-submit-select";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
-import { MembersGrid } from "./MembersGrid";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";

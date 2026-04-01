@@ -3,8 +3,8 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import { ShieldCheck, Users, Calendar } from 'lucide-react'
-import { MaterialIcon } from '@/components/icons/material-icon'
 import { MemberDrawer, type DrawerMember } from './MemberDrawer'
+import { MaterialIcon } from '@/components/icons/material-icon'
 
 interface MembersGridProps {
   members: DrawerMember[]

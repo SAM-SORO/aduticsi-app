@@ -24,13 +24,6 @@ import {
   Activity,
 } from 'lucide-react'
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
-import {
   updateMemberRole,
   updateMemberStatus,
   updateMemberPoste,
@@ -38,6 +31,13 @@ import {
   updateMemberFunction,
   deleteMember,
 } from './actions'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
