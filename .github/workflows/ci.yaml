@@ -102,5 +102,5 @@ jobs:
       - name: Trigger Coolify Webhook
         run: |
           echo "🚀 Initialisation du webhook de déploiement Coolify..."
-          run: curl --request GET "${{ secrets.COOLIFY_WEBHOOK_URL }}"
+          curl --request GET "${{ secrets.COOLIFY_WEBHOOK_URL }}"
           echo "✅ Signal de déploiement envoyé à Coolify avec succès!"
