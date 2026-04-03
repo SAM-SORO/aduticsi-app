@@ -14,6 +14,8 @@ import {
 import { toast } from "sonner";
 import type { Poste } from "@prisma/client";
 
+import { getPostes, deletePoste } from "./actions";
+import { PosteForm } from "./poste-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -30,8 +32,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { getPostes, deletePoste } from "./actions";
-import { PosteForm } from "./poste-form";
 
 interface PostesContentProps {
   initialPostes: Poste[];

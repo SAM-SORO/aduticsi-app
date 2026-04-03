@@ -1,6 +1,9 @@
 import { Plus } from "lucide-react";
 import { redirect } from "next/navigation";
 
+import { getPromotions } from "./actions";
+import { PromotionTableActions } from "./promotion-table-actions";
+import { PromotionForm } from "./promotion-form";
 import { DashboardLayout } from "@/components/dashboard/DashboardShell";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,9 +16,6 @@ import {
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
 
-import { getPromotions } from "./actions";
-import { PromotionForm } from "./promotion-form";
-import { PromotionTableActions } from "./promotion-table-actions";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";

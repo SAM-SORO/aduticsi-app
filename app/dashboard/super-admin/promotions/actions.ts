@@ -1,7 +1,9 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
+import logger from "@/lib/logger";
 
 export async function getPromotions() {
   try {
@@ -11,7 +13,7 @@ export async function getPromotions() {
       },
     });
   } catch (error) {
-    console.error("Error fetching promotions:", error);
+    logger.error({ error }, "Error fetching promotions");
     throw new Error("Erreur lors de la récupération des promotions.");
   }
 }
@@ -36,7 +38,14 @@ export async function createPromotion(data: {
     revalidatePath("/dashboard/super-admin/promotions");
     return { success: true, data: promo };
   } catch (error) {
-    console.error("Error creating promotion:", error);
+    logger.error({ error, data }, "Error creating promotion");
+    
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === 'P2002') {
+        return { success: false, error: "Une promotion avec ce nom existe déjà." };
+      }
+    }
+    
     return { success: false, error: "Erreur lors de la création de la promotion." };
   }
 }
@@ -68,7 +77,14 @@ export async function updatePromotion(
     revalidatePath("/dashboard/super-admin/promotions");
     return { success: true, data: promo };
   } catch (error) {
-    console.error("Error updating promotion:", error);
+    logger.error({ error, id, data }, "Error updating promotion");
+    
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === 'P2002') {
+        return { success: false, error: "Une promotion avec ce nom existe déjà." };
+      }
+    }
+    
     return { success: false, error: "Erreur lors de la mise à jour de la promotion." };
   }
 }
@@ -82,7 +98,7 @@ export async function deletePromotion(id: string) {
     revalidatePath("/dashboard/super-admin/promotions");
     return { success: true };
   } catch (error) {
-    console.error("Error deleting promotion:", error);
+    logger.error({ error, id }, "Error deleting promotion");
     return { success: false, error: "Erreur lors de la suppression de la promotion." };
   }
 }

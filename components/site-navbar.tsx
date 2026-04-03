@@ -12,6 +12,7 @@ import { User, LogOut, Settings, LayoutDashboard, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
+import logger from "@/lib/logger";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -53,8 +54,7 @@ export function SiteNavbar() {
           const profile = await getProfile();
           setMember(profile);
         } catch (e) {
-          // eslint-disable-next-line no-console
-          console.error("Failed to fetch profile in navbar", e);
+          logger.error({ e }, "Failed to fetch profile in navbar");
         }
       }
       setLoading(false);
@@ -68,7 +68,9 @@ export function SiteNavbar() {
         try {
           const profile = await getProfile();
           setMember(profile);
-        } catch(_e) { /* ignore */ }
+        } catch (e) {
+          logger.error({ e }, "Failed to fetch profile in navbar on state change");
+        }
       } else {
         setMember(null);
       }

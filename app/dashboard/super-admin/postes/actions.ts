@@ -1,8 +1,10 @@
 "use server";
 
+import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
+import logger from "@/lib/logger";
 
 async function requireSuperAdmin() {
   const supabase = await createClient();
@@ -27,10 +29,11 @@ export async function createPoste(name: string) {
     });
     revalidatePath("/dashboard/super-admin/postes");
     return { success: true, poste };
-  } catch (error: any) {
-    if (error.code === 'P2002') {
+  } catch (error: unknown) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
       return { success: false, error: "Ce poste existe déjà." };
     }
+    logger.error({ error, name }, "Error creating poste");
     return { success: false, error: "Une erreur est survenue." };
   }
 }
@@ -44,10 +47,11 @@ export async function updatePoste(id: string, name: string) {
     });
     revalidatePath("/dashboard/super-admin/postes");
     return { success: true, poste };
-  } catch (error: any) {
-    if (error.code === 'P2002') {
+  } catch (error: unknown) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
       return { success: false, error: "Ce nom de poste est déjà utilisé." };
     }
+    logger.error({ error, id, name }, "Error updating poste");
     return { success: false, error: "Une erreur est survenue." };
   }
 }
@@ -61,6 +65,7 @@ export async function deletePoste(id: string) {
     revalidatePath("/dashboard/super-admin/postes");
     return { success: true };
   } catch (error) {
+    logger.error({ error, id }, "Error deleting poste");
     return { success: false, error: "Impossible de supprimer ce poste. Vérifiez s'il est utilisé par des membres." };
   }
 }

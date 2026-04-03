@@ -1,11 +1,11 @@
 import { User } from "lucide-react";
 import { redirect } from "next/navigation";
+import { getProfile } from "./actions";
+import { ProfileContent } from "./ProfileContent";
 import { BackButton } from "@/components/ui/back-button";
 
 import { DashboardLayout } from "@/components/dashboard/DashboardShell";
 import { createClient } from "@/lib/supabase/server";
-import { getProfile } from "./actions";
-import { ProfileContent } from "./ProfileContent";
 
 export default async function ProfilePage() {
   const supabase = await createClient();

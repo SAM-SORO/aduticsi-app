@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
+import logger from "@/lib/logger";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -26,8 +27,7 @@ export default async function DashboardPage() {
 
   // Fallback to email if not found by ID (for accounts with ID mismatch)
   if (!member && user.email) {
-    // eslint-disable-next-line no-console
-    console.log(`Dashboard: Member not found by ID (${user.id}), trying email (${user.email})...`)
+    logger.info({ userId: user.id, email: user.email }, 'Dashboard: Member not found by ID, trying email');
     member = await prisma.member.findUnique({
       where: { email: user.email },
       include: {
@@ -36,8 +36,7 @@ export default async function DashboardPage() {
     });
 
     if (member) {
-      // eslint-disable-next-line no-console
-      console.warn(`Dashboard: Member found by email but had different ID. Syncing Prisma ID with Supabase UUID.`)
+      logger.warn({ email: user.email }, 'Dashboard: Member found by email but had different ID. Syncing Prisma ID with Supabase UUID.');
       await prisma.member.update({
         where: { email: user.email },
         data: { id: user.id }

@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache"
 import { prisma } from "@/lib/prisma"
 import { createClient } from "@/lib/supabase/server"
+import logger from "@/lib/logger"
 
 export async function setActivePromo(promoId: string) {
   const supabase = await createClient()
@@ -47,8 +48,7 @@ export async function setActivePromo(promoId: string) {
     revalidatePath("/dashboard/super-admin")
     return { success: true }
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error("Error setting active promo:", error)
+    logger.error({ error, promoId }, "Error setting active promo");
     return { error: "Erreur lors de la mise à jour de la promotion." }
   }
 }

@@ -3,6 +3,7 @@
 import React, { useState, useCallback } from 'react'
 import Cropper from 'react-easy-crop'
 import { X, Check, RotateCcw } from 'lucide-react'
+import logger from '@/lib/logger'
 
 interface ImageCropperProps {
   image: string
@@ -11,12 +12,24 @@ interface ImageCropperProps {
   circular?: boolean
 }
 
-export function ImageCropper({ image, onCropComplete, onCancel, circular = true }: ImageCropperProps) {
-  const [crop, setCrop] = useState({ x: 0, y: 0 })
-  const [zoom, setZoom] = useState(1)
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState<any>(null)
+interface Area {
+  x: number
+  y: number
+  width: number
+  height: number
+}
 
-  const onCropChange = (crop: { x: number; y: number }) => {
+interface Point {
+  x: number
+  y: number
+}
+
+export function ImageCropper({ image, onCropComplete, onCancel, circular = true }: ImageCropperProps) {
+  const [crop, setCrop] = useState<Point>({ x: 0, y: 0 })
+  const [zoom, setZoom] = useState(1)
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null)
+
+  const onCropChange = (crop: Point) => {
     setCrop(crop)
   }
 
@@ -24,7 +37,7 @@ export function ImageCropper({ image, onCropComplete, onCancel, circular = true 
     setZoom(zoom)
   }
 
-  const onCropCompleteInternal = useCallback((_ref: any, croppedAreaPixels: any) => {
+  const onCropCompleteInternal = useCallback((_ref: unknown, croppedAreaPixels: Area) => {
     setCroppedAreaPixels(croppedAreaPixels)
   }, [])
 
@@ -39,7 +52,7 @@ export function ImageCropper({ image, onCropComplete, onCancel, circular = true 
 
   const getCroppedImg = async (
     imageSrc: string,
-    pixelCrop: any
+    pixelCrop: Area
   ): Promise<Blob> => {
     const image = await createImage(imageSrc)
     const canvas = document.createElement('canvas')
@@ -72,12 +85,13 @@ export function ImageCropper({ image, onCropComplete, onCancel, circular = true 
   }
 
   const handleDone = async () => {
+    if (!croppedAreaPixels) return
+
     try {
       const croppedImage = await getCroppedImg(image, croppedAreaPixels)
       onCropComplete(croppedImage)
     } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error(e)
+      logger.error({ e }, 'Error cropping image')
     }
   }
 

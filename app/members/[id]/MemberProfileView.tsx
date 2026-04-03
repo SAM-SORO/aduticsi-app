@@ -1,7 +1,8 @@
 'use client'
 
 import Image from 'next/image'
-import { motion, Variants } from 'framer-motion'
+import type { Variants } from 'framer-motion';
+import { motion } from 'framer-motion'
 import type { Member, Poste, Promotion } from '@prisma/client'
 import { MaterialIcon } from '@/components/icons/material-icon'
 import { ExpandableText } from '@/components/ui/expandable-text'

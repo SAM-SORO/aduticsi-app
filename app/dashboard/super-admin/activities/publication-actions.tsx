@@ -4,6 +4,8 @@ import { useTransition, useState } from "react";
 import { Trash2, AlertTriangle, Loader2, Pencil } from "lucide-react";
 import { toast } from "sonner";
 
+import { PublicationForm } from "./publication-form";
+import { deletePublication } from "./actions";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -13,9 +15,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { Publication } from "@/types";
-import { deletePublication } from "./actions";
-import { PublicationForm } from "./publication-form";
+import type { Publication } from "@/types";
 
 interface PublicationActionsProps {
   publication: Publication;

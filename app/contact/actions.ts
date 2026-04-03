@@ -4,6 +4,7 @@ import { headers } from 'next/headers'
 
 import { prisma } from '@/lib/prisma'
 import { sendEmail } from '@/lib/mail'
+import logger from '@/lib/logger'
 
 export type ContactInput = {
   name: string
@@ -27,7 +28,7 @@ async function verifyTurnstileToken(token: string) {
     const verification = await response.json()
     return verification.success
   } catch (error) {
-    console.error('Contact captcha verification error:', error)
+    logger.error({ error }, 'Contact captcha verification error');
     return false
   }
 }
@@ -104,7 +105,7 @@ export async function sendContactMessage(data: ContactInput) {
     })
 
     if (!emailResult.success) {
-      console.error('Failed to send contact email:', emailResult.error)
+      logger.error({ error: emailResult.error }, 'Failed to send contact email');
       return { 
         error: "Le service d'envoi d'email est temporairement indisponible. Veuillez réessayer plus tard ou nous contacter directement." 
       }
@@ -116,7 +117,7 @@ export async function sendContactMessage(data: ContactInput) {
     }
 
   } catch (error) {
-    console.error('Error in sendContactMessage:', error)
+    logger.error({ error, data }, 'Error in sendContactMessage');
     return { error: "Une erreur est survenue lors de l'envoi de votre message." }
   }
 }

@@ -7,13 +7,17 @@ import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import { prisma } from '@/lib/prisma'
 import { loginSchema, registerSchema, type LoginInput, type RegisterInput } from '@/schemas/auth.schema'
+import logger from '@/lib/logger'
 
 export async function login(data: LoginInput) {
   const supabase = await createClient()
 
+  logger.info({ email: data.email }, 'Login attempt started');
+
   // 1. Validate data
   const result = loginSchema.safeParse(data)
   if (!result.success) {
+    logger.warn({ errors: result.error.format() }, 'Login validation failed');
     return { error: 'Données invalides' }
   }
 
@@ -26,6 +30,7 @@ export async function login(data: LoginInput) {
   })
 
   if (error) {
+    logger.warn({ email, error: error.message }, 'Supabase authentication failed');
     if (error.message.toLowerCase().includes('email not confirmed')) {
       return { error: "Votre email n'est pas encore confirmé. Vérifiez votre boîte mail." }
     }
@@ -33,18 +38,30 @@ export async function login(data: LoginInput) {
   }
 
   if (!authData.user) {
+    logger.error('Supabase returned no user after successful authentication');
     return { error: 'Connexion impossible. Veuillez réessayer.' }
   }
 
-  // Only association members can access the platform.
-  const member = await prisma.member.findUnique({
-    where: { id: authData.user.id },
-    select: { id: true },
-  })
+  logger.info({ userId: authData.user.id }, 'Supabase authentication successful');
 
-  if (!member) {
-    await supabase.auth.signOut()
-    return { error: "Accès refusé. Seuls les membres de l'association peuvent se connecter." }
+  // Only association members can access the platform.
+  try {
+    const member = await prisma.member.findUnique({
+      where: { id: authData.user.id },
+      select: { id: true, name: true },
+    })
+
+    if (!member) {
+      logger.warn({ userId: authData.user.id, email }, 'User authenticated but not found in Member table');
+      await supabase.auth.signOut()
+      return { error: "Accès refusé. Seuls les membres de l'association peuvent se connecter." }
+    }
+
+    logger.info({ userId: member.id, name: member.name }, 'Login successful, member found');
+
+  } catch (err) {
+    logger.error({ err, userId: authData.user.id }, 'Error during Member table check');
+    return { error: 'Une erreur est survenue lors de la vérification de votre compte.' }
   }
 
   revalidatePath('/', 'layout')
@@ -64,8 +81,7 @@ async function verifyTurnstileToken(token: string) {
     const data = await response.json()
     return data.success
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('Captcha verification error:', error)
+    logger.error({ error }, 'Captcha verification error');
     return false
   }
 }
@@ -125,8 +141,7 @@ export async function signup(data: RegisterInput & { captchaToken?: string }) {
     
     const redirectUrl = `${origin}/auth/callback`;
 
-    // eslint-disable-next-line no-console
-    console.log('Signup redirect URL (must be in Supabase whitelist):', redirectUrl);
+    logger.info({ redirectUrl }, 'Signup redirect URL (must be in Supabase whitelist)');
 
     const { error: signUpError } = await supabase.auth.signUp({
       email,
@@ -165,8 +180,7 @@ export async function signup(data: RegisterInput & { captchaToken?: string }) {
       }
     }
 
-    // eslint-disable-next-line no-console
-    console.error('Detailed signup error:', err);
+    logger.error({ err }, 'Detailed signup error');
     
     return { error: "Une erreur inattendue est survenue lors de l'enregistrement. Veuillez vérifier la console du serveur pour plus de détails." };
   }
@@ -193,8 +207,7 @@ export async function getPromotions() {
     })
     return promotions
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('Error fetching promotions:', error)
+    logger.error({ error }, 'Error fetching promotions');
     return []
   }
 }

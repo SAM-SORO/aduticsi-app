@@ -3,6 +3,8 @@
 import { useTransition, useState } from "react";
 import { Trash2, AlertTriangle, Loader2, Pencil } from "lucide-react";
 import { toast } from "sonner";
+import { deleteActivity } from "./actions";
+import { ActivityForm } from "./activity-form";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -12,8 +14,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import type { Activity } from "@/types";
-import { deleteActivity } from "./actions";
-import { ActivityForm } from "./activity-form";
 
 interface ActivityActionsProps {
   activity: Activity;

@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { prisma } from "@/lib/prisma";
 import { MemberProfileView } from "./MemberProfileView";
+import { prisma } from "@/lib/prisma";
 import { MaterialIcon } from "@/components/icons/material-icon";
 
 export const runtime = "nodejs";

@@ -1,11 +1,11 @@
 import { redirect } from "next/navigation";
+import { ActivePromoForm } from "./active-promo-form";
 
 import { DashboardLayout } from "@/components/dashboard/DashboardShell";
 import { MaterialIcon } from "@/components/icons/material-icon";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
-
-import { ActivePromoForm } from "./active-promo-form";
+import logger from "@/lib/logger";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -28,16 +28,14 @@ export default async function SuperAdminDashboardPage() {
 
   // Fallback to email if not found by ID
   if (!member && user.email) {
-    // eslint-disable-next-line no-console
-    console.log(`SuperAdmin: Member not found by ID (${user.id}), trying email (${user.email})...`)
+    logger.info({ userId: user.id, email: user.email }, 'SuperAdmin: Member not found by ID, trying email');
     member = await prisma.member.findUnique({
       where: { email: user.email },
       select: { id: true, role: true, name: true, email: true },
     });
 
     if (member) {
-      // eslint-disable-next-line no-console
-      console.warn(`SuperAdmin: Member found by email but had different ID. Syncing Prisma ID with Supabase UUID.`)
+      logger.warn({ email: user.email }, 'SuperAdmin: Member found by email but had different ID. Syncing Prisma ID with Supabase UUID.');
       await prisma.member.update({
         where: { email: user.email },
         data: { id: user.id }

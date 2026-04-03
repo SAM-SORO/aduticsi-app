@@ -6,13 +6,13 @@ import Image from "next/image";
 import { Plus, X, Upload, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
+import { createPublication, updatePublication } from "./actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
-import { Publication } from "@/types";
-import { createPublication, updatePublication } from "./actions";
+import type { Publication } from "@/types";
 
 interface PublicationFormProps {
   publication?: Publication;
@@ -72,7 +72,7 @@ export function PublicationForm({ publication, activityId, onSuccess }: Publicat
         onSuccess?.();
         router.refresh();
       } else {
-        toast.error("error" in result ? (result as { error: string }).error : "Une erreur est survenue.");
+        toast.error(result.error || "Une erreur est survenue.");
       }
     });
   };

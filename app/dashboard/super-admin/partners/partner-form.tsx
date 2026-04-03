@@ -6,6 +6,7 @@ import { Plus, X, Upload } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { createPartner } from './actions'
+import logger from '@/lib/logger'
 
 export function PartnerForm() {
   const [isPreviewing, setIsPreviewing] = useState(false)
@@ -45,8 +46,7 @@ export function PartnerForm() {
           toast.error('Erreur lors de l’ajout du partenaire')
         }
       } catch (err) {
-        // eslint-disable-next-line no-console
-        console.error(err)
+        logger.error({ err }, 'Error in PartnerForm submission');
         toast.error('Une erreur est survenue')
       }
     })

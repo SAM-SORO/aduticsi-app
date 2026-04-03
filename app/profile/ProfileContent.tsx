@@ -5,14 +5,15 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { motion, AnimatePresence, Variants } from 'framer-motion'
+import type { Variants } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion'
 
+import { updateProfile, uploadAvatar } from './actions'
 import { ImageCropper } from '@/components/ui/ImageCropper'
 import { MaterialIcon } from '@/components/icons/material-icon'
 import { ExpandableText } from '@/components/ui/expandable-text'
 import { logout } from '@/app/auth/actions'
 import { cn } from '@/lib/utils'
-import { updateProfile, uploadAvatar } from './actions'
 
 interface ProfileContentProps {
   member: {

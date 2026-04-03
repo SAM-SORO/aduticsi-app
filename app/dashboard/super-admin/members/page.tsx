@@ -1,3 +1,4 @@
+import type { Prisma, MemberStatus, MemberRole, Gender } from "@prisma/client";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Search } from "lucide-react";
@@ -44,7 +45,7 @@ export default async function MembersAdminPage({
   const pageSize = 12;
   const currentPage = Math.max(1, page);
 
-  const where: any = {};
+  const where: Prisma.MemberWhereInput = {};
   if (search) {
     where.OR = [
       { name: { contains: search, mode: "insensitive" } },
@@ -52,9 +53,9 @@ export default async function MembersAdminPage({
     ];
   }
   if (promoId) where.promo_id = promoId;
-  if (status) where.status = status;
-  if (role) where.role = role;
-  if (gender) where.gender = gender;
+  if (status) where.status = status as MemberStatus;
+  if (role) where.role = role as MemberRole;
+  if (gender) where.gender = gender as Gender;
 
   const [members, totalCount, promotions, postes] = await Promise.all([
     prisma.member.findMany({
@@ -143,7 +144,7 @@ export default async function MembersAdminPage({
         </div>
 
         {/* Grid */}
-        <MembersGrid members={members as any} postes={postes} />
+        <MembersGrid members={members} postes={postes} />
 
         {/* Pagination Controls */}
         {totalPages > 1 && (

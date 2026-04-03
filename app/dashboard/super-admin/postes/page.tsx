@@ -1,11 +1,11 @@
 import { redirect } from "next/navigation";
 
+import { PostesContent } from "./PostesContent";
+import { getPostes } from "./actions";
 import { DashboardLayout } from "@/components/dashboard/DashboardShell";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
 
-import { PostesContent } from "./PostesContent";
-import { getPostes } from "./actions";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";

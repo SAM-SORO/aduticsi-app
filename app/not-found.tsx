@@ -16,7 +16,7 @@ export default function NotFound() {
         <div className="w-24 h-1 bg-red-600 mx-auto mb-8 rounded-full"></div>
         
         <p className="text-slate-600 dark:text-slate-300 text-lg md:text-xl font-normal leading-relaxed mb-10">
-          Désolé, la page que vous recherchez n'existe pas, a été déplacée ou est temporairement indisponible.
+          Désolé, la page que vous recherchez n&apos;existe pas, a été déplacée ou est temporairement indisponible.
         </p>
         
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -25,7 +25,7 @@ export default function NotFound() {
             className="flex min-w-[200px] cursor-pointer items-center justify-center rounded-lg h-14 px-8 bg-[var(--aduti-primary)] text-white text-lg font-bold transition-all hover:bg-blue-900 shadow-lg group"
           >
             <MaterialIcon name="arrow_back" className="mr-2 w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-            <span className="truncate">Retour à l'accueil</span>
+            <span className="truncate">Retour à l&apos;accueil</span>
           </Link>
           <Link 
             href="/contact" 
@@ -39,13 +39,13 @@ export default function NotFound() {
           <Link href="/about" className="p-4 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors block group">
             <MaterialIcon name="school" className="w-6 h-6 text-[var(--aduti-primary)] mb-2 group-hover:scale-110 transition-transform" />
             <h3 className="font-bold text-slate-900 dark:text-white mb-1">Notre Histoire</h3>
-            <p className="text-sm text-slate-500 dark:text-slate-400">Découvrez l'historique de l'ADUTI.</p>
+            <p className="text-sm text-slate-500 dark:text-slate-400">Découvrez l&apos;historique de l&apos;ADUTI.</p>
           </Link>
           
           <Link href="/members" className="p-4 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors block group">
             <MaterialIcon name="groups" className="w-6 h-6 text-[var(--aduti-primary)] mb-2 group-hover:scale-110 transition-transform" />
             <h3 className="font-bold text-slate-900 dark:text-white mb-1">Membres</h3>
-            <p className="text-sm text-slate-500 dark:text-slate-400">Consultez l'annuaire de nos membres.</p>
+            <p className="text-sm text-slate-500 dark:text-slate-400">Consultez l&apos;annuaire de nos membres.</p>
           </Link>
           
           <Link href="/activities" className="p-4 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors block group">

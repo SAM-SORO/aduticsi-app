@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import logger from "@/lib/logger";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB limit
 const BUCKET_NAME = "partenaires_logo";
@@ -41,7 +42,7 @@ export async function createPartner(formData: FormData) {
     .upload(fileName, file);
 
   if (uploadError) {
-    console.error("Upload error:", uploadError);
+    logger.error({ uploadError, fileName }, "Upload error");
     throw new Error("Erreur lors de l'upload de l'image.");
   }
 

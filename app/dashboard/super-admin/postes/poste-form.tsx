@@ -4,10 +4,10 @@ import { useState, useTransition } from "react";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
+import { createPoste, updatePoste } from "./actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { createPoste, updatePoste } from "./actions";
 
 interface PosteFormProps {
   poste?: { id: string; name: string };

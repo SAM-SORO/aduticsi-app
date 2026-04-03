@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/prisma'
 import { createClient } from '@/lib/supabase/server'
+import logger from '@/lib/logger'
 
 export async function deleteMessages(ids: string[]) {
   const supabase = await createClient()
@@ -29,7 +30,7 @@ export async function deleteMessages(ids: string[]) {
     revalidatePath('/dashboard/messages')
     return { success: true, count: result.count }
   } catch (error) {
-    console.error('Error deleting messages:', error)
+    logger.error({ error, ids }, 'Error deleting messages');
     return { error: 'Erreur lors de la suppression des messages' }
   }
 }

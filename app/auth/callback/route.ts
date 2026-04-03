@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { prisma } from '@/lib/prisma'
+import logger from '@/lib/logger'
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
@@ -17,33 +18,29 @@ export async function GET(request: Request) {
     const supabase = await createClient()
     
     const redirectUrl = `${baseOrigin}/auth/callback`;
-    // eslint-disable-next-line no-console
-    console.log('Signup redirect URL (should be in Supabase whitelist):', redirectUrl);
+    logger.info({ redirectUrl }, 'Signup redirect URL (should be in Supabase whitelist)');
 
     const { data, error } = await supabase.auth.exchangeCodeForSession(code)
     
     if (error) {
-      console.error("Auth Callback Error: exchangeCodeForSession failed:", error.message)
+      logger.error({ error: error.message }, "Auth Callback Error: exchangeCodeForSession failed");
     }
 
     if (!error && data.user) {
       const user = data.user
-      // eslint-disable-next-line no-console
-      console.log('Auth Callback: User confirmed, checking synchronization. Metadata:', user.user_metadata);
+      logger.info({ userMetadata: user.user_metadata }, 'Auth Callback: User confirmed, checking synchronization');
       
       const existingMember = await prisma.member.findUnique({
         where: { id: user.id }
       })
 
       if (!existingMember) {
-        // eslint-disable-next-line no-console
-        console.log('Auth Callback: Creating new member in Prisma for user ID:', user.id);
+        logger.info({ userId: user.id }, 'Auth Callback: Creating new member in Prisma');
         
         const { name, promo_id, status, role, gender, invitation_token } = user.user_metadata
 
         if (!invitation_token) {
-          // eslint-disable-next-line no-console
-          console.warn('Auth Callback: Missing invitation token in metadata for user:', user.id);
+          logger.warn({ userId: user.id }, 'Auth Callback: Missing invitation token in metadata');
           // Don't block redirect, but log warning
         }
 
@@ -53,12 +50,10 @@ export async function GET(request: Request) {
 
         // Final check that we have Essential data
         if (!name || !promo_id) {
-          // eslint-disable-next-line no-console
-          console.error('Auth Callback ERROR: Missing name or promo_id', { name, promo_id });
+          logger.error({ name, promo_id }, 'Auth Callback ERROR: Missing name or promo_id');
         } else {
           try {
-            // eslint-disable-next-line no-console
-            console.log('Auth Callback: Attempting Prisma creation with:', { id: user.id, name, promo_id, sanitizedStatus, sanitizedGender });
+            logger.info({ id: user.id, name, promo_id, sanitizedStatus, sanitizedGender }, 'Auth Callback: Attempting Prisma creation');
             
             const newMember = await prisma.member.create({
               data: {
@@ -73,16 +68,13 @@ export async function GET(request: Request) {
                 function: 'NONE',
               }
             })
-            // eslint-disable-next-line no-console
-            console.log('Auth Callback: SUCCESS! Member created:', newMember.id);
+            logger.info({ memberId: newMember.id }, 'Auth Callback: SUCCESS! Member created');
           } catch (prismaError) {
-            // eslint-disable-next-line no-console
-            console.error('Auth Callback ERROR (Prisma):', prismaError);
+            logger.error({ prismaError }, 'Auth Callback ERROR (Prisma)');
           }
         }
       } else {
-        // eslint-disable-next-line no-console
-        console.log('Auth Callback: Member already exists in Prisma, skipping creation.');
+        logger.info('Auth Callback: Member already exists in Prisma, skipping creation.');
       }
 
       return NextResponse.redirect(`${baseOrigin}${next}`)

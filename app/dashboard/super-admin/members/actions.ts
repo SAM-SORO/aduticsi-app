@@ -1,8 +1,10 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import type { Prisma, MemberStatus, MemberRole } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
+import logger from "@/lib/logger";
 
 const MEMBERS_PER_PAGE = 10;
 
@@ -11,7 +13,10 @@ async function requireSuperAdmin() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error("Unauthorized");
   const member = await prisma.member.findUnique({ where: { id: user.id } });
-  if (!member || member.role !== "SUPER_ADMIN") throw new Error("Unauthorized");
+  if (!member || member.role !== "SUPER_ADMIN") {
+    logger.warn({ userId: user.id, role: member?.role }, "Unauthorized access attempt to super admin action");
+    throw new Error("Unauthorized");
+  }
   return { user, member };
 }
 
@@ -22,7 +27,7 @@ export async function getMembersPaginated(
   status: string = "",
   role: string = ""
 ) {
-  const where: Record<string, unknown> = {};
+  const where: Prisma.MemberWhereInput = {};
 
   if (search) {
     where.OR = [
@@ -31,8 +36,8 @@ export async function getMembersPaginated(
     ];
   }
   if (promoId) where.promo_id = promoId;
-  if (status) where.status = status;
-  if (role) where.role = role;
+  if (status) where.status = status as MemberStatus;
+  if (role) where.role = role as MemberRole;
 
   const [members, total] = await Promise.all([
     prisma.member.findMany({

@@ -1,8 +1,10 @@
 'use server'
 
-import { revalidatePath } from 'next/cache'
-import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
+import { revalidatePath } from 'next/cache'
+import { Prisma } from '@prisma/client'
+import { prisma } from '@/lib/prisma'
+import logger from '@/lib/logger'
 
 const createInvitationSchema = z.object({
   title: z.string().min(3, "Le nom du lien doit contenir au moins 3 caractères"),
@@ -37,8 +39,15 @@ export async function createInvitation(data: z.infer<typeof createInvitationSche
     
     return { success: true, invitation }
   } catch (error) {
-    console.error('Erreur lors de la création de l\'invitation:', error)
-    return { error: 'Impossible de créer le lien d\'invitation.' }
+    logger.error({ error, data }, "Erreur lors de la création de l'invitation");
+    
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === 'P2002') {
+        return { success: false, error: 'Une invitation similaire existe déjà.' }
+      }
+    }
+    
+    return { success: false, error: 'Impossible de créer le lien d\'invitation.' }
   }
 }
 
@@ -51,7 +60,7 @@ export async function deleteInvitation(id: string) {
     revalidatePath('/dashboard/super-admin/invitations')
     return { success: true }
   } catch (error) {
-    console.error('Erreur lors de la suppression de l\'invitation:', error)
-    return { error: 'Impossible de supprimer l\'invitation.' }
+    logger.error({ error, id }, "Erreur lors de la suppression de l'invitation");
+    return { success: false, error: 'Impossible de supprimer l\'invitation.' }
   }
 }

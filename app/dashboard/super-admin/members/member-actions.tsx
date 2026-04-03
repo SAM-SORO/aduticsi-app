@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
+import { updateMemberRole, updateMemberStatus, updateMemberPoste, updateMemberGender, deleteMember } from "./actions";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -21,7 +22,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-import { updateMemberRole, updateMemberStatus, updateMemberPoste, updateMemberGender, deleteMember } from "./actions";
 
 import {
   DropdownMenu,

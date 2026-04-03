@@ -3,6 +3,8 @@
 import { useState, useTransition } from "react";
 import { Edit2, Trash2, AlertTriangle, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { deletePromotion } from "./actions";
+import { PromotionForm } from "./promotion-form";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,8 +13,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { PromotionForm } from "./promotion-form";
-import { deletePromotion } from "./actions";
 
 interface PromotionTableActionsProps {
   promotion: {

@@ -1,6 +1,10 @@
 import { redirect } from "next/navigation";
 import { Plus, Layout, ChevronRight, ArrowLeft } from "lucide-react";
 
+import { PublicationActions } from "./publication-actions";
+import { PublicationForm } from "./publication-form";
+import { ActivityForm } from "./activity-form";
+import { ActivityActions } from "./activity-actions";
 import { DashboardLayout } from "@/components/dashboard/DashboardShell";
 import { MaterialIcon } from "@/components/icons/material-icon";
 import { Button } from "@/components/ui/button";
@@ -14,12 +18,12 @@ import {
 import { ImageGallery } from "@/components/ui/ImageGallery";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
-import type { Activity, Publication } from "@/types";
+import {
+  ActivityWithDetails,
+  PublicationWithDetails,
+  getActivitiesPaginated,
+} from "./actions";
 
-import { ActivityActions } from "./activity-actions";
-import { ActivityForm } from "./activity-form";
-import { PublicationActions } from "./publication-actions";
-import { PublicationForm } from "./publication-form";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -64,9 +68,9 @@ export default async function ActivitiesAdminPage({
     include: { _count: { select: { activities: true } } },
   });
 
-  let activities = null;
+  let activities: ActivityWithDetails[] | null = null;
   if (selectedPromoId) {
-    const rawActivities = await prisma.activity.findMany({
+    activities = await prisma.activity.findMany({
       where: { promo_id: selectedPromoId },
       include: {
         promotion: { select: { name: true } },
@@ -74,16 +78,22 @@ export default async function ActivitiesAdminPage({
       },
       orderBy: { created_at: "desc" },
     });
-    activities = rawActivities as unknown as (Activity & { promotion: { name: string }; _count: { publications: number } })[];
   }
 
-  let publications = null;
+  let publications: PublicationWithDetails[] | null = null;
   if (selectedActivityId) {
-    const rawPublications = await prisma.publication.findMany({
+    publications = await prisma.publication.findMany({
       where: { activity_id: selectedActivityId },
+      include: {
+        activity: {
+          select: {
+            title: true,
+            promo_id: true,
+          },
+        },
+      },
       orderBy: { created_at: "desc" },
     });
-    publications = rawPublications as unknown as Publication[];
   }
 
   return (
@@ -134,7 +144,7 @@ export default async function ActivitiesAdminPage({
         {!selectedPromoId && !selectedActivityId && (
           <div className="space-y-8 animate-in fade-in duration-700">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {promotions.map((promo: { id: string; name: string; is_current_promo: boolean; _count: { activities: number } }) => (
+              {promotions.map((promo) => (
                 <a
                   key={promo.id}
                   href={`/dashboard/super-admin/activities?promo=${promo.id}`}
@@ -175,7 +185,7 @@ export default async function ActivitiesAdminPage({
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {activities.map((act: Activity & { _count: { publications: number } }) => (
+                {activities.map((act) => (
                   <div key={act.id} className="group bg-white rounded-3xl border border-slate-100 overflow-hidden hover:shadow-[0_30px_60px_rgba(0,0,0,0.08)] transition-all flex flex-col relative">
                     <div className="h-48 relative overflow-hidden bg-slate-100">
                       {act.image_url ? (
@@ -233,7 +243,7 @@ export default async function ActivitiesAdminPage({
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                 {publications.map((pub: Publication) => (
+                 {publications.map((pub) => (
                   <div key={pub.id} className="group bg-white rounded-3xl border border-slate-100 overflow-hidden hover:shadow-[0_30px_60px_rgba(0,0,0,0.08)] transition-all flex flex-col">
                     <div className="p-2 bg-slate-50 shrink-0">
                       <ImageGallery images={pub.images} alt={pub.title} />

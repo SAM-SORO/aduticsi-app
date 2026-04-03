@@ -6,12 +6,12 @@ import Image from "next/image";
 import { X, Upload, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
+import { createActivity, updateActivity } from "./actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import type { Activity, Promotion } from "@/types";
-import { createActivity, updateActivity } from "./actions";
 
 interface ActivityFormProps {
   activity?: Activity;
@@ -86,7 +86,7 @@ export function ActivityForm({ activity, promotions, onSuccess }: ActivityFormPr
         onSuccess?.();
         router.refresh();
       } else {
-        toast.error("Une erreur est survenue.");
+        toast.error(result.error || "Une erreur est survenue.");
       }
     });
   };

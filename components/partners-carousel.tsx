@@ -1,10 +1,11 @@
 import Image from "next/image";
 
 import { prisma } from "@/lib/prisma";
+import logger from "@/lib/logger";
 
 export async function PartnersCarousel() {
   if (!prisma.partner) {
-    console.warn("Prisma: 'partner' model not yet available in client.");
+    logger.warn("Prisma: 'partner' model not yet available in client.");
     return null;
   }
   
@@ -16,7 +17,7 @@ export async function PartnersCarousel() {
       orderBy: { created_at: "asc" },
     });
   } catch (error) {
-    console.error("Prisma error in PartnersCarousel:", error);
+    logger.error({ error }, "Prisma error in PartnersCarousel");
     return null;
   }
 

@@ -5,14 +5,14 @@ import type { MemberStatus, Gender } from '@prisma/client'
 
 import { prisma } from '@/lib/prisma'
 import { createClient } from '@/lib/supabase/server'
+import logger from '@/lib/logger'
 
 export async function getProfile() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
     if (!user) {
-      // eslint-disable-next-line no-console
-      console.log('getProfile: No user found in Supabase session')
+      logger.info('getProfile: No user found in Supabase session')
       return null
     }
   
@@ -28,8 +28,7 @@ export async function getProfile() {
   
       // If not found by ID, try email (fallback for older accounts or manual sync issues)
       if (!profile && user.email) {
-        // eslint-disable-next-line no-console
-        console.log(`getProfile: Member not found by ID (${user.id}), trying email (${user.email})...`)
+        logger.info({ userId: user.id, email: user.email }, 'getProfile: Member not found by ID, trying email');
         profile = await prisma.member.findUnique({
           where: { email: user.email },
           include: {
@@ -39,8 +38,7 @@ export async function getProfile() {
         })
   
         if (profile) {
-          // eslint-disable-next-line no-console
-          console.warn(`getProfile: Member found by email but had different ID. Syncing Prisma ID with Supabase UUID for next time.`)
+          logger.warn({ email: user.email }, 'getProfile: Member found by email but had different ID. Syncing Prisma ID with Supabase UUID.');
           // Auto-heal the record by updating its ID to match Supabase
           await prisma.member.update({
             where: { email: user.email },
@@ -50,14 +48,12 @@ export async function getProfile() {
       }
   
       if (!profile) {
-        // eslint-disable-next-line no-console
-        console.error(`getProfile: No Member record found in Prisma for user ${user.email} (ID: ${user.id})`)
+        logger.error({ email: user.email, userId: user.id }, 'getProfile: No Member record found in Prisma');
       }
   
       return profile
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error('getProfile: Unexpected error fetching profile:', error)
+      logger.error({ error }, 'getProfile: Unexpected error fetching profile');
       return null
     }
   }
@@ -102,8 +98,7 @@ export async function getProfile() {
       revalidatePath('/dashboard', 'layout')
       return { success: true }
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error('getProfile: Error updating profile:', error)
+      logger.error({ error }, 'updateProfile: Error updating profile');
       return { error: 'Erreur lors de la mise à jour' }
     }
   }
@@ -134,8 +129,7 @@ export async function getProfile() {
   
       return { publicUrl }
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error('uploadAvatar: Error uploading:', error)
+      logger.error({ error }, 'uploadAvatar: Error uploading');
       return { error: 'Erreur lors du téléchargement de l\'image' }
     }
   }
