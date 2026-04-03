@@ -9,6 +9,7 @@ import { motion, AnimatePresence, Variants } from 'framer-motion'
 
 import { ImageCropper } from '@/components/ui/ImageCropper'
 import { MaterialIcon } from '@/components/icons/material-icon'
+import { ExpandableText } from '@/components/ui/expandable-text'
 import { logout } from '@/app/auth/actions'
 import { cn } from '@/lib/utils'
 import { updateProfile, uploadAvatar } from './actions'
@@ -108,12 +109,6 @@ function PublicPreview({ member }: { member: ProfileContentProps['member'] }) {
                   </div>
                 )}
               </div>
-              
-              <div className="absolute -bottom-3 -right-3 w-12 h-12 bg-white rounded-2xl shadow-xl flex items-center justify-center border border-slate-50 transition-transform duration-300 group-hover:-translate-y-1">
-                <div className="w-10 h-10 bg-gradient-to-br from-[var(--aduti-primary)] to-blue-600 rounded-xl flex items-center justify-center text-white shadow-inner">
-                  <MaterialIcon name={member.role === 'ADMIN' || member.role === 'SUPER_ADMIN' ? 'security' : 'workspace_premium'} className="w-5 h-5" />
-                </div>
-              </div>
             </div>
           </div>
 
@@ -154,7 +149,9 @@ function PublicPreview({ member }: { member: ProfileContentProps['member'] }) {
 
             {/* Description */}
             {member.description && (
-              <p className="text-slate-500 font-medium leading-relaxed w-full max-w-full break-all whitespace-pre-wrap">{member.description}</p>
+              <div className="pt-2">
+                <ExpandableText text={member.description} className="text-slate-500 font-medium leading-relaxed w-full max-w-full" />
+              </div>
             )}
           </div>
         </div>
@@ -193,7 +190,7 @@ function PublicPreview({ member }: { member: ProfileContentProps['member'] }) {
               {member.current_job_description && (
                 <div className="p-4 bg-slate-50/80 rounded-2xl border border-slate-100">
                   <div className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2">Missions</div>
-                  <p className="text-sm font-medium text-slate-600 leading-relaxed">{member.current_job_description}</p>
+                  <ExpandableText text={member.current_job_description} className="text-sm font-medium text-slate-600 leading-relaxed" />
                 </div>
               )}
             </div>
@@ -308,14 +305,13 @@ export function ProfileContent({ member }: ProfileContentProps) {
       )}
 
       {/* Header */}
-      <div className="flex items-start sm:items-center justify-between mb-6 sm:mb-8 gap-4">
-        <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Mon Profil</h1>
+      <div className="flex items-start sm:items-center justify-end mb-6 sm:mb-8 gap-4">
         <button
           onClick={handleLogout}
           className="px-3 sm:px-5 py-2 sm:py-2.5 text-xs font-black text-red-500 hover:text-red-600 hover:bg-red-50 rounded-xl sm:rounded-2xl transition-all flex items-center gap-1.5 sm:gap-2 uppercase tracking-widest border border-transparent hover:border-red-100 shrink-0"
         >
           <MaterialIcon name="logout" className="w-[16px] h-[16px] sm:w-[18px] sm:h-[18px]" />
-          <span className="hidden sm:inline">Quitter</span>
+          <span className="hidden sm:inline">Déconnexion</span>
           <span className="sm:hidden">Exit</span>
         </button>
       </div>

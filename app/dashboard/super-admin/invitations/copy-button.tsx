@@ -13,12 +13,42 @@ export function CopyButton({ text }: CopyButtonProps) {
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(text)
-      setCopied(true)
-      toast.success('Lien copié dans le presse-papier !')
-      setTimeout(() => setCopied(false), 2000)
-    } catch {
-      toast.error('Échec de la copie.')
+      if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(text)
+        setCopied(true)
+        toast.success("Lien copié dans le presse-papier !")
+        setTimeout(() => setCopied(false), 2000)
+      } else {
+        throw new Error('Clipboard API unavailable')
+      }
+    } catch (err) {
+      // Fallback for older browsers or non-secure contexts
+      try {
+        const textArea = document.createElement("textarea")
+        textArea.value = text
+        
+        // Ensure textarea is not visible but part of DOM
+        textArea.style.position = "fixed"
+        textArea.style.left = "-9999px"
+        textArea.style.top = "0"
+        document.body.appendChild(textArea)
+        
+        textArea.focus()
+        textArea.select()
+        
+        const successful = document.execCommand('copy')
+        document.body.removeChild(textArea)
+        
+        if (successful) {
+          setCopied(true)
+          toast.success("Lien copié !")
+          setTimeout(() => setCopied(false), 2000)
+        } else {
+          toast.error("Échec de la copie.")
+        }
+      } catch (fallbackErr) {
+        toast.error("Échec de la copie.")
+      }
     }
   }
 

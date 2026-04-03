@@ -1,15 +1,25 @@
+import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { prisma } from '@/lib/prisma'
-import { NextResponse } from 'next/server'
 
 export async function GET(request: Request) {
-  const { searchParams, origin } = new URL(request.url)
+  const { searchParams } = new URL(request.url)
   const code = searchParams.get('code')
-  // if "next" is in search params, use it as the redirection URL
   const next = searchParams.get('next') ?? '/'
+
+  // Determiner le host et le protocole dynamiquement
+  const host = request.headers.get('host') || 'aduticsi.com'
+  const isLocal = host.includes('localhost') || host.includes('192.168') || host.includes('127.0.0.1')
+  const proto = request.headers.get('x-forwarded-proto') || (isLocal ? 'http' : 'https')
+  const baseOrigin = `${proto}://${host}`
 
   if (code) {
     const supabase = await createClient()
+    
+    const redirectUrl = `${baseOrigin}/auth/callback`;
+    // eslint-disable-next-line no-console
+    console.log('Signup redirect URL (should be in Supabase whitelist):', redirectUrl);
+
     const { data, error } = await supabase.auth.exchangeCodeForSession(code)
     
     if (error) {
@@ -17,68 +27,68 @@ export async function GET(request: Request) {
     }
 
     if (!error && data.user) {
-      // Check if this is a new signup that needs Prisma synchronization
       const user = data.user
+      // eslint-disable-next-line no-console
+      console.log('Auth Callback: User confirmed, checking synchronization. Metadata:', user.user_metadata);
       
       const existingMember = await prisma.member.findUnique({
         where: { id: user.id }
       })
 
       if (!existingMember) {
-        // This is a new confirmed user, create in Prisma
-        // The metadata was passed during signUp in auth/actions.ts
+        // eslint-disable-next-line no-console
+        console.log('Auth Callback: Creating new member in Prisma for user ID:', user.id);
+        
         const { name, promo_id, status, role, gender, invitation_token } = user.user_metadata
 
         if (!invitation_token) {
-          console.error('Missing invitation token in user metadata for user:', user.id)
-          return NextResponse.redirect(`${origin}/auth/auth-code-error`)
+          // eslint-disable-next-line no-console
+          console.warn('Auth Callback: Missing invitation token in metadata for user:', user.id);
+          // Don't block redirect, but log warning
         }
 
-        const invitation = await prisma.invitation.findUnique({
-          where: { token: invitation_token },
-          select: { token: true, expires_at: true },
-        })
+        // Validate and sanitize status and gender for Prisma Enums
+        const sanitizedStatus = (status as string || 'STUDENT').toUpperCase() as 'STUDENT' | 'ALUMNI';
+        const sanitizedGender = gender ? (gender as string).toUpperCase() as 'MALE' | 'FEMALE' : null;
 
-        if (!invitation || new Date() > invitation.expires_at) {
-          console.error('Invitation missing or expired during email confirmation for user:', user.id)
-          return NextResponse.redirect(`${origin}/auth/auth-code-error`)
-        }
-
-        if (name && promo_id && status) {
+        // Final check that we have Essential data
+        if (!name || !promo_id) {
+          // eslint-disable-next-line no-console
+          console.error('Auth Callback ERROR: Missing name or promo_id', { name, promo_id });
+        } else {
           try {
-            await prisma.member.create({
+            // eslint-disable-next-line no-console
+            console.log('Auth Callback: Attempting Prisma creation with:', { id: user.id, name, promo_id, sanitizedStatus, sanitizedGender });
+            
+            const newMember = await prisma.member.create({
               data: {
                 id: user.id,
                 email: user.email!,
                 name,
                 promo_id,
-                status,
-                gender: gender || null,
+                status: sanitizedStatus,
+                gender: sanitizedGender,
                 role: role || 'MEMBER',
                 poste_id: null,
                 function: 'NONE',
               }
             })
+            // eslint-disable-next-line no-console
+            console.log('Auth Callback: SUCCESS! Member created:', newMember.id);
           } catch (prismaError) {
-            console.error('Error creating member in callback:', prismaError)
-            // We might want to redirect to an error page here
+            // eslint-disable-next-line no-console
+            console.error('Auth Callback ERROR (Prisma):', prismaError);
           }
         }
+      } else {
+        // eslint-disable-next-line no-console
+        console.log('Auth Callback: Member already exists in Prisma, skipping creation.');
       }
 
-      const forwardedHost = request.headers.get('x-forwarded-host') // original origin before load balancer
-      const isLocalEnv = process.env.NODE_ENV === 'development'
-      if (isLocalEnv) {
-        // we can be sure that origin is http://localhost:3000
-        return NextResponse.redirect(`${origin}${next}`)
-      } else if (forwardedHost) {
-        return NextResponse.redirect(`https://${forwardedHost}${next}`)
-      } else {
-        return NextResponse.redirect(`${origin}${next}`)
-      }
+      return NextResponse.redirect(`${baseOrigin}${next}`)
     }
   }
 
   // return the user to an error page with instructions
-  return NextResponse.redirect(`${origin}/auth/auth-code-error`)
+  return NextResponse.redirect(`${baseOrigin}/auth/auth-code-error`)
 }

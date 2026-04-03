@@ -28,7 +28,7 @@ export default function VerifyEmailPage() {
             <div className="space-y-6 text-center">
               <p className="text-slate-600 text-lg font-medium leading-relaxed">
                 Un lien de confirmation sécurisé a été envoyé à votre adresse. 
-                Veuillez cliquer sur ce lien pour activer votre accès membre.
+                Veuillez cliquer sur ce lien pour finaliser votre inscription.
               </p>
 
               <div className="bg-slate-50 rounded-2xl p-6 border border-dashed border-slate-200">
@@ -49,13 +49,7 @@ export default function VerifyEmailPage() {
               </div>
             </div>
             
-            <div className="mt-10 text-center flex flex-col items-center gap-3 opacity-50 grayscale transition-all hover:opacity-100 hover:grayscale-0">
-               <div className="h-px w-20 bg-slate-200"></div>
-               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] leading-tight">
-                 Association des Diplômés de l&apos;UTI <br />
-                 <span className="text-[var(--aduti-primary)]">Académie de l&apos;Excellence</span>
-               </p>
-            </div>
+    
           </div>
         </div>
       </div>

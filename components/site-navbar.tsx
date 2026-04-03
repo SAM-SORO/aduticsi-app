@@ -90,6 +90,11 @@ export function SiteNavbar() {
     } else {
       document.body.style.overflow = "unset";
     }
+    
+    // Safety cleanup when component unmounts (important for pages that hide the navbar like /profile)
+    return () => {
+      document.body.style.overflow = "unset";
+    };
   }, [isOpen]);
 
   // Hide-on-scroll logic

@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { motion, Variants } from 'framer-motion'
 import type { Member, Poste, Promotion } from '@prisma/client'
 import { MaterialIcon } from '@/components/icons/material-icon'
+import { ExpandableText } from '@/components/ui/expandable-text'
 
 type MemberWithRelations = Member & {
   poste: Poste | null;
@@ -132,7 +133,9 @@ export function MemberProfileView({ member }: MemberProfileViewProps) {
 
             {/* Description */}
             {member.description && (
-              <p className="text-slate-500 font-medium leading-relaxed w-full max-w-full break-all whitespace-pre-wrap pt-2">{member.description}</p>
+              <div className="pt-2">
+                <ExpandableText text={member.description} className="text-slate-500 font-medium leading-relaxed w-full max-w-full" />
+              </div>
             )}
           </div>
         </div>
@@ -171,7 +174,7 @@ export function MemberProfileView({ member }: MemberProfileViewProps) {
               {member.current_job_description && (
                 <div className="p-4 bg-slate-50/80 rounded-2xl border border-slate-100">
                   <div className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2">Missions</div>
-                  <p className="text-sm font-medium text-slate-600 leading-relaxed">{member.current_job_description}</p>
+                  <ExpandableText text={member.current_job_description} className="text-sm font-medium text-slate-600 leading-relaxed" />
                 </div>
               )}
             </div>

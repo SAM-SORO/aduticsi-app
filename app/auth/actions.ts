@@ -111,30 +111,64 @@ export async function signup(data: RegisterInput & { captchaToken?: string }) {
 
   // 3. Sign up with Supabase
   try {
-    const { error } = await supabase.auth.signUp({
+    const headersList = await headers();
+    const host = headersList.get('host');
+    const originHeader = headersList.get('origin');
+    
+    // Si on a l'en-tête origin, on l'utilise. Sinon on le construit.
+    let origin = originHeader;
+    if (!origin && host) {
+      const isLocal = host.includes('localhost') || host.includes('192.168') || host.includes('127.0.0.1');
+      const protocol = isLocal ? 'http' : 'https';
+      origin = `${protocol}://${host}`;
+    }
+    
+    const redirectUrl = `${origin}/auth/callback`;
+
+    // eslint-disable-next-line no-console
+    console.log('Signup redirect URL (must be in Supabase whitelist):', redirectUrl);
+
+    const { error: signUpError } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        emailRedirectTo: `${(await headers()).get('origin')}/auth/callback`,
+        emailRedirectTo: redirectUrl,
         data: {
           name: fullName,
           promo_id,
-          status,
-          gender,
+          status: status || 'STUDENT',
+          gender: gender || null, // Convert empty string or falsy value to null for Prisma
           role: 'MEMBER', // Default role
           invitation_token: token,
         },
       },
     });
 
-    if (error) {
-      return { error: error.message };
+    if (signUpError) {
+      return { error: signUpError.message };
     }
 
   } catch (err) {
+    // IMPORTANT: Redirections in Server Actions are technically "errors" that Next.js catches
+    // We MUST let them pass through.
+    if (err && typeof err === 'object' && 'digest' in err) {
+      const digest = (err as { digest: string }).digest;
+      if (digest.includes('NEXT_REDIRECT')) {
+        throw err;
+      }
+    }
+
+    if (err && typeof err === 'object' && 'message' in err) {
+      const message = (err as { message: string }).message;
+      if (message.includes('NEXT_REDIRECT')) {
+        throw err;
+      }
+    }
+
     // eslint-disable-next-line no-console
-    console.error('Unexpected signup error:', err);
-    return { error: "Une erreur inattendue est survenue lors de l'enregistrement." };
+    console.error('Detailed signup error:', err);
+    
+    return { error: "Une erreur inattendue est survenue lors de l'enregistrement. Veuillez vérifier la console du serveur pour plus de détails." };
   }
 
   revalidatePath('/', 'layout');
@@ -167,7 +201,8 @@ export async function getPromotions() {
 
 export async function forgotPassword(email: string) {
   const supabase = await createClient()
-  const origin = (await headers()).get('origin')
+  const headersList = await headers()
+  const origin = headersList.get('origin') || `https://${headersList.get('host')}`
 
   // 1. Check if user exists in our database
   const member = await prisma.member.findUnique({
@@ -188,4 +223,17 @@ export async function forgotPassword(email: string) {
   }
 
   return { success: true, message: 'Un email de réinitialisation a été envoyé.' }
+}
+
+export async function verifyInvitationToken(token: string) {
+  if (!token) return { error: "Veuillez fournir un lien ou un code d'invitation." }
+
+  const invitation = await prisma.invitation.findUnique({
+    where: { token }
+  })
+
+  if (!invitation) return { error: "Lien d'invitation invalide." }
+  if (new Date() > invitation.expires_at) return { error: "Le lien d'invitation a expiré." }
+
+  return { success: true }
 }

@@ -37,8 +37,20 @@ export function DashboardShell({
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
+  // Empêcher le défilement du corps quand le menu mobile est ouvert
+  React.useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isMobileMenuOpen]);
+
   return (
-    <div className="bg-[#f6f7f8] font-sans text-slate-900 h-screen flex overflow-hidden relative">
+    <div className="bg-[#f6f7f8] font-sans text-slate-900 h-screen sm:h-[100dvh] flex overflow-hidden relative">
       {/* Mobile Sidebar Overlay */}
       {isMobileMenuOpen && (
         <div

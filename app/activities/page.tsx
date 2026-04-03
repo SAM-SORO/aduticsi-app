@@ -50,9 +50,6 @@ export default async function ActivitiesPage({
                 <span className="w-2 h-2 rounded-full bg-[var(--aduti-primary)] animate-pulse" />
                 Vie Associative ADUTI
               </div>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-[family-name:var(--font-display)] font-bold text-slate-900 tracking-tight">
-                Nos <span className="text-[var(--aduti-primary)]">Activités</span>
-              </h1>
             </div>
             <div className="flex items-center justify-center md:justify-end gap-3 pb-0 md:pb-2">
               <span className="inline-flex items-center px-4 py-2 rounded-full text-xs font-bold bg-white text-slate-700 border border-slate-100 shadow-[0_4px_15px_rgba(0,0,0,0.03)] uppercase tracking-wide">

@@ -10,6 +10,8 @@ import { loginSchema, type LoginInput } from "@/schemas/auth.schema";
 import { login } from "@/app/auth/actions";
 import { MaterialIcon } from "@/components/icons/material-icon";
 import { cn } from "@/lib/utils";
+import { BackButton } from "@/components/ui/back-button";
+import { Home } from "lucide-react";
 
 export default function LoginPage() {
   const [isPending, startTransition] = useTransition();
@@ -34,6 +36,22 @@ export default function LoginPage() {
 
   return (
     <main className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-slate-50 font-sans">
+      {/* Bouton de retour en haut à gauche */}
+      <div className="absolute top-6 left-6 sm:top-8 sm:left-8 z-50">
+        <BackButton className="bg-white/80 backdrop-blur-md px-4 py-2 rounded-full border border-slate-200/50 shadow-sm hover:border-[var(--aduti-primary)]/50 hover:bg-white" />
+      </div>
+
+      {/* Bouton d'accueil en haut à droite */}
+      <div className="absolute top-6 right-6 sm:top-8 sm:right-8 z-50">
+        <Link 
+           href="/"
+           className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-[var(--aduti-primary)] transition-colors w-fit focus:outline-none bg-white/80 backdrop-blur-md px-4 py-2 rounded-full border border-slate-200/50 shadow-sm hover:border-[var(--aduti-primary)]/50 hover:bg-white"
+         >
+           <Home className="w-4 h-4" />
+           <span className="hidden sm:inline">Accueil</span>
+         </Link>
+      </div>
+
       {/* Animated Background Canvas */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-80">
         <div className="absolute top-[-20%] left-[-10%] w-[70vw] h-[70vw] bg-[radial-gradient(circle,rgba(19,146,236,0.15)_0%,transparent_60%)] rounded-full blur-[80px] animate-pulse-slow mix-blend-multiply" />
@@ -110,19 +128,13 @@ export default function LoginPage() {
               </div>
 
               <div className="space-y-2">
-                <div className="flex items-center justify-between ml-1">
+                <div className="ml-1">
                   <label
                     className="block text-sm font-bold text-slate-700"
                     htmlFor="password"
                   >
                     Mot de passe
                   </label>
-                  <Link
-                    href="/auth/forgot-password"
-                    className="text-xs font-bold text-slate-400 hover:text-[var(--aduti-primary)] transition-colors"
-                  >
-                    Oublié ?
-                  </Link>
                 </div>
                 <div className="relative group">
                   <input
@@ -155,6 +167,14 @@ export default function LoginPage() {
                     {errors.password.message}
                   </p>
                 )}
+                <div className="flex justify-end mt-1.5 mr-1">
+                  <Link
+                    href="/auth/forgot-password"
+                    className="text-xs font-semibold text-slate-500 hover:text-[var(--aduti-primary)] transition-colors underline decoration-transparent hover:decoration-[var(--aduti-primary)] underline-offset-4"
+                  >
+                    Mot de passe oublié ?
+                  </Link>
+                </div>
               </div>
 
               <div className="pt-2">
@@ -176,7 +196,7 @@ export default function LoginPage() {
                 Pas encore enregistrer ?{" "}
                 <Link
                   href="/auth/register"
-                  className="font-black text-[var(--aduti-primary)] hover:text-blue-700 transition-all text-[12px] tracking-wider"
+                  className="font-semibold text-slate-500 hover:text-[var(--aduti-primary)] transition-colors underline decoration-transparent hover:decoration-[var(--aduti-primary)] underline-offset-4 tracking-wider"
                 >
                   S&apos;enregistrer
                 </Link>
@@ -185,7 +205,7 @@ export default function LoginPage() {
                 Besoin d&apos;aide ?{" "}
                 <Link
                   href="/contact"
-                  className="font-bold hover:text-slate-600 decoration-slate-300 underline underline-offset-4 decoration-1 transition-all"
+                  className="font-semibold text-slate-500 hover:text-[var(--aduti-primary)] transition-colors underline decoration-transparent hover:decoration-[var(--aduti-primary)] underline-offset-4 tracking-wider"
                 >
                   Contacter le support
                 </Link>

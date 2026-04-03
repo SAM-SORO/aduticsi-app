@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import { headers } from 'next/headers'
 import { Link2 as LinkIcon, Clock, ShieldCheck, Plus } from 'lucide-react'
 
 import { DashboardLayout } from '@/components/dashboard/DashboardShell'
@@ -48,6 +49,11 @@ export default async function InvitationsPage() {
   }
 
   const invitations = await getInvitations()
+  const headersList = await headers()
+  const host = headersList.get('host')
+  const protocol = headersList.get('x-forwarded-proto') || (host?.includes('localhost') ? 'http' : 'https')
+  const dynamicBaseUrl = `${protocol}://${host}`
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || dynamicBaseUrl
 
   async function handleCreate(formData: FormData) {
     'use server'
@@ -150,7 +156,6 @@ export default async function InvitationsPage() {
                   <div className="grid gap-4">
                     {invitations.map((invitation) => {
                       const isExpired = new Date() > new Date(invitation.expires_at);
-                      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
                       const inviteUrl = `${baseUrl}/auth/register?token=${invitation.token}`;
                       
                       return (

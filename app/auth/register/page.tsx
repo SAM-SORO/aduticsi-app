@@ -4,6 +4,7 @@ import { useEffect, useState, useTransition, Suspense } from "react";
 import type { FormEvent } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
+import { Home } from "lucide-react";
 
 import { Turnstile } from "@marsidev/react-turnstile";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,9 +12,10 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 import { registerSchema, type RegisterInput } from "@/schemas/auth.schema";
-import { getPromotions, signup } from "@/app/auth/actions";
+import { getPromotions, signup, verifyInvitationToken } from "@/app/auth/actions";
 import { MaterialIcon } from "@/components/icons/material-icon";
 import { cn } from "@/lib/utils";
+import { BackButton } from "@/components/ui/back-button";
 
 type SignupData = RegisterInput & { captchaToken: string; token: string };
 
@@ -77,23 +79,21 @@ function RegisterContent() {
   }, []);
 
   const onSubmit = (data: RegisterInput) => {
-    if (!captchaToken) {
+    // Captcha validation only in production
+    if (process.env.NODE_ENV === 'production' && !captchaToken) {
       toast.error("Veuillez valider le captcha.");
       return;
     }
 
     startTransition(async () => {
-      try {
-        const result = await signup({ 
-          ...data, 
-          token: token || "",
-          captchaToken: captchaToken || ""
-        } as SignupData);
-        if (result?.error) {
-          toast.error(result.error);
-        }
-      } catch {
-        toast.error("Une erreur inattendue est survenue.");
+      const result = await signup({ 
+        ...data, 
+        token: token || "",
+        captchaToken: captchaToken || ""
+      } as SignupData);
+      
+      if (result?.error) {
+        toast.error(result.error);
       }
     });
   };
@@ -124,11 +124,34 @@ function RegisterContent() {
       }
     }
 
-    router.push(`/auth/register?token=${extractedToken}`);
+    startTransition(async () => {
+      const result = await verifyInvitationToken(extractedToken);
+      if (result?.error) {
+        toast.error(result.error);
+        return;
+      }
+      router.push(`/auth/register?token=${extractedToken}`);
+    });
   };
 
   return (
     <main className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-slate-50 font-sans">
+      {/* Bouton de retour en haut à gauche */}
+      <div className="absolute top-6 left-6 sm:top-8 sm:left-8 z-50">
+        <BackButton className="bg-white/80 backdrop-blur-md px-4 py-2 rounded-full border border-slate-200/50 shadow-sm hover:border-[var(--aduti-primary)]/50 hover:bg-white" />
+      </div>
+
+      {/* Bouton d'accueil en haut à droite */}
+      <div className="absolute top-6 right-6 sm:top-8 sm:right-8 z-50">
+        <Link 
+           href="/"
+           className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-[var(--aduti-primary)] transition-colors w-fit focus:outline-none bg-white/80 backdrop-blur-md px-4 py-2 rounded-full border border-slate-200/50 shadow-sm hover:border-[var(--aduti-primary)]/50 hover:bg-white"
+         >
+           <Home className="w-4 h-4" />
+           <span className="hidden sm:inline">Accueil</span>
+         </Link>
+      </div>
+
       {/* Animated Background Canvas */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-80">
         <div className="absolute top-[-20%] left-[-10%] w-[70vw] h-[70vw] bg-[radial-gradient(circle,rgba(19,146,236,0.15)_0%,transparent_60%)] rounded-full blur-[80px] animate-pulse-slow mix-blend-multiply" />
@@ -172,26 +195,32 @@ function RegisterContent() {
                     <input
                       id="tokenInput"
                       type="text"
+                      required
                       value={tokenInput}
                       onChange={(e) => setTokenInput(e.target.value)}
+                      disabled={isPending}
                       placeholder="Collez le lien ici..."
-                      className="block w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 focus:outline-none focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-[var(--aduti-primary)] transition-all text-sm font-medium shadow-inner"
+                      className="block w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 focus:outline-none focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-[var(--aduti-primary)] transition-all text-sm font-medium shadow-inner disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                   </div>
                   
                   <button
                     type="submit"
-                    className="w-full flex justify-center items-center gap-3 py-4 px-6 rounded-2xl shadow-xl shadow-blue-100 text-sm font-black text-white bg-[var(--aduti-primary)] hover:bg-blue-600 focus:outline-none transition-all active:scale-[0.98] uppercase tracking-widest"
+                    disabled={isPending}
+                    className="w-full flex justify-center items-center gap-3 py-4 px-6 rounded-2xl shadow-xl shadow-blue-100 text-sm font-black text-white bg-[var(--aduti-primary)] hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest"
                   >
-                    VALIDER L&apos;INVITATION
-                    <MaterialIcon name="arrow_forward" className="w-5 h-5" />
+                    {isPending ? (
+                      <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    ) : null}
+                    {isPending ? "VÉRIFICATION..." : "VALIDER L'INVITATION"}
+                    {!isPending && <MaterialIcon name="arrow_forward" className="w-5 h-5" />}
                   </button>
                 </form>
 
                 <div className="mt-8 text-center pt-8 border-t border-slate-50">
-                  <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                  <p className="text-xs font-bold text-slate-400  tracking-wider">
                     Vous n&apos;avez pas de lien d&apos;invitation ? {" "}
-                    <Link href="/contact" className="hover:text-slate-800 transition-colors uppercase underline underline-offset-4 decoration-slate-200">
+                    <Link href="/contact" className="font-semibold text-slate-500 hover:text-[var(--aduti-primary)] transition-colors underline decoration-transparent hover:decoration-[var(--aduti-primary)] underline-offset-4 tracking-wider">
                       contacter le support
                     </Link>
                   </p>
@@ -490,7 +519,7 @@ function RegisterContent() {
                     Déjà inscrit ?{" "}
                     <Link
                       href="/auth/login"
-                      className="font-black text-[var(--aduti-primary)] hover:text-blue-700 transition-all uppercase text-[12px] tracking-widest"
+                      className="font-semibold text-slate-500 hover:text-[var(--aduti-primary)] transition-colors underline decoration-transparent hover:decoration-[var(--aduti-primary)] underline-offset-4 tracking-wider"
                     >
                       Se connecter
                     </Link>
