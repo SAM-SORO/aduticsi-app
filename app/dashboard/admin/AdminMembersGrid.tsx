@@ -25,7 +25,7 @@ export function AdminMembersGrid({ members }: AdminMembersGridProps) {
 
   const handleToggleFunction = (member: AdminMember) => {
     const nextFunction = member.function === 'GESTION_ACTIVITES' ? 'NONE' : 'GESTION_ACTIVITES'
-    const displayName = `${member.first_name} ${member.last_name}`
+    const displayName = `${member.last_name.toUpperCase()} ${member.first_name}`
     startTransition(async () => {
       await updateMemberFunction(member.id, nextFunction as 'NONE' | 'GESTION_ACTIVITES')
       toast.success(
@@ -67,7 +67,7 @@ export function AdminMembersGrid({ members }: AdminMembersGridProps) {
               {/* Info */}
               <div className="flex-1 min-w-0">
                 <p className="font-bold text-slate-900 truncate text-sm group-hover:text-[var(--aduti-primary)] transition-colors">
-                  {m.first_name} {m.last_name}
+                  {m.last_name.toUpperCase()} {m.first_name}
                 </p>
                 <p className="text-xs text-slate-500 truncate">{m.email}</p>
                 <div className="flex items-center gap-1.5 mt-1">
@@ -134,7 +134,7 @@ export function AdminMembersGrid({ members }: AdminMembersGridProps) {
                     {getInitials(selectedMember.first_name, selectedMember.last_name)}
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-slate-900">{selectedMember.first_name} {selectedMember.last_name}</h3>
+                    <h3 className="text-lg font-bold text-slate-900">{selectedMember.last_name.toUpperCase()} {selectedMember.first_name}</h3>
                     <p className="text-sm text-slate-500">{selectedMember.email}</p>
                     <div className="flex gap-1.5 mt-2">
                       <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider border ${

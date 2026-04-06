@@ -127,7 +127,7 @@ export function MemberActions({ member, postes }: MemberActionsProps) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-56 rounded-xl shadow-xl">
           <DropdownMenuLabel className="font-bold text-xs uppercase tracking-wider text-slate-400 pb-2">
-            Actions sur {member.first_name}
+            Actions sur {member.last_name.toUpperCase()} {member.first_name}
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
 
@@ -236,7 +236,7 @@ export function MemberActions({ member, postes }: MemberActionsProps) {
                 <DialogTitle className="text-2xl font-bold text-slate-900">Supprimer le membre</DialogTitle>
               </DialogHeader>
               <p className="text-slate-500 leading-relaxed">
-                Voulez-vous vraiment supprimer <span className="font-bold text-slate-900">&quot;{member.first_name} {member.last_name}&quot;</span> ?
+                Voulez-vous vraiment supprimer <span className="font-bold text-slate-900">&quot;{member.last_name.toUpperCase()} {member.first_name}&quot;</span> ?
                 Toutes ses données seront effacées. Cette action est irréversible.
               </p>
             </div>

@@ -45,8 +45,10 @@ export function BinomagesClient({ combos }: { combos: PromoCombo[] }) {
   const filteredBinomes = binomes.filter((b) => {
     const search = searchQuery.toLowerCase();
     return (
-      b.parrain.name.toLowerCase().includes(search) ||
-      b.filleul.name.toLowerCase().includes(search)
+      b.parrain.first_name.toLowerCase().includes(search) ||
+      b.parrain.last_name.toLowerCase().includes(search) ||
+      b.filleul.first_name.toLowerCase().includes(search) ||
+      b.filleul.last_name.toLowerCase().includes(search)
     );
   });
 
@@ -147,15 +149,15 @@ export function BinomagesClient({ combos }: { combos: PromoCombo[] }) {
                          >
                             <div className="size-20 md:size-24 rounded-full border-[3px] border-white shadow-lg overflow-hidden bg-slate-100 flex-shrink-0 z-10 mb-3 relative group-hover/avatar:ring-4 ring-[var(--aduti-primary)]/20 transition-all">
                               {binome.parrain.photo_url ? (
-                                  <Image src={binome.parrain.photo_url} alt={binome.parrain.name} fill className="object-cover" />
+                                  <Image src={binome.parrain.photo_url} alt={`${binome.parrain.last_name.toUpperCase()} ${binome.parrain.first_name}`} fill className="object-cover" />
                               ) : (
                                   <div className="w-full h-full flex items-center justify-center bg-blue-50 text-blue-500 font-bold text-2xl">
-                                    {binome.parrain.name.charAt(0).toUpperCase()}
+                                    {binome.parrain.first_name.charAt(0).toUpperCase()}
                                   </div>
                               )}
                             </div>
                             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Parrain</span>
-                            <h3 className="font-bold text-slate-900 leading-tight text-sm md:text-base line-clamp-2 group-hover/avatar:text-[var(--aduti-primary)] transition-colors">{binome.parrain.name}</h3>
+                            <h3 className="font-bold text-slate-900 leading-tight text-sm md:text-base line-clamp-2 group-hover/avatar:text-[var(--aduti-primary)] transition-colors">{binome.parrain.last_name.toUpperCase()} {binome.parrain.first_name}</h3>
                          </Link>
   
                          {/* Lien */}
@@ -170,15 +172,15 @@ export function BinomagesClient({ combos }: { combos: PromoCombo[] }) {
                          >
                             <div className="size-20 md:size-24 rounded-full border-[3px] border-white shadow-lg overflow-hidden bg-slate-100 flex-shrink-0 z-10 mb-3 relative group-hover/avatar:ring-4 ring-[var(--aduti-primary)]/20 transition-all">
                               {binome.filleul.photo_url ? (
-                                  <Image src={binome.filleul.photo_url} alt={binome.filleul.name} fill className="object-cover" />
+                                  <Image src={binome.filleul.photo_url} alt={`${binome.filleul.last_name.toUpperCase()} ${binome.filleul.first_name}`} fill className="object-cover" />
                               ) : (
                                   <div className="w-full h-full flex items-center justify-center bg-emerald-50 text-emerald-500 font-bold text-2xl">
-                                    {binome.filleul.name.charAt(0).toUpperCase()}
+                                    {binome.filleul.first_name.charAt(0).toUpperCase()}
                                   </div>
                               )}
                             </div>
                             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Filleul</span>
-                            <h3 className="font-bold text-slate-900 leading-tight text-sm md:text-base line-clamp-2 group-hover/avatar:text-[var(--aduti-primary)] transition-colors">{binome.filleul.name}</h3>
+                            <h3 className="font-bold text-slate-900 leading-tight text-sm md:text-base line-clamp-2 group-hover/avatar:text-[var(--aduti-primary)] transition-colors">{binome.filleul.last_name.toUpperCase()} {binome.filleul.first_name}</h3>
                          </Link>
                       </div>
                     </div>
