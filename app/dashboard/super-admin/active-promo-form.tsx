@@ -4,6 +4,8 @@ import { useTransition } from 'react'
 import { toast } from 'sonner'
 
 import { setActivePromo } from './actions'
+import { SelectField } from '@/components/ui/select-field'
+import { MaterialIcon } from '@/components/icons/material-icon'
 
 interface ActivePromoFormProps {
   promotions: { id: string; name: string }[]
@@ -28,29 +30,21 @@ export function ActivePromoForm({ promotions, currentPromoId }: ActivePromoFormP
   }
 
   return (
-    <div className="w-full sm:w-1/3">
-      <label
-        className="block text-sm font-medium leading-6 text-slate-900 mb-2"
-        htmlFor="promo-select"
-      >
-        Sélectionner la promotion active
-      </label>
-      <select
-        className="block w-full rounded-md border-0 py-2 pl-3 pr-10 text-slate-900 ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-[var(--aduti-primary)] sm:text-sm sm:leading-6 bg-white disabled:opacity-50"
+    <div className="w-full sm:w-72">
+      <SelectField
         id="promo-select"
+        label="Promotion active"
+        icon={<MaterialIcon name="school" className="w-[18px] h-[18px]" />}
         defaultValue={currentPromoId || ""}
         onChange={handleSelectChange}
         disabled={isPending}
       >
-        <option value="" disabled>
-          Sélectionner une promotion
-        </option>
         {promotions.map((p) => (
           <option key={p.id} value={p.id}>
             {p.name}
           </option>
         ))}
-      </select>
+      </SelectField>
     </div>
   )
 }

@@ -87,11 +87,27 @@ datasource db {
 
 ## 5. Commandes de maintenance
 
-Après tout changement de schéma Prisma :
+Après tout changement de schéma Prisma, **dans l'ordre** :
 ```bash
 npx prisma generate
 npx prisma db push
 ```
 
-> `db push` utilise `DIRECT_URL` (session mode 5432) pour les DDL.
-> Les requêtes runtime utilisent `DATABASE_URL` (transaction mode 6543).
+> ✅ `db push` — Commande principale pour synchroniser la base. Fonctionne avec pgBouncer (port 6543).  
+> ❌ `npx prisma migrate dev` — **NE PAS UTILISER.** Échoue avec `permission denied to terminate process` car Prisma tente d'appeler `pg_terminate_backend()` qui est bloqué par Supabase sur pgBouncer.
+
+---
+
+## 6. Pourquoi `migrate dev` échoue (explication)
+
+`prisma migrate dev` nécessite une connexion **directe PostgreSQL (non-poolée)** sur le port 5432 pour :
+- Créer des journaux de migration (`_prisma_migrations`)
+- Appeler `pg_terminate_backend()` pour effectuer des verrous DDL
+
+Or, dans cet environnement :
+- Port 5432 → inaccessible depuis le réseau local (P1001)
+- Port 6543 → pgBouncer en mode Transaction, bloque `pg_terminate_backend()`
+
+**Résultat** : `db push` est la seule commande fiable pour ce projet.
+
+> ⚠️ Si un jour vous avez besoin de `migrate dev` (ex: CI/CD, Coolify en production), configurer `DIRECT_URL` avec l'IPv4 directe Supabase (Settings → Database → IPv4 address).

@@ -5,6 +5,7 @@ import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { buildStorageName } from "@/lib/storage-names";
 import logger from "@/lib/logger";
 import type { Member } from "@/types";
 
@@ -50,22 +51,43 @@ async function requireActivityManager(): Promise<{ user: { id: string }; member:
   return { user: { id: user.id }, member: member as Member };
 }
 
-async function uploadImages(files: File[], bucketName: string): Promise<string[]> {
+/**
+ * Upload une liste de fichiers dans un bucket Supabase avec nommage standardisé.
+ *
+ * @param files       - Fichiers à uploader
+ * @param bucketName  - Nom du bucket Supabase Storage
+ * @param labelPrefix - Préfixe lisible pour le nom (ex: titre de l'activité ou publication)
+ * @param startIndex  - Index de départ pour la numérotation (lorsqu'il y a plusieurs images).
+ *                      Si omis, aucun numéro n'est ajouté (cas d'une image unique).
+ */
+async function uploadImages(
+  files: File[],
+  bucketName: string,
+  labelPrefix: string,
+  startIndex?: number
+): Promise<string[]> {
   const urls: string[] = [];
   const supabaseAdmin = createAdminClient();
-
+  let fileIndex = 0;
   for (const file of files) {
     if (file.size === 0) continue;
     if (file.size > MAX_FILE_SIZE) continue;
 
-    const ext = file.name.split(".").pop();
-    const name = `${Date.now()}-${Math.random().toString(36).substring(7)}.${ext}`;
+    const ext = file.name.split(".").pop() ?? "jpg";
+    // Si startIndex est fourni, on numérote les images : _01, _02, …
+    // Sinon (image unique d'une activité), pas de numéro
+    const index = startIndex !== undefined ? startIndex + fileIndex : undefined;
+    const name = buildStorageName(labelPrefix, ext, index);
 
     const { error } = await supabaseAdmin.storage.from(bucketName).upload(name, file);
-    if (error) continue;
+    if (error) {
+      logger.warn({ error, name }, "uploadImages: Failed to upload one file, skipping");
+      continue;
+    }
 
     const { data: { publicUrl } } = supabaseAdmin.storage.from(bucketName).getPublicUrl(name);
     urls.push(publicUrl);
+    fileIndex++;
   }
   return urls;
 }
@@ -147,7 +169,8 @@ export async function createActivity(formData: FormData) {
 
   let imageUrl: string | null = null;
   if (imageFile && imageFile.size > 0) {
-    const urls = await uploadImages([imageFile], ACTIVITY_BUCKET);
+    // Image unique d'une activité → pas de numérotation
+    const urls = await uploadImages([imageFile], ACTIVITY_BUCKET, title);
     imageUrl = urls[0] || null;
   }
 
@@ -213,7 +236,7 @@ export async function updateActivity(id: string, formData: FormData) {
         }
       }
 
-      const urls = await uploadImages([newImageFile], ACTIVITY_BUCKET);
+      const urls = await uploadImages([newImageFile], ACTIVITY_BUCKET, title);
       finalImageUrl = urls[0] || null;
     } else if (formData.get("removeImage") === "true") {
       if (existingImageUrl) {
@@ -327,7 +350,8 @@ export async function createPublication(formData: FormData) {
       return { success: false, error: "Action non autorisée sur cette activité." };
     }
 
-    const imageUrls = await uploadImages(images, PUBLICATION_BUCKET);
+    // Images multiples d'une publication → numérotation à partir de 1
+    const imageUrls = await uploadImages(images, PUBLICATION_BUCKET, title, 1);
 
     const dateStr = formData.get("date") as string;
     const date = dateStr ? new Date(dateStr) : null;
@@ -361,9 +385,13 @@ export async function updatePublication(id: string, formData: FormData) {
 
   const title = formData.get("title") as string;
   try {
+    // Récupérer la publication en DB AVANT modification pour avoir la liste complète des images
     const publication = await prisma.publication.findUnique({
       where: { id },
-      select: { activity: { select: { promo_id: true } } },
+      select: {
+        images: true,
+        activity: { select: { promo_id: true } },
+      },
     });
     if (!publication) return { success: false, error: "Publication introuvable." };
     if (member.role !== "SUPER_ADMIN" && publication.activity.promo_id !== member.promo_id) {
@@ -371,10 +399,40 @@ export async function updatePublication(id: string, formData: FormData) {
     }
 
     const content = (formData.get("content") as string) || "";
-    const existingImages = JSON.parse((formData.get("existingImages") as string) || "[]");
+    // URLs conservées par l'utilisateur (images qu'il n'a PAS retirées)
+    const keepImages: string[] = JSON.parse((formData.get("existingImages") as string) || "[]");
     const newImages = formData.getAll("images") as File[];
 
-    const newUrls = await uploadImages(newImages, PUBLICATION_BUCKET);
+    // ─── Suppression des images retirées du Storage ────────────────────────
+    // On compare les images actuelles en DB avec celles que l'utilisateur garde
+    const keepSet = new Set(keepImages);
+    const removedUrls = publication.images.filter((url) => !keepSet.has(url));
+
+    if (removedUrls.length > 0) {
+      const supabaseAdmin = createAdminClient();
+      // Extraire uniquement le nom du fichier depuis l'URL publique
+      const fileNames = removedUrls
+        .map((url) => url.split("/").pop())
+        .filter((name): name is string => !!name);
+
+      if (fileNames.length > 0) {
+        const { error: removeError } = await supabaseAdmin.storage
+          .from(PUBLICATION_BUCKET)
+          .remove(fileNames);
+        if (removeError) {
+          logger.warn({ removeError, fileNames }, "updatePublication: Failed to delete some files from Storage");
+        } else {
+          logger.info({ fileNames }, "updatePublication: Removed orphaned files from Storage");
+        }
+      }
+    }
+
+    // ─── Numérotation des nouvelles images ─────────────────────────────────
+    // On part du TOTAL historique (images originales) pour éviter les conflits
+    // Ex: pub avait 3 images, user retire _02, garde [_01, _03], ajoute 2 nouvelles
+    // → nouvelles files seront _04 et _05 (pas _03 qui existe déjà)
+    const historicalTotal = publication.images.length;
+    const newUrls = await uploadImages(newImages, PUBLICATION_BUCKET, title, historicalTotal + 1);
 
     const dateStr = formData.get("date") as string;
     const date = dateStr ? new Date(dateStr) : null;
@@ -384,12 +442,12 @@ export async function updatePublication(id: string, formData: FormData) {
       data: {
         title,
         content,
-        images: [...existingImages, ...newUrls],
+        images: [...keepImages, ...newUrls],
         date,
       },
     });
 
-    logger.info({ publicationId: id, userId: user.id }, "Publication updated successfully");
+    logger.info({ publicationId: id, userId: user.id, removedCount: removedUrls.length, addedCount: newUrls.length }, "Publication updated successfully");
 
     revalidatePath("/dashboard/super-admin/activities");
     revalidatePath("/dashboard/admin");
@@ -401,6 +459,7 @@ export async function updatePublication(id: string, formData: FormData) {
     return { success: false, error: "Une erreur est survenue lors de la mise à jour de la publication." };
   }
 }
+
 
 export async function deletePublication(id: string) {
   const { user, member } = await requireActivityManager();

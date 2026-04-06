@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next'
 import { prisma } from '@/lib/prisma'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://aduti.org' // Remplacez par votre domaine réel
+  const baseUrl = 'https://aduticsi.com'
 
   // Pages statiques
   const routes = [
@@ -22,11 +22,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   try {
     // Pages dynamiques (ex: profils membres)
     const members = await prisma.member.findMany({
-      select: { id: true, updated_at: true },
+      select: { id: true, slug: true, updated_at: true },
     })
 
     const memberRoutes = members.map((member) => ({
-      url: `${baseUrl}/members/${member.id}`,
+      url: `${baseUrl}/members/${member.slug ?? member.id}`,
       lastModified: member.updated_at.toISOString(),
       changeFrequency: 'monthly' as const,
       priority: 0.5,

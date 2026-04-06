@@ -4,7 +4,20 @@ import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
 import { Prisma } from '@prisma/client'
 import { prisma } from '@/lib/prisma'
+import { createClient } from '@/lib/supabase/server'
 import logger from '@/lib/logger'
+
+async function requireSuperAdmin() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error('Unauthorized');
+  const member = await prisma.member.findUnique({ where: { id: user.id } });
+  if (!member || member.role !== 'SUPER_ADMIN') {
+    logger.warn({ userId: user.id, role: member?.role }, 'Unauthorized access attempt to invitation action');
+    throw new Error('Unauthorized');
+  }
+  return { user, member };
+}
 
 const createInvitationSchema = z.object({
   title: z.string().min(3, "Le nom du lien doit contenir au moins 3 caractères"),
@@ -14,6 +27,7 @@ const createInvitationSchema = z.object({
 })
 
 export async function createInvitation(data: z.infer<typeof createInvitationSchema>) {
+  await requireSuperAdmin();
   try {
     const validatedData = createInvitationSchema.parse(data)
     
@@ -52,6 +66,7 @@ export async function createInvitation(data: z.infer<typeof createInvitationSche
 }
 
 export async function deleteInvitation(id: string) {
+  await requireSuperAdmin();
   try {
     await prisma.invitation.delete({
       where: { id }

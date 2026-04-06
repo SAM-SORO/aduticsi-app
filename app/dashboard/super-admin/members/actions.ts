@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import type { Prisma, MemberStatus, MemberRole } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import logger from "@/lib/logger";
 
 const MEMBERS_PER_PAGE = 10;
@@ -64,7 +65,9 @@ export async function updateMemberRole(memberId: string, newRole: "MEMBER" | "AD
     where: { id: memberId },
     data: {
       role: newRole,
-      function: newRole === "MEMBER" ? "NONE" : "GESTION_ACTIVITES",
+      // Si on r\u00e9trograde en MEMBER, on r\u00e9initialise sa fonction.
+      // Si on pr\u00f4meut, on ne touche pas \u00e0 la fonction existante.
+      ...(newRole === "MEMBER" ? { function: "NONE" } : {}),
     },
   });
   revalidatePath("/dashboard/super-admin/members");
@@ -97,7 +100,45 @@ export async function updateMemberStatus(memberId: string, newStatus: "STUDENT" 
 
 export async function deleteMember(memberId: string) {
   await requireSuperAdmin();
+
+  // 1. Récupérer les infos du membre avant suppression (avatar à nettoyer)
+  const member = await prisma.member.findUnique({
+    where: { id: memberId },
+    select: { photo_url: true },
+  });
+
+  // 2. Supprimer l'avatar du Storage si présent
+  if (member?.photo_url) {
+    try {
+      const supabaseAdmin = createAdminClient();
+      const fileName = member.photo_url.split("/").pop();
+      if (fileName) {
+        // Le fichier est dans le sous-dossier 'avatars/'
+        await supabaseAdmin.storage.from("membres_images").remove([`avatars/${fileName}`]);
+        logger.info({ fileName }, "deleteMember: Avatar supprimé du Storage");
+      }
+    } catch (err) {
+      // On log l'erreur mais on ne bloque pas la suppression
+      logger.warn({ err, memberId }, "deleteMember: Échec de suppression de l'avatar");
+    }
+  }
+
+  // 3. Supprimer le membre de Prisma (cascade sur ses publications, activités, etc.)
   await prisma.member.delete({ where: { id: memberId } });
+
+  // 4. Supprimer le compte Supabase Auth — empêche toute reconnexion
+  try {
+    const supabaseAdmin = createAdminClient();
+    const { error } = await supabaseAdmin.auth.admin.deleteUser(memberId);
+    if (error) {
+      logger.warn({ error, memberId }, "deleteMember: Échec de suppression du compte Supabase Auth");
+    } else {
+      logger.info({ memberId }, "deleteMember: Compte Supabase Auth supprimé avec succès");
+    }
+  } catch (err) {
+    logger.warn({ err, memberId }, "deleteMember: Erreur lors de la suppression Supabase Auth");
+  }
+
   revalidatePath("/dashboard/super-admin/members");
   revalidatePath("/members");
   return { success: true };

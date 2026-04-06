@@ -38,6 +38,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
+import { SelectField } from '@/components/ui/select-field'
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -435,19 +436,18 @@ export function MemberDrawer({ member, postes, onClose, canEdit = true }: Member
                     {/* Section: Poste */}
                     <div>
                       <SectionLabel icon={Briefcase} label="Poste au bureau" />
-                      <select
-                        value={editPosteId}
-                        disabled={isPending}
-                        onChange={(e) => handlePosteChange(e.target.value)}
-                        className="w-full h-11 rounded-xl border border-slate-200 bg-white px-3 text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-[var(--aduti-primary)]/30 focus:border-[var(--aduti-primary)] transition-all disabled:opacity-50"
-                      >
-                        <option value="none">— Aucun poste —</option>
-                        {postes.map((p) => (
-                          <option key={p.id} value={p.id}>
-                            {p.name}
-                          </option>
-                        ))}
-                      </select>
+                    <SelectField
+                      value={editPosteId}
+                      disabled={isPending}
+                      onChange={(e) => handlePosteChange(e.target.value)}
+                    >
+                      <option value="none">— Aucun poste —</option>
+                      {postes.map((p) => (
+                        <option key={p.id} value={p.id}>
+                          {p.name}
+                        </option>
+                      ))}
+                    </SelectField>
                     </div>
 
                     {/* Section: Gestion Activités */}

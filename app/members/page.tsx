@@ -266,7 +266,7 @@ export default async function MembersPage({
                         )}
                       </div>
                       <Link
-                        href={`/members/${member.id}`}
+                        href={`/members/${member.slug ?? member.id}`}
                         className="text-xs font-black uppercase tracking-widest text-[var(--aduti-primary)] hover:text-blue-700 flex items-center gap-1 group/link transition-opacity active:scale-95"
                       >
                         PROFIL

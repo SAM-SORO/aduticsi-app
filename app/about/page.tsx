@@ -203,8 +203,8 @@ export default function AboutPage() {
                   {"Fédérer pour"} <br /><span className="text-indigo-600 italic">{"l'Innovation"}</span>
                 </h2>
                 <p className="text-slate-600 text-xl leading-relaxed max-w-xl font-medium">
-                  {"L'ADUTI est le pont stratégique entre la formation d'excellence à l'ESI"} 
-                  {"et l'écosystème technologique mondial."}
+                  {"L'ADUTI represente les informaticiens du parcours TS de l'INPHB "}  <br />
+                  {"Nous somme une communauté qui prône la competences et l'innovation technologique au sein de l'INPHB."}
                 </p>
               </div>
               

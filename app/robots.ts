@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/api/', '/auth/callback/', '/dashboard/'],
     },
-    sitemap: 'https://aduti.org/sitemap.xml', // Remplacez par votre domaine réel
+    sitemap: 'https://aduticsi.com/sitemap.xml',
   }
 }

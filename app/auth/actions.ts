@@ -7,6 +7,7 @@ import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import { prisma } from '@/lib/prisma'
 import { loginSchema, registerSchema, type LoginInput, type RegisterInput } from '@/schemas/auth.schema'
+import { verifyTurnstile } from '@/lib/captcha'
 import logger from '@/lib/logger'
 
 export async function login(data: LoginInput) {
@@ -68,23 +69,6 @@ export async function login(data: LoginInput) {
   redirect('/')
 }
 
-async function verifyTurnstileToken(token: string) {
-  const secretKey = process.env.TURNSTILE_SECRET_KEY
-  if (!secretKey) return true
-
-  try {
-    const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ response: token, secret: secretKey }),
-    })
-    const data = await response.json()
-    return data.success
-  } catch (error) {
-    logger.error({ error }, 'Captcha verification error');
-    return false
-  }
-}
 
 export async function signup(data: RegisterInput & { captchaToken?: string }) {
   const supabase = await createClient()
@@ -97,7 +81,7 @@ export async function signup(data: RegisterInput & { captchaToken?: string }) {
 
   // 2. Verify Captcha
   if (data.captchaToken) {
-    const isHuman = await verifyTurnstileToken(data.captchaToken)
+    const isHuman = await verifyTurnstile(data.captchaToken)
     if (!isHuman) {
       return { error: 'Échec de la vérification captcha. Veuillez réessayer.' }
     }

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -7,19 +8,48 @@ import { MaterialIcon } from "@/components/icons/material-icon";
 
 export const runtime = "nodejs";
 
-export default async function MemberProfilePage({
+// Génération des métadonnées SEO dynamiques par membre
+export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const member = await prisma.member.findFirst({
+    where: { OR: [{ slug }, { id: slug }] },
+    select: { name: true, current_job_title: true, promotion: { select: { name: true } } },
+  });
+
+  if (!member) return { title: "Membre introuvable | ADUTI" };
+
+  return {
+    title: `${member.name} | Membre ADUTI`,
+    description: member.current_job_title
+      ? `${member.name} — ${member.current_job_title}. Promotion ${member.promotion.name}. Découvrez son profil sur la plateforme ADUTI.`
+      : `Profil de ${member.name}, promotion ${member.promotion.name} — Communauté ADUTI des DUT et DTS en Informatique de l'INP-HB.`,
+  };
+}
+
+export default async function MemberProfilePage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-  const { id } = await params;
-  
-  const member = await prisma.member.findUnique({
-    where: { id },
+  const { slug } = await params;
+  const resolvedSearchParams = await searchParams;
+  const fromParam = resolvedSearchParams?.from;
+  const backHref = fromParam === "binomage" ? "/binomages" : "/members";
+  const backLabel = fromParam === "binomage" ? "Binomages" : "Membres";
+
+  // Double résolution : slug d'abord, puis id en fallback (compatibilité anciens liens)
+  const member = await prisma.member.findFirst({
+    where: { OR: [{ slug }, { id: slug }] },
     include: {
       promotion: true,
       poste: true,
-    }
+    },
   });
 
   if (!member) {
@@ -44,10 +74,10 @@ export default async function MemberProfilePage({
               <div className="flex items-center">
                 <MaterialIcon name="chevron_right" className="w-[18px] h-[18px] text-slate-400" />
                 <Link
-                  href="/members"
+                  href={backHref}
                   className="ml-1 text-slate-500 hover:text-[var(--aduti-primary)] md:ml-2 transition-colors"
                 >
-                  Membres
+                  {backLabel}
                 </Link>
               </div>
             </li>
@@ -55,7 +85,7 @@ export default async function MemberProfilePage({
               <div className="flex items-center">
                 <MaterialIcon name="chevron_right" className="w-[18px] h-[18px] text-slate-400" />
                 <span className="ml-1 font-medium text-slate-900 md:ml-2">
-                  Profil
+                  {member.name}
                 </span>
               </div>
             </li>

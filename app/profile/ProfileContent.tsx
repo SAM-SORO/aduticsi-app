@@ -12,6 +12,7 @@ import { updateProfile, uploadAvatar } from './actions'
 import { ImageCropper } from '@/components/ui/ImageCropper'
 import { MaterialIcon } from '@/components/icons/material-icon'
 import { ExpandableText } from '@/components/ui/expandable-text'
+import { SelectField } from '@/components/ui/select-field'
 import { logout } from '@/app/auth/actions'
 import { cn } from '@/lib/utils'
 
@@ -462,7 +463,7 @@ export function ProfileContent({ member }: ProfileContentProps) {
                     </div>
                     <div className="space-y-2">
                       <label className="text-xs font-black text-slate-500 uppercase tracking-wider ml-1">Nom complet</label>
-                      <input name="name" defaultValue={member.name} placeholder="Votre nom"
+                      <input name="name" defaultValue={member.name} 
                         className="w-full px-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all font-bold text-slate-700" />
                     </div>
                     <div className="space-y-2">
@@ -471,28 +472,28 @@ export function ProfileContent({ member }: ProfileContentProps) {
                         <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
                           <MaterialIcon name="call" className="w-5 h-5" />
                         </div>
-                        <input name="phone" defaultValue={member.phone || ''} placeholder="+225 ..."
+                        <input name="phone" defaultValue={member.phone || ''} 
                           className="w-full pl-12 pr-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all font-bold text-slate-700" />
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <label className="text-xs font-black text-slate-500 uppercase tracking-wider ml-1">Genre</label>
-                        <select name="gender" defaultValue={member.gender || ''}
-                          className="w-full px-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all font-bold text-slate-700 appearance-none">
-                          <option value="">Non renseigné</option>
-                          <option value="MALE">Homme</option>
-                          <option value="FEMALE">Femme</option>
-                        </select>
-                      </div>
-                      <div className="space-y-2">
-                        <label className="text-xs font-black text-slate-500 uppercase tracking-wider ml-1">Statut</label>
-                        <select name="status" defaultValue={member.status}
-                          className="w-full px-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all font-bold text-slate-700 appearance-none">
-                          <option value="STUDENT">Étudiant</option>
-                          <option value="ALUMNI">Alumni</option>
-                        </select>
-                      </div>
+                      <SelectField
+                        label="Genre"
+                        name="gender"
+                        defaultValue={member.gender || ''}
+                      >
+                        <option value="">Non renseigné</option>
+                        <option value="MALE">Homme</option>
+                        <option value="FEMALE">Femme</option>
+                      </SelectField>
+                      <SelectField
+                        label="Statut"
+                        name="status"
+                        defaultValue={member.status}
+                      >
+                        <option value="STUDENT">Étudiant</option>
+                        <option value="ALUMNI">Alumni</option>
+                      </SelectField>
                     </div>
                   </div>
 
@@ -508,7 +509,7 @@ export function ProfileContent({ member }: ProfileContentProps) {
                       <label className="text-xs font-black text-slate-500 uppercase tracking-wider ml-1">LinkedIn</label>
                       <div className="relative">
                         <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-black">in/</span>
-                        <input name="linkedin_url" defaultValue={member.linkedin_url || ''} placeholder="identifiant"
+                        <input name="linkedin_url" defaultValue={member.linkedin_url || ''} 
                           className="w-full px-5 pl-12 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all font-bold text-slate-700" />
                       </div>
                     </div>
@@ -518,7 +519,7 @@ export function ProfileContent({ member }: ProfileContentProps) {
                         <div className="absolute left-4 top-1/2 -translate-y-1/2 text-red-500/60">
                           <MaterialIcon name="play_circle" className="w-5 h-5" />
                         </div>
-                        <input name="youtube_url" defaultValue={member.youtube_url || ''} placeholder="Lien chaîne"
+                        <input name="youtube_url" defaultValue={member.youtube_url || ''} 
                           className="w-full pl-12 pr-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all font-bold text-slate-700" />
                       </div>
                     </div>
@@ -528,7 +529,7 @@ export function ProfileContent({ member }: ProfileContentProps) {
                         <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
                           <MaterialIcon name="language" className="w-5 h-5" />
                         </div>
-                        <input name="portfolio_url" defaultValue={member.portfolio_url || ''} placeholder="https://..."
+                        <input name="portfolio_url" defaultValue={member.portfolio_url || ''} 
                           className="w-full pl-12 pr-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all font-bold text-slate-700" />
                       </div>
                     </div>
@@ -546,12 +547,12 @@ export function ProfileContent({ member }: ProfileContentProps) {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="space-y-2">
                       <label className="text-xs font-black text-slate-500 uppercase tracking-wider ml-1">Poste actuel</label>
-                      <input name="current_job_title" defaultValue={member.current_job_title || ''} placeholder="Ex: Architecte Logiciel"
+                      <input name="current_job_title" defaultValue={member.current_job_title || ''} 
                         className="w-full px-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all font-bold text-slate-700" />
                     </div>
                     <div className="space-y-2">
                       <label className="text-xs font-black text-slate-500 uppercase tracking-wider ml-1">Description du poste</label>
-                      <input name="current_job_description" defaultValue={member.current_job_description || ''} placeholder="Missions principales..."
+                      <input name="current_job_description" defaultValue={member.current_job_description || ''} 
                         className="w-full px-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all font-bold text-slate-700" />
                     </div>
                   </div>
@@ -567,20 +568,11 @@ export function ProfileContent({ member }: ProfileContentProps) {
                   </div>
                   <div className="space-y-2">
                     <textarea name="description" defaultValue={member.description || ''} rows={5}
-                      placeholder="Dites-nous en un peu plus sur vous..."
                       className="w-full px-6 py-5 bg-slate-50/50 border border-slate-200 rounded-[24px] focus:border-[var(--aduti-primary)] outline-none transition-all font-bold text-slate-700 resize-none leading-relaxed" />
                   </div>
                 </div>
 
                 <div className="pt-10 flex flex-col sm:flex-row items-center justify-between gap-8 border-t border-slate-100">
-                  <div className="flex items-start gap-4 max-w-sm">
-                    <div className="w-10 h-10 rounded-full bg-blue-50 flex-shrink-0 flex items-center justify-center">
-                      <MaterialIcon name="verified" className="w-5 h-5 text-blue-500" />
-                    </div>
-                    <p className="text-[11px] text-slate-400 font-bold uppercase tracking-wider leading-relaxed">
-                      Ces informations permettent aux membres de vous identifier et de suivre votre évolution.
-                    </p>
-                  </div>
                   <button type="submit" disabled={isPending || isUploading}
                     className="w-full sm:w-auto px-12 py-5 bg-[var(--aduti-primary)] text-white font-black rounded-2xl hover:bg-blue-600 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest text-sm flex items-center justify-center gap-3">
                     {isPending ? <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <MaterialIcon name="save" className="w-5 h-5" />}

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { prisma } from '@/lib/prisma'
+import { generateUniqueSlug } from '@/lib/slug'
 import logger from '@/lib/logger'
 
 export async function GET(request: Request) {
@@ -37,7 +38,7 @@ export async function GET(request: Request) {
       if (!existingMember) {
         logger.info({ userId: user.id }, 'Auth Callback: Creating new member in Prisma');
         
-        const { name, promo_id, status, role, gender, invitation_token } = user.user_metadata
+        const { name, promo_id, status, gender, invitation_token } = user.user_metadata
 
         if (!invitation_token) {
           logger.warn({ userId: user.id }, 'Auth Callback: Missing invitation token in metadata');
@@ -55,6 +56,12 @@ export async function GET(request: Request) {
           try {
             logger.info({ id: user.id, name, promo_id, sanitizedStatus, sanitizedGender }, 'Auth Callback: Attempting Prisma creation');
             
+            // Générer un slug unique pour l'URL du profil
+            const slug = await generateUniqueSlug(name, async (candidate) => {
+              const existing = await prisma.member.findUnique({ where: { slug: candidate } })
+              return !!existing
+            })
+
             const newMember = await prisma.member.create({
               data: {
                 id: user.id,
@@ -63,12 +70,18 @@ export async function GET(request: Request) {
                 promo_id,
                 status: sanitizedStatus,
                 gender: sanitizedGender,
-                role: role || 'MEMBER',
+                role: 'MEMBER', // Toujours MEMBER — ne jamais faire confiance aux métadonnées client
                 poste_id: null,
                 function: 'NONE',
+                slug,
               }
             })
-            logger.info({ memberId: newMember.id }, 'Auth Callback: SUCCESS! Member created');
+            logger.info({ memberId: newMember.id, slug }, 'Auth Callback: SUCCESS! Member created');
+
+            // Creation succeeded. Let's redirect with the welcome animation flag.
+            const urlToRedirect = new URL(`${baseOrigin}${next}`);
+            urlToRedirect.searchParams.set("welcome", "true");
+            return NextResponse.redirect(urlToRedirect.toString());
           } catch (prismaError) {
             logger.error({ prismaError }, 'Auth Callback ERROR (Prisma)');
           }

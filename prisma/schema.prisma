@@ -84,6 +84,9 @@ model Member {
   created_at      DateTime        @default(now())
   updated_at      DateTime        @updatedAt
   
+  // Slug pour les URLs lisibles (ex: jean-dupont)
+  slug            String?         @unique
+
   // Relations
   promotion       Promotion       @relation(fields: [promo_id], references: [id], onDelete: Cascade)
   poste           Poste?          @relation(fields: [poste_id], references: [id], onDelete: SetNull)
@@ -92,12 +95,15 @@ model Member {
   admin_assignments_given AdminAssignment[] @relation("AssignedBy")
   admin_assignments_received AdminAssignment[] @relation("AssignedTo")
   invitations     Invitation[]
+  binomes_as_parrain Binome[]     @relation("ParrainBinomes")
+  binomes_as_filleul Binome[]     @relation("FilleulBinomes")
   
   @@index([promo_id])
   @@index([role])
   @@index([status])
   @@index([email])
   @@index([poste_id])
+  @@index([slug])
 }
  
 // Table Activities
@@ -198,4 +204,20 @@ model ContactMessage {
   message    String
   ip_address String?
   created_at DateTime @default(now())
+}
+
+// Table Binome — Associations parrain→filleul entre promotions consécutives
+model Binome {
+  id           String   @id @default(cuid())
+  parrain_id   String   // membre de la promo N (la plus ancienne)
+  filleul_id   String   // membre de la promo N+1 (la plus récente)
+  promo_combo  String   // ex: "22-23" (nom_promo_N-nom_promo_N+1)
+  created_at   DateTime @default(now())
+
+  parrain  Member @relation("ParrainBinomes", fields: [parrain_id], references: [id], onDelete: Cascade)
+  filleul  Member @relation("FilleulBinomes", fields: [filleul_id], references: [id], onDelete: Cascade)
+
+  @@unique([filleul_id, promo_combo])
+  @@index([promo_combo])
+  @@index([parrain_id])
 }

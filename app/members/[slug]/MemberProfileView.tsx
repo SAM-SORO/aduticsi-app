@@ -76,10 +76,8 @@ export function MemberProfileView({ member }: MemberProfileViewProps) {
         <div className="relative flex flex-col md:flex-row gap-8 md:gap-12 items-center md:items-start text-center md:text-left z-10 p-8 md:p-12">
           {/* Avatar Section */}
           <div className="relative group flex-shrink-0">
-            <div className="absolute inset-0 bg-gradient-to-tr from-[var(--aduti-primary)] to-blue-400 blur-xl opacity-20 transition-opacity duration-300 rounded-[2.5rem]"></div>
-            
-            <div className="relative w-36 h-36 md:w-44 md:h-44 p-1.5 bg-gradient-to-tr from-slate-100 via-white to-slate-100 rounded-[2.5rem] shadow-xl border border-white/80">
-              <div className="w-full h-full rounded-[2.2rem] overflow-hidden bg-slate-50 relative border border-slate-100/50">
+            <div className="relative w-36 h-36 md:w-44 md:h-44 p-1 bg-white rounded-[2.5rem] shadow-sm border border-slate-100 hover:shadow-md transition-shadow duration-300">
+              <div className="w-full h-full rounded-[2.2rem] overflow-hidden bg-slate-50 relative">
                 {member.photo_url ? (
                   <Image src={member.photo_url} alt={member.name} fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
                 ) : (

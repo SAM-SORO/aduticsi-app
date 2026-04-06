@@ -10,8 +10,10 @@ import {
   Home,
   GraduationCap,
   Briefcase,
-  User
+  User,
+  Users2
 } from "lucide-react";
+
 
 import { logout } from "@/app/auth/actions";
 
@@ -44,14 +46,19 @@ export function Sidebar({ member, activePath, onCloseMobile }: SidebarProps) {
     ...(isSuperAdmin
       ? [
           { name: "Membres", href: "/dashboard/super-admin/members", icon: <Users className="w-5 h-5" />, path: "/dashboard/super-admin/members" },
-          { name: "Postes", href: "/dashboard/super-admin/postes", icon: <Briefcase className="w-5 h-5" />, path: "/dashboard/super-admin/postes" },
-          { name: "Promotions", href: "/dashboard/super-admin/promotions", icon: <GraduationCap className="w-5 h-5" />, path: "/dashboard/super-admin/promotions" },
           { name: "Liens d'invitation", href: "/dashboard/super-admin/invitations", icon: <Link2 className="w-5 h-5" />, path: "/dashboard/super-admin/invitations" },
         ]
       : []),
     ...(isAdmin
       ? [
           { name: "Membres de ma promo", href: "/dashboard/admin", icon: <Users className="w-5 h-5" />, path: "/dashboard/admin" },
+        ]
+      : []),
+    ...(isSuperAdmin || isAdmin
+      ? [
+          { name: "Postes", href: "/dashboard/postes", icon: <Briefcase className="w-5 h-5" />, path: "/dashboard/postes" },
+          { name: "Promotions", href: "/dashboard/promotions", icon: <GraduationCap className="w-5 h-5" />, path: "/dashboard/promotions" },
+          { name: "Binomage", href: "/dashboard/binomage", icon: <Users2 className="w-5 h-5" />, path: "/dashboard/binomage" },
         ]
       : []),
     { name: "Activites & Publications", href: "/dashboard/super-admin/activities", icon: <History className="w-5 h-5" />, path: "/dashboard/super-admin/activities" },

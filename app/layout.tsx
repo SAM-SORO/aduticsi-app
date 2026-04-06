@@ -3,6 +3,7 @@ import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import { AppShell } from "@/components/app-shell";
+import { WelcomeConfetti } from "@/components/WelcomeConfetti";
 
 const inter = Inter({
   variable: "--font-body",
@@ -16,9 +17,39 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"),
   title: "ADUTI - Association des DUT et DTS en Informatique de l'INP-HB",
   description:
-    "Plateforme officielle de l’Association des DUT et DTS en Informatique de l’INP-HB : gestion des membres, promotions, activités et communication de la communauté informatique.",
+    "Plateforme officielle de l'Association des DUT et DTS en Informatique de l'INP-HB : apprenez-en plus sur l'association et découvrez les membres, les promotions et les différentes activités de la communauté",
+  applicationName: "Aduticsi",
+  authors: [{ name: "ADUTI", url: "https://aduticsi.com" }],
+  generator: "Next.js",
+  keywords: ["ADUTI", "INP-HB", "Informatique", "DUT", "DTS", "Yamoussoukro", "Côte d'Ivoire", "TIC"],
+  referrer: "origin-when-cross-origin",
+  creator: "Clover INP-HB",
+  publisher: "Aduticsi",
+  openGraph: {
+    type: "website",
+    locale: "fr_CI",
+    url: "https://aduticsi.com",
+    siteName: "Aduticsi",
+    title: "ADUTI - Association des DUT et DTS en Informatique de l'INP-HB",
+    description: "Plateforme officielle de l'Association des DUT et DTS en Informatique de l'INP-HB : apprenez-en plus sur l'association et découvrez les membres, les promotions et les différentes activités de la communauté",
+    images: [
+      {
+        url: "/logo_association.jpeg",
+        width: 800,
+        height: 600,
+        alt: "Logo ADUTI",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "ADUTI - Association des DUT et DTS en Informatique de l'INP-HB",
+    description: "Plateforme officielle de l'Association des DUT et DTS en Informatique de l'INP-HB",
+    images: ["/logo_association.jpeg"],
+  },
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
@@ -41,6 +72,7 @@ export default function RootLayout({
       >
         <AppShell>{children}</AppShell>
         <Toaster position="top-center" richColors />
+        <WelcomeConfetti />
       </body>
     </html>
   );

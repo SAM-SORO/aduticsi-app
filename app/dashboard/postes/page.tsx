@@ -25,7 +25,7 @@ export default async function PostesPage() {
     select: { id: true, role: true, name: true, email: true },
   });
 
-  if (!currentMember || currentMember.role !== "SUPER_ADMIN") {
+  if (!currentMember || (currentMember.role !== "SUPER_ADMIN" && currentMember.role !== "ADMIN")) {
     redirect("/dashboard");
   }
 
@@ -34,7 +34,7 @@ export default async function PostesPage() {
   return (
     <DashboardLayout
       member={currentMember}
-      activePath="/dashboard/super-admin/postes"
+      activePath="/dashboard/postes"
       title="Gestion des Postes"
     >
       <PostesContent initialPostes={initialPostes} />

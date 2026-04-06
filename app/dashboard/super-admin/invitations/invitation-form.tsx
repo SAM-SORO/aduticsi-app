@@ -5,6 +5,7 @@ import { Plus } from "lucide-react";
 import { toast } from "sonner";
 import { createInvitation } from "./actions";
 import { Button } from "@/components/ui/button";
+import { SelectField } from "@/components/ui/select-field";
 
 interface InvitationFormProps {
   memberId: string;
@@ -72,14 +73,14 @@ export function InvitationForm({ memberId }: InvitationFormProps) {
               defaultValue="1"
               className="w-2/3 px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[var(--aduti-primary)] focus:border-[var(--aduti-primary)] outline-none text-sm transition-all bg-slate-50 focus:bg-white"
             />
-            <select
+            <SelectField
               name="expirationUnit"
-              className="w-1/3 px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[var(--aduti-primary)] focus:border-[var(--aduti-primary)] outline-none text-sm transition-all bg-slate-50 focus:bg-white"
+              className="w-1/3 rounded-xl border-slate-200 py-2"
             >
               <option value="days">Jour(s)</option>
               <option value="months">Mois</option>
               <option value="years">Année(s)</option>
-            </select>
+            </SelectField>
           </div>
           <p className="text-xs text-slate-500">
             Le lien expirera automatiquement après ce délai.

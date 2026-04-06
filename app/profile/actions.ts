@@ -5,6 +5,7 @@ import type { MemberStatus, Gender } from '@prisma/client'
 
 import { prisma } from '@/lib/prisma'
 import { createClient } from '@/lib/supabase/server'
+import { buildStorageName } from '@/lib/storage-names'
 import logger from '@/lib/logger'
 
 export async function getProfile() {
@@ -112,14 +113,21 @@ export async function getProfile() {
     const file = formData.get('file') as File
     if (!file) return { error: 'Aucun fichier fourni' }
   
-    const fileExt = file.name.split('.').pop()
-    const fileName = `${user.id}-${Math.random()}.${fileExt}`
+    // Récupérer le nom du membre pour construire un nom de fichier lisible
+    const member = await prisma.member.findUnique({
+      where: { id: user.id },
+      select: { name: true }
+    })
+  
+    const fileExt = file.name.split('.').pop() ?? 'jpg'
+    // Ex: "sam-soro_20260404-213500.jpg"
+    const fileName = buildStorageName(member?.name ?? user.id, fileExt)
     const filePath = `avatars/${fileName}`
   
     try {
       const { error: uploadError } = await supabase.storage
         .from('membres_images')
-        .upload(filePath, file)
+        .upload(filePath, file, { upsert: true })
   
       if (uploadError) throw uploadError
   

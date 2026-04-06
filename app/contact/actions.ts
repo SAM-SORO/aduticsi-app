@@ -1,10 +1,31 @@
 'use server'
 
+import { z } from 'zod'
 import { headers } from 'next/headers'
 
 import { prisma } from '@/lib/prisma'
 import { sendEmail } from '@/lib/mail'
+import { verifyTurnstile } from '@/lib/captcha'
 import logger from '@/lib/logger'
+
+// ─── Validation Zod (côté serveur) ─────────────────────────────────────────
+const contactSchema = z.object({
+  name:    z.string().min(2).max(100),
+  email:   z.string().email().max(200).optional().or(z.literal('')),
+  phone:   z.string().max(30).optional().or(z.literal('')),
+  subject: z.string().min(3).max(200),
+  message: z.string().min(10).max(5000),
+})
+
+// ─── Sanitisation HTML anti-XSS ────────────────────────────────────────────
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;')
+}
 
 export type ContactInput = {
   name: string
@@ -15,34 +36,23 @@ export type ContactInput = {
   captchaToken?: string
 }
 
-async function verifyTurnstileToken(token: string) {
-  const secretKey = process.env.TURNSTILE_SECRET_KEY
-  if (!secretKey) return true
-
-  try {
-    const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ response: token, secret: secretKey }),
-    })
-    const verification = await response.json()
-    return verification.success
-  } catch (error) {
-    logger.error({ error }, 'Contact captcha verification error');
-    return false
-  }
-}
-
 export async function sendContactMessage(data: ContactInput) {
   const headerList = await headers()
   const ip = headerList.get('x-forwarded-for') || 'unknown'
+
+  // 1. Validation de la longueur et du format côté serveur
+  const parsed = contactSchema.safeParse(data)
+  if (!parsed.success) {
+    return { error: 'Données invalides. Vérifiez les champs et réessayez.' }
+  }
 
   if (!data.email && !data.phone) {
     return { error: "Veuillez renseigner au moins un email ou un contact." }
   }
 
+  // 2. Vérification Captcha
   if (data.captchaToken) {
-    const isHuman = await verifyTurnstileToken(data.captchaToken)
+    const isHuman = await verifyTurnstile(data.captchaToken)
     if (!isHuman) {
       return { error: 'Échec de la vérification captcha. Veuillez réessayer.' }
     }
@@ -85,22 +95,28 @@ export async function sendContactMessage(data: ContactInput) {
       }
     })
 
-    // 3. Send email to support
+    // 3. Envoi de l'email — données échappées pour éviter toute injection HTML
+    const safeName    = escapeHtml(data.name)
+    const safeSubject = escapeHtml(data.subject)
+    const safeMessage = escapeHtml(data.message).replace(/\n/g, '<br/>')
+    const safeEmail   = data.email ? escapeHtml(data.email) : 'Non renseigné'
+    const safePhone   = data.phone ? escapeHtml(data.phone) : 'Non renseigné'
+
     const emailResult = await sendEmail({
       to: process.env.SMTP_FROM || 'support@aduticsi.com',
-      subject: `[Contact ADUTI] ${data.subject} - de ${data.name}`,
+      subject: `[Contact ADUTI] ${safeSubject} - de ${safeName}`,
       html: `
         <h2>Nouveau message de contact</h2>
-        <p><strong>Nom:</strong> ${data.name}</p>
-        <p><strong>Email:</strong> ${data.email || 'Non renseigné'}</p>
-        <p><strong>Contact:</strong> ${data.phone || 'Non renseigné'}</p>
-        <p><strong>Sujet:</strong> ${data.subject}</p>
+        <p><strong>Nom:</strong> ${safeName}</p>
+        <p><strong>Email:</strong> ${safeEmail}</p>
+        <p><strong>Contact:</strong> ${safePhone}</p>
+        <p><strong>Sujet:</strong> ${safeSubject}</p>
         <p><strong>Message:</strong></p>
         <div style="padding: 15px; background: #f5f5f5; border-radius: 5px;">
-          ${data.message.replace(/\n/g, '<br/>')}
+          ${safeMessage}
         </div>
         <hr/>
-        <p><small>Envoyé depuis le site ADUTI (IP: ${ip})</small></p>
+        <p><small>Envoyé depuis le site ADUTI (IP: ${escapeHtml(ip)})</small></p>
       `
     })
 

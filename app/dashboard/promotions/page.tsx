@@ -33,7 +33,7 @@ export default async function PromotionsPage() {
     select: { id: true, role: true, name: true, email: true },
   });
 
-  if (!member || member.role !== "SUPER_ADMIN") {
+  if (!member || (member.role !== "SUPER_ADMIN" && member.role !== "ADMIN")) {
     redirect("/dashboard");
   }
 
@@ -42,7 +42,7 @@ export default async function PromotionsPage() {
   return (
     <DashboardLayout
       member={member}
-      activePath="/dashboard/super-admin/promotions"
+      activePath="/dashboard/promotions"
       title="Gestion des Promotions"
     >
       <div className="space-y-8 animate-in fade-in duration-700">

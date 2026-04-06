@@ -5,7 +5,6 @@ import { Search } from "lucide-react";
 
 import { MembersGrid } from "./MembersGrid";
 import { DashboardLayout } from "@/components/dashboard/DashboardShell";
-import { Input } from "@/components/ui/input";
 import { AutoSubmitSelect } from "@/components/ui/auto-submit-select";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
@@ -94,53 +93,50 @@ export default async function MembersAdminPage({
           </div>
         </div>
 
-        {/* Filters */}
+        {/* Filters — un seul formulaire pour préserver tous les filtres et reset la pagination */}
         <div className="bg-white p-4 sm:p-6 rounded-3xl border border-slate-100 shadow-sm space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
-            <form className="relative" method="GET">
+          <form method="GET" id="members-filter-form" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
+            {/* Reset page à 1 à chaque changement de filtre */}
+            <input type="hidden" name="page" value="1" />
+
+            <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
-              <Input
+              <input
+                type="text"
                 name="search"
                 placeholder="Rechercher..."
                 defaultValue={search}
-                className="pl-10 h-11 bg-slate-50/50 border-slate-100 rounded-xl focus:bg-white transition-all shadow-none"
+                onBlur={(e) => (e.target.form as HTMLFormElement | null)?.requestSubmit()}
+                className="w-full pl-10 h-11 bg-slate-50/50 border border-slate-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[var(--aduti-primary)] focus:bg-white transition-all"
               />
-            </form>
+            </div>
 
-            <form method="GET">
-              <AutoSubmitSelect name="promo" defaultValue={promoId} className="h-11 bg-slate-50/50 border-slate-100 rounded-xl">
-                <option value="">Toutes les promos</option>
-                {promotions.map((p) => (
-                  <option key={p.id} value={p.id}>{p.name}</option>
-                ))}
-              </AutoSubmitSelect>
-            </form>
+            <AutoSubmitSelect name="promo" defaultValue={promoId} className="h-11 bg-slate-50/50 border-slate-100 rounded-xl">
+              <option value="">Toutes les promos</option>
+              {promotions.map((p) => (
+                <option key={p.id} value={p.id}>{p.name}</option>
+              ))}
+            </AutoSubmitSelect>
 
-            <form method="GET">
-              <AutoSubmitSelect name="status" defaultValue={status} className="h-11 bg-slate-50/50 border-slate-100 rounded-xl">
-                <option value="">Tous les statuts</option>
-                <option value="STUDENT">Étudiant</option>
-                <option value="ALUMNI">Alumni</option>
-              </AutoSubmitSelect>
-            </form>
+            <AutoSubmitSelect name="status" defaultValue={status} className="h-11 bg-slate-50/50 border-slate-100 rounded-xl">
+              <option value="">Tous les statuts</option>
+              <option value="STUDENT">Étudiant</option>
+              <option value="ALUMNI">Alumni</option>
+            </AutoSubmitSelect>
 
-            <form method="GET">
-              <AutoSubmitSelect name="role" defaultValue={role} className="h-11 bg-slate-50/50 border-slate-100 rounded-xl">
-                <option value="">Tous les rôles</option>
-                <option value="MEMBER">Membre</option>
-                <option value="ADMIN">Admin</option>
-                <option value="SUPER_ADMIN">Super Admin</option>
-              </AutoSubmitSelect>
-            </form>
+            <AutoSubmitSelect name="role" defaultValue={role} className="h-11 bg-slate-50/50 border-slate-100 rounded-xl">
+              <option value="">Tous les rôles</option>
+              <option value="MEMBER">Membre</option>
+              <option value="ADMIN">Admin</option>
+              <option value="SUPER_ADMIN">Super Admin</option>
+            </AutoSubmitSelect>
 
-            <form method="GET">
-              <AutoSubmitSelect name="gender" defaultValue={gender} className="h-11 bg-slate-50/50 border-slate-100 rounded-xl">
-                <option value="">Tous les genres</option>
-                <option value="MALE">Homme</option>
-                <option value="FEMALE">Femme</option>
-              </AutoSubmitSelect>
-            </form>
-          </div>
+            <AutoSubmitSelect name="gender" defaultValue={gender} className="h-11 bg-slate-50/50 border-slate-100 rounded-xl">
+              <option value="">Tous les genres</option>
+              <option value="MALE">Homme</option>
+              <option value="FEMALE">Femme</option>
+            </AutoSubmitSelect>
+          </form>
         </div>
 
         {/* Grid */}

@@ -26,15 +26,19 @@ export async function PartnersCarousel() {
   const doubled = [...activePartners, ...activePartners];
 
   return (
-    <div className="relative overflow-hidden py-8">
-      <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-white to-transparent z-10" />
-      <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-white to-transparent z-10" />
-
-      <div className="flex animate-scroll gap-16 w-max">
+    <div 
+      className="relative overflow-hidden py-8"
+      style={{
+        maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)',
+        WebkitMaskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)'
+      }}
+    >
+      <div className="flex animate-scroll gap-16 md:gap-24 w-max items-center">
         {doubled.map((partner, i) => (
           <div
             key={`${partner.id}-${i}`}
-            className="flex-shrink-0 flex items-center justify-center h-20 w-40 grayscale hover:grayscale-0 opacity-60 hover:opacity-100 transition-all duration-300"
+            title={partner.name}
+            className="flex-shrink-0 flex items-center justify-center h-20 w-40 opacity-40 grayscale transition-all duration-500 hover:grayscale-0 hover:opacity-100 hover:scale-105 cursor-default"
           >
             <div className="relative w-full h-full">
               <Image

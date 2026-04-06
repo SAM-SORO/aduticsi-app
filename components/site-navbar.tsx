@@ -249,6 +249,10 @@ export function SiteNavbar() {
     );
   };
 
+  const dynamicNavLinks = user 
+    ? [...navLinks.slice(0, 4), { href: "/binomages", label: "Binomages" }, navLinks[4]]
+    : navLinks;
+
   return (
     <>
       <header 
@@ -275,7 +279,7 @@ export function SiteNavbar() {
 
           <div className="hidden md:flex flex-1 justify-end gap-8 items-center">
             <nav className="flex items-center gap-8">
-              {navLinks.map((link) => (
+              {dynamicNavLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
@@ -332,7 +336,7 @@ export function SiteNavbar() {
               >
               <div className="border-t border-slate-100">
                 <nav className="flex flex-col px-4 py-6 gap-2">
-                  {navLinks.map((link) => (
+                  {dynamicNavLinks.map((link) => (
                     <Link
                       key={link.href}
                       href={link.href}
