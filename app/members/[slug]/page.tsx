@@ -17,16 +17,16 @@ export async function generateMetadata({
   const { slug } = await params;
   const member = await prisma.member.findFirst({
     where: { OR: [{ slug }, { id: slug }] },
-    select: { name: true, current_job_title: true, promotion: { select: { name: true } } },
+    select: { first_name: true, last_name: true, current_job_title: true, promotion: { select: { name: true } } },
   });
 
   if (!member) return { title: "Membre introuvable | ADUTI" };
 
   return {
-    title: `${member.name} | Membre ADUTI`,
+    title: `${member.first_name} ${member.last_name} | Membre ADUTI`,
     description: member.current_job_title
-      ? `${member.name} — ${member.current_job_title}. Promotion ${member.promotion.name}. Découvrez son profil sur la plateforme ADUTI.`
-      : `Profil de ${member.name}, promotion ${member.promotion.name} — Communauté ADUTI des DUT et DTS en Informatique de l'INP-HB.`,
+      ? `${member.first_name} ${member.last_name} — ${member.current_job_title}. Promotion ${member.promotion.name}. Découvrez son profil sur la plateforme ADUTI.`
+      : `Profil de ${member.first_name} ${member.last_name}, promotion ${member.promotion.name} — Communauté ADUTI des DUT et DTS en Informatique de l'INP-HB.`,
   };
 }
 
@@ -85,7 +85,7 @@ export default async function MemberProfilePage({
               <div className="flex items-center">
                 <MaterialIcon name="chevron_right" className="w-[18px] h-[18px] text-slate-400" />
                 <span className="ml-1 font-medium text-slate-900 md:ml-2">
-                  {member.name}
+                  {member.first_name} {member.last_name}
                 </span>
               </div>
             </li>

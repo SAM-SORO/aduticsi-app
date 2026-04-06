@@ -15,7 +15,8 @@ async function getInvitations() {
     include: {
       creator: {
         select: {
-          name: true,
+          first_name: true,
+          last_name: true,
         },
       },
     },
@@ -34,14 +35,14 @@ export default async function InvitationsPage() {
 
   let member = await prisma.member.findUnique({
     where: { id: user.id },
-    select: { id: true, role: true, name: true, email: true },
+    select: { id: true, role: true, first_name: true, last_name: true, email: true },
   });
 
   // Fallback to email if not found by ID
   if (!member && user.email) {
     member = await prisma.member.findUnique({
       where: { email: user.email },
-      select: { id: true, role: true, name: true, email: true },
+      select: { id: true, role: true, first_name: true, last_name: true, email: true },
     });
   }
 
@@ -126,7 +127,7 @@ export default async function InvitationsPage() {
                         <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500 pt-1">
                           <div className="flex items-center gap-1">
                             <ShieldCheck className="w-3.5 h-3.5" />
-                            Créé par {invitation.creator.name}
+                            Créé par {invitation.creator.last_name.toUpperCase()} {invitation.creator.first_name}
                           </div>
                           <div
                             className="flex items-center gap-1"

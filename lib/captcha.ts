@@ -9,15 +9,22 @@ export async function verifyTurnstile(token: string): Promise<boolean> {
   if (!secretKey) return true
 
   try {
+    const formData = new URLSearchParams()
+    formData.append('secret', secretKey)
+    formData.append('response', token)
+
     const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
       method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ response: token, secret: secretKey }),
+      body: formData,
     })
     const data = await response.json()
+    if (!data.success) {
+      logger.warn({ data }, 'Turnstile verification failed')
+    }
     return data.success
   } catch (error) {
-    logger.error({ error }, 'Turnstile captcha verification error')
+    const errorDetails = error instanceof Error ? { message: error.message, stack: error.stack } : error
+    logger.error({ error: errorDetails }, 'Turnstile captcha verification error')
     return false
   }
 }

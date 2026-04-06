@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition, useCallback } from "react";
+import { useState, useTransition, useCallback, useEffect } from "react";
 import Image from "next/image";
 import {
   Handshake,
@@ -11,6 +11,10 @@ import {
   AlertTriangle,
   Loader2,
   RefreshCw,
+  Search,
+  ChevronLeft,
+  ChevronRight,
+  UserSearch,
 } from "lucide-react";
 import type { MemberLight, BinomePair, PromoCombo } from "./actions";
 import {
@@ -42,7 +46,11 @@ type ComboData = {
 };
 
 export function BinomagePageClient({ combos }: BinomagePageClientProps) {
-  const [selectedCombo, setSelectedCombo] = useState<PromoCombo | null>(null);
+  // Sélection automatique de la promo la plus récente par défaut
+  const [selectedCombo, setSelectedCombo] = useState<PromoCombo | null>(() => {
+    if (combos.length === 0) return null
+    return [...combos].sort((a, b) => b.label.localeCompare(a.label))[0]
+  });
   const [comboData, setComboData] = useState<ComboData | null>(null);
   const [activeTab, setActiveTab] = useState<Tab>("binomes");
   const [isDrawModalOpen, setIsDrawModalOpen] = useState(false);
@@ -51,23 +59,37 @@ export function BinomagePageClient({ combos }: BinomagePageClientProps) {
   const [isResetting, startResetTransition] = useTransition();
   const [resetConfirm, setResetConfirm] = useState(false);
 
+  const fetchData = useCallback((combo: PromoCombo) => {
+    startTransition(async () => {
+      setComboData(null);
+      setResetConfirm(false);
+      try {
+        const [parrains, fieuls, binomes, stats] = await Promise.all([
+          getParrainsByCombo(combo.parrain_promo_id),
+          getFieulsByCombo(combo.filleul_promo_id),
+          getBinomesForCombo(combo.label),
+          getBinomageStats(combo.label, combo.parrain_promo_id, combo.filleul_promo_id),
+        ]);
+        setComboData({ parrains, fieuls, binomes, stats });
+      } catch {
+        // Erreur silencieuse
+      }
+    });
+  }, []);
+
   const loadCombo = useCallback((combo: PromoCombo) => {
     setSelectedCombo(combo);
     setIsDropdownOpen(false);
     setActiveTab("binomes");
-    setComboData(null);
-    setResetConfirm(false);
+    fetchData(combo);
+  }, [fetchData]);
 
-    startTransition(async () => {
-      const [parrains, fieuls, binomes, stats] = await Promise.all([
-        getParrainsByCombo(combo.parrain_promo_id),
-        getFieulsByCombo(combo.filleul_promo_id),
-        getBinomesForCombo(combo.label),
-        getBinomageStats(combo.label, combo.parrain_promo_id, combo.filleul_promo_id),
-      ]);
-      setComboData({ parrains, fieuls, binomes, stats });
-    });
-  }, []);
+  // Chargement automatique des données pour la promo sélectionnée par défaut
+  useEffect(() => {
+    if (selectedCombo && !comboData && !isLoading) {
+      fetchData(selectedCombo)
+    }
+  }, [selectedCombo, comboData, isLoading, fetchData])
 
   const refreshData = useCallback(() => {
     if (!selectedCombo) return;
@@ -142,7 +164,7 @@ export function BinomagePageClient({ combos }: BinomagePageClientProps) {
                 </span>
                 <span className="font-semibold text-slate-800">
                   {selectedCombo
-                    ? `${selectedCombo.parrain_promo_name} → ${selectedCombo.filleul_promo_name}`
+                    ? `${selectedCombo.parrain_promo_name} ↔ ${selectedCombo.filleul_promo_name}`
                     : "Choisir un combo de promos…"}
                 </span>
               </div>
@@ -172,7 +194,7 @@ export function BinomagePageClient({ combos }: BinomagePageClientProps) {
                     <div>
                       <p className="font-semibold text-slate-800">
                         {combo.parrain_promo_name}{" "}
-                        <span className="text-slate-400">→</span>{" "}
+                        <span className="text-slate-400">↔</span>{" "}
                         {combo.filleul_promo_name}
                       </p>
                       <p className="text-xs text-slate-400">Binomage {combo.label}</p>
@@ -217,11 +239,11 @@ export function BinomagePageClient({ combos }: BinomagePageClientProps) {
               <div className="flex flex-wrap gap-3 items-center justify-between bg-white border border-slate-200 rounded-xl px-5 py-4 shadow-sm">
                 <div>
                   <h3 className="font-semibold text-slate-900">
-                    {selectedCombo.parrain_promo_name} → {selectedCombo.filleul_promo_name}
+                    {selectedCombo.parrain_promo_name} ↔ {selectedCombo.filleul_promo_name}
                   </h3>
-                  <p className="text-xs text-slate-400">
+                  {/* <p className="text-xs text-slate-400">
                     {comboData.binomes.length} paire(s) enregistrée(s)
-                  </p>
+                  </p> */}
                 </div>
                 <div className="flex gap-2 flex-wrap">
                   <button
@@ -358,29 +380,110 @@ export function BinomagePageClient({ combos }: BinomagePageClientProps) {
 
 
 function BinomesTab({ binomes }: { binomes: BinomePair[] }) {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 15;
+
   if (binomes.length === 0) {
     return (
-      <EmptyState message="Aucun bnomage effectué. Lancez le tirage pour associer les membres." />
+      <EmptyState message="Aucun binômage effectué. Lancez le tirage pour associer les membres." />
     );
   }
 
+  const filteredBinomes = binomes.filter((b) => {
+    const search = searchQuery.toLowerCase();
+    return (
+      b.parrain.first_name.toLowerCase().includes(search) ||
+      b.parrain.last_name.toLowerCase().includes(search) ||
+      b.filleul.first_name.toLowerCase().includes(search) ||
+      b.filleul.last_name.toLowerCase().includes(search)
+    );
+  });
+
+  const totalPages = Math.ceil(filteredBinomes.length / ITEMS_PER_PAGE);
+  const currentBinomes = filteredBinomes.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
   return (
-    <div className="space-y-3">
-      {binomes.map((b) => (
-        <div
-          key={b.id}
-          className="flex items-center gap-3 sm:gap-6 p-3 rounded-xl border border-slate-100 hover:border-[var(--aduti-primary)]/20 hover:bg-[var(--aduti-primary)]/5 transition-all"
-        >
-          <MemberChip member={b.parrain} badge="Parrain" badgeColor="blue" />
-          <div className="flex-1 flex items-center justify-center">
-            <Handshake className="w-5 h-5 text-[var(--aduti-primary)]" />
-          </div>
-          <MemberChip member={b.filleul} badge="Filleul" badgeColor="orange" />
+    <div className="space-y-4">
+      {/* Barre de recherche locale aux binômes */}
+      <div className="relative group">
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-[var(--aduti-primary)] transition-colors" />
+        <input
+          type="text"
+          placeholder="Rechercher par nom de parrain ou de filleul..."
+          value={searchQuery}
+          onChange={(e) => {
+            setSearchQuery(e.target.value);
+            setCurrentPage(1);
+          }}
+          className="w-full h-11 bg-slate-50 border border-slate-100 rounded-xl pl-11 pr-4 text-sm font-medium focus:ring-2 focus:ring-[var(--aduti-primary)]/10 focus:border-[var(--aduti-primary)]/50 transition-all outline-none"
+        />
+      </div>
+
+      {filteredBinomes.length === 0 ? (
+        <div className="py-12 border-2 border-dashed border-slate-100 rounded-[2rem] flex flex-col items-center justify-center text-center">
+            <div className="size-12 bg-slate-50 rounded-2xl flex items-center justify-center mb-3">
+                <UserSearch className="w-6 h-6 text-slate-300" />
+            </div>
+            <p className="text-slate-400 text-sm font-medium">Aucun binôme ne correspond à &quot;{searchQuery}&quot;</p>
         </div>
-      ))}
+      ) : (
+        <>
+          <div className="space-y-3">
+            {currentBinomes.map((b) => (
+              <div
+                key={b.id}
+                className="flex items-center gap-3 sm:gap-6 p-3 rounded-xl border border-slate-100 hover:border-[var(--aduti-primary)]/20 hover:bg-[var(--aduti-primary)]/5 transition-all animate-in fade-in slide-in-from-bottom-2 duration-300"
+              >
+                <MemberChip member={b.parrain} badge="Parrain" badgeColor="blue" />
+                <div className="flex-1 flex items-center justify-center">
+                  <div className="h-[1px] flex-1 bg-slate-100 hidden sm:block" />
+                  <Handshake className="w-5 h-5 text-[var(--aduti-primary)] mx-4 shrink-0" />
+                  <div className="h-[1px] flex-1 bg-slate-100 hidden sm:block" />
+                </div>
+                <MemberChip member={b.filleul} badge="Filleul" badgeColor="orange" />
+              </div>
+            ))}
+          </div>
+
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between pt-4 border-t border-slate-100 mt-6">
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                Page {currentPage} sur {totalPages}
+              </p>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  disabled={currentPage === 1}
+                  className="p-2 rounded-lg border border-slate-200 text-slate-600 disabled:opacity-40 hover:bg-slate-50 transition-colors"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                  disabled={currentPage === totalPages}
+                  className="p-2 rounded-lg border border-slate-200 text-slate-600 disabled:opacity-40 hover:bg-slate-50 transition-colors"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 }
+
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogTitle, 
+  DialogTrigger 
+} from "@/components/ui/dialog";
 
 function MembersTab({
   members,
@@ -410,17 +513,34 @@ function MembersTab({
                 : "border-slate-200 hover:border-[var(--aduti-primary)]/30"
             }`}
           >
-            <div className="relative w-10 h-10 rounded-full overflow-hidden bg-gradient-to-br from-[var(--aduti-primary)] to-indigo-500 shrink-0">
+            <div className="relative w-10 h-10 rounded-full overflow-hidden bg-gradient-to-br from-[var(--aduti-primary)] to-indigo-500 shrink-0 group/avatar">
               {m.photo_url ? (
-                <Image src={m.photo_url} alt={m.name} fill className="object-cover" />
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button className="w-full h-full relative cursor-zoom-in outline-none block border-0 bg-transparent p-0 m-0">
+                      <Image src={m.photo_url} alt={`${m.last_name.toUpperCase()} ${m.first_name}`} fill className="object-cover transition-transform duration-500 group-hover/avatar:scale-110" />
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-[80vw] md:max-w-fit border-none bg-transparent shadow-none p-0 flex justify-center items-center h-[80vh] z-[100]">
+                    <DialogTitle className="sr-only">Photo de {m.last_name.toUpperCase()} {m.first_name}</DialogTitle>
+                    <Image 
+                      src={m.photo_url} 
+                      alt={`${m.last_name.toUpperCase()} ${m.first_name}`} 
+                      width={1000} 
+                      height={1000} 
+                      className="max-h-full max-w-full w-auto h-auto object-contain rounded-2xl shadow-2xl" 
+                      quality={100}
+                    />
+                  </DialogContent>
+                </Dialog>
               ) : (
                 <span className="absolute inset-0 flex items-center justify-center text-sm font-bold text-white">
-                  {m.name.slice(0, 1).toUpperCase()}
+                  {m.first_name.charAt(0).toUpperCase()}
                 </span>
               )}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-slate-800 truncate">{m.name}</p>
+              <p className="text-sm font-semibold text-slate-800 truncate">{m.last_name.toUpperCase()} {m.first_name}</p>
               <p className="text-xs text-slate-400 truncate">{m.promo_name}</p>
             </div>
             {isBinomed && (
@@ -451,16 +571,33 @@ function MemberChip({
 
   return (
     <div className="flex flex-col items-center gap-1.5 w-28 sm:w-36">
-      <div className="relative w-12 h-12 rounded-full overflow-hidden bg-gradient-to-br from-slate-300 to-slate-400 shadow">
+      <div className="relative w-12 h-12 rounded-full overflow-hidden bg-gradient-to-br from-slate-300 to-slate-400 shadow group/avatar">
         {member.photo_url ? (
-          <Image src={member.photo_url} alt={member.name} fill className="object-cover" />
+          <Dialog>
+            <DialogTrigger asChild>
+              <button className="w-full h-full relative cursor-zoom-in outline-none block border-0 bg-transparent p-0 m-0 text-left">
+                <Image src={member.photo_url} alt={`${member.last_name.toUpperCase()} ${member.first_name}`} fill className="object-cover transition-transform duration-500 group-hover/avatar:scale-110" />
+              </button>
+            </DialogTrigger>
+            <DialogContent className="max-w-[80vw] md:max-w-fit border-none bg-transparent shadow-none p-0 flex justify-center items-center h-[80vh] z-[100]">
+              <DialogTitle className="sr-only">Photo de {member.last_name.toUpperCase()} {member.first_name}</DialogTitle>
+              <Image 
+                src={member.photo_url} 
+                alt={`${member.last_name.toUpperCase()} ${member.first_name}`} 
+                width={1000} 
+                height={1000} 
+                className="max-h-full max-w-full w-auto h-auto object-contain rounded-2xl shadow-2xl" 
+                quality={100}
+              />
+            </DialogContent>
+          </Dialog>
         ) : (
           <span className="absolute inset-0 flex items-center justify-center text-lg font-bold text-white">
-            {member.name.slice(0, 1).toUpperCase()}
+            {member.first_name.charAt(0).toUpperCase()}
           </span>
         )}
       </div>
-      <p className="text-xs font-bold text-slate-800 text-center line-clamp-1">{member.name}</p>
+      <p className="text-xs font-bold text-slate-800 text-center line-clamp-1">{member.last_name.toUpperCase()} {member.first_name}</p>
       <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${colorMap[badgeColor]}`}>
         {badge}
       </span>

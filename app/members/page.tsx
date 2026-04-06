@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Search } from "lucide-react";
 
-import { Input } from "@/components/ui/input";
+import { AutoSubmitInput } from "@/components/ui/auto-submit-input";
 import { AutoSubmitSelect } from "@/components/ui/auto-submit-select";
 import { prisma } from "@/lib/prisma";
 import { MaterialIcon } from "@/components/icons/material-icon";
@@ -30,7 +30,8 @@ export default async function MembersPage({
 
   if (search) {
     where.OR = [
-      { name: { contains: search, mode: "insensitive" } },
+      { first_name: { contains: search, mode: "insensitive" } },
+      { last_name: { contains: search, mode: "insensitive" } },
       { email: { contains: search, mode: "insensitive" } },
       // On peut ajouter la recherche par "poste" ou "current_job_title" si besoin
     ];
@@ -107,11 +108,12 @@ export default async function MembersPage({
               <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400">
                 <Search className="w-5 h-5 text-slate-400" />
               </div>
-              <Input
+              <AutoSubmitInput
                 name="search"
                 className="block w-full pl-12 pr-4 py-4 h-14 bg-slate-50/50 border border-slate-100 rounded-2xl text-slate-900 placeholder-slate-400 focus:ring-8 focus:ring-[var(--aduti-primary)]/5 focus:border-[var(--aduti-primary)]/30 transition-all text-base hover:bg-white hover:border-slate-200 shadow-[0_2px_10px_rgba(0,0,0,0.02)]"
-                placeholder="Recherche"
+                placeholder="Rechercher un membre"
                 defaultValue={search}
+                debounceMs={400}
               />
               <button type="submit" className="hidden" />
             </form>
@@ -126,8 +128,8 @@ export default async function MembersPage({
                   ] },
                   { name: "gender", defaultValue: gender, options: [
                     { value: "", label: "Tous Genres" },
-                    { value: "MALE", label: "Hommes" },
-                    { value: "FEMALE", label: "Femmes" },
+                    { value: "MALE", label: "Masculin" },
+                    { value: "FEMALE", label: "Féminin" },
                   ] },
                 ].map((filter) => (
                   <form key={filter.name} className="relative flex-1 min-w-[calc(50%-6px)] sm:min-w-[160px] group/select" method="GET">
@@ -201,28 +203,28 @@ export default async function MembersPage({
                       )}
                     </div>
 
-                    <div className="relative mt-8 mb-6 pointer-events-none">
+                    <Link href={`/members/${member.slug ?? member.id}`} className="relative mt-8 mb-6 block outline-none">
                       <div className="w-32 h-32 rounded-full p-1 bg-gradient-to-tr from-slate-100 via-white to-slate-100 group-hover:from-[var(--aduti-primary)]/20 group-hover:to-[var(--aduti-secondary)]/20 transition-all duration-700 shadow-md">
                         <div className="w-full h-full rounded-full bg-white overflow-hidden ring-4 ring-white group-hover:ring-transparent transition-all relative">
                           {member.photo_url ? (
                             <Image
-                              alt={`Photo de profil de ${member.name}`}
+                              alt={`Photo de profil de ${member.last_name?.toUpperCase()} ${member.first_name}`}
                               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 grayscale-[0.1] group-hover:grayscale-0"
                               src={member.photo_url}
                               fill
                             />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300 text-4xl font-black group-hover:scale-110 transition-transform">
-                              {member.name.charAt(0).toUpperCase()}
+                              {member.first_name?.charAt(0).toUpperCase()}
                             </div>
                           )}
                           <div className="absolute inset-0 bg-[var(--aduti-primary)]/0 group-hover:bg-[var(--aduti-primary)]/5 transition-colors duration-500" />
                         </div>
                       </div>
-                    </div>
+                    </Link>
 
-                    <h3 className="text-xl font-bold text-slate-900 group-hover:text-[var(--aduti-primary)] transition-colors tracking-tight truncate w-full flex items-center justify-center gap-2" title={member.name}>
-                      {member.name}
+                    <h3 className="text-xl font-bold text-slate-900 group-hover:text-[var(--aduti-primary)] transition-colors tracking-tight truncate w-full flex items-center justify-center gap-2" title={`${member.last_name?.toUpperCase()} ${member.first_name}`}>
+                      {member.last_name?.toUpperCase()} {member.first_name}
                       {member.gender === "FEMALE" && (
                         <MaterialIcon name="female" className="w-[18px] h-[18px] text-rose-400" />
                       )}

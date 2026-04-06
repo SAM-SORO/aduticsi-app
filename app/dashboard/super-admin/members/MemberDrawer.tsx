@@ -36,6 +36,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { SelectField } from '@/components/ui/select-field'
@@ -44,7 +45,8 @@ import { SelectField } from '@/components/ui/select-field'
 
 export interface DrawerMember {
   id: string
-  name: string
+  first_name: string
+  last_name: string
   email: string
   role: 'MEMBER' | 'ADMIN' | 'SUPER_ADMIN'
   status: 'STUDENT' | 'ALUMNI'
@@ -53,6 +55,7 @@ export interface DrawerMember {
   photo_url?: string | null
   phone?: string | null
   linkedin_url?: string | null
+  github_url?: string | null
   portfolio_url?: string | null
   youtube_url?: string | null
   description?: string | null
@@ -83,17 +86,12 @@ const STATUS_LABELS: Record<string, string> = {
   ALUMNI: 'Alumni',
 }
 const GENDER_LABELS: Record<string, string> = {
-  MALE: 'Homme',
-  FEMALE: 'Femme',
+  MALE: 'Masculin',
+  FEMALE: 'Féminin',
 }
 
-function getInitials(name: string) {
-  return name
-    .split(' ')
-    .map((n) => n[0])
-    .join('')
-    .toUpperCase()
-    .slice(0, 2)
+function getInitials(firstName: string, lastName: string) {
+  return (firstName.charAt(0) + lastName.charAt(0)).toUpperCase()
 }
 
 function formatDate(d: Date) {
@@ -295,15 +293,32 @@ export function MemberDrawer({ member, postes, onClose, canEdit = true }: Member
                   <div className="p-6 space-y-6">
                     {/* Avatar + Identity */}
                     <div className="flex items-center gap-4">
-                      <div className="w-20 h-20 rounded-2xl overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center text-slate-500 font-bold text-2xl shrink-0 border border-slate-100">
+                      <div className="w-20 h-20 rounded-2xl overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center text-slate-500 font-bold text-2xl shrink-0 border border-slate-100 relative group/avatar">
                         {member.photo_url ? (
-                          <Image src={member.photo_url} alt={member.name} width={80} height={80} className="object-cover w-full h-full" />
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <button className="w-full h-full relative cursor-zoom-in outline-none group/btn block border-0 bg-transparent p-0 m-0 text-left">
+                                <Image src={member.photo_url} alt={`${member.last_name?.toUpperCase()} ${member.first_name}`} width={80} height={80} className="object-cover w-full h-full transition-transform duration-500 group-hover/btn:scale-110" />
+                              </button>
+                            </DialogTrigger>
+                            <DialogContent className="max-w-[80vw] md:max-w-fit border-none bg-transparent shadow-none p-0 flex justify-center items-center h-[80vh] z-[100]">
+                              <DialogTitle className="sr-only">Photo de profil de {member.last_name?.toUpperCase()} {member.first_name}</DialogTitle>
+                              <Image 
+                                src={member.photo_url} 
+                                alt={`${member.last_name?.toUpperCase()} ${member.first_name}`} 
+                                width={1000} 
+                                height={1000} 
+                                className="max-h-full max-w-full w-auto h-auto object-contain rounded-2xl shadow-2xl" 
+                                quality={100}
+                              />
+                            </DialogContent>
+                          </Dialog>
                         ) : (
-                          getInitials(member.name)
+                          getInitials(member.first_name, member.last_name)
                         )}
                       </div>
                       <div className="min-w-0">
-                        <h3 className="text-xl font-bold text-slate-900 truncate">{member.name}</h3>
+                        <h3 className="text-xl font-bold text-slate-900 truncate">{member.last_name?.toUpperCase()} {member.first_name}</h3>
                         <p className="text-sm text-slate-500 truncate">{member.email}</p>
                         <div className="flex flex-wrap gap-1.5 mt-2">
                           <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider border ${
@@ -344,6 +359,9 @@ export function MemberDrawer({ member, postes, onClose, canEdit = true }: Member
                           )}
                           {member.linkedin_url && (
                             <ContactLink href={member.linkedin_url} icon={Linkedin} label="LinkedIn" external />
+                          )}
+                          {member.github_url && (
+                            <ContactLink href={member.github_url} icon={Link} label="GitHub" external />
                           )}
                           {member.portfolio_url && (
                             <ContactLink href={member.portfolio_url} icon={Link} label="Portfolio" external />
@@ -425,8 +443,8 @@ export function MemberDrawer({ member, postes, onClose, canEdit = true }: Member
                         value={editGender}
                         options={[
                           { value: 'none', label: 'Non renseigné' },
-                          { value: 'MALE', label: 'Homme' },
-                          { value: 'FEMALE', label: 'Femme' },
+                          { value: 'MALE', label: 'Masculin' },
+                          { value: 'FEMALE', label: 'Féminin' },
                         ]}
                         onChange={handleGenderChange}
                         disabled={isPending}
@@ -523,7 +541,7 @@ export function MemberDrawer({ member, postes, onClose, canEdit = true }: Member
               </DialogHeader>
               <p className="text-slate-500 leading-relaxed">
                 Voulez-vous vraiment supprimer{' '}
-                <span className="font-bold text-slate-900">&quot;{member?.name}&quot;</span> ?{' '}
+                <span className="font-bold text-slate-900">&quot;{member?.first_name} {member?.last_name}&quot;</span> ?{' '}
                 Toutes ses données seront effacées. Cette action est irréversible.
               </p>
             </div>

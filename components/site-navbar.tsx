@@ -36,7 +36,7 @@ export function SiteNavbar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState<AuthUser | null>(null);
-  const [member, setMember] = useState<{name: string | null; role: string; function: string; photo_url: string | null; email: string} | null>(null);
+  const [member, setMember] = useState<{first_name: string | null; last_name: string | null; role: string; function: string; photo_url: string | null; email: string} | null>(null);
   const [loading, setLoading] = useState(true);
   
   // Hide-on-scroll state
@@ -143,12 +143,14 @@ export function SiteNavbar() {
                 {member.photo_url ? (
                   <Image src={member.photo_url} alt="Profil" width={36} height={36} className="object-cover w-full h-full" />
                 ) : (
-                  member.name?.slice(0, 1).toUpperCase() || "A"
+                  (member.first_name || "A").slice(0, 1).toUpperCase()
                 )}
               </div>
               <div className="hidden md:block text-left">
                 <p className="text-xs font-bold text-slate-900 leading-none mb-0.5 max-w-[120px] truncate">
-                  {member.name || "Utilisateur"}
+                  {member.first_name && member.last_name 
+                    ? `${member.last_name.toUpperCase()} ${member.first_name}` 
+                    : (member.first_name || "Utilisateur")}
                 </p>
                 <p className="text-[10px] text-slate-500 font-medium leading-none uppercase tracking-wider">
                   {member.role === "SUPER_ADMIN" ? "Administrateur" : member.role === "ADMIN" ? "Admin" : member.function !== "NONE" ? "Bureau" : "Membre"}
@@ -159,7 +161,9 @@ export function SiteNavbar() {
           <DropdownMenuContent align="end" className="w-56 z-[100]">
             <DropdownMenuLabel>
               <div className="flex flex-col space-y-1">
-                <p className="text-sm font-medium leading-none">{member.name}</p>
+                <p className="text-sm font-medium leading-none">
+                  {member.last_name?.toUpperCase()} {member.first_name}
+                </p>
                 <p className="text-xs leading-none text-muted-foreground">{member.email || user.email}</p>
               </div>
             </DropdownMenuLabel>

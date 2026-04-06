@@ -2,7 +2,8 @@ import { z } from 'zod'
 
 // Schéma de base pour un membre
 export const memberBaseSchema = z.object({
-  name: z.string().min(2, 'Le nom doit contenir au moins 2 caractères'),
+  first_name: z.string().min(2, 'Le prénom doit contenir au moins 2 caractères'),
+  last_name: z.string().min(2, 'Le nom doit contenir au moins 2 caractères'),
   email: z.string().email('Email invalide'),
   promo_id: z.string().min(1, 'Veuillez sélectionner une promotion'),
   status: z.enum(['STUDENT', 'ALUMNI']),
@@ -37,7 +38,8 @@ export const createMemberSchema = z.discriminatedUnion('status', [
 // Schéma pour la mise à jour d'un membre
 export const updateMemberSchema = z.object({
   id: z.string(),
-  name: z.string().min(2).optional(),
+  first_name: z.string().min(2).optional(),
+  last_name: z.string().min(2).optional(),
   email: z.string().email().optional(),
   promo_id: z.string().optional(),
   status: z.enum(['STUDENT', 'ALUMNI']).optional(),

@@ -9,7 +9,8 @@ export type Gender = 'MALE' | 'FEMALE'
 export interface Member {
   id: string
   email: string
-  name: string
+  first_name: string
+  last_name: string
   promo_id: string
   role: MemberRole
   function: MemberFunction

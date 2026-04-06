@@ -60,10 +60,12 @@ export async function getProfile() {
   }
   
   export async function updateProfile(data: {
-    name?: string;
+    first_name?: string;
+    last_name?: string;
     phone?: string;
     portfolio_url?: string;
     linkedin_url?: string;
+    github_url?: string;
     youtube_url?: string;
     current_job_title?: string;
     current_job_description?: string;
@@ -81,10 +83,12 @@ export async function getProfile() {
       await prisma.member.update({
         where: { id: user.id },
         data: {
-          name: data.name,
+          first_name: data.first_name,
+          last_name: data.last_name,
           phone: data.phone,
           portfolio_url: data.portfolio_url,
           linkedin_url: data.linkedin_url,
+          github_url: data.github_url,
           youtube_url: data.youtube_url,
           current_job_title: data.current_job_title,
           current_job_description: data.current_job_description,
@@ -113,15 +117,15 @@ export async function getProfile() {
     const file = formData.get('file') as File
     if (!file) return { error: 'Aucun fichier fourni' }
   
-    // Récupérer le nom du membre pour construire un nom de fichier lisible
     const member = await prisma.member.findUnique({
       where: { id: user.id },
-      select: { name: true }
+      select: { first_name: true, last_name: true }
     })
   
     const fileExt = file.name.split('.').pop() ?? 'jpg'
-    // Ex: "sam-soro_20260404-213500.jpg"
-    const fileName = buildStorageName(member?.name ?? user.id, fileExt)
+    // Ex: "jean-dupont_20260404-213500.jpg"
+    const fullName = member ? `${member.first_name}-${member.last_name}` : user.id;
+    const fileName = buildStorageName(fullName, fileExt)
     const filePath = `avatars/${fileName}`
   
     try {

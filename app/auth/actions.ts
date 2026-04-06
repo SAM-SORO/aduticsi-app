@@ -49,7 +49,7 @@ export async function login(data: LoginInput) {
   try {
     const member = await prisma.member.findUnique({
       where: { id: authData.user.id },
-      select: { id: true, name: true },
+      select: { id: true, first_name: true, last_name: true },
     })
 
     if (!member) {
@@ -58,7 +58,7 @@ export async function login(data: LoginInput) {
       return { error: "Accès refusé. Seuls les membres de l'association peuvent se connecter." }
     }
 
-    logger.info({ userId: member.id, name: member.name }, 'Login successful, member found');
+    logger.info({ userId: member.id, first_name: member.first_name, last_name: member.last_name }, 'Login successful, member found');
 
   } catch (err) {
     logger.error({ err, userId: authData.user.id }, 'Error during Member table check');
@@ -90,7 +90,6 @@ export async function signup(data: RegisterInput & { captchaToken?: string }) {
   }
 
   const { email, password, first_name, last_name, promo_id, status, gender, token } = result.data
-  const fullName = `${last_name.toUpperCase()} ${first_name}`
 
   if (!token) {
     return { error: "Un lien d'invitation valide est requis pour s'enregistrer." }
@@ -133,7 +132,8 @@ export async function signup(data: RegisterInput & { captchaToken?: string }) {
       options: {
         emailRedirectTo: redirectUrl,
         data: {
-          name: fullName,
+          first_name,
+          last_name,
           promo_id,
           status: status || 'STUDENT',
           gender: gender || null, // Convert empty string or falsy value to null for Prisma

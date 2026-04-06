@@ -58,7 +58,8 @@ model Promotion {
 model Member {
   id              String          @id @default(cuid())
   email           String          @unique
-  name            String
+  first_name      String
+  last_name       String
   promo_id        String
   role            MemberRole      @default(MEMBER)
   function        MemberFunction  @default(NONE)
@@ -75,6 +76,7 @@ model Member {
   portfolio_url   String?
   youtube_url     String?
   linkedin_url    String?
+  github_url      String?
   
   // Informations alumni
   current_job_title String?

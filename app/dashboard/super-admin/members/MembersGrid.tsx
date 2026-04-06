@@ -14,13 +14,10 @@ interface MembersGridProps {
 export function MembersGrid({ members, postes }: MembersGridProps) {
   const [selectedMember, setSelectedMember] = useState<DrawerMember | null>(null)
 
-  function getInitials(name: string) {
-    return name
-      .split(' ')
-      .map((n) => n[0])
-      .join('')
-      .toUpperCase()
-      .slice(0, 2)
+  function getInitials(m: DrawerMember) {
+    const f = m.first_name?.[0] || ""
+    const l = m.last_name?.[0] || ""
+    return (f + l).toUpperCase() || "?"
   }
 
   return (
@@ -72,20 +69,20 @@ export function MembersGrid({ members, postes }: MembersGridProps) {
               <div className="w-20 h-20 rounded-full p-1 bg-slate-50 mb-4 relative shadow-sm">
                 {m.photo_url ? (
                   <div className="w-full h-full rounded-full overflow-hidden border-2 border-white bg-slate-100">
-                    <Image src={m.photo_url} alt={m.name} fill className="object-cover" />
+                    <Image src={m.photo_url} alt={`${m.first_name} ${m.last_name}`} fill className="object-cover" />
                   </div>
                 ) : (
                   <div className="w-full h-full rounded-full border-2 border-white bg-slate-200 flex items-center justify-center text-slate-500 font-bold text-2xl">
-                    {getInitials(m.name)}
+                    {getInitials(m)}
                   </div>
                 )}
               </div>
 
               <h3
                 className="text-base font-bold text-slate-900 group-hover:text-[var(--aduti-primary)] transition-colors truncate w-full flex items-center justify-center gap-1.5"
-                title={m.name}
+                title={`${m.last_name?.toUpperCase()} ${m.first_name}`}
               >
-                {m.name}
+                {m.last_name?.toUpperCase()} {m.first_name}
                 {m.gender === 'FEMALE' && (
                   <MaterialIcon name="female" className="w-4 h-4 text-rose-400 shrink-0" />
                 )}

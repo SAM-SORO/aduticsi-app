@@ -5,6 +5,7 @@ import type { Variants } from 'framer-motion';
 import { motion } from 'framer-motion'
 import type { Member, Poste, Promotion } from '@prisma/client'
 import { MaterialIcon } from '@/components/icons/material-icon'
+import { Dialog, DialogContent, DialogTrigger, DialogTitle } from '@/components/ui/dialog'
 import { ExpandableText } from '@/components/ui/expandable-text'
 
 type MemberWithRelations = Member & {
@@ -26,7 +27,7 @@ const fadeUp: Variants = {
 }
 
 const STATUS_LABELS: Record<string, string> = { STUDENT: 'Étudiant', ALUMNI: 'Alumni' }
-const GENDER_LABELS: Record<string, string> = { MALE: 'Homme', FEMALE: 'Femme' }
+const GENDER_LABELS: Record<string, string> = { MALE: 'Masculin', FEMALE: 'Féminin' }
 
 function SocialLink({ href, icon, label, color }: { href: string; icon: string; label: string; color: string }) {
   return (
@@ -58,7 +59,7 @@ function InfoChip({ icon, label, value }: { icon: string; label: string; value: 
 }
 
 export function MemberProfileView({ member }: MemberProfileViewProps) {
-  const hasSocials = member.linkedin_url || member.youtube_url || member.portfolio_url
+  const hasSocials = member.linkedin_url || member.youtube_url || member.portfolio_url || member.github_url
   const hasJob = member.current_job_title || member.current_job_description
 
   return (
@@ -79,7 +80,23 @@ export function MemberProfileView({ member }: MemberProfileViewProps) {
             <div className="relative w-36 h-36 md:w-44 md:h-44 p-1 bg-white rounded-[2.5rem] shadow-sm border border-slate-100 hover:shadow-md transition-shadow duration-300">
               <div className="w-full h-full rounded-[2.2rem] overflow-hidden bg-slate-50 relative">
                 {member.photo_url ? (
-                  <Image src={member.photo_url} alt={member.name} fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <button className="w-full h-full relative cursor-zoom-in outline-none group/btn block border-0 bg-transparent p-0 m-0 text-left">
+                        <Image src={member.photo_url} alt={`${member.last_name?.toUpperCase()} ${member.first_name}`} fill className="object-cover transition-transform duration-500 group-hover/btn:scale-105" />
+                      </button>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-[90vw] md:max-w-fit border-none bg-transparent shadow-none p-0 flex justify-center items-center h-[90vh]">
+                      <DialogTitle className="sr-only">Photo de profil de {member.last_name?.toUpperCase()} {member.first_name}</DialogTitle>
+                      <Image 
+                        src={member.photo_url} 
+                        alt={`${member.last_name?.toUpperCase()} ${member.first_name}`} 
+                        width={1200}                         height={1200} 
+                        className="max-h-full max-w-full w-auto h-auto object-contain rounded-2xl shadow-2xl" 
+                        quality={100}
+                      />
+                    </DialogContent>
+                  </Dialog>
                 ) : (
                   <div className="w-full h-full flex items-center justify-center bg-gradient-to-b from-slate-50 to-slate-100">
                     <MaterialIcon name="person" className="w-16 h-16 md:w-20 md:h-20 text-slate-300/80" />
@@ -92,7 +109,9 @@ export function MemberProfileView({ member }: MemberProfileViewProps) {
           {/* Identity Section */}
           <div className="space-y-4 py-2 flex-1 w-full min-w-0">
             <div>
-              <h2 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight break-words">{member.name}</h2>
+              <h2 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight break-words">
+                {member.last_name?.toUpperCase()} {member.first_name}
+              </h2>
               {member.current_job_title && (
                 <p className="text-[var(--aduti-primary)] font-bold text-lg mt-1 break-words">{member.current_job_title}</p>
               )}
@@ -200,6 +219,14 @@ export function MemberProfileView({ member }: MemberProfileViewProps) {
             )}
             {member.portfolio_url && (
               <SocialLink href={member.portfolio_url} icon="language" label="Portfolio" color="bg-slate-50 border-slate-200 text-slate-700 hover:border-slate-400" />
+            )}
+            {member.github_url && (
+              <SocialLink 
+                href={member.github_url.startsWith('http') ? member.github_url : `https://github.com/${member.github_url}`} 
+                icon="code" 
+                label="GitHub" 
+                color="bg-slate-900 border-slate-800 text-white hover:bg-black" 
+              />
             )}
           </div>
         </motion.div>

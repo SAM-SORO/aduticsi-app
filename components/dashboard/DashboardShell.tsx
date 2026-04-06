@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Menu, X, User, LogOut, Settings } from "lucide-react";
 
+import { DashboardSidebar } from "./Sidebar";
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
@@ -13,12 +14,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { logout } from "@/app/auth/actions";
 
-import { DashboardSidebar } from "./Sidebar";
 
 interface DashboardShellProps {
   children: React.ReactNode;
   member: {
-    name: string | null;
+    first_name: string | null;
+    last_name: string | null;
     email: string;
     role: string;
   };
@@ -102,11 +103,13 @@ export function DashboardShell({
               <DropdownMenuTrigger asChild>
                 <button className="flex items-center gap-3 p-1.5 rounded-full hover:bg-slate-100 transition-all group border border-transparent hover:border-slate-200">
                   <div className="size-9 rounded-full bg-[var(--aduti-primary)]/10 text-[var(--aduti-primary)] flex items-center justify-center font-bold text-sm overflow-hidden shrink-0 group-hover:bg-[var(--aduti-primary)] group-hover:text-white transition-colors">
-                    {member.name?.slice(0, 1).toUpperCase() || "A"}
+                    {member.first_name?.slice(0, 1).toUpperCase() || "A"}
                   </div>
                   <div className="hidden md:block text-left">
                     <p className="text-xs font-bold text-slate-900 leading-none mb-0.5">
-                      {member.name || "Super Admin"}
+                      {member.first_name && member.last_name 
+                        ? `${member.last_name.toUpperCase()} ${member.first_name}` 
+                        : member.first_name || "Super Admin"}
                     </p>
                     <p className="text-[10px] text-slate-500 font-medium leading-none uppercase tracking-wider">
                       {member.role === "SUPER_ADMIN" ? "Administrateur" : member.role}
@@ -117,7 +120,7 @@ export function DashboardShell({
               <DropdownMenuContent align="end" className="w-56">
                 <DropdownMenuLabel>
                   <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">{member.name}</p>
+                    <p className="text-sm font-medium leading-none">{member.last_name?.toUpperCase()} {member.first_name}</p>
                     <p className="text-xs leading-none text-muted-foreground">{member.email}</p>
                   </div>
                 </DropdownMenuLabel>

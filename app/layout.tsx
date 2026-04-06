@@ -17,10 +17,13 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_BASE_URL || 
+    (process.env.NODE_ENV === "development" ? "http://localhost:3000" : "https://aduticsi.com")
+  ),
   title: "ADUTI - Association des DUT et DTS en Informatique de l'INP-HB",
   description:
-    "Plateforme officielle de l'Association des DUT et DTS en Informatique de l'INP-HB : apprenez-en plus sur l'association et découvrez les membres, les promotions et les différentes activités de la communauté",
+    "Plateforme officielle de l'Association des DUT et DTS en Informatique de l'INP-HB : Apprenez-en plus sur l'association et découvrez les membres, les promotions et les différentes activités de la communauté",
   applicationName: "Aduticsi",
   authors: [{ name: "ADUTI", url: "https://aduticsi.com" }],
   generator: "Next.js",

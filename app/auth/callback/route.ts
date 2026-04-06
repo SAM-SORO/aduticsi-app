@@ -38,7 +38,7 @@ export async function GET(request: Request) {
       if (!existingMember) {
         logger.info({ userId: user.id }, 'Auth Callback: Creating new member in Prisma');
         
-        const { name, promo_id, status, gender, invitation_token } = user.user_metadata
+        const { first_name, last_name, name, promo_id, status, gender, invitation_token } = user.user_metadata
 
         if (!invitation_token) {
           logger.warn({ userId: user.id }, 'Auth Callback: Missing invitation token in metadata');
@@ -50,14 +50,18 @@ export async function GET(request: Request) {
         const sanitizedGender = gender ? (gender as string).toUpperCase() as 'MALE' | 'FEMALE' : null;
 
         // Final check that we have Essential data
-        if (!name || !promo_id) {
-          logger.error({ name, promo_id }, 'Auth Callback ERROR: Missing name or promo_id');
+        const effectiveFirstName = first_name || (name ? name.split(' ').slice(1).join(' ') : 'Prénom');
+        const effectiveLastName = last_name || (name ? name.split(' ')[0] : 'Nom');
+
+        if ((!first_name && !last_name && !name) || !promo_id) {
+          logger.error({ first_name, last_name, name, promo_id }, 'Auth Callback ERROR: Missing name components or promo_id');
         } else {
           try {
-            logger.info({ id: user.id, name, promo_id, sanitizedStatus, sanitizedGender }, 'Auth Callback: Attempting Prisma creation');
+            logger.info({ id: user.id, effectiveFirstName, effectiveLastName, promo_id, sanitizedStatus, sanitizedGender }, 'Auth Callback: Attempting Prisma creation');
             
-            // Générer un slug unique pour l'URL du profil
-            const slug = await generateUniqueSlug(name, async (candidate) => {
+            // Générer un slug unique pour l'URL du profil (ex: nom-prenom)
+            const slugBase = `${effectiveLastName} ${effectiveFirstName}`;
+            const slug = await generateUniqueSlug(slugBase, async (candidate) => {
               const existing = await prisma.member.findUnique({ where: { slug: candidate } })
               return !!existing
             })
@@ -66,7 +70,8 @@ export async function GET(request: Request) {
               data: {
                 id: user.id,
                 email: user.email!,
-                name,
+                first_name: effectiveFirstName,
+                last_name: effectiveLastName,
                 promo_id,
                 status: sanitizedStatus,
                 gender: sanitizedGender,

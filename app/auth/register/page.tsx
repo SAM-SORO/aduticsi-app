@@ -399,8 +399,8 @@ function RegisterContent() {
                           {...register("gender")}
                         >
                           <option value="">Sélectionner</option>
-                          <option value="MALE">Homme</option>
-                          <option value="FEMALE">Femme</option>
+                          <option value="MALE">Masculin</option>
+                          <option value="FEMALE">Féminin</option>
                         </select>
                         <div className="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-slate-400">
                           <MaterialIcon name="expand_more" className="w-5 h-5" />

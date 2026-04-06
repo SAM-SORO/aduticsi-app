@@ -4,7 +4,6 @@ import { getProfile } from "./actions";
 import { ProfileContent } from "./ProfileContent";
 import { BackButton } from "@/components/ui/back-button";
 
-import { DashboardLayout } from "@/components/dashboard/DashboardShell";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function ProfilePage() {
@@ -21,24 +20,7 @@ export default async function ProfilePage() {
     redirect("/auth/login");
   }
 
-  // Si c'est un admin, on affiche avec la sidebar du dashboard
-  const isAdmin = profile.role === "ADMIN" || profile.role === "SUPER_ADMIN";
-
-  if (isAdmin) {
-    return (
-      <DashboardLayout
-        member={profile}
-        activePath="/profile"
-        title="Mon Profil"
-      >
-        <div className="max-w-5xl mx-auto space-y-8 animate-in fade-in duration-700">
-          <ProfileContent member={profile} />
-        </div>
-      </DashboardLayout>
-    );
-  }
-
-  // Pour les membres standards, mise en page centrée sans sidebar
+  // La page affiche désormais la mise en page centrée pour tout le monde (accès via Navbar)
   return (
     <div className="bg-slate-50 min-h-screen py-12 px-4 flex flex-col items-center">
       <div className="max-w-4xl w-full space-y-6">

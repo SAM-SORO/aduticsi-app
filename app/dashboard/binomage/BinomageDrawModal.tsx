@@ -350,6 +350,13 @@ export function BinomageDrawModal({
 
 // ─── BigAvatarCard ────────────────────────────────────────────────────────────
 
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogTitle, 
+  DialogTrigger 
+} from "@/components/ui/dialog";
+
 function BigAvatarCard({
   label,
   promoName,
@@ -372,7 +379,7 @@ function BigAvatarCard({
 
       {/* Grand cercle avatar */}
       <div
-        className={`relative w-36 h-36 sm:w-48 sm:h-48 rounded-full overflow-hidden border-4 border-white shadow-2xl ring-4 ${ringColor} bg-gradient-to-br ${gradient} transition-all duration-500 ${
+        className={`relative w-36 h-36 sm:w-48 sm:h-48 rounded-full overflow-hidden border-4 border-white shadow-2xl ring-4 ${ringColor} bg-gradient-to-br ${gradient} transition-all duration-500 scale-100 group/avatar ${
           isSuspense ? "animate-pulse scale-95" : isVisible ? "scale-100" : "scale-90 opacity-60"
         }`}
       >
@@ -386,15 +393,32 @@ function BigAvatarCard({
             style={{ animationDuration: "0.8s" }}
           />
         ) : member?.photo_url ? (
-          <Image
-            src={member.photo_url}
-            alt={member.name}
-            fill
-            className="object-cover transition-opacity duration-300"
-          />
+          <Dialog>
+            <DialogTrigger asChild>
+              <button className="w-full h-full relative cursor-zoom-in outline-none block border-0 bg-transparent p-0 m-0">
+                <Image
+                  src={member.photo_url}
+                  alt={`${member.last_name.toUpperCase()} ${member.first_name}`}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover/avatar:scale-105"
+                />
+              </button>
+            </DialogTrigger>
+            <DialogContent className="max-w-[80vw] md:max-w-fit border-none bg-transparent shadow-none p-0 flex justify-center items-center h-[80vh] z-[100]">
+              <DialogTitle className="sr-only">Photo de {member.last_name.toUpperCase()} {member.first_name}</DialogTitle>
+              <Image 
+                src={member.photo_url} 
+                alt={`${member.last_name.toUpperCase()} ${member.first_name}`} 
+                width={1200} 
+                height={1200} 
+                className="max-h-full max-w-full w-auto h-auto object-contain rounded-2xl shadow-2xl" 
+                quality={100}
+              />
+            </DialogContent>
+          </Dialog>
         ) : member ? (
           <span className="absolute inset-0 flex items-center justify-center text-5xl sm:text-6xl font-extrabold text-white">
-            {member.name.slice(0, 1).toUpperCase()}
+            {member.first_name.charAt(0).toUpperCase()}
           </span>
         ) : (
           /* État initial */
@@ -417,7 +441,7 @@ function BigAvatarCard({
         {isVisible && (
           <div className="animate-fade-in">
             <p className="text-base sm:text-lg font-extrabold text-slate-900 leading-tight line-clamp-2">
-              {member!.name}
+              {member!.last_name.toUpperCase()} {member!.first_name}
             </p>
             {promoName && (
               <span className="inline-block mt-1 text-[10px] bg-[var(--aduti-primary)]/10 text-[var(--aduti-primary)] px-2 py-0.5 rounded-full font-semibold uppercase tracking-wider">

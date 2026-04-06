@@ -19,7 +19,8 @@ import { logout } from "@/app/auth/actions";
 
 interface SidebarProps {
   member: {
-    name: string | null;
+    first_name: string | null;
+    last_name: string | null;
     email: string;
     role: string;
   };
@@ -49,11 +50,7 @@ export function Sidebar({ member, activePath, onCloseMobile }: SidebarProps) {
           { name: "Liens d'invitation", href: "/dashboard/super-admin/invitations", icon: <Link2 className="w-5 h-5" />, path: "/dashboard/super-admin/invitations" },
         ]
       : []),
-    ...(isAdmin
-      ? [
-          { name: "Membres de ma promo", href: "/dashboard/admin", icon: <Users className="w-5 h-5" />, path: "/dashboard/admin" },
-        ]
-      : []),
+
     ...(isSuperAdmin || isAdmin
       ? [
           { name: "Postes", href: "/dashboard/postes", icon: <Briefcase className="w-5 h-5" />, path: "/dashboard/postes" },
@@ -67,7 +64,7 @@ export function Sidebar({ member, activePath, onCloseMobile }: SidebarProps) {
       ? [{ name: "Messages publics", href: "/dashboard/messages", icon: <MessageSquare className="w-5 h-5" />, path: "/dashboard/messages" }]
       : []),
     ...(hasActivityFunction
-      ? [{ name: "Mon profil", href: "/profile", icon: <User className="w-5 h-5" />, path: "/profile" }]
+      ? [{ name: "Mon profil", href: "/dashboard/profile", icon: <User className="w-5 h-5" />, path: "/dashboard/profile" }]
       : []),
   ];
 
@@ -115,7 +112,7 @@ export function Sidebar({ member, activePath, onCloseMobile }: SidebarProps) {
     {/* Footer — fixed */}
     <div className="p-4 border-t border-slate-100 shrink-0">
       <a
-        href="/profile"
+        href="/dashboard/profile"
         onClick={onCloseMobile}
         className="w-full mb-2 flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors text-left"
       >
@@ -128,11 +125,13 @@ export function Sidebar({ member, activePath, onCloseMobile }: SidebarProps) {
           className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors group text-left"
         >
           <div className="size-10 rounded-full bg-slate-200 flex items-center justify-center font-bold text-slate-700 overflow-hidden shrink-0 group-hover:bg-slate-300 transition-colors">
-            {member.name?.slice(0, 1).toUpperCase() || "A"}
+            {member.first_name?.slice(0, 1).toUpperCase() || "A"}
           </div>
           <div className="overflow-hidden">
             <p className="text-sm font-semibold text-slate-900 truncate">
-              {member.name || "Super Admin"}
+              {member.first_name && member.last_name 
+                ? `${member.first_name} ${member.last_name}` 
+                : member.first_name || "Super Admin"}
             </p>
             <p className="text-xs text-slate-500 truncate">{member.email}</p>
           </div>

@@ -80,7 +80,7 @@ export function PublicationActions({ publication, activityId }: Omit<Publication
       </Button>
 
       {isDeleteDialogOpen && (
-        <div className="fixed inset-0 z-[100] bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[100] bg-slate-900/60 flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl shadow-xl max-w-sm w-full overflow-hidden animate-in zoom-in-95 duration-200">
             <div className="p-8 text-center">
               <div className="w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4">

@@ -26,7 +26,7 @@ export default async function MembersAdminPage({
 
   const currentMember = await prisma.member.findUnique({
     where: { id: user.id },
-    select: { id: true, role: true, name: true, email: true, photo_url: true },
+    select: { id: true, role: true, first_name: true, last_name: true, email: true, photo_url: true },
   });
 
   if (!currentMember || currentMember.role !== "SUPER_ADMIN") {
@@ -47,7 +47,8 @@ export default async function MembersAdminPage({
   const where: Prisma.MemberWhereInput = {};
   if (search) {
     where.OR = [
-      { name: { contains: search, mode: "insensitive" } },
+      { first_name: { contains: search, mode: "insensitive" } },
+      { last_name: { contains: search, mode: "insensitive" } },
       { email: { contains: search, mode: "insensitive" } },
     ];
   }
@@ -133,8 +134,8 @@ export default async function MembersAdminPage({
 
             <AutoSubmitSelect name="gender" defaultValue={gender} className="h-11 bg-slate-50/50 border-slate-100 rounded-xl">
               <option value="">Tous les genres</option>
-              <option value="MALE">Homme</option>
-              <option value="FEMALE">Femme</option>
+              <option value="MALE">Masculin</option>
+              <option value="FEMALE">Féminin</option>
             </AutoSubmitSelect>
           </form>
         </div>

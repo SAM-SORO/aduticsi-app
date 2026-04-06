@@ -7,7 +7,8 @@ import { prisma } from "@/lib/prisma";
 export type MemberLight = {
   id: string;
   slug: string | null;
-  name: string;
+  first_name: string;
+  last_name: string;
   photo_url: string | null;
   promo_id: string;
   promo_name: string;
@@ -34,7 +35,8 @@ export type PromoCombo = {
 function toMemberLight(m: {
   id: string;
   slug: string | null;
-  name: string;
+  first_name: string;
+  last_name: string;
   photo_url: string | null;
   promo_id: string;
   promotion: { name: string };
@@ -43,7 +45,8 @@ function toMemberLight(m: {
   return {
     id: m.id,
     slug: m.slug,
-    name: m.name,
+    first_name: m.first_name,
+    last_name: m.last_name,
     photo_url: m.photo_url,
     promo_id: m.promo_id,
     promo_name: m.promotion.name,
@@ -95,13 +98,14 @@ export async function getPresidents(): Promise<MemberLight[]> {
     select: {
       id: true,
       slug: true,
-      name: true,
+      first_name: true,
+      last_name: true,
       photo_url: true,
       promo_id: true,
       promotion: { select: { name: true } },
       poste: { select: { name: true } },
     },
-    orderBy: { promotion: { name: "asc" } },
+    orderBy: { first_name: "asc" },
   });
 
   return members.map(toMemberLight);
@@ -115,13 +119,14 @@ export async function getParrainsByCombo(parrainPromoId: string): Promise<Member
     select: {
       id: true,
       slug: true,
-      name: true,
+      first_name: true,
+      last_name: true,
       photo_url: true,
       promo_id: true,
       promotion: { select: { name: true } },
       poste: { select: { name: true } },
     },
-    orderBy: { name: "asc" },
+    orderBy: { first_name: "asc" },
   });
 
   return members.map(toMemberLight);
@@ -135,13 +140,14 @@ export async function getFieulsByCombo(filleulPromoId: string): Promise<MemberLi
     select: {
       id: true,
       slug: true,
-      name: true,
+      first_name: true,
+      last_name: true,
       photo_url: true,
       promo_id: true,
       promotion: { select: { name: true } },
       poste: { select: { name: true } },
     },
-    orderBy: { name: "asc" },
+    orderBy: { first_name: "asc" },
   });
 
   return members.map(toMemberLight);
@@ -157,7 +163,8 @@ export async function getBinomesForCombo(promoCombo: string): Promise<BinomePair
         select: {
           id: true,
           slug: true,
-          name: true,
+          first_name: true,
+          last_name: true,
           photo_url: true,
           promo_id: true,
           promotion: { select: { name: true } },
@@ -168,7 +175,8 @@ export async function getBinomesForCombo(promoCombo: string): Promise<BinomePair
         select: {
           id: true,
           slug: true,
-          name: true,
+          first_name: true,
+          last_name: true,
           photo_url: true,
           promo_id: true,
           promotion: { select: { name: true } },

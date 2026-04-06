@@ -8,7 +8,8 @@ import { updateMemberFunction } from '@/app/dashboard/super-admin/members/action
 
 interface AdminMember {
   id: string
-  name: string
+  first_name: string
+  last_name: string
   email: string
   status: 'STUDENT' | 'ALUMNI'
   function: string
@@ -24,12 +25,13 @@ export function AdminMembersGrid({ members }: AdminMembersGridProps) {
 
   const handleToggleFunction = (member: AdminMember) => {
     const nextFunction = member.function === 'GESTION_ACTIVITES' ? 'NONE' : 'GESTION_ACTIVITES'
+    const displayName = `${member.first_name} ${member.last_name}`
     startTransition(async () => {
       await updateMemberFunction(member.id, nextFunction as 'NONE' | 'GESTION_ACTIVITES')
       toast.success(
         nextFunction === 'GESTION_ACTIVITES'
-          ? `Accès accordé à ${member.name}`
-          : `Accès retiré à ${member.name}`
+          ? `Accès accordé à ${displayName}`
+          : `Accès retiré à ${displayName}`
       )
       // Refresh selected member state
       if (selectedMember?.id === member.id) {
@@ -38,8 +40,8 @@ export function AdminMembersGrid({ members }: AdminMembersGridProps) {
     })
   }
 
-  function getInitials(name: string) {
-    return name.split(' ').map((n) => n[0]).join('').toUpperCase().slice(0, 2)
+  function getInitials(firstName: string, lastName: string) {
+    return (firstName.charAt(0) + lastName.charAt(0)).toUpperCase()
   }
 
   return (
@@ -59,13 +61,13 @@ export function AdminMembersGrid({ members }: AdminMembersGridProps) {
             >
               {/* Avatar */}
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center text-slate-600 font-bold text-lg shrink-0 group-hover:from-[var(--aduti-primary)]/10 group-hover:to-[var(--aduti-primary)]/5 transition-all">
-                {getInitials(m.name)}
+                {getInitials(m.first_name, m.last_name)}
               </div>
 
               {/* Info */}
               <div className="flex-1 min-w-0">
                 <p className="font-bold text-slate-900 truncate text-sm group-hover:text-[var(--aduti-primary)] transition-colors">
-                  {m.name}
+                  {m.first_name} {m.last_name}
                 </p>
                 <p className="text-xs text-slate-500 truncate">{m.email}</p>
                 <div className="flex items-center gap-1.5 mt-1">
@@ -129,10 +131,10 @@ export function AdminMembersGrid({ members }: AdminMembersGridProps) {
                 {/* Identity */}
                 <div className="flex items-center gap-4">
                   <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[var(--aduti-primary)]/10 to-[var(--aduti-primary)]/5 flex items-center justify-center text-[var(--aduti-primary)] font-bold text-2xl shrink-0">
-                    {getInitials(selectedMember.name)}
+                    {getInitials(selectedMember.first_name, selectedMember.last_name)}
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-slate-900">{selectedMember.name}</h3>
+                    <h3 className="text-lg font-bold text-slate-900">{selectedMember.first_name} {selectedMember.last_name}</h3>
                     <p className="text-sm text-slate-500">{selectedMember.email}</p>
                     <div className="flex gap-1.5 mt-2">
                       <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider border ${

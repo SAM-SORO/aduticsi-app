@@ -89,7 +89,7 @@ export function BinomagesClient({ combos }: { combos: PromoCombo[] }) {
               >
                 {combos.map((c) => (
                   <option key={c.label} value={c.label}>
-                    {c.parrain_promo_name} & {c.filleul_promo_name}
+                    {c.parrain_promo_name} ↔ {c.filleul_promo_name}
                   </option>
                 ))}
               </select>

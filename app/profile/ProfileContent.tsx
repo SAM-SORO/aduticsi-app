@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useTransition } from 'react'
+import { useState, useRef, useTransition, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -15,17 +15,21 @@ import { ExpandableText } from '@/components/ui/expandable-text'
 import { SelectField } from '@/components/ui/select-field'
 import { logout } from '@/app/auth/actions'
 import { cn } from '@/lib/utils'
+import { Dialog, DialogContent, DialogTrigger, DialogTitle, DialogHeader } from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
 
 interface ProfileContentProps {
   member: {
     id: string;
-    name: string;
+    first_name: string | null;
+    last_name: string | null;
     email: string;
     role: string;
     status: string;
     function?: string | null;
     phone?: string | null;
     linkedin_url?: string | null;
+    github_url?: string | null;
     youtube_url?: string | null;
     portfolio_url?: string | null;
     current_job_title?: string | null;
@@ -48,7 +52,7 @@ const fadeUp: Variants = {
 }
 
 const STATUS_LABELS: Record<string, string> = { STUDENT: 'Étudiant', ALUMNI: 'Alumni' }
-const GENDER_LABELS: Record<string, string> = { MALE: 'Homme', FEMALE: 'Femme' }
+const GENDER_LABELS: Record<string, string> = { MALE: 'Masculin', FEMALE: 'Féminin' }
 
 function SocialLink({ href, icon, label, color }: { href: string; icon: string; label: string; color: string }) {
   return (
@@ -81,7 +85,7 @@ function InfoChip({ icon, label, value }: { icon: string; label: string; value: 
 
 // ── Public Preview ───────────────────────────────────────────────────────────
 function PublicPreview({ member }: { member: ProfileContentProps['member'] }) {
-  const hasSocials = member.linkedin_url || member.youtube_url || member.portfolio_url
+  const hasSocials = member.linkedin_url || member.github_url || member.youtube_url || member.portfolio_url
   const hasJob = member.current_job_title || member.current_job_description
 
   return (
@@ -104,7 +108,24 @@ function PublicPreview({ member }: { member: ProfileContentProps['member'] }) {
             <div className="relative w-32 h-32 md:w-44 md:h-44 p-1.5 bg-gradient-to-tr from-slate-100 via-white to-slate-100 rounded-[2.5rem] shadow-2xl overflow-visible border border-white/50">
               <div className="w-full h-full rounded-[2.2rem] overflow-hidden bg-slate-50 relative shadow-inner border border-slate-100/50">
                 {member.photo_url ? (
-                  <Image src={member.photo_url} alt={member.name} fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <button className="w-full h-full relative cursor-zoom-in outline-none group/btn block border-0 bg-transparent p-0 m-0 text-left">
+                        <Image src={member.photo_url} alt={`${member.last_name?.toUpperCase()} ${member.first_name}`} fill className="object-cover transition-transform duration-700 group-hover/btn:scale-105" />
+                      </button>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-[90vw] md:max-w-fit border-none bg-transparent shadow-none p-0 flex justify-center items-center h-[90vh]">
+                      <DialogTitle className="sr-only">Photo de profil</DialogTitle>
+                      <Image 
+                        src={member.photo_url} 
+                        alt={`${member.last_name?.toUpperCase()} ${member.first_name}`} 
+                        width={1200} 
+                        height={1200} 
+                        className="max-h-full max-w-full w-auto h-auto object-contain rounded-2xl shadow-2xl"
+                        quality={100} 
+                      />
+                    </DialogContent>
+                  </Dialog>
                 ) : (
                   <div className="w-full h-full flex items-center justify-center bg-gradient-to-b from-slate-50 to-slate-100">
                     <MaterialIcon name="person" className="w-16 h-16 md:w-20 md:h-20 text-slate-300/80" />
@@ -117,7 +138,9 @@ function PublicPreview({ member }: { member: ProfileContentProps['member'] }) {
           {/* Identity */}
           <div className="flex-1 w-full text-center md:text-left space-y-4 min-w-0">
             <div>
-              <h2 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight break-words">{member.name}</h2>
+              <h2 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight break-words">
+                {member.last_name?.toUpperCase()} {member.first_name}
+              </h2>
               {hasJob && (
                 <p className="text-[var(--aduti-primary)] font-bold text-lg mt-1 break-words">{member.current_job_title}</p>
               )}
@@ -214,6 +237,9 @@ function PublicPreview({ member }: { member: ProfileContentProps['member'] }) {
             {member.linkedin_url && (
               <SocialLink href={`https://linkedin.com/in/${member.linkedin_url}`} icon="work" label="LinkedIn" color="bg-blue-50 border-blue-100 text-blue-700 hover:border-blue-300" />
             )}
+            {member.github_url && (
+              <SocialLink href={`https://github.com/${member.github_url}`} icon="code" label="GitHub" color="bg-slate-900 border-slate-800 text-white hover:bg-slate-800" />
+            )}
             {member.youtube_url && (
               <SocialLink href={member.youtube_url} icon="play_circle" label="YouTube" color="bg-red-50 border-red-100 text-red-600 hover:border-red-300" />
             )}
@@ -231,12 +257,29 @@ function PublicPreview({ member }: { member: ProfileContentProps['member'] }) {
 export function ProfileContent({ member }: ProfileContentProps) {
   const [isPending, startTransition] = useTransition()
   const [photoUrl, setPhotoUrl] = useState<string | null>(member.photo_url || null)
+  const [pendingAvatarFile, setPendingAvatarFile] = useState<File | null>(null)
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [isUploading, setIsUploading] = useState(false)
+  const [isDirty, setIsDirty] = useState(false)
+  const [isTabModalOpen, setIsTabModalOpen] = useState(false)
+  const [pendingTab, setPendingTab] = useState<'preview' | 'edit' | null>(null)
   const [isCropping, setIsCropping] = useState(false)
   const [tempImageUrl, setTempImageUrl] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState<'preview' | 'edit'>('preview')
   const fileInputRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
+
+  // Protection contre le rafraîchissement/fermeture sans sauvegarde
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (isDirty) {
+        e.preventDefault()
+        e.returnValue = ''
+      }
+    }
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload)
+  }, [isDirty])
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -251,37 +294,90 @@ export function ProfileContent({ member }: ProfileContentProps) {
 
   const handleCropComplete = async (croppedBlob: Blob) => {
     setIsCropping(false)
-    setIsUploading(true)
-    try {
-      const file = new File([croppedBlob], 'avatar.jpg', { type: 'image/jpeg' })
-      const formData = new FormData()
-      formData.append('file', file)
-      const result = await uploadAvatar(formData)
-      if (result.error) {
-        toast.error(result.error)
-      } else if (result.publicUrl) {
-        setPhotoUrl(result.publicUrl)
-        toast.success('Photo de profil mise à jour')
-      }
-    } catch {
-      toast.error("Erreur lors de l'envoi de l'image")
-    } finally {
-      setIsUploading(false)
-      setTempImageUrl(null)
+    
+    // Libérer l'ancien URL d'aperçu s'il existe
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl)
     }
+
+    const localUrl = URL.createObjectURL(croppedBlob)
+    const file = new File([croppedBlob], 'avatar.jpg', { type: 'image/jpeg' })
+    
+    setPreviewUrl(localUrl)
+    setPendingAvatarFile(file)
+    setPhotoUrl(localUrl) // Afficher l'aperçu immédiatement
+    setIsDirty(true)
+    toast.info('Nouvelle photo prête à être enregistrée')
   }
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleTabChange = (tab: 'preview' | 'edit') => {
+    if (activeTab === 'edit' && tab === 'preview' && isDirty) {
+      setPendingTab(tab)
+      setIsTabModalOpen(true)
+      return
+    }
+    setActiveTab(tab)
+  }
+
+  const confirmTabChange = () => {
+    if (pendingTab) {
+      setActiveTab(pendingTab)
+      setIsDirty(false) // On accepte de perdre les changements
+    }
+    setIsTabModalOpen(false)
+    setPendingTab(null)
+  }
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
     const data = Object.fromEntries(formData.entries())
-    if (photoUrl) data.photo_url = photoUrl
+    
     startTransition(async () => {
-      const result = await updateProfile(data)
+      let finalPhotoUrl = member.photo_url || null
+
+      // Étape 1 : Si on a une image en attente, on l'upload d'abord
+      if (pendingAvatarFile) {
+        setIsUploading(true)
+        const uploadFormData = new FormData()
+        uploadFormData.append('file', pendingAvatarFile)
+        
+        try {
+          const result = await uploadAvatar(uploadFormData)
+          if (result.error) {
+            toast.error(result.error)
+            return
+          }
+          if (result.publicUrl) {
+            finalPhotoUrl = result.publicUrl
+          }
+        } catch {
+          toast.error("Erreur lors de l'envoi de l'image")
+          return
+        } finally {
+          setIsUploading(false)
+        }
+      } else {
+        // Si pas de nouvelle image, on garde l'URL actuelle
+        finalPhotoUrl = photoUrl
+      }
+
+      // Étape 2 : Mise à jour du profil complet
+      if (finalPhotoUrl) data.photo_url = finalPhotoUrl
+      
+      const result = await updateProfile(data as Parameters<typeof updateProfile>[0])
       if (result.error) {
         toast.error(result.error)
       } else {
         toast.success('Profil mis à jour avec succès')
+        // Nettoyage de l'état local
+        if (previewUrl) {
+          URL.revokeObjectURL(previewUrl)
+        }
+        setPendingAvatarFile(null)
+        setPreviewUrl(null)
+        setIsDirty(false)
+        
         router.refresh()
         setActiveTab('preview')
       }
@@ -318,32 +414,47 @@ export function ProfileContent({ member }: ProfileContentProps) {
         </button>
       </div>
 
-      {/* Tab Bar */}
-      <div className="flex gap-2 mb-6 p-1.5 bg-slate-100/70 rounded-2xl w-fit">
-        {(['preview', 'edit'] as const).map((tab) => (
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        {/* Tab Bar */}
+        <div className="flex gap-2 p-1.5 bg-slate-100/70 rounded-2xl w-fit">
+          {(['preview', 'edit'] as const).map((tab) => (
+            <button
+              key={tab}
+              onClick={() => handleTabChange(tab)}
+              className={cn(
+                "relative px-6 py-2.5 rounded-xl text-sm font-black uppercase tracking-widest transition-all duration-300",
+                activeTab === tab
+                  ? "bg-white text-slate-900 shadow-md"
+                  : "text-slate-400 hover:text-slate-600"
+              )}
+            >
+              {tab === 'preview' ? (
+                <span className="flex items-center gap-2">
+                  <MaterialIcon name="badge" className="w-4 h-4" />
+                  Aperçu Public
+                </span>
+              ) : (
+                <span className="flex items-center gap-2">
+                  <MaterialIcon name="edit" className="w-4 h-4" />
+                  Modifier
+                </span>
+              )}
+            </button>
+          ))}
+        </div>
+
+        {/* Quick Save Button (TOP) */}
+        {activeTab === 'edit' && (
           <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={cn(
-              "relative px-6 py-2.5 rounded-xl text-sm font-black uppercase tracking-widest transition-all duration-300",
-              activeTab === tab
-                ? "bg-white text-slate-900 shadow-md"
-                : "text-slate-400 hover:text-slate-600"
-            )}
+            type="submit"
+            form="profile-form"
+            disabled={isPending || isUploading}
+            className="flex items-center gap-2 px-6 py-2.5 bg-[var(--aduti-primary)] text-white text-xs font-black uppercase tracking-widest rounded-xl hover:bg-blue-600 transition-all shadow-lg shadow-blue-100 disabled:opacity-50 active:scale-95"
           >
-            {tab === 'preview' ? (
-              <span className="flex items-center gap-2">
-                <MaterialIcon name="badge" className="w-4 h-4" />
-                Aperçu Public
-              </span>
-            ) : (
-              <span className="flex items-center gap-2">
-                <MaterialIcon name="edit" className="w-4 h-4" />
-                Modifier
-              </span>
-            )}
+            {isPending ? <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <MaterialIcon name="save" className="w-4 h-4" />}
+            Mettre à jour
           </button>
-        ))}
+        )}
       </div>
 
       {/* Tab Content */}
@@ -386,12 +497,37 @@ export function ProfileContent({ member }: ProfileContentProps) {
                     <div className="relative w-36 h-36 md:w-44 md:h-44 p-1.5 bg-gradient-to-tr from-slate-100 via-white to-slate-100 rounded-[2.5rem] shadow-xl border border-white/80">
                       <div className="w-full h-full rounded-[2.2rem] overflow-hidden bg-slate-50 relative border border-slate-100/50">
                         {photoUrl ? (
-                          <Image src={photoUrl} alt="Photo de profil" fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                          <>
+                            <Image src={photoUrl} alt="Photo de profil" fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                            <Dialog>
+                              <DialogTrigger asChild>
+                                <button 
+                                  type="button"
+                                  className="absolute top-2 right-2 z-20 w-8 h-8 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center hover:bg-white/40 cursor-zoom-in"
+                                  title="Agrandir la photo"
+                                >
+                                  <MaterialIcon name="zoom_in" className="w-5 h-5" />
+                                </button>
+                              </DialogTrigger>
+                              <DialogContent className="max-w-[80vw] md:max-w-fit border-none bg-transparent shadow-none p-0 flex justify-center items-center h-[80vh] z-[100]">
+                                <DialogTitle className="sr-only">Photo de profil</DialogTitle>
+                                <Image 
+                                  src={photoUrl} 
+                                  alt="Photo de profil" 
+                                  width={1200} 
+                                  height={1200} 
+                                  className="max-h-full max-w-full w-auto h-auto object-contain rounded-2xl shadow-2xl" 
+                                  quality={100}
+                                />
+                              </DialogContent>
+                            </Dialog>
+                          </>
                         ) : (
                           <div className="w-full h-full flex items-center justify-center bg-gradient-to-b from-slate-50 to-slate-100">
                             <MaterialIcon name="person" className="w-16 h-16 md:w-20 md:h-20 text-slate-300/80" />
                           </div>
                         )}
+
                         <button
                           type="button"
                           onClick={() => fileInputRef.current?.click()}
@@ -415,7 +551,9 @@ export function ProfileContent({ member }: ProfileContentProps) {
 
                   <div className="space-y-4 py-2 flex-1 w-full min-w-0">
                     <div>
-                      <h2 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight break-words">{member.name}</h2>
+                      <h2 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight break-words">
+                        {member.last_name?.toUpperCase()} {member.first_name}
+                      </h2>
                       {member.current_job_title && (
                         <p className="text-[var(--aduti-primary)] font-bold text-lg mt-1 break-words">{member.current_job_title}</p>
                       )}
@@ -451,7 +589,12 @@ export function ProfileContent({ member }: ProfileContentProps) {
               </div>
 
               {/* Form */}
-              <form onSubmit={handleSubmit} className="p-8 md:p-10 space-y-12">
+              <form 
+                id="profile-form"
+                onSubmit={handleSubmit} 
+                onChange={() => setIsDirty(true)}
+                className="p-8 md:p-10 space-y-12"
+              >
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
                   {/* Profil Public */}
                   <div className="space-y-8">
@@ -461,10 +604,17 @@ export function ProfileContent({ member }: ProfileContentProps) {
                       </div>
                       <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">Profil Public</h3>
                     </div>
-                    <div className="space-y-2">
-                      <label className="text-xs font-black text-slate-500 uppercase tracking-wider ml-1">Nom complet</label>
-                      <input name="name" defaultValue={member.name} 
-                        className="w-full px-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all font-bold text-slate-700" />
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <label className="text-xs font-black text-slate-500 uppercase tracking-wider ml-1">Prénom</label>
+                        <input name="first_name" defaultValue={member.first_name || ''} 
+                          className="w-full px-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all text-slate-700" />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-xs font-black text-slate-500 uppercase tracking-wider ml-1">Nom</label>
+                        <input name="last_name" defaultValue={member.last_name || ''} 
+                          className="w-full px-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all text-slate-700" />
+                      </div>
                     </div>
                     <div className="space-y-2">
                       <label className="text-xs font-black text-slate-500 uppercase tracking-wider ml-1">Téléphone</label>
@@ -473,7 +623,7 @@ export function ProfileContent({ member }: ProfileContentProps) {
                           <MaterialIcon name="call" className="w-5 h-5" />
                         </div>
                         <input name="phone" defaultValue={member.phone || ''} 
-                          className="w-full pl-12 pr-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all font-bold text-slate-700" />
+                          className="w-full pl-12 pr-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all text-slate-700" />
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-4">
@@ -483,8 +633,8 @@ export function ProfileContent({ member }: ProfileContentProps) {
                         defaultValue={member.gender || ''}
                       >
                         <option value="">Non renseigné</option>
-                        <option value="MALE">Homme</option>
-                        <option value="FEMALE">Femme</option>
+                        <option value="MALE">Masculin</option>
+                        <option value="FEMALE">Féminin</option>
                       </SelectField>
                       <SelectField
                         label="Statut"
@@ -510,7 +660,15 @@ export function ProfileContent({ member }: ProfileContentProps) {
                       <div className="relative">
                         <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-black">in/</span>
                         <input name="linkedin_url" defaultValue={member.linkedin_url || ''} 
-                          className="w-full px-5 pl-12 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all font-bold text-slate-700" />
+                          className="w-full px-5 pl-12 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all text-slate-700" />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-xs font-black text-slate-500 uppercase tracking-wider ml-1">GitHub</label>
+                      <div className="relative">
+                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-black">@</span>
+                        <input name="github_url" defaultValue={member.github_url || ''} 
+                          className="w-full px-5 pl-10 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all text-slate-700" />
                       </div>
                     </div>
                     <div className="space-y-2">
@@ -520,7 +678,7 @@ export function ProfileContent({ member }: ProfileContentProps) {
                           <MaterialIcon name="play_circle" className="w-5 h-5" />
                         </div>
                         <input name="youtube_url" defaultValue={member.youtube_url || ''} 
-                          className="w-full pl-12 pr-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all font-bold text-slate-700" />
+                          className="w-full pl-12 pr-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all text-slate-700" />
                       </div>
                     </div>
                     <div className="space-y-2">
@@ -530,7 +688,7 @@ export function ProfileContent({ member }: ProfileContentProps) {
                           <MaterialIcon name="language" className="w-5 h-5" />
                         </div>
                         <input name="portfolio_url" defaultValue={member.portfolio_url || ''} 
-                          className="w-full pl-12 pr-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all font-bold text-slate-700" />
+                          className="w-full pl-12 pr-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all text-slate-700" />
                       </div>
                     </div>
                   </div>
@@ -548,12 +706,12 @@ export function ProfileContent({ member }: ProfileContentProps) {
                     <div className="space-y-2">
                       <label className="text-xs font-black text-slate-500 uppercase tracking-wider ml-1">Poste actuel</label>
                       <input name="current_job_title" defaultValue={member.current_job_title || ''} 
-                        className="w-full px-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all font-bold text-slate-700" />
+                        className="w-full px-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all text-slate-700" />
                     </div>
                     <div className="space-y-2">
                       <label className="text-xs font-black text-slate-500 uppercase tracking-wider ml-1">Description du poste</label>
                       <input name="current_job_description" defaultValue={member.current_job_description || ''} 
-                        className="w-full px-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all font-bold text-slate-700" />
+                        className="w-full px-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all text-slate-700" />
                     </div>
                   </div>
                 </div>
@@ -568,7 +726,7 @@ export function ProfileContent({ member }: ProfileContentProps) {
                   </div>
                   <div className="space-y-2">
                     <textarea name="description" defaultValue={member.description || ''} rows={5}
-                      className="w-full px-6 py-5 bg-slate-50/50 border border-slate-200 rounded-[24px] focus:border-[var(--aduti-primary)] outline-none transition-all font-bold text-slate-700 resize-none leading-relaxed" />
+                      className="w-full px-6 py-5 bg-slate-50/50 border border-slate-200 rounded-[24px] focus:border-[var(--aduti-primary)] outline-none transition-all text-slate-700 resize-none leading-relaxed" />
                   </div>
                 </div>
 
@@ -584,6 +742,42 @@ export function ProfileContent({ member }: ProfileContentProps) {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Modern Confirmation Modal */}
+      <Dialog open={isTabModalOpen} onOpenChange={setIsTabModalOpen}>
+        <DialogContent className="sm:max-w-[440px] p-0 overflow-hidden border-none shadow-2xl rounded-[2rem]">
+          <div className="bg-white p-8">
+            <div className="flex flex-col items-center text-center space-y-4">
+              <div className="w-16 h-16 rounded-2xl bg-amber-50 flex items-center justify-center text-amber-500 mb-2 rotate-3">
+                <MaterialIcon name="warning" className="h-8 w-8" />
+              </div>
+              <DialogHeader className="p-0 border-none">
+                <DialogTitle className="text-2xl font-black text-slate-900 tracking-tight whitespace-nowrap">Modifications non enregistrées</DialogTitle>
+              </DialogHeader>
+              <p className="text-slate-500 font-medium leading-relaxed">
+                Vous avez apporté des changements à votre profil qui ne sont pas encore enregistrés. Voulez-vous vraiment quitter ?
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-3 mt-8">
+              <Button
+                variant="outline"
+                className="flex-1 h-12 rounded-xl text-slate-600 font-black uppercase tracking-widest text-[10px] border-slate-200 hover:bg-slate-50"
+                onClick={() => setIsTabModalOpen(false)}
+              >
+                Rester ici
+              </Button>
+              <Button
+                variant="destructive"
+                className="flex-1 h-12 rounded-xl bg-red-600 hover:bg-red-700 text-white font-black uppercase tracking-widest text-[10px] shadow-lg shadow-red-200"
+                onClick={confirmTabChange}
+              >
+                Quitter sans sauver
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

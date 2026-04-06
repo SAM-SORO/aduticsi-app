@@ -143,8 +143,10 @@ export default function Home() {
                   {"Nos piliers d'"}<span className="text-[var(--aduti-primary)]">action</span>
                 </h2>
                 <p className="text-slate-600 text-lg leading-relaxed max-w-xl">
-                  {"L'ADUTI œuvre pour l'épanouissement académique et professionnel"}
-                  {"de ses membres à travers des actions structurées."}
+                  {"L'ADUTI a pour mission de promouvoir l'informatique au sein de l'INP-HB et au-delà, "}
+                  {"de soutenir l'insertion professionnelle des jeunes diplômés grâce à son réseau d'alumni, "}
+                  {"de valoriser les compétences numériques "}
+                  {"et de développer un esprit de solidarité entre les générations."}
                 </p>
               </div>
               <ul className="space-y-6">
