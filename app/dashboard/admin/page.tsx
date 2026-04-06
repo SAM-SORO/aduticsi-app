@@ -1,9 +1,9 @@
 import { redirect } from "next/navigation";
 
+import { AdminMembersGrid } from "./AdminMembersGrid";
 import { DashboardLayout } from "@/components/dashboard/DashboardShell";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
-import { AdminMembersGrid } from "./AdminMembersGrid";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -41,10 +41,14 @@ export default async function DashboardAdminPage() {
     prisma.activity.count({ where: { promo_id: promo.id } }),
     prisma.member.findMany({
       where: { promo_id: promo.id, role: "MEMBER" },
-      orderBy: { name: "asc" },
+      orderBy: [
+        { last_name: "asc" },
+        { first_name: "asc" }
+      ],
       select: {
         id: true,
-        name: true,
+        first_name: true,
+        last_name: true,
         email: true,
         status: true,
         function: true,

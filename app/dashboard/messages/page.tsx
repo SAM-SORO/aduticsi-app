@@ -26,7 +26,7 @@ export default async function DashboardMessagesPage({
 
   const member = await prisma.member.findUnique({
     where: { id: user.id },
-    select: { id: true, role: true, name: true, email: true },
+    select: { id: true, role: true, first_name: true, last_name: true, email: true },
   });
 
   if (!member || (member.role !== "SUPER_ADMIN" && member.role !== "ADMIN")) {

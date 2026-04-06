@@ -5,6 +5,9 @@ import { PublicationActions } from "./publication-actions";
 import { PublicationForm } from "./publication-form";
 import { ActivityForm } from "./activity-form";
 import { ActivityActions } from "./activity-actions";
+import type {
+  ActivityWithDetails,
+  PublicationWithDetails} from "./actions";
 import { DashboardLayout } from "@/components/dashboard/DashboardShell";
 import { MaterialIcon } from "@/components/icons/material-icon";
 import { Button } from "@/components/ui/button";
@@ -18,11 +21,6 @@ import {
 import { ImageGallery } from "@/components/ui/ImageGallery";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
-import {
-  ActivityWithDetails,
-  PublicationWithDetails,
-  getActivitiesPaginated,
-} from "./actions";
 
 
 export const runtime = "nodejs";
@@ -42,7 +40,7 @@ export default async function ActivitiesAdminPage({
 
   const member = await prisma.member.findUnique({
     where: { id: user.id },
-    select: { id: true, role: true, function: true, promo_id: true, name: true, email: true },
+    select: { id: true, role: true, function: true, promo_id: true, first_name: true, last_name: true, email: true },
   });
 
   const canManage =

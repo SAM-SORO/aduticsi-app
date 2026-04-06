@@ -5,12 +5,12 @@ import { useRouter } from 'next/navigation'
 
 import { toast } from 'sonner'
 
+import { Home } from 'lucide-react'
+import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { cn } from '@/lib/utils'
 import { MaterialIcon } from '@/components/icons/material-icon'
 import { BackButton } from '@/components/ui/back-button'
-import { Home } from 'lucide-react'
-import Link from 'next/link'
 
 export default function ResetPasswordPage() {
   const [isPending, startTransition] = useTransition()

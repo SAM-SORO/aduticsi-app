@@ -21,7 +21,7 @@ export function CopyButton({ text }: CopyButtonProps) {
       } else {
         throw new Error('Clipboard API unavailable')
       }
-    } catch (err) {
+    } catch {
       // Fallback for older browsers or non-secure contexts
       try {
         const textArea = document.createElement("textarea")
@@ -46,7 +46,7 @@ export function CopyButton({ text }: CopyButtonProps) {
         } else {
           toast.error("Échec de la copie.")
         }
-      } catch (fallbackErr) {
+      } catch {
         toast.error("Échec de la copie.")
       }
     }

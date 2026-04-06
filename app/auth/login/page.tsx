@@ -6,12 +6,12 @@ import { useState, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { Home } from "lucide-react";
 import { loginSchema, type LoginInput } from "@/schemas/auth.schema";
 import { login } from "@/app/auth/actions";
 import { MaterialIcon } from "@/components/icons/material-icon";
 import { cn } from "@/lib/utils";
 import { BackButton } from "@/components/ui/back-button";
-import { Home } from "lucide-react";
 
 export default function LoginPage() {
   const [isPending, startTransition] = useTransition();

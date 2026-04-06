@@ -7,8 +7,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { toast } from 'sonner'
 import { Turnstile } from '@marsidev/react-turnstile'
-import { MaterialIcon } from '@/components/icons/material-icon'
 import { sendContactMessage } from './actions'
+import { MaterialIcon } from '@/components/icons/material-icon'
 
 const contactSchema = z.object({
   name: z.string().min(2, 'Le nom doit contenir au moins 2 caractères').max(100, 'Le nom est trop long (max 100)'),

@@ -2,12 +2,11 @@ import { redirect } from "next/navigation";
 import Image from "next/image";
 import { Plus, Building2 } from "lucide-react";
 
+import { PartnerForm } from "./partner-form";
+import { PartnerTableActions } from "./partner-table-actions";
 import { DashboardLayout } from "@/components/dashboard/DashboardShell";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
-
-import { PartnerForm } from "./partner-form";
-import { PartnerTableActions } from "./partner-table-actions";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -22,7 +21,7 @@ export default async function SuperAdminPartnersPage() {
 
   const currentMember = await prisma.member.findUnique({
     where: { id: user.id },
-    select: { id: true, role: true, name: true, email: true },
+    select: { id: true, role: true, first_name: true, last_name: true, email: true },
   });
 
   if (
