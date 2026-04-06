@@ -24,13 +24,13 @@ const prisma = new PrismaClient({ adapter })
 async function main() {
   const members = await prisma.member.findMany({
     where: { slug: null },
-    select: { id: true, name: true },
+    select: { id: true, first_name: true, last_name: true },
   })
 
   console.log(`🔍 ${members.length} membre(s) sans slug trouvé(s).`)
 
   for (const member of members) {
-    const base = generateMemberSlug(member.name)
+    const base = generateMemberSlug(`${member.first_name} ${member.last_name}`)
     let slug = base
     let counter = 2
 
@@ -47,7 +47,7 @@ async function main() {
       data: { slug },
     })
 
-    console.log(`  ✅ ${member.name} → /members/${slug}`)
+    console.log(`  ✅ ${member.last_name.toUpperCase()} ${member.first_name} → /members/${slug}`)
   }
 
   console.log('\n✨ Terminé. Tous les membres ont maintenant un slug.')
