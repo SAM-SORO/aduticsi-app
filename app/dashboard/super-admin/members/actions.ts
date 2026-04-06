@@ -32,7 +32,8 @@ export async function getMembersPaginated(
 
   if (search) {
     where.OR = [
-      { name: { contains: search, mode: "insensitive" } },
+      { first_name: { contains: search, mode: "insensitive" } },
+      { last_name: { contains: search, mode: "insensitive" } },
       { email: { contains: search, mode: "insensitive" } },
     ];
   }
