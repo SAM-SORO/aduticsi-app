@@ -6,6 +6,7 @@ import { Search } from "lucide-react";
 import { MembersGrid } from "./MembersGrid";
 import { DashboardLayout } from "@/components/dashboard/DashboardShell";
 import { AutoSubmitSelect } from "@/components/ui/auto-submit-select";
+import { AutoSubmitInput } from "@/components/ui/auto-submit-input";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
 
@@ -101,13 +102,12 @@ export default async function MembersAdminPage({
             <input type="hidden" name="page" value="1" />
 
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
-              <input
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none z-10" />
+              <AutoSubmitInput
                 type="text"
                 name="search"
                 placeholder="Rechercher..."
                 defaultValue={search}
-                onBlur={(e) => (e.target.form as HTMLFormElement | null)?.requestSubmit()}
                 className="w-full pl-10 h-11 bg-slate-50/50 border border-slate-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[var(--aduti-primary)] focus:bg-white transition-all"
               />
             </div>
