@@ -2,7 +2,7 @@
 -- À exécuter dans le SQL Editor de Supabase Dashboard
 
 -- 1. Créer l'utilisateur prisma avec un mot de passe sécurisé
-CREATE USER "prisma" WITH PASSWORD 'Clover@@MyPg@db15' BYPASSRLS CREATEDB;
+CREATE USER "prisma" WITH PASSWORD 'VOTRE_MOT_DE_PASSE_SECURISE' BYPASSRLS CREATEDB;
 
 -- 2. Étendre les privilèges de prisma à postgres (nécessaire pour voir les changements dans le Dashboard)
 GRANT "prisma" TO "postgres";

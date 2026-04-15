@@ -4,19 +4,21 @@ import { prisma } from '@/lib/prisma'
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://aduticsi.com'
 
-  // Pages statiques
+  // Pages statiques — lastModified automatique (date du dernier déploiement)
+  const now = new Date().toISOString()
+
   const routes = [
-    '',
-    '/about',
-    '/activities',
-    '/contact',
-    '/members',
-    '/auth/login',
-  ].map((route) => ({
-    url: `${baseUrl}${route}`,
-    lastModified: new Date().toISOString(),
-    changeFrequency: 'weekly' as const,
-    priority: route === '' ? 1 : 0.8,
+    { path: '', priority: 1, freq: 'weekly' as const },
+    { path: '/about', priority: 0.9, freq: 'weekly' as const },
+    { path: '/activities', priority: 0.8, freq: 'weekly' as const },
+    { path: '/members', priority: 0.8, freq: 'daily' as const },
+    { path: '/contact', priority: 0.6, freq: 'monthly' as const },
+    { path: '/auth/login', priority: 0.3, freq: 'monthly' as const },
+  ].map(({ path, priority, freq }) => ({
+    url: `${baseUrl}${path}`,
+    lastModified: now,
+    changeFrequency: freq,
+    priority,
   }))
 
   try {

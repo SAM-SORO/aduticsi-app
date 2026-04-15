@@ -92,3 +92,21 @@ Rejoignez la communauté ADUTI et suivez nos activités :
 <div align="center">
   <p><i>Fait avec excellence pour la communauté informatique de l'INP-HB.</i></p>
 </div>
+
+
+<!-- 
+Apreès un clone du projet 
+# 1. Installer dépendances (si pas déjà fait)
+pnpm install
+# ou npm install
+
+# 2. Générer Prisma
+npx prisma generate
+
+# 3. (optionnel mais conseillé)
+npx prisma db push
+# ou
+npx prisma migrate dev
+
+# 4. Relancer
+npm run dev -->
