@@ -12,6 +12,7 @@ import type { Member } from "@/types";
 export type ActivityWithDetails = Prisma.ActivityGetPayload<{
   include: {
     promotion: { select: { name: true } };
+    category: { select: { id: true; name: true; slug: true; created_at: true } };
     _count: { select: { publications: true } };
   };
 }>;
@@ -92,21 +93,48 @@ async function uploadImages(
   return urls;
 }
 
+// ─── Activity Categories ────────────────────────────────
+
+export async function getActivityCategories() {
+  return prisma.activityCategory.findMany({ orderBy: { created_at: "asc" } });
+}
+
+export async function createActivityCategory(name: string) {
+  const trimmed = name.trim();
+  if (!trimmed) return { success: false, error: "Le nom de la catégorie est requis." };
+
+  // Build slug from name: "Fun Night" -> "fun-night"
+  const slug = trimmed
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+
+  try {
+    const existing = await prisma.activityCategory.findFirst({
+      where: { OR: [{ slug }, { name: { equals: trimmed, mode: "insensitive" } }] },
+    });
+    if (existing) return { success: true, category: existing };
+
+    const category = await prisma.activityCategory.create({ data: { name: trimmed, slug } });
+    return { success: true, category };
+  } catch {
+    return { success: false, error: "Erreur lors de la création de la catégorie." };
+  }
+}
+
 // ─── Activities ─────────────────────────────────────────
 
 export async function getActivitiesPaginated(
   promoId?: string,
   page: number = 1,
-  search: string = ""
+  search: string = "",
+  categoryId?: string
 ) {
-  const where: {
-    promo_id?: string;
-    OR?: Array<{
-      title?: { contains: string; mode: "insensitive" };
-      description?: { contains: string; mode: "insensitive" };
-    }>;
-  } = {
+  const where: Prisma.ActivityWhereInput = {
     ...(promoId ? { promo_id: promoId } : {}),
+    ...(categoryId ? { category_id: categoryId } : {}),
     ...(search
       ? {
           OR: [
@@ -123,6 +151,7 @@ export async function getActivitiesPaginated(
       where,
       include: {
         promotion: { select: { name: true } },
+        category: { select: { id: true, name: true, slug: true, created_at: true } },
         _count: { select: { publications: true } },
       },
       orderBy: { created_at: "desc" },
@@ -145,6 +174,7 @@ export async function getActivities(promoId?: string): Promise<ActivityWithDetai
     where: promoId ? { promo_id: promoId } : {},
     include: {
       promotion: { select: { name: true } },
+      category: { select: { id: true, name: true, slug: true, created_at: true } },
       _count: { select: { publications: true } },
     },
     orderBy: { created_at: "desc" },
@@ -158,6 +188,7 @@ export async function createActivity(formData: FormData) {
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
   const promoId = formData.get("promoId") as string;
+  const categoryId = (formData.get("categoryId") as string) || null;
   const imageFile = formData.get("image") as File;
 
   if (!title || !description || !promoId) {
@@ -169,7 +200,6 @@ export async function createActivity(formData: FormData) {
 
   let imageUrl: string | null = null;
   if (imageFile && imageFile.size > 0) {
-    // Image unique d'une activité → pas de numérotation
     const urls = await uploadImages([imageFile], ACTIVITY_BUCKET, title);
     imageUrl = urls[0] || null;
   }
@@ -183,6 +213,7 @@ export async function createActivity(formData: FormData) {
         title,
         description,
         promo_id: promoId,
+        category_id: categoryId,
         image_url: imageUrl,
         created_by: user.id,
         date,
@@ -208,6 +239,7 @@ export async function updateActivity(id: string, formData: FormData) {
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
   const promoId = formData.get("promoId") as string;
+  const categoryId = (formData.get("categoryId") as string) || null;
   
   try {
     const current = await prisma.activity.findUnique({
@@ -258,6 +290,7 @@ export async function updateActivity(id: string, formData: FormData) {
         title,
         description,
         promo_id: promoId,
+        category_id: categoryId,
         image_url: finalImageUrl,
         date,
       },

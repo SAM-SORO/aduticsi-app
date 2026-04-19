@@ -8,6 +8,7 @@ import { ActivityActions } from "./activity-actions";
 import type {
   ActivityWithDetails,
   PublicationWithDetails} from "./actions";
+import { getActivityCategories } from "./actions";
 import { DashboardLayout } from "@/components/dashboard/DashboardShell";
 import { MaterialIcon } from "@/components/icons/material-icon";
 import { Button } from "@/components/ui/button";
@@ -60,11 +61,14 @@ export default async function ActivitiesAdminPage({
   const selectedPromoId = isSuperAdmin ? requestedPromoId : member.promo_id;
 
   // Data fetching
-  const promotions = await prisma.promotion.findMany({
-    where: isSuperAdmin ? undefined : { id: member.promo_id },
-    orderBy: { name: "desc" },
-    include: { _count: { select: { activities: true } } },
-  });
+  const [promotions, categories] = await Promise.all([
+    prisma.promotion.findMany({
+      where: isSuperAdmin ? undefined : { id: member.promo_id },
+      orderBy: { name: "desc" },
+      include: { _count: { select: { activities: true } } },
+    }),
+    getActivityCategories(),
+  ]);
 
   let activities: ActivityWithDetails[] | null = null;
   if (selectedPromoId) {
@@ -72,6 +76,7 @@ export default async function ActivitiesAdminPage({
       where: { promo_id: selectedPromoId },
       include: {
         promotion: { select: { name: true } },
+        category: { select: { id: true, name: true, slug: true, created_at: true } },
         _count: { select: { publications: true } },
       },
       orderBy: { created_at: "desc" },
@@ -115,7 +120,7 @@ export default async function ActivitiesAdminPage({
                   <DialogHeader>
                     <DialogTitle>Ajouter une activité</DialogTitle>
                   </DialogHeader>
-                  <ActivityForm promotions={promotions} />
+                  <ActivityForm promotions={promotions} categories={categories} />
                 </DialogContent>
               </Dialog>
             )}
@@ -195,7 +200,7 @@ export default async function ActivitiesAdminPage({
                       )}
                       {/* Actions overlay - outside of main link click area */}
                       <div className="absolute top-4 right-4 z-20">
-                        <ActivityActions activity={act} promotions={promotions} />
+                        <ActivityActions activity={act} promotions={promotions} categories={categories} />
                       </div>
                     </div>
                     

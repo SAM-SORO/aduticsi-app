@@ -438,7 +438,7 @@ export default function AboutPage() {
             {[
               { val: "100%", label: "Insertion Directe", sub: "Grandes Entreprises & Startups", color: "text-indigo-600" },
               { val: "+31", label: "Années d'Histoire", sub: "Fondée en 1995 à l'INP-HB", color: "text-slate-900" },
-              { val: "3k+", label: "Réseau Alumnis", sub: "Membres à travers le monde", color: "text-[var(--aduti-secondary)]" }
+              { val: "+3k", label: "Réseau Alumnis", sub: "Membres à travers le monde", color: "text-[var(--aduti-secondary)]" }
             ].map((stat, i) => (
               <FadeInScroll key={i} delay={i * 200} className="space-y-6 group">
                 <div className={`text-7xl md:text-9xl font-[family-name:var(--font-display)] font-black ${stat.color} tracking-tighter transition-transform group-hover:scale-110 duration-500`}>

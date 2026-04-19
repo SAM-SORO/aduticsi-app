@@ -108,12 +108,22 @@ model Member {
   @@index([slug])
 }
  
+// Catégories d'Activités — extensibles dynamiquement sans migration
+model ActivityCategory {
+  id         String     @id @default(cuid())
+  name       String     @unique
+  slug       String     @unique  // ex: "hackathon", "fun-night"
+  created_at DateTime   @default(now())
+  activities Activity[]
+}
+
 // Table Activities
 model Activity {
   id              String    @id @default(cuid())
   title           String
   description     String    @db.Text
   promo_id        String
+  category_id     String?
   image_url       String?
   created_by      String
   date            DateTime?
@@ -121,11 +131,13 @@ model Activity {
   updated_at      DateTime  @updatedAt
   
   // Relations
-  promotion       Promotion @relation(fields: [promo_id], references: [id], onDelete: Cascade)
-  creator         Member    @relation(fields: [created_by], references: [id], onDelete: Cascade)
+  promotion       Promotion        @relation(fields: [promo_id], references: [id], onDelete: Cascade)
+  category        ActivityCategory? @relation(fields: [category_id], references: [id], onDelete: SetNull)
+  creator         Member           @relation(fields: [created_by], references: [id], onDelete: Cascade)
   publications    Publication[]
   
   @@index([promo_id])
+  @@index([category_id])
   @@index([created_by])
   @@index([created_at])
 }

@@ -7,8 +7,16 @@ import { Button } from "@/components/ui/button";
 import { Counter } from "@/components/ui/counter";
 import { PartnersCarousel } from "@/components/partners-carousel";
 import { MaterialIcon } from "@/components/icons/material-icon";
+import { prisma } from "@/lib/prisma";
+import type { ActivityCategory } from "@/types";
 
-export default function Home() {
+export const runtime = "nodejs";
+
+export default async function Home() {
+  // Fetch categories to build filtered links
+  const categories: ActivityCategory[] = await prisma.activityCategory.findMany({ orderBy: { created_at: "asc" } });
+  const catBySlug: Record<string, string> = Object.fromEntries(categories.map((c) => [c.slug, c.id]));
+
   return (
     <main className="flex-1 w-full overflow-x-hidden">
       {/* Hero */}
@@ -165,33 +173,29 @@ export default function Home() {
                 ))}
               </ul>
             </div>
-            <div className="relative overflow-hidden">
-              {/* Blob décoratif limité au conteneur */}
-              <div className="absolute -top-10 -right-10 w-48 h-48 sm:w-80 sm:h-80 bg-[var(--aduti-primary)]/5 rounded-full blur-[80px] sm:blur-[100px] pointer-events-none" />
-              <div className="relative bg-slate-50 rounded-[3rem] p-1.5 shadow-2xl overflow-hidden border border-slate-100">
-                <div className="bg-white rounded-[2.9rem] p-6 sm:p-8 lg:p-14 space-y-8 lg:space-y-12">
-                  <div className="flex items-start gap-6">
-                    <div className="flex-shrink-0 w-16 h-16 rounded-3xl bg-blue-50 flex items-center justify-center text-[var(--aduti-primary)] shadow-sm">
-                      <MaterialIcon name="school" className="w-8 h-8" />
-                    </div>
-                    <div className="space-y-2">
-                      <h3 className="text-2xl font-bold text-slate-900">Formation STIC</h3>
-                      <p className="text-slate-500 leading-relaxed font-medium">
-                        {"La filière STIC forme les techniciens supérieurs (DUT/DTS) d'élite à l'INP-HB."}
-                      </p>
-                    </div>
+            <div>
+              <div className="bg-white rounded-[2.5rem] p-6 sm:p-8 lg:p-14 space-y-8 lg:space-y-12 border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
+                <div className="flex items-start gap-6">
+                  <div className="flex-shrink-0 w-16 h-16 rounded-3xl bg-blue-50 flex items-center justify-center text-[var(--aduti-primary)] shadow-sm">
+                    <MaterialIcon name="school" className="w-8 h-8" />
                   </div>
-                  <div className="h-px bg-slate-100 w-full" />
-                  <div className="flex items-start gap-6">
-                    <div className="flex-shrink-0 w-16 h-16 rounded-3xl bg-red-50 flex items-center justify-center text-[var(--aduti-secondary)] shadow-sm">
-                      <MaterialIcon name="diversity_3" className="w-8 h-8" />
-                    </div>
-                    <div className="space-y-2">
-                      <h3 className="text-2xl font-bold text-slate-900">Le Réseau</h3>
-                      <p className="text-slate-500 leading-relaxed font-medium">
-                        Une communauté unie de plus de 20 promotions de talents du numérique.
-                      </p>
-                    </div>
+                  <div className="space-y-2">
+                    <h3 className="text-2xl font-bold text-slate-900">Formation STIC</h3>
+                    <p className="text-slate-500 leading-relaxed font-medium">
+                      {"La filière STIC forme les techniciens supérieurs (DUT/DTS) d'élite à l'INP-HB."}
+                    </p>
+                  </div>
+                </div>
+                <div className="h-px bg-slate-100 w-full" />
+                <div className="flex items-start gap-6">
+                  <div className="flex-shrink-0 w-16 h-16 rounded-3xl bg-red-50 flex items-center justify-center text-[var(--aduti-secondary)] shadow-sm">
+                    <MaterialIcon name="diversity_3" className="w-8 h-8" />
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-2xl font-bold text-slate-900">Le Réseau</h3>
+                    <p className="text-slate-500 leading-relaxed font-medium">
+                      Une communauté unie de plus de 20 promotions de talents du numérique.
+                    </p>
                   </div>
                 </div>
               </div>
@@ -245,21 +249,30 @@ export default function Home() {
                 title: "Hackathon",
                 cat: "Compétition",
                 img: "/activities/ctf.png",
-                desc: "48h de code intensif pour résoudre les défis technologiques de demain."
+                desc: "48h de code intensif pour résoudre les défis technologiques de demain.",
+                slug: "hackathon",
+                linkLabel: "Voir les Hackathons",
               },
               {
                 title: "Info's Days",
                 cat: "Événement Annuel",
                 img: "/activities/info_day.png",
-                desc: "Promotion de la filière et conférences Tech pour les nouveaux talents."
+                desc: "Promotion de la filière et conférences Tech pour les nouveaux talents.",
+                slug: "infos-day",
+                linkLabel: "Voir les Info's Days",
               },
               {
                 title: "Fun Night",
                 cat: "Cohésion",
                 img: "/activities/fun_night.png",
-                desc: "Moments de détente et renforcement des liens entre promotions."
-              }
-            ].map((activity, i) => (
+                desc: "Moments de détente et renforcement des liens entre promotions.",
+                slug: "fun-night",
+                linkLabel: "Voir les Fun Nights",
+              },
+            ].map((activity, i) => {
+              const catId = catBySlug[activity.slug];
+              const href = catId ? `/activities?category=${catId}` : "/activities";
+              return (
               <div key={i} className="group relative bg-white rounded-[3rem] p-4 border border-slate-100 shadow-[0_15px_40px_-20px_rgba(0,0,0,0.05)] transition-all duration-700 hover:shadow-[0_40px_80px_-30px_rgba(0,0,0,0.12)] hover:-translate-y-2">
                 <div className="aspect-[4/5] relative rounded-[2.5rem] overflow-hidden mb-8">
                   <Image
@@ -277,15 +290,16 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="px-6 pb-6">
-                  <Link href="/activities" className="flex items-center justify-between group/link">
-                    <span className="font-bold text-slate-900 group-hover/link:text-[var(--aduti-primary)] transition-colors">{"Détails de l'activité"}</span>
+                  <Link href={href} className="flex items-center justify-between group/link">
+                    <span className="font-bold text-slate-900 group-hover/link:text-[var(--aduti-primary)] transition-colors">{activity.linkLabel}</span>
                     <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center group-hover/link:bg-[var(--aduti-primary)] group-hover/link:text-white transition-all">
                       <MaterialIcon name="east" className="w-5 h-5" />
                     </div>
                   </Link>
                 </div>
               </div>
-            ))}
+            );
+          })}
           </div>
         </FadeInScroll>
       </section>

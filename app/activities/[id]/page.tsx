@@ -8,6 +8,14 @@ import { MaterialIcon } from "@/components/icons/material-icon";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+// Color mapping for known category slugs
+const CATEGORY_STYLES: Record<string, { bg: string; text: string; border: string; icon: string }> = {
+  hackathon:   { bg: "bg-blue-50",   text: "text-[var(--aduti-primary)]", border: "border-blue-100",   icon: "code" },
+  "fun-night": { bg: "bg-indigo-50",  text: "text-indigo-600",            border: "border-indigo-100", icon: "celebration" },
+  "infos-day": { bg: "bg-orange-50",  text: "text-orange-600",            border: "border-orange-100", icon: "campaign" },
+};
+const defaultStyle = { bg: "bg-slate-50", text: "text-slate-600", border: "border-slate-100", icon: "label" };
+
 export default async function ActivityDetailPage({
   params,
 }: {
@@ -19,6 +27,7 @@ export default async function ActivityDetailPage({
     where: { id },
     include: {
       promotion: { select: { name: true } },
+      category: { select: { id: true, name: true, slug: true } },
       publications: { orderBy: { created_at: "desc" } },
     },
   });
@@ -43,6 +52,18 @@ export default async function ActivityDetailPage({
               <span className="bg-[var(--aduti-primary)]/10 text-[var(--aduti-primary)] px-3 py-1 text-[10px] font-black uppercase tracking-[0.12em] rounded-full border border-[var(--aduti-primary)]/20">
                 Promotion {activity.promotion.name}
               </span>
+              {activity.category && (() => {
+                const style = CATEGORY_STYLES[activity.category.slug] ?? defaultStyle;
+                return (
+                  <a
+                    href={`/activities?category=${activity.category.id}`}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1 text-[10px] font-black uppercase tracking-[0.12em] rounded-full border hover:opacity-80 transition-opacity ${style.bg} ${style.text} ${style.border}`}
+                  >
+                    <MaterialIcon name={style.icon} className="w-3.5 h-3.5" />
+                    {activity.category.name}
+                  </a>
+                );
+              })()}
               <span className="text-slate-400 text-[11px] font-bold uppercase tracking-widest flex items-center gap-1.5 px-3 py-1 bg-slate-50 rounded-full border border-slate-100">
                 <MaterialIcon name="calendar_month" className="w-4 h-4" />
                 {new Date(activity.date || activity.created_at).toLocaleDateString("fr-FR", {

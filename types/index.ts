@@ -45,11 +45,20 @@ export interface Promotion {
   updated_at: Date
 }
 
+export interface ActivityCategory {
+  id: string
+  name: string
+  slug: string
+  created_at: Date
+}
+
 export interface Activity {
   id: string
   title: string
   description: string
   promo_id: string
+  category_id: string | null
+  category?: ActivityCategory | null
   image_url: string | null
   created_by: string
   date: Date | null

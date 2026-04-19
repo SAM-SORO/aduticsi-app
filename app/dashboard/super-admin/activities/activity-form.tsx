@@ -3,37 +3,49 @@
 import { useState, useTransition, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { X, Upload, Loader2 } from "lucide-react";
+import { X, Upload, Loader2, Plus } from "lucide-react";
 import { toast } from "sonner";
 
-import { createActivity, updateActivity } from "./actions";
+import { createActivity, updateActivity, createActivityCategory } from "./actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { SelectField } from "@/components/ui/select-field";
-import type { Activity, Promotion } from "@/types";
+import type { Activity, ActivityCategory, Promotion } from "@/types";
+
+const NEW_TYPE_VALUE = "__new__";
 
 interface ActivityFormProps {
   activity?: Activity;
   promotions: Promotion[] | { id: string; name: string }[];
+  categories: ActivityCategory[];
   onSuccess?: () => void;
 }
 
-export function ActivityForm({ activity, promotions, onSuccess }: ActivityFormProps) {
+export function ActivityForm({ activity, promotions, categories: initialCategories, onSuccess }: ActivityFormProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const isEditing = !!activity;
+
+  // Local categories list (grows when user adds a new one)
+  const [categories, setCategories] = useState<ActivityCategory[]>(initialCategories);
 
   const [formData, setFormData] = useState({
     title: activity?.title || "",
     description: activity?.description || "",
     promoId: activity?.promo_id || (promotions.length > 0 ? promotions[0].id : ""),
+    categoryId: activity?.category_id || "",
     date: activity?.date ? new Date(activity.date).toISOString().split("T")[0] : "",
     image: null as File | null,
     existingImage: activity?.image_url || null,
     removeImage: false,
   });
+
+  // State for "new type" mode
+  const [isNewCategory, setIsNewCategory] = useState(false);
+  const [newCategoryName, setNewCategoryName] = useState("");
+  const [isCreatingCategory, startCreatingCategory] = useTransition();
 
   const imagePreview = useMemo(
     () => (formData.image ? URL.createObjectURL(formData.image) : null),
@@ -42,40 +54,67 @@ export function ActivityForm({ activity, promotions, onSuccess }: ActivityFormPr
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setFormData({
-        ...formData,
-        image: e.target.files[0],
-        removeImage: false,
-      });
+      setFormData({ ...formData, image: e.target.files[0], removeImage: false });
     }
   };
 
   const removeImage = () => {
-    setFormData({
-      ...formData,
-      image: null,
-      existingImage: null,
-      removeImage: true,
+    setFormData({ ...formData, image: null, existingImage: null, removeImage: true });
+  };
+
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const val = e.target.value;
+    if (val === NEW_TYPE_VALUE) {
+      setIsNewCategory(true);
+      setFormData({ ...formData, categoryId: "" });
+    } else {
+      setIsNewCategory(false);
+      setFormData({ ...formData, categoryId: val });
+    }
+  };
+
+  /** Crée un nouveau type et le sélectionne automatiquement */
+  const handleCreateCategory = () => {
+    if (!newCategoryName.trim()) {
+      toast.error("Saisissez un nom pour le nouveau type.");
+      return;
+    }
+    startCreatingCategory(async () => {
+      const result = await createActivityCategory(newCategoryName);
+      if (result.success && result.category) {
+        const newCat = result.category as ActivityCategory;
+        setCategories((prev) => {
+          // Éviter les doublons
+          if (prev.some((c) => c.id === newCat.id)) return prev;
+          return [...prev, newCat];
+        });
+        setFormData((prev) => ({ ...prev, categoryId: newCat.id }));
+        setIsNewCategory(false);
+        setNewCategoryName("");
+        toast.success(`Type "${newCat.name}" créé et sélectionné !`);
+      } else {
+        toast.error(result.error || "Erreur lors de la création.");
+      }
     });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (isNewCategory) {
+      toast.error("Veuillez valider le nouveau type avant de soumettre.");
+      return;
+    }
+
     const data = new FormData();
     data.append("title", formData.title);
     data.append("description", formData.description);
     data.append("promoId", formData.promoId);
+    data.append("categoryId", formData.categoryId);
     data.append("date", formData.date);
-    if (formData.existingImage) {
-      data.append("existingImage", formData.existingImage);
-    }
-    if (formData.image) {
-      data.append("image", formData.image);
-    }
-    if (formData.removeImage) {
-      data.append("removeImage", "true");
-    }
+    if (formData.existingImage) data.append("existingImage", formData.existingImage);
+    if (formData.image) data.append("image", formData.image);
+    if (formData.removeImage) data.append("removeImage", "true");
 
     startTransition(async () => {
       const result = isEditing
@@ -91,8 +130,6 @@ export function ActivityForm({ activity, promotions, onSuccess }: ActivityFormPr
       }
     });
   };
-
-
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -123,7 +160,68 @@ export function ActivityForm({ activity, promotions, onSuccess }: ActivityFormPr
             ))}
           </SelectField>
         </div>
-        
+
+        {/* Category Field */}
+        <div className="space-y-2">
+          <Label htmlFor="categoryId">Type d&apos;activité</Label>
+
+          {!isNewCategory ? (
+            <div className="relative">
+              <select
+                id="categoryId"
+                value={formData.categoryId || ""}
+                onChange={handleCategoryChange}
+                className="block w-full pl-4 pr-10 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 focus:outline-none focus:bg-white focus:ring-4 focus:ring-[var(--aduti-primary)]/10 focus:border-[var(--aduti-primary)] transition-all text-sm font-medium appearance-none"
+              >
+                <option value="">— Sélectionner un type (optionnel) —</option>
+                {categories.map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </option>
+                ))}
+                <option value={NEW_TYPE_VALUE}>✦ Ajouter un nouveau type…</option>
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-slate-400">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+          ) : (
+            <div className="flex gap-2 items-center">
+              <Input
+                placeholder="Nom du nouveau type (ex: Conférence Tech)"
+                value={newCategoryName}
+                onChange={(e) => setNewCategoryName(e.target.value)}
+                autoFocus
+                onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); handleCreateCategory(); } }}
+                className="flex-1"
+              />
+              <Button
+                type="button"
+                onClick={handleCreateCategory}
+                disabled={isCreatingCategory}
+                className="h-10 px-4 rounded-xl bg-[var(--aduti-primary)] text-white text-sm font-bold shrink-0"
+              >
+                {isCreatingCategory ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={() => { setIsNewCategory(false); setNewCategoryName(""); }}
+                className="h-10 px-3 rounded-xl text-slate-500 shrink-0"
+              >
+                <X className="w-4 h-4" />
+              </Button>
+            </div>
+          )}
+          <p className="text-[10px] text-slate-400 font-medium ml-1">
+            {isNewCategory
+              ? "Tapez le nom et cliquez + pour valider. Appuyez sur Entrée pour confirmer."
+              : "Choisissez un type ou ajoutez-en un nouveau."}
+          </p>
+        </div>
+
         <div className="space-y-2">
           <Label htmlFor="date">Date de l&apos;événement (Optionnel)</Label>
           <Input
@@ -217,7 +315,7 @@ export function ActivityForm({ activity, promotions, onSuccess }: ActivityFormPr
       <div className="flex justify-end gap-3 pt-4">
         <Button
           type="submit"
-          disabled={isPending}
+          disabled={isPending || isNewCategory}
           className="bg-[var(--aduti-primary)] hover:bg-blue-600 text-white px-8 h-12 rounded-xl"
         >
           {isPending ? (

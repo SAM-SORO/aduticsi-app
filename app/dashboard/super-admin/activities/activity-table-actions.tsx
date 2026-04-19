@@ -15,14 +15,15 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import type { Activity, Promotion } from "@/types";
+import type { Activity, Promotion, ActivityCategory } from "@/types";
 
 interface ActivityTableActionsProps {
   activity: Activity;
   promotions: Promotion[] | { id: string; name: string }[];
+  categories: ActivityCategory[];
 }
 
-export function ActivityTableActions({ activity, promotions }: ActivityTableActionsProps) {
+export function ActivityTableActions({ activity, promotions, categories }: ActivityTableActionsProps) {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isDeleting, startDeleteTransition] = useTransition();
@@ -57,6 +58,7 @@ export function ActivityTableActions({ activity, promotions }: ActivityTableActi
           <ActivityForm 
             activity={activity} 
             promotions={promotions}
+            categories={categories}
             onSuccess={() => setIsEditDialogOpen(false)} 
           />
         </DialogContent>
