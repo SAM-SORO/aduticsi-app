@@ -190,7 +190,7 @@ model Invitation {
   created_by  String
   created_at  DateTime  @default(now())
 
-  creator     Member    @relation(fields: [created_by], references: [id])
+  creator     Member    @relation(fields: [created_by], references: [id], onDelete: Cascade)
 
   @@index([token])
   @@index([expires_at])

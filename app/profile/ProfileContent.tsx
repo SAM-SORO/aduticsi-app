@@ -284,6 +284,16 @@ export function ProfileContent({ member }: ProfileContentProps) {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
+
+    // Validation de la taille : max 5 MB
+    const MAX_SIZE_MB = 5
+    if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+      toast.error(`La photo est trop volumineuse (${(file.size / 1024 / 1024).toFixed(1)} MB). Maximum autorisé : ${MAX_SIZE_MB} MB.`)
+      // Réinitialiser l'input pour permettre une nouvelle sélection
+      if (fileInputRef.current) fileInputRef.current.value = ''
+      return
+    }
+
     const reader = new FileReader()
     reader.addEventListener('load', () => {
       setTempImageUrl(reader.result as string)
@@ -374,12 +384,15 @@ export function ProfileContent({ member }: ProfileContentProps) {
         if (previewUrl) {
           URL.revokeObjectURL(previewUrl)
         }
+        setPhotoUrl(finalPhotoUrl)
         setPendingAvatarFile(null)
         setPreviewUrl(null)
         setIsDirty(false)
         
-        router.refresh()
-        setActiveTab('preview')
+        // On attend un court instant pour laisser le toast s'afficher avant de recharger
+        setTimeout(() => {
+          window.location.reload()
+        }, 1500)
       }
     })
   }
@@ -540,6 +553,7 @@ export function ProfileContent({ member }: ProfileContentProps) {
                             <>
                               <MaterialIcon name="photo_camera" className="w-9 h-9 mb-1 shadow-sm" />
                               <span className="text-[10px] font-black uppercase tracking-widest bg-white/20 px-3 py-1.5 rounded-lg backdrop-blur-md mt-2">Modifier</span>
+                              <span className="text-[9px] font-bold opacity-80 mt-1">MAX 5 MB</span>
                             </>
                           )}
                         </button>
@@ -547,6 +561,9 @@ export function ProfileContent({ member }: ProfileContentProps) {
                     </div>
                     
                     <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
+                    <p className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-full text-[9px] font-black text-slate-400 uppercase tracking-widest text-center whitespace-nowrap">
+                      Format JPG/PNG • Max 5 MB
+                    </p>
                   </div>
 
                   <div className="space-y-4 py-2 flex-1 w-full min-w-0">
