@@ -10,8 +10,7 @@ import { MaterialIcon } from "@/components/icons/material-icon";
 const MEMBERS_PER_PAGE = 12;
 
 export const runtime = "nodejs";
-// Optionnel: Revalidation toutes les X secondes si on veut du cache dynamique
-export const revalidate = 60; 
+export const dynamic = "force-dynamic";
 
 export default async function MembersPage({
   searchParams,

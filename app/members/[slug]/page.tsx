@@ -7,6 +7,7 @@ import { prisma } from "@/lib/prisma";
 import { MaterialIcon } from "@/components/icons/material-icon";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 // Génération des métadonnées SEO dynamiques par membre
 export async function generateMetadata({

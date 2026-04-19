@@ -11,6 +11,7 @@ import type { ActivityWithDetails } from "@/app/dashboard/super-admin/activities
 import { MaterialIcon } from "@/components/icons/material-icon";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 // Color + icon mapping for well-known category slugs
 const CATEGORY_STYLES: Record<string, { bg: string; text: string; border: string; icon: string }> = {
