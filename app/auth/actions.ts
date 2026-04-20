@@ -234,3 +234,76 @@ export async function verifyInvitationToken(token: string) {
 
   return { success: true }
 }
+
+export async function verifyEmailOtp(token_hash: string, type: 'signup' | 'recovery' | 'invite' | 'magiclink' | 'email_change' = 'signup') {
+  if (!token_hash) return { error: "Le jeton de confirmation est manquant." }
+
+  const supabase = await createClient()
+
+  try {
+    const { data, error } = await supabase.auth.verifyOtp({
+      token_hash,
+      type,
+    })
+
+    if (error) {
+      logger.error({ error: error.message }, "Erreur lors de la vérification de l'OTP");
+      return { error: "Lien invalide ou expiré. Il est possible qu'il ait déjà été utilisé." }
+    }
+
+    if (data.user) {
+      logger.info({ userId: data.user.id }, 'Auth Confirm: User OTP confirmed successfully');
+      
+      // On s'assure que l'utilisateur est bien créé dans Prisma s'il ne l'est pas encore (synchronisation)
+      const existingMember = await prisma.member.findUnique({
+        where: { id: data.user.id }
+      })
+
+      if (!existingMember) {
+        logger.info({ userId: data.user.id }, 'Auth Confirm: Synchronizing missing member in Prisma');
+        const { first_name, last_name, name, promo_id, status, gender } = data.user.user_metadata
+
+        const sanitizedStatus = (status as string || 'STUDENT').toUpperCase() as 'STUDENT' | 'ALUMNI';
+        const sanitizedGender = gender ? (gender as string).toUpperCase() as 'MALE' | 'FEMALE' : null;
+        const effectiveFirstName = first_name || (name ? name.split(' ').slice(1).join(' ') : 'Prénom');
+        const effectiveLastName = last_name || (name ? name.split(' ')[0] : 'Nom');
+
+        if ((!first_name && !last_name && !name) || !promo_id) {
+           logger.error({ userMetadata: data.user.user_metadata }, 'Auth Confirm ERROR: Missing metadata for Prisma creation');
+        } else {
+           // Générer le slug et créer le membre (la logique originelle était dans callback/route.ts, on la duplique ici pour la sécurité)
+           const { generateUniqueSlug } = await import('@/lib/slug');
+           const slugBase = `${effectiveLastName} ${effectiveFirstName}`;
+           const slug = await generateUniqueSlug(slugBase, async (candidate) => {
+             const existing = await prisma.member.findUnique({ where: { slug: candidate } })
+             return !!existing
+           })
+           
+           await prisma.member.create({
+             data: {
+               id: data.user.id,
+               email: data.user.email!,
+               first_name: effectiveFirstName,
+               last_name: effectiveLastName,
+               promo_id,
+               status: sanitizedStatus,
+               gender: sanitizedGender,
+               role: 'MEMBER',
+               poste_id: null,
+               function: 'NONE',
+               slug,
+             }
+           });
+           logger.info('Auth Confirm: Synchronized member in Prisma');
+        }
+      }
+
+      return { success: true }
+    }
+
+    return { error: "Une erreur est survenue lors de la vérification." }
+  } catch (err) {
+    logger.error({ err }, 'Exception in verifyEmailOtp');
+    return { error: "Erreur inattendue." }
+  }
+}

@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "sonner";
 import { AppShell } from "@/components/app-shell";
 import { WelcomeConfetti } from "@/components/WelcomeConfetti";
+import { AuthErrorListener } from "@/components/AuthErrorListener";
 
 const inter = Inter({
   variable: "--font-body",
@@ -76,6 +77,7 @@ export default function RootLayout({
         <AppShell>{children}</AppShell>
         <Toaster position="top-center" richColors />
         <WelcomeConfetti />
+        <AuthErrorListener />
       </body>
     </html>
   );

@@ -621,15 +621,15 @@ export function ProfileContent({ member }: ProfileContentProps) {
                       </div>
                       <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">Profil Public</h3>
                     </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <label className="text-xs font-black text-slate-500 uppercase tracking-wider ml-1">Prénom</label>
-                        <input name="first_name" defaultValue={member.first_name || ''} 
-                          className="w-full px-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all text-slate-700" />
-                      </div>
+                    <div className="flex flex-col gap-4">
                       <div className="space-y-2">
                         <label className="text-xs font-black text-slate-500 uppercase tracking-wider ml-1">Nom</label>
                         <input name="last_name" defaultValue={member.last_name || ''} 
+                          className="w-full px-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all text-slate-700" />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-xs font-black text-slate-500 uppercase tracking-wider ml-1">Prénoms</label>
+                        <input name="first_name" defaultValue={member.first_name || ''} 
                           className="w-full px-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all text-slate-700" />
                       </div>
                     </div>

@@ -232,7 +232,7 @@ export default async function MembersPage({
                       )}
                     </h3>
                     <p className="text-sm font-semibold text-slate-500 mt-1 mb-2 group-hover:text-slate-600 transition-colors truncate w-full pointer-events-none" title={member.current_job_title || member.poste?.name || "Membre ADUTI"}>
-                      {member.current_job_title || member.poste?.name || member.status}
+                      {member.current_job_title || member.poste?.name || (member.status === "ALUMNI" ? "Alumni" : "Étudiant")}
                     </p>
                     
                     <span
@@ -290,6 +290,7 @@ export default async function MembersPage({
                     if (promoId) sp.set("promo", promoId);
                     if (status) sp.set("status", status);
                     if (role) sp.set("role", role);
+                    if (gender) sp.set("gender", gender);
                     sp.set("page", p.toString());
                     const href = `/members?${sp.toString()}`;
 

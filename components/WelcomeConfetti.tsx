@@ -24,15 +24,29 @@ function WelcomeConfettiInner() {
     }, 600);
   }, [fadingOut]);
 
-  // Nettoyage de l'URL + lancement des confettis (une seule fois)
+  // Synchroniser showUI si l'URL change et contains welcome=true
   useEffect(() => {
-    if (!isWelcome) return;
+    if (isWelcome) {
+      const t = setTimeout(() => {
+        setShowUI(true);
+        setFadingOut(false);
+        setVisible(false);
+      }, 0);
+      return () => clearTimeout(t);
+    }
+  }, [isWelcome]);
 
-    // Nettoie le paramètre ?welcome=true de l'URL
+  // Lancement de l'animation lorsque showUI devient true
+  useEffect(() => {
+    if (!showUI || fadingOut) return;
+
+    // Nettoie le paramètre ?welcome=true de l'URL silencieusement
     const params = new URLSearchParams(searchParams);
-    params.delete("welcome");
-    const newUrl = params.toString() ? `${pathname}?${params.toString()}` : pathname;
-    router.replace(newUrl, { scroll: false });
+    if (params.has("welcome")) {
+      params.delete("welcome");
+      const newUrl = params.toString() ? `${pathname}?${params.toString()}` : pathname;
+      router.replace(newUrl, { scroll: false });
+    }
 
     // Apparition du modal avec un léger délai pour la smoothness
     const showTimer = setTimeout(() => setVisible(true), 100);
@@ -73,8 +87,7 @@ function WelcomeConfettiInner() {
       clearTimeout(confettiTimer);
       confettiStopped.current = true;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // exécuté une seule fois au montage
+  }, [showUI, fadingOut, pathname, router, searchParams]);
 
   if (!showUI) return null;
 
@@ -122,14 +135,14 @@ function WelcomeConfettiInner() {
           </div>
 
           <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.15] mt-1">
-            Bienvenue dans{" "}
+            Bienvenue chèr(e) membre de{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--aduti-primary)] to-indigo-600">
               l&apos;ADUTI !
             </span>
           </h1>
 
           <p className="text-lg text-slate-500 font-medium max-w-sm leading-relaxed">
-            Tu fais maintenant partie de la famille STIC. Explore la plateforme et retrouve ta promo, les activités et bien plus encore.
+            Vous etre enregistrer sur la plateforme. Explorez la plateforme et retrouvez votre promo, les activités et bien plus encore.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 mt-4 w-full sm:w-auto">
