@@ -104,6 +104,7 @@ export async function sendContactMessage(data: ContactInput) {
 
     const emailResult = await sendEmail({
       to: process.env.SMTP_FROM || 'support@aduticsi.com',
+      replyTo: data.email,
       subject: `[Contact ADUTI] ${safeSubject} - de ${safeName}`,
       html: `
         <h2>Nouveau message de contact</h2>

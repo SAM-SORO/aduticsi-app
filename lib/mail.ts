@@ -15,13 +15,15 @@ export type EmailPayload = {
   to: string;
   subject: string;
   html: string;
+  replyTo?: string;
 };
 
-export async function sendEmail({ to, subject, html }: EmailPayload) {
+export async function sendEmail({ to, subject, html, replyTo }: EmailPayload) {
   try {
     const info = await transporter.sendMail({
       from: `"${process.env.SMTP_FROM_NAME || 'ADUTI Support'}" <${process.env.SMTP_FROM}>`,
       to,
+      replyTo,
       subject,
       html,
     });

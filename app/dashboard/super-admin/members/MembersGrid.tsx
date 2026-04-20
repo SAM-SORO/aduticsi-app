@@ -49,7 +49,7 @@ export function MembersGrid({ members, postes }: MembersGridProps) {
                       : 'bg-blue-50 text-blue-600 border border-blue-100'
                   }`}
                 >
-                  {m.status === 'ALUMNI' ? 'Alumni' : 'Étudiant'}
+                  {m.status === 'ALUMNI' ? 'Alumni' : (m.gender === 'FEMALE' ? 'Étudiante' : 'Étudiant')}
                 </span>
                 {m.role !== 'MEMBER' && (
                   <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-rose-50 text-rose-600 border border-rose-100 truncate max-w-[110px]">

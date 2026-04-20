@@ -127,7 +127,9 @@ export function MemberProfileView({ member }: MemberProfileViewProps) {
             <div className="flex flex-wrap gap-2 mt-4 justify-center md:justify-start">
               <span className={`px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-sm flex items-center gap-1.5 ${member.status === 'ALUMNI' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200/60' : 'bg-blue-50 text-blue-700 border border-blue-200/60'}`}>
                 <MaterialIcon name="workspace_premium" className="w-3.5 h-3.5" />
-                {STATUS_LABELS[member.status] ?? member.status}
+                {member.status === 'STUDENT' 
+                  ? (member.gender === 'FEMALE' ? 'Étudiante' : 'Étudiant') 
+                  : (STATUS_LABELS[member.status] ?? member.status)}
               </span>
               {member.gender && (
                 <span className="px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-slate-50 text-slate-600 border border-slate-200 flex items-center gap-1.5 shadow-sm">

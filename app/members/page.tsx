@@ -193,7 +193,7 @@ export default async function MembersPage({
                             : "bg-blue-50 text-blue-600 border border-blue-100"
                         } shadow-sm backdrop-blur-sm pointer-events-auto`}
                       >
-                        {member.status === "ALUMNI" ? "Alumni" : "Étudiant"}
+                        {member.status === "ALUMNI" ? "Alumni" : (member.gender === "FEMALE" ? "Étudiante" : "Étudiant")}
                       </span>
                       {member.poste_id && (
                         <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-rose-50 text-rose-600 border border-rose-100 shadow-sm backdrop-blur-sm pointer-events-auto">
@@ -222,17 +222,19 @@ export default async function MembersPage({
                       </div>
                     </Link>
 
-                    <h3 className="text-xl font-bold text-slate-900 group-hover:text-[var(--aduti-primary)] transition-colors tracking-tight truncate w-full flex items-center justify-center gap-2" title={`${member.last_name?.toUpperCase()} ${member.first_name}`}>
-                      {member.last_name?.toUpperCase()} {member.first_name}
-                      {member.gender === "FEMALE" && (
-                        <MaterialIcon name="female" className="w-[18px] h-[18px] text-rose-400" />
-                      )}
-                      {member.gender === "MALE" && (
-                        <MaterialIcon name="male" className="w-[18px] h-[18px] text-blue-400" />
-                      )}
+                    <h3 className="text-xl font-bold text-slate-900 group-hover:text-[var(--aduti-primary)] transition-colors tracking-tight w-full flex flex-wrap items-center justify-center gap-x-2 gap-y-1 px-2" title={`${member.last_name?.toUpperCase()} ${member.first_name}`}>
+                      <span className="break-words line-clamp-2">{member.last_name?.toUpperCase()} {member.first_name}</span>
+                      <span className="flex items-center shrink-0">
+                        {member.gender === "FEMALE" && (
+                          <MaterialIcon name="female" className="w-[18px] h-[18px] text-rose-400" />
+                        )}
+                        {member.gender === "MALE" && (
+                          <MaterialIcon name="male" className="w-[18px] h-[18px] text-blue-400" />
+                        )}
+                      </span>
                     </h3>
-                    <p className="text-sm font-semibold text-slate-500 mt-1 mb-2 group-hover:text-slate-600 transition-colors truncate w-full pointer-events-none" title={member.current_job_title || member.poste?.name || "Membre ADUTI"}>
-                      {member.current_job_title || member.poste?.name || (member.status === "ALUMNI" ? "Alumni" : "Étudiant")}
+                    <p className="text-sm font-semibold text-slate-500 mt-1 mb-2 group-hover:text-slate-600 transition-colors px-4 line-clamp-2 min-h-[40px] flex items-center justify-center pointer-events-none" title={member.current_job_title || member.poste?.name || ""}>
+                      {member.current_job_title || member.poste?.name || ""}
                     </p>
                     
                     <span

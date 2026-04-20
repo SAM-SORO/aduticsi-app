@@ -12,6 +12,7 @@ interface AdminMember {
   last_name: string
   email: string
   status: 'STUDENT' | 'ALUMNI'
+  gender?: 'MALE' | 'FEMALE' | null
   function: string
 }
 
@@ -76,7 +77,7 @@ export function AdminMembersGrid({ members }: AdminMembersGridProps) {
                       ? 'bg-emerald-50 text-emerald-600 border border-emerald-100'
                       : 'bg-blue-50 text-blue-600 border border-blue-100'
                   }`}>
-                    {m.status === 'ALUMNI' ? 'Alumni' : 'Étudiant'}
+                    {m.status === 'ALUMNI' ? 'Alumni' : (m.gender === 'FEMALE' ? 'Étudiante' : 'Étudiant')}
                   </span>
                   {m.function === 'GESTION_ACTIVITES' && (
                     <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-violet-50 text-violet-600 border border-violet-100">
@@ -142,7 +143,7 @@ export function AdminMembersGrid({ members }: AdminMembersGridProps) {
                           ? 'bg-emerald-50 text-emerald-700 border-emerald-100'
                           : 'bg-blue-50 text-blue-700 border-blue-100'
                       }`}>
-                        {selectedMember.status === 'ALUMNI' ? 'Alumni' : 'Étudiant'}
+                        {selectedMember.status === 'ALUMNI' ? 'Alumni' : (selectedMember.gender === 'FEMALE' ? 'Étudiante' : 'Étudiant')}
                       </span>
                     </div>
                   </div>

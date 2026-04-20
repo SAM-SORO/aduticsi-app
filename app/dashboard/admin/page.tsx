@@ -51,6 +51,7 @@ export default async function DashboardAdminPage() {
         last_name: true,
         email: true,
         status: true,
+        gender: true,
         function: true,
       },
     }),

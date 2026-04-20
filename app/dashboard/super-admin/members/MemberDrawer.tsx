@@ -326,7 +326,9 @@ export function MemberDrawer({ member, postes, onClose, canEdit = true }: Member
                               ? 'bg-emerald-50 text-emerald-700 border-emerald-100'
                               : 'bg-blue-50 text-blue-700 border-blue-100'
                           }`}>
-                            {STATUS_LABELS[member.status]}
+                            {member.status === 'STUDENT' 
+                              ? (member.gender === 'FEMALE' ? 'Étudiante' : 'Étudiant') 
+                              : STATUS_LABELS[member.status]}
                           </span>
                           {member.role !== 'MEMBER' && (
                             <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-rose-50 text-rose-600 border border-rose-100">

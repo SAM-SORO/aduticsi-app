@@ -150,7 +150,9 @@ function PublicPreview({ member }: { member: ProfileContentProps['member'] }) {
             <div className="flex flex-wrap gap-2 justify-center md:justify-start">
               <span className={`px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-sm flex items-center gap-1.5 ${member.status === 'ALUMNI' ? 'bg-emerald-500 text-white' : 'bg-[var(--aduti-primary)] text-white'}`}>
                 <MaterialIcon name="workspace_premium" className="w-3.5 h-3.5" />
-                {STATUS_LABELS[member.status] ?? member.status}
+                {member.status === 'STUDENT' 
+                  ? (member.gender === 'FEMALE' ? 'Étudiante' : 'Étudiant') 
+                  : (STATUS_LABELS[member.status] ?? member.status)}
               </span>
               {member.gender && (
                 <span className="px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-slate-100 text-slate-600 border border-slate-200 flex items-center gap-1.5 shadow-sm">
