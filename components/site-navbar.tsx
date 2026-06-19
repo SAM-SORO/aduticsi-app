@@ -24,6 +24,30 @@ import {
 import { logout } from "@/app/auth/actions";
 import { getProfile } from "@/app/profile/actions";
 
+// Sumulation d'un utilisateur connecté en développement pour tests locaux
+const IS_DEV = process.env.NODE_ENV === 'development';
+const MOCK_USER = {
+  id: 'iic1k5nexfajurej9rrwc6xc',
+  email: "test@test.flow",
+  aud : "authenticated",
+  created_at : new Date().toISOString(),
+  app_metadata : {
+    provider : "email",
+    providers : ["email"],
+  },
+  user_metadata : {
+    first_name: 'andji',
+    last_name: 'tester',
+    promo_id: 'd7gtwir7n6ntip900ar6ka4j',
+    status: 'STUDENT',
+    gender: 'MALE',
+    invitation_token: null,
+  },
+  role : "authenticated",
+  updated_at : new Date().toISOString(),
+};
+
+
 const navLinks = [
   { href: "/", label: "Accueil" },
   { href: "/about", label: "À propos" },
@@ -46,6 +70,15 @@ export function SiteNavbar() {
   const supabase = createClient();
 
   useEffect(() => {
+    // On ajoute l'utilisateur test en dev
+    if(IS_DEV){
+      setUser(MOCK_USER)
+      return
+    }
+
+
+
+
     const fetchUserAndProfile = async () => {
       const { data: { user: authUser } } = await supabase.auth.getUser();
       setUser(authUser);

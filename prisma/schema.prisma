@@ -86,7 +86,7 @@ model Member {
   created_at      DateTime        @default(now())
   updated_at      DateTime        @updatedAt
   
-  // Slug pour les URLs lisibles (ex: jean-dupont)
+  // Slug u(pour les URLs lisibles (ex: jean-dupont)
   slug            String?         @unique
 
   // Relations

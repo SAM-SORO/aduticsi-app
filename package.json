@@ -9,6 +9,11 @@
     "start": "next start",
     "lint": "eslint ."
   },
+  "prima" : {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  },
+  
+
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
     "@marsidev/react-turnstile": "^1.4.2",
