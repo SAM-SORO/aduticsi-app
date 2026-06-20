@@ -122,7 +122,8 @@ export default async function MembersPage({
                 { name: "promo", defaultValue: promoId, options: [{ value: "", label: "Toutes Promotions" }, ...promotions.map(p => ({ value: p.id, label: p.name }))] },
                 { name: "status", defaultValue: status, options: [{ value: "", label: "Tous Statuts" }, { value: "STUDENT", label: "Étudiant" }, { value: "ALUMNI", label: "Alumni" }] },
                   { name: "role", defaultValue: role, options: [
-                    { value: "", label: "Tous Postes Bureau" },
+                    // on va utiliser "adhérents" comme label pour le rôle vide
+                    { value: "", label: "Adhérents" },
                     ...postes.map(p => ({ value: p.id, label: p.name })),
                   ] },
                   { name: "gender", defaultValue: gender, options: [

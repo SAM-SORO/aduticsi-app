@@ -336,8 +336,18 @@ export function SiteNavbar() {
                   label={link.label}
                   baseHref="/activities"
                   isActive={pathname === link.href}
+                  cible= "activities"
                 />
-                ) : (
+                ) : link.href === "/members" ?(
+                  <NavDropdown
+                  key={link.href}
+                  label={link.label}
+                  baseHref="/members"
+                  isActive={pathname === link.href}
+                  cible= "members"
+                />
+                ):
+                 (
                 <Link
                   key={link.href}
                   href={link.href}
