@@ -73,7 +73,18 @@ export function SiteNavbar() {
     // On ajoute l'utilisateur test en dev
     if(IS_DEV){
       setUser(MOCK_USER)
-      return
+      
+      // on récupère les infos du membre depuis la base de données pour le mock user
+        getProfile()
+          .then(profile => {
+            setMember(profile);
+            setLoading(false);
+          })
+          .catch(e => {
+            logger.error({ e }, "Failed to fetch profile for mock user in navbar");
+            setLoading(false);
+          });
+          return;
     }
 
 
