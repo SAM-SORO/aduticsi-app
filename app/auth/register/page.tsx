@@ -17,6 +17,10 @@ import { MaterialIcon } from "@/components/icons/material-icon";
 import { cn } from "@/lib/utils";
 import { BackButton } from "@/components/ui/back-button";
 
+// importation du combobox pour gérer la date des promotions
+import { Combobox } from "@/components/ui/combobox";
+import { Controller } from "react-hook-form";
+
 type SignupData = RegisterInput & { captchaToken: string; token: string };
 
 export default function RegisterPage() {
@@ -44,9 +48,11 @@ function RegisterContent() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
 
+  //ajout de control à la destruction de useForm pour le combobox
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<RegisterInput>({
     resolver: zodResolver(registerSchema),
@@ -314,9 +320,38 @@ function RegisterContent() {
 
                     <div className="space-y-2">
                       <label className="block text-sm font-bold text-slate-700 ml-1" htmlFor="promo_id">
-                        Promotion
+                        Année d’entrée à l’INP-HB / INSET
                       </label>
                       <div className="relative">
+                          <Controller
+                            name="promo_id"
+                            control={control}
+                            render={({ field }) => (
+                              <Combobox
+                                options={promotions.map((promo) => ({
+                                  value: promo.id,
+                                  label: promo.name,
+                                }))}
+                                value={field.value}
+                                onChange={field.onChange}
+                                placeholder={loadingPromos ? "Chargement..." : "Sélectionner"}
+                                searchPlaceholder="Rechercher une année..."
+                                emptyMessage="Aucune promotion trouvée."
+                                
+                            />
+                          )}
+                        />
+                        {errors.promo_id && (
+                          <p className="text-[11px] font-bold text-red-500 ml-2 tracking-wide">
+                            {errors.promo_id.message}
+                          </p>
+                        )}
+                      </div>
+
+                    </div>
+                      
+
+                      {/* 
                         <select
                           id="promo_id"
                           disabled={isPending || loadingPromos}
@@ -347,7 +382,12 @@ function RegisterContent() {
                         </p>
                       )}
                     </div>
+                      */}
+
+
                   </div>
+
+                  
 
                   {/* Row 3: Statut & Genre */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

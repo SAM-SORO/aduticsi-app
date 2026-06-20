@@ -4,16 +4,16 @@
   "private": true,
   "packageManager": "pnpm@10.28.2",
   "scripts": {
+    "postinstall": "prisma generate",
+    "_comment": "Ange-E : ajout d'un script pour générer les types Prisma après l'installation des dépendances",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint ."
   },
-  "prima" : {
+  "prima": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
-  
-
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
     "@marsidev/react-turnstile": "^1.4.2",
@@ -27,6 +27,7 @@
     "canvas-confetti": "^1.9.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "cmdk": "^1.1.1",
     "framer-motion": "^12.38.0",
     "lucide-react": "^0.563.0",
     "next": "16.1.6",
