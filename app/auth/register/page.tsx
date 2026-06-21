@@ -3,7 +3,8 @@
 import { useEffect, useState, useTransition, Suspense } from "react";
 import type { FormEvent } from "react";
 import Link from "next/link";
-import { useSearchParams, useRouter } from "next/navigation";
+{/*suppression de la logique de gestion lien d'invitation (token) */}
+//import { useSearchParams, useRouter } from "next/navigation";
 import { Home } from "lucide-react";
 
 import { Turnstile } from "@marsidev/react-turnstile";
@@ -24,7 +25,9 @@ import { BackButton } from "@/components/ui/back-button";
 import { Combobox } from "@/components/ui/combobox";
 import { Controller } from "react-hook-form";
 
-type SignupData = RegisterInput & { captchaToken: string; token: string };
+{/*suppression de la logique de gestion lien d'invitation (token) */}
+//type SignupData = RegisterInput & { captchaToken: string; token: string };
+type SignupData = RegisterInput & { captchaToken: string};
 
 export default function RegisterPage() {
   return (
@@ -35,9 +38,10 @@ export default function RegisterPage() {
 }
 
 function RegisterContent() {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const token = searchParams.get("token");
+  {/*suppression de la logique de gestion lien d'invitation (token) */}
+  //const searchParams = useSearchParams();
+  //const router = useRouter();
+  //const token = searchParams.get("token");
 
   // State for the token entry form
   const [tokenInput, setTokenInput] = useState("");
@@ -94,10 +98,11 @@ function RegisterContent() {
       return;
     }
 
+    {/*suppression de la logique de gestion lien d'invitation (token) */}
     startTransition(async () => {
       const result = await signup({ 
         ...data, 
-        token: token || "",
+        //token: token || "",
         captchaToken: captchaToken || ""
       } as SignupData);
       
@@ -192,7 +197,13 @@ function RegisterContent() {
 
 
             {/*suppression de la logique de gestion lien d'invitation (token) */}
-            {!token ? (<div></div>/*
+            {/*
+
+            {!token ? ( 
+            
+            */} 
+            {/*
+
               <div className="py-4">
                 <div className="text-center mb-8">
                   <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-blue-50 mb-4 ring-8 ring-blue-50/50">
@@ -243,8 +254,17 @@ function RegisterContent() {
                   </p>
                 </div>
               </div>
-            */) : (
-              <>         
+
+            */}
+            {/* 
+
+            ) : ( 
+              <>  
+
+              */}  
+              
+
+
                 <div className="flex gap-4 mb-8 p-4 rounded-2xl bg-slate-50 border border-slate-100 text-slate-600 items-center">
                   <div className="w-10 h-10 rounded-xl bg-white border border-slate-100 flex items-center justify-center shadow-sm">
                     <MaterialIcon name="info" className="w-5 h-5 text-[var(--aduti-primary)]" />
@@ -576,8 +596,10 @@ function RegisterContent() {
                     </Link>
                   </p>
                 </div>
+                {/*
               </>
             )}
+            */}
           </div>
         </div>
       </div>
