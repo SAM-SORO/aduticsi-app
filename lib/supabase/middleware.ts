@@ -1,6 +1,10 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
+//import de prisma pour récupérer des données en base
+import { prisma } from '@/lib/prisma'
+import { AwardIcon } from 'lucide-react'
+
 
 // Sumulation d'un utilisateur connecté en développement pour tests locaux
 const IS_DEV = process.env.NODE_ENV === 'development'
