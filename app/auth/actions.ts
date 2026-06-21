@@ -221,7 +221,8 @@ export async function forgotPassword(email: string) {
 
   return { success: true, message: 'Un email de réinitialisation a été envoyé.' }
 }
-
+// suppression de la logique de gestion de lien d'invitation (token)
+/*
 export async function verifyInvitationToken(token: string) {
   if (!token) return { error: "Veuillez fournir un lien ou un code d'invitation." }
 
@@ -234,6 +235,7 @@ export async function verifyInvitationToken(token: string) {
 
   return { success: true }
 }
+  */
 
 export async function verifyEmailOtp(token_hash: string, type: 'signup' | 'recovery' | 'invite' | 'magiclink' | 'email_change' = 'signup') {
   if (!token_hash) return { error: "Le jeton de confirmation est manquant." }

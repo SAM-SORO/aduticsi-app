@@ -12,7 +12,10 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 import { registerSchema, type RegisterInput } from "@/schemas/auth.schema";
-import { getPromotions, signup, verifyInvitationToken } from "@/app/auth/actions";
+
+{/*suppression de la logique de gestion lien d'invitation (token) */}
+//import { getPromotions, signup, verifyInvitationToken } from "@/app/auth/actions";
+import { getPromotions, signup } from "@/app/auth/actions";
 import { MaterialIcon } from "@/components/icons/material-icon";
 import { cn } from "@/lib/utils";
 import { BackButton } from "@/components/ui/back-button";
@@ -103,7 +106,11 @@ function RegisterContent() {
       }
     });
   };
-
+  
+  
+  
+  {/*suppression de la logique de gestion lien d'invitation (token) */}
+/*
   const handleTokenSubmit = (e: FormEvent) => {
     e.preventDefault();
     
@@ -139,7 +146,7 @@ function RegisterContent() {
       router.push(`/auth/register?token=${extractedToken}`);
     });
   };
-
+*/
   return (
     <main className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-slate-50 font-sans">
       {/* Bouton de retour en haut à gauche */}
@@ -181,7 +188,11 @@ function RegisterContent() {
           </div>
 
           <div className="p-6 md:p-8 lg:p-12">
-            {!token ? (
+
+
+
+            {/*suppression de la logique de gestion lien d'invitation (token) */}
+            {!token ? (<div></div>/*
               <div className="py-4">
                 <div className="text-center mb-8">
                   <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-blue-50 mb-4 ring-8 ring-blue-50/50">
@@ -232,7 +243,7 @@ function RegisterContent() {
                   </p>
                 </div>
               </div>
-            ) : (
+            */) : (
               <>         
                 <div className="flex gap-4 mb-8 p-4 rounded-2xl bg-slate-50 border border-slate-100 text-slate-600 items-center">
                   <div className="w-10 h-10 rounded-xl bg-white border border-slate-100 flex items-center justify-center shadow-sm">
@@ -350,7 +361,7 @@ function RegisterContent() {
 
                     </div>
                       
-
+                      {/*suppresion de l'ancien select*/}
                       {/* 
                         <select
                           id="promo_id"
