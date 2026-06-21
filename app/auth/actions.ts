@@ -89,7 +89,9 @@ export async function signup(data: RegisterInput & { captchaToken?: string }) {
     return { error: 'Le captcha est requis.' }
   }
 
-  const { email, password, first_name, last_name, promo_id, status, gender, token } = result.data
+  // on extrait plus le token d'invitation (n'existe plus)
+  //const { email, password, first_name, last_name, promo_id, status, gender, token } = result.data
+  const { email, password, first_name, last_name, promo_id, status, gender } = result.data
 
   if (!token) {
     return { error: "Un lien d'invitation valide est requis pour s'enregistrer." }
