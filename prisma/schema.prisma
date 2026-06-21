@@ -40,13 +40,13 @@ enum Gender {
 }
 
 // statu de l'enregistrement d'un nouvel utilisateur
-enum RegistratonStatus{
+enum RegistratonStatus {
   PENDING        // demande d'enregistrement en attende de validation d'un administrateur
   APPROVED       // demande d'enregistrement validée par un administrateur
   REJECTED       // demande d'enregistrement refusée
 }
 
-enum ProfileStatus{
+enum ProfileStatus {
   PRIVATE      // profiel uniquement visible par les membres 
   PUBLIC       // profile visible par les visiteurs
 }
@@ -78,8 +78,8 @@ model Member {
   role            MemberRole      @default(MEMBER)
   function        MemberFunction  @default(NONE)
   status          MemberStatus    @default(STUDENT)
-  registration_status RegistratonStatus? @default(PENDING)
-  profile_status  ProfileStatus?   @default(PUBLIC)
+  registration_status RegistratonStatus @default(PENDING)
+  profile_status  ProfileStatus   @default(PUBLIC)
   poste_id        String?
   gender          Gender?
   
