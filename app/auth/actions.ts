@@ -92,7 +92,7 @@ export async function signup(data: RegisterInput & { captchaToken?: string }) {
   // on extrait plus le token d'invitation (n'existe plus)
   //const { email, password, first_name, last_name, promo_id, status, gender, token } = result.data
   const { email, password, first_name, last_name, promo_id, status, gender } = result.data
-
+  /*
   if (!token) {
     return { error: "Un lien d'invitation valide est requis pour s'enregistrer." }
   }
@@ -109,7 +109,7 @@ export async function signup(data: RegisterInput & { captchaToken?: string }) {
   if (new Date() > invitation.expires_at) {
     return { error: "Ce lien d'invitation a expiré." }
   }
-
+  */
   // 3. Sign up with Supabase
   try {
     const headersList = await headers();
@@ -140,7 +140,7 @@ export async function signup(data: RegisterInput & { captchaToken?: string }) {
           status: status || 'STUDENT',
           gender: gender || null, // Convert empty string or falsy value to null for Prisma
           role: 'MEMBER', // Default role
-          invitation_token: token,
+          //invitation_token: token,
         },
       },
     });
