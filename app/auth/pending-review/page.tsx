@@ -39,7 +39,7 @@ export default function pendingReviewPage() {
 
               <div className="pt-6">
                 <Link 
-                  href="/." 
+                  href="/" 
                   className="group w-full flex justify-center items-center gap-3 py-4 px-6 rounded-2xl shadow-xl shadow-blue-100 text-sm font-black text-white bg-[var(--aduti-primary)] hover:bg-blue-600 focus:outline-none transition-all active:scale-[0.98] uppercase tracking-widest"
                 >
                   <MaterialIcon name="arrow_back" className="w-5 h-5 transition-transform group-hover:-translate-x-1" />
