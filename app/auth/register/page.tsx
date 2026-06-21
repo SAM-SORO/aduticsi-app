@@ -334,7 +334,7 @@ function RegisterContent() {
                                 }))}
                                 value={field.value}
                                 onChange={field.onChange}
-                                placeholder={loadingPromos ? "Chargement..." : "Sélectionner"}
+                                placeholder={"Sélectionner"}
                                 searchPlaceholder="Rechercher une année..."
                                 emptyMessage="Aucune promotion trouvée."
                                 
