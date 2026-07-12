@@ -6,6 +6,7 @@ import {
   Link2, 
   History, 
   LogOut, 
+  ShieldCheck,
   School,
   Home,
   GraduationCap,
@@ -48,6 +49,8 @@ export function Sidebar({ member, activePath, onCloseMobile }: SidebarProps) {
       ? [
           { name: "Membres", href: "/dashboard/super-admin/members", icon: <Users className="w-5 h-5" />, path: "/dashboard/super-admin/members" },
           { name: "Liens d'invitation", href: "/dashboard/super-admin/invitations", icon: <Link2 className="w-5 h-5" />, path: "/dashboard/super-admin/invitations" },
+          // gestion des demandes d'enregistrement
+          { name: "Demandes d'enregistrement", href: "/dashboard/super-admin/demandes", icon: <ShieldCheck className="w-10 h-10" />, path: "/dashboard/super-admin/demandes" },
         ]
       : []),
 
