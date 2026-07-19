@@ -31,11 +31,11 @@ async function getBaseOrigin(){
   const host = hearderlist.get('host') || 'aduticsi.com'
   const isLocal = host.includes('localhost') || host.includes('192.168') || host.includes('127.0.0.1')
   const proto = hearderlist.get('x-forwarded-proto') || (isLocal ? 'http' : 'https')
-  const baseOrigin = `${proto}://${host}`
+  return `${proto}://${host}`;
 }
 
 // on récupère les demandes d'enregistrement en attentes
-export async function getPendingRegistration() {
+export async function getPendingRegistrations() {
   await requireSuperAdmin();
     return prisma.member.findMany({
     where: { registration_status: "PENDING" },
@@ -68,7 +68,7 @@ export async function approveMember(memberId: string) {
       logger.error({ memberId, error: emailResult.error }, "Failed to send approval email");
     }
 
-    revalidatePath("/dashboard/super-admin/registrations");
+    revalidatePath("/dashboard/super-admin/demandes");
     return { success: true };
   } catch (error) {
     logger.error({ error, memberId }, "Error approving member");
@@ -91,7 +91,7 @@ export async function rejectMember(memberId: string) {
 
     const emailResult = await sendEmail({
       to: member.email,
-      subject: "Votre compte ADUTI-INPHB a été approuvé",
+      subject: "Votre demande d'inscription ADUTI-INPHB",
       html: rejectionEmailTemplate(),
     });
 
@@ -99,11 +99,11 @@ export async function rejectMember(memberId: string) {
       logger.error({ memberId, error: emailResult.error }, "Failed to send approval email");
     }
 
-    revalidatePath("/dashboard/super-admin/registrations");
+    revalidatePath("/dashboard/super-admin/demandes");
     return { success: true };
   } catch (error) {
-    logger.error({ error, memberId }, "Error approving member");
-    return { success: false, error: "Une erreur est survenue lors de l'approbation." };
+    logger.error({ error, memberId }, "Error rejecting member");
+    return { success: false, error: "Une erreur est survenue lors du refus." };
   }
 }
 

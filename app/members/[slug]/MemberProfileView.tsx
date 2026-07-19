@@ -8,7 +8,7 @@ import { MaterialIcon } from '@/components/icons/material-icon'
 import { Dialog, DialogContent, DialogTrigger, DialogTitle } from '@/components/ui/dialog'
 import { ExpandableText } from '@/components/ui/expandable-text'
 // gestion du statut du profil
-import { ProfileVisibilityToggle } from "@/components/profile/ProfileVisibilityToggle";
+import { ProfileVisibilityToggle } from "@/components/Profile/ProfileVisibilityToggle";
 
 
 type MemberWithRelations = Member & {

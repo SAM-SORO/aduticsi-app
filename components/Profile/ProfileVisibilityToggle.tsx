@@ -13,14 +13,15 @@ interface ProfileVisibilityToggleProps {
 export function ProfileVisibilityToggle({ initialStatus }: ProfileVisibilityToggleProps) {
   const [status, setStatus] = useState<'PUBLIC' | 'PRIVATE'>(initialStatus);
   const [isPending, startTransition] = useTransition();
+  
 
   const handleToggle = () => {
+  
     const previousStatus = status;
     const newStatus = status === 'PUBLIC' ? 'PRIVATE' : 'PUBLIC';
     setStatus(newStatus);
-
     startTransition(async () => {
-      const result = await updateProfileStatus(newStatus);
+      const result = await updateProfileStatus(newStatus) as { success?: boolean; error?: string };
       if (result?.error) {
         setStatus(previousStatus);
         toast.error(result.error);
@@ -32,8 +33,7 @@ export function ProfileVisibilityToggle({ initialStatus }: ProfileVisibilityTogg
         );
       }
     });
-  };
-
+};
   return (
     <button
       type="button"

@@ -9,7 +9,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "prima": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
@@ -47,7 +50,12 @@
   "devDependencies": {
     "@prisma/config": "^7.5.0",
     "@tailwindcss/postcss": "^4",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/canvas-confetti": "^1.9.0",
+    "@types/jest": "^30.0.0",
     "@types/node": "^20",
     "@types/pg": "^8.16.0",
     "@types/react": "^19",
@@ -55,6 +63,9 @@
     "dotenv": "^17.2.4",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
+    "jest": "^30.4.2",
+    "jest-environment-jsdom": "^30.4.1",
+    "jest-mock-extended": "^4.0.1",
     "pdf-parse": "^2.4.5",
     "prisma": "^7.3.0",
     "tailwindcss": "^4",

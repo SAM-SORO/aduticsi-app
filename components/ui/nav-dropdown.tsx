@@ -77,7 +77,7 @@ export function NavDropdown({ label, baseHref, isActive, cible }: NavDropdownPro
         )}
       >
         {label}
-        <chevronDown className="w-4 h-4" />
+        <ChevronDown  className="w-4 h-4" />
         
       </Link>
 

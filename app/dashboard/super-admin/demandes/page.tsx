@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { DashboardLayout } from "@/components/dashboard/DashboardShell";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
-import { getPendingRegistration } from "./actions";
+import { getPendingRegistrations } from "./actions";
 import { RegistrationsList } from "./registrationList";
 
 export const runtime = "nodejs";
@@ -25,7 +25,7 @@ export default async function RegistrationsAdminPage() {
     redirect("/dashboard");
   }
 
-  const registrations = await getPendingRegistration();
+  const registrations = await getPendingRegistrations();
 
   return (
     <DashboardLayout

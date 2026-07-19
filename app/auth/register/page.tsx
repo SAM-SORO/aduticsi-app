@@ -343,7 +343,7 @@ function RegisterContent() {
                         </p>
                       )}
                     </div>
-                    ²
+                    
                     <div className="space-y-2">
                       <label className="block text-sm font-bold text-slate-700 ml-1" htmlFor="first_name">
                         Prénoms
