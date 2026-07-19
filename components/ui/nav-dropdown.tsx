@@ -6,7 +6,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { getActivityCategories } from "@/app/dashboard/super-admin/activities/actions";
 import { getPostes } from "@/app/dashboard/postes/actions";
-import { ArrowDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 type Category = { id: string; name: string };
 type poste = { id: string; name: string };
@@ -77,7 +77,7 @@ export function NavDropdown({ label, baseHref, isActive, cible }: NavDropdownPro
         )}
       >
         {label}
-        <ArrowDown className="w-4 h-4" />
+        <chevronDown className="w-4 h-4" />
         
       </Link>
 

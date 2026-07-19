@@ -47,7 +47,7 @@ export async function GET(request: Request) {
         }
            */
 
-        const { first_name, last_name, name, promo_id, status, gender, invitation_token } = user.user_metadata
+        const { first_name, last_name, name, promo_id, status, gender, invitation_token, profile_status } = user.user_metadata
 
         // Validate and sanitize status and gender for Prisma Enums
         const sanitizedStatus = (status as string || 'STUDENT').toUpperCase() as 'STUDENT' | 'ALUMNI';
@@ -81,6 +81,7 @@ export async function GET(request: Request) {
                 gender: sanitizedGender,
                 registration_status : invitation_token ? 'APPROVED' :  'PENDING', // s'il a un lien d'invitation, on l'enregistre directement
                 role: 'MEMBER', // Toujours MEMBER — ne jamais faire confiance aux métadonnées client
+                profile_status: profile_status || 'PUBLIC', // lire le statut du profil
                 poste_id: null,
                 function: 'NONE',
                 slug,

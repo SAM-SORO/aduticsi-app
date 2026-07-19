@@ -83,6 +83,8 @@ function RegisterContent() {
       promo_id: "",
       status: "" as "STUDENT" | "ALUMNI",
       gender: "" as "MALE" | "FEMALE",
+      // gestion du statut du profil
+      profile_status: "PUBLIC",
     },
     shouldUnregister: false,
   });
@@ -276,6 +278,47 @@ function RegisterContent() {
                 </div>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                  {/* Row 0 toggle du statut du profil */}
+                  <div className = "mb-2">
+                      <Controller
+                      name="profile_status"
+                      control={control}
+                      render={({ field }) => (
+                        <button
+                          type="button"
+                          onClick={() => field.onChange(field.value === 'PUBLIC' ? 'PRIVATE' : 'PUBLIC')}
+                          className={cn(
+                            "w-full flex items-center justify-between px-4 py-2.5 rounded-2xl border transition-all duration-200 text-sm font-medium",
+                            field.value === 'PUBLIC'
+                              ? "bg-blue-50 border-[var(--aduti-primary)]/30 text-[var(--aduti-primary)]"
+                              : "bg-slate-50 border-slate-200 text-slate-500"
+                          )}
+                        >
+                          <div className="flex items-center gap-2">
+                            <MaterialIcon
+                              name={field.value === 'PUBLIC' ? "public" : "lock"}
+                              className="w-4 h-4"
+                            />
+                            <span>
+                              {field.value === 'PUBLIC' ? 'Profil public' : 'Profil privé'}
+                            </span>
+                          </div>
+                          {/* Switch visuel */}
+                          <div className={cn(
+                            "relative w-9 h-5 rounded-full transition-colors duration-200 shrink-0",
+                            field.value === 'PUBLIC' ? "bg-[var(--aduti-primary)]" : "bg-slate-300"
+                          )}>
+                            <div className={cn(
+                              "absolute top-0.5 w-4 h-4 bg-white rounded-full shadow-sm transition-transform duration-200",
+                              field.value === 'PUBLIC' ? "translate-x-4" : "translate-x-0.5"
+                            )} />
+                          </div>
+                        </button>
+                      )}
+                    />
+
+                    </div>
+
                   {/* Row 1: Last Name & First Name */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
@@ -300,7 +343,7 @@ function RegisterContent() {
                         </p>
                       )}
                     </div>
-
+                    ²
                     <div className="space-y-2">
                       <label className="block text-sm font-bold text-slate-700 ml-1" htmlFor="first_name">
                         Prénoms

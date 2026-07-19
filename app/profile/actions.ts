@@ -12,10 +12,12 @@ export async function getProfile() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
-    if (!user) {
+    /*if (!user) {
       logger.info('getProfile: No user found in Supabase session')
       return null
-    }
+    }*/
+   //  return sun sting pour que ProfileVisibilityToggle peut lire result?.error correctement pour déclencher le rollback et le toast d'erreur.
+    if (!user) return { error: 'Non autorisé' }
   
     try {
       // Try to find by Supabase ID first
@@ -145,3 +147,17 @@ export async function getProfile() {
       return { error: 'Erreur lors du téléchargement de l\'image' }
     }
   }
+
+  export async function updateProfileStatus(profileStatus: 'PUBLIC' | 'PRIVATE') {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
+
+  await prisma.member.update({
+    where: { id: user.id },
+    data: { profile_status: profileStatus },
+  })
+
+  revalidatePath(`/members`)
+  revalidatePath(`/profile`)
+}

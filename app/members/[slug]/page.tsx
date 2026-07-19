@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 import { MemberProfileView } from "./MemberProfileView";
 import { prisma } from "@/lib/prisma";
 import { MaterialIcon } from "@/components/icons/material-icon";
+// on récupère l'utilisateur connecté
+import { createClient } from '@/lib/supabase/server';
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -56,6 +58,13 @@ export default async function MemberProfilePage({
   if (!member) {
     notFound();
   }
+  // on récupère l'utilisateur connecté
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  // bloquer les non connectés sur un profil privé
+  if (member.profile_status==="PRIVATE" && !user){notFound();}
+
 
   return (
     <main className="flex-1 bg-slate-50 py-8 lg:py-12 overflow-x-hidden">
@@ -93,7 +102,8 @@ export default async function MemberProfilePage({
           </ol>
         </nav>
 
-        <MemberProfileView member={member} />
+        <MemberProfileView member={member}
+          currentUserId={user?.id ?? null} />
       </div>
     </main>
   );

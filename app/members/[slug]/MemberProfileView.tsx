@@ -7,6 +7,9 @@ import type { Member, Poste, Promotion } from '@prisma/client'
 import { MaterialIcon } from '@/components/icons/material-icon'
 import { Dialog, DialogContent, DialogTrigger, DialogTitle } from '@/components/ui/dialog'
 import { ExpandableText } from '@/components/ui/expandable-text'
+// gestion du statut du profil
+import { ProfileVisibilityToggle } from "@/components/profile/ProfileVisibilityToggle";
+
 
 type MemberWithRelations = Member & {
   poste: Poste | null;
@@ -15,6 +18,8 @@ type MemberWithRelations = Member & {
 
 interface MemberProfileViewProps {
   member: MemberWithRelations;
+  currentUserId: string | null
+
 }
 
 const fadeUp: Variants = {
@@ -58,7 +63,7 @@ function InfoChip({ icon, label, value }: { icon: string; label: string; value: 
   )
 }
 
-export function MemberProfileView({ member }: MemberProfileViewProps) {
+export function MemberProfileView({ member, currentUserId }: MemberProfileViewProps) {
   const hasSocials = member.linkedin_url || member.youtube_url || member.portfolio_url || member.github_url
   const hasJob = member.current_job_title || member.current_job_description
 
@@ -150,6 +155,12 @@ export function MemberProfileView({ member }: MemberProfileViewProps) {
                 </span>
               )}
             </div>
+            {/*Statut du profil */}
+            {currentUserId === member.id && (
+              <div className="mt-2">
+                <ProfileVisibilityToggle initialStatus={member.profile_status} />
+              </div>
+            )}
 
             {/* Description */}
             {member.description && (

@@ -90,7 +90,7 @@ export async function signup(data: RegisterInput & { captchaToken?: string }) {
   }
 
   // On reprend en compte le token
-  const { email, password, first_name, last_name, promo_id, status, gender, token } = result.data
+  const { email, password, first_name, last_name, promo_id, status, gender, token, profile_status } = result.data
   //const { email, password, first_name, last_name, promo_id, status, gender } = result.data
   
   // on rend la vérification conditionnelle
@@ -142,6 +142,8 @@ export async function signup(data: RegisterInput & { captchaToken?: string }) {
           gender: gender || null, // Convert empty string or falsy value to null for Prisma
           role: 'MEMBER', // Default role
           ...(token ? { invitation_token: token } : {}), // token optionnel
+          //gestion du statut du profil
+          profile_status: profile_status || 'PUBLIC',
         },
       },
     });
