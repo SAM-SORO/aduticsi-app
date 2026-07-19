@@ -89,27 +89,28 @@ export async function signup(data: RegisterInput & { captchaToken?: string }) {
     return { error: 'Le captcha est requis.' }
   }
 
-  // on extrait plus le token d'invitation (n'existe plus)
-  //const { email, password, first_name, last_name, promo_id, status, gender, token } = result.data
-  const { email, password, first_name, last_name, promo_id, status, gender } = result.data
-  /*
-  if (!token) {
-    return { error: "Un lien d'invitation valide est requis pour s'enregistrer." }
+  // On reprend en compte le token
+  const { email, password, first_name, last_name, promo_id, status, gender, token } = result.data
+  //const { email, password, first_name, last_name, promo_id, status, gender } = result.data
+  
+  // on rend la vérification conditionnelle
+  if (token) {
+     // 2. Validate Invitation Token
+    const invitation = await prisma.invitation.findUnique({
+      where: { token }
+    })
+
+    if (!invitation) {
+      return { error: "Lien d'invitation invalide." }
+    }
+
+    if (new Date() > invitation.expires_at) {
+      return { error: "Ce lien d'invitation a expiré." }
+    }
+    
   }
 
-  // 2. Validate Invitation Token
-  const invitation = await prisma.invitation.findUnique({
-    where: { token }
-  })
-
-  if (!invitation) {
-    return { error: "Lien d'invitation invalide." }
-  }
-
-  if (new Date() > invitation.expires_at) {
-    return { error: "Ce lien d'invitation a expiré." }
-  }
-  */
+ 
   // 3. Sign up with Supabase
   try {
     const headersList = await headers();
@@ -140,7 +141,7 @@ export async function signup(data: RegisterInput & { captchaToken?: string }) {
           status: status || 'STUDENT',
           gender: gender || null, // Convert empty string or falsy value to null for Prisma
           role: 'MEMBER', // Default role
-          //invitation_token: token,
+          ...(token ? { invitation_token: token } : {}), // token optionnel
         },
       },
     });
@@ -223,8 +224,8 @@ export async function forgotPassword(email: string) {
 
   return { success: true, message: 'Un email de réinitialisation a été envoyé.' }
 }
-// suppression de la logique de gestion de lien d'invitation (token)
-/*
+// On remet en place la logique de gestion de lien d'invitation (token)
+
 export async function verifyInvitationToken(token: string) {
   if (!token) return { error: "Veuillez fournir un lien ou un code d'invitation." }
 
@@ -237,7 +238,7 @@ export async function verifyInvitationToken(token: string) {
 
   return { success: true }
 }
-  */
+  
 
 export async function verifyEmailOtp(token_hash: string, type: 'signup' | 'recovery' | 'invite' | 'magiclink' | 'email_change' = 'signup') {
   if (!token_hash) return { error: "Le jeton de confirmation est manquant." }

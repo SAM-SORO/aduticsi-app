@@ -38,16 +38,16 @@ export async function GET(request: Request) {
       if (!existingMember) {
         logger.info({ userId: user.id }, 'Auth Callback: Creating new member in Prisma');
         
-        // retrait du token d'invitation (n'existe plus)
-        {/*
-        const { first_name, last_name, name, promo_id, status, gender, invitation_token } = user.user_metadata
-        if (!invitation_token) {
+        // on ne log plus l'absence de token d'invitation
+        
+        
+        /*if (!invitation_token) {
           logger.warn({ userId: user.id }, 'Auth Callback: Missing invitation token in metadata');
           // Don't block redirect, but log warning
         }
-           */}
+           */
 
-        const { first_name, last_name, name, promo_id, status, gender } = user.user_metadata
+        const { first_name, last_name, name, promo_id, status, gender, invitation_token } = user.user_metadata
 
         // Validate and sanitize status and gender for Prisma Enums
         const sanitizedStatus = (status as string || 'STUDENT').toUpperCase() as 'STUDENT' | 'ALUMNI';
@@ -79,7 +79,7 @@ export async function GET(request: Request) {
                 promo_id,
                 status: sanitizedStatus,
                 gender: sanitizedGender,
-                registration_status : 'PENDING', // Toujours en attente d'une validation par un admin
+                registration_status : invitation_token ? 'APPROVED' :  'PENDING', // s'il a un lien d'invitation, on l'enregistre directement
                 role: 'MEMBER', // Toujours MEMBER — ne jamais faire confiance aux métadonnées client
                 poste_id: null,
                 function: 'NONE',
@@ -89,13 +89,14 @@ export async function GET(request: Request) {
             logger.info({ memberId: newMember.id, slug }, 'Auth Callback: SUCCESS! Member created');
 
             // on rédirige l'utilisateur vers une page d'informaiton en attendant la validation de son enregistrement
-            {/*
-            // Creation succeeded. Let's redirect with the welcome animation flag.
+            if (invitation_token) {
+               // Creation succeeded. Let's redirect with the welcome animation flag.
             const urlToRedirect = new URL(`${baseOrigin}${next}`);
             urlToRedirect.searchParams.set("welcome", "true");
             return NextResponse.redirect(urlToRedirect.toString());
-             */}
-            return NextResponse.redirect(`${baseOrigin}/auth/pending-review`);
+            }else{
+              return NextResponse.redirect(`${baseOrigin}/auth/pending-review`);
+            }
           } catch (prismaError) {
             logger.error({ prismaError }, 'Auth Callback ERROR (Prisma)');
           }

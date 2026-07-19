@@ -3,20 +3,20 @@
 import { useEffect, useState, useTransition, Suspense } from "react";
 import type { FormEvent } from "react";
 import Link from "next/link";
-{/*suppression de la logique de gestion lien d'invitation (token) */}
-//import { useSearchParams, useRouter } from "next/navigation";
+//on remet en place la logique de gestion lien d'invitation (token) 
+import { useSearchParams, useRouter } from "next/navigation";
 import { Home } from "lucide-react";
 
 import { Turnstile } from "@marsidev/react-turnstile";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { ArrowLeft } from 'lucide-react'
 
 import { registerSchema, type RegisterInput } from "@/schemas/auth.schema";
 
-{/*suppression de la logique de gestion lien d'invitation (token) */}
-//import { getPromotions, signup, verifyInvitationToken } from "@/app/auth/actions";
-import { getPromotions, signup } from "@/app/auth/actions";
+{/*on remet en place la logique de gestion lien d'invitation (token) */}
+import { getPromotions, signup, verifyInvitationToken } from "@/app/auth/actions";
 import { MaterialIcon } from "@/components/icons/material-icon";
 import { cn } from "@/lib/utils";
 import { BackButton } from "@/components/ui/back-button";
@@ -25,9 +25,10 @@ import { BackButton } from "@/components/ui/back-button";
 import { Combobox } from "@/components/ui/combobox";
 import { Controller } from "react-hook-form";
 
-{/*suppression de la logique de gestion lien d'invitation (token) */}
-//type SignupData = RegisterInput & { captchaToken: string; token: string };
-type SignupData = RegisterInput & { captchaToken: string};
+
+type SignupData = RegisterInput & { captchaToken: string; token: string };
+{/* système de choix de la méthode d'enregistrement*/}
+type RegisterMode = "choice" | "invitation" | "request"
 
 export default function RegisterPage() {
   return (
@@ -37,11 +38,15 @@ export default function RegisterPage() {
   );
 }
 
+
 function RegisterContent() {
-  {/*suppression de la logique de gestion lien d'invitation (token) */}
-  //const searchParams = useSearchParams();
-  //const router = useRouter();
-  //const token = searchParams.get("token");
+  
+  
+
+  {/*on remet en place la logique de gestion lien d'invitation (token) */}
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const token = searchParams.get("token");
 
   // State for the token entry form
   const [tokenInput, setTokenInput] = useState("");
@@ -54,6 +59,11 @@ function RegisterContent() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  {/*Mode par défaut d'enregistrement */}
+  const [mode, setMode] = useState<RegisterMode>("choice")
+  useEffect(() => {
+  if (token) setMode("invitation");
+}, [token]);
 
   //ajout de control à la destruction de useForm pour le combobox
   const {
@@ -98,11 +108,13 @@ function RegisterContent() {
       return;
     }
 
-    {/*suppression de la logique de gestion lien d'invitation (token) */}
+
+
+    {/*on envoie le token à singup en fonction du choix de l'utilisateur */}
     startTransition(async () => {
       const result = await signup({ 
         ...data, 
-        //token: token || "",
+        token: mode==="invitation" ? ( token || "") : "",
         captchaToken: captchaToken || ""
       } as SignupData);
       
@@ -112,10 +124,11 @@ function RegisterContent() {
     });
   };
   
+
   
   
-  {/*suppression de la logique de gestion lien d'invitation (token) */}
-/*
+  {/*on remet en place la logique de gestion lien d'invitation (token) */}
+
   const handleTokenSubmit = (e: FormEvent) => {
     e.preventDefault();
     
@@ -151,59 +164,48 @@ function RegisterContent() {
       router.push(`/auth/register?token=${extractedToken}`);
     });
   };
-*/
-  return (
-    <main className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-slate-50 font-sans">
-      {/* Bouton de retour en haut à gauche */}
-      <div className="absolute top-6 left-6 sm:top-8 sm:left-8 z-50">
-        <BackButton className="bg-white/80 backdrop-blur-md px-4 py-2 rounded-full border border-slate-200/50 shadow-sm hover:border-[var(--aduti-primary)]/50 hover:bg-white" />
-      </div>
-
-      {/* Bouton d'accueil en haut à droite */}
-      <div className="absolute top-6 right-6 sm:top-8 sm:right-8 z-50">
-        <Link 
-           href="/"
-           className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-[var(--aduti-primary)] transition-colors w-fit focus:outline-none bg-white/80 backdrop-blur-md px-4 py-2 rounded-full border border-slate-200/50 shadow-sm hover:border-[var(--aduti-primary)]/50 hover:bg-white"
-         >
-           <Home className="w-4 h-4" />
-           <span className="hidden sm:inline">Accueil</span>
-         </Link>
-      </div>
-
-      {/* Animated Background Canvas */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-80">
-        <div className="absolute top-[-20%] left-[-10%] w-[70vw] h-[70vw] bg-[radial-gradient(circle,rgba(19,146,236,0.15)_0%,transparent_60%)] rounded-full blur-[80px] animate-pulse-slow mix-blend-multiply" />
-        <div className="absolute bottom-[-20%] right-[-10%] w-[60vw] h-[60vw] bg-[radial-gradient(circle,rgba(37,99,235,0.12)_0%,transparent_60%)] rounded-full blur-[100px] animate-pulse-slow animation-delay-4000 mix-blend-multiply" />
-        <div className="absolute top-[30%] left-[20%] w-[40vw] h-[40vw] bg-[radial-gradient(circle,rgba(59,130,246,0.1)_0%,transparent_60%)] rounded-full blur-[60px] animate-float mix-blend-multiply" />
-      </div>
-      
-      {/* Subtle grid overlay */}
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0ZerrblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgTSAxMCAwIEwgMTAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgwLDAsMCwwLjAyKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-60 z-0"></div>
-
-      {/* Main Content (Centered Form) */}
-      <div className="w-full max-w-[720px] z-10 flex flex-col gap-6 pt-20 sm:pt-8 pb-12">
-
-        <div className="bg-white rounded-[32px] border border-slate-200/60 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.08)] backdrop-blur-xl relative overflow-hidden">
-          {/* Loading Progress Bar */}
-          <div className={cn(
-            "absolute top-0 left-0 right-0 h-1.5 bg-slate-100 overflow-hidden z-20 transition-opacity duration-300",
-            isPending ? "opacity-100" : "opacity-0"
-          )}>
-            <div className="h-full bg-[var(--aduti-primary)] animate-shimmer w-full origin-left" />
+  function chargementContenu(mode: RegisterMode){
+  if (mode === "choice"){
+    return(
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {/* Lien d'inviation */}
+        <button
+          type="button"
+          onClick={() => setMode("invitation")}
+          className="group flex flex-col items-start gap-3 p-5 bg-white hover:bg-blue-50 border border-slate-200 hover:border-[var(--aduti-primary)]/40 rounded-2xl transition-all duration-150 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--aduti-primary)]"
+        >
+          <div className="w-10 h-10 rounded-xl bg-slate-50 group-hover:bg-[var(--aduti-primary)] border border-slate-100 group-hover:border-[var(--aduti-primary)] flex items-center justify-center transition-all duration-150">
+            <MaterialIcon name="vpn_key" className="w-5 h-5 text-[var(--aduti-primary)] group-hover:text-white transition-colors duration-150" />
           </div>
+          <div>
+            <p className="text-lg font-bold text-slate-800 mb-0.5">Lien d&apos;invitation</p>
+            <p className="text-sm text-slate-500 leading-relaxed">Collez votre code ou lien reçu par email.</p>
+          </div>
+          
+          <MaterialIcon name="arrow_forward" className="w-4 h-4 text-slate-300 group-hover:text-[var(--aduti-primary)] transition-colors mt-auto" />
+        </button>
 
-          <div className="p-6 md:p-8 lg:p-12">
-
-
-
-            {/*suppression de la logique de gestion lien d'invitation (token) */}
-            {/*
-
-            {!token ? ( 
-            
-            */} 
-            {/*
-
+        {/* Demande d'enregistrement */}
+        <button
+          type="button"
+          onClick={() => setMode("request")}
+          className="group flex flex-col items-start gap-3 p-5 bg-white hover:bg-blue-50 border border-slate-200 hover:border-[var(--aduti-primary)]/40 rounded-2xl transition-all duration-150 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--aduti-primary)]"
+        >
+          <div className="w-10 h-10 rounded-xl bg-slate-50 group-hover:bg-[var(--aduti-primary)] border border-slate-100 group-hover:border-[var(--aduti-primary)] flex items-center justify-center transition-all duration-150">
+            <MaterialIcon name="edit_note" className="w-5 h-5 text-[var(--aduti-primary)] group-hover:text-white transition-colors duration-150" />
+          </div>
+          <div>
+            <p className="text-lg font-bold text-slate-800 mb-0.5">Faire une demande</p>
+            <p className="text-sm text-slate-500 leading-relaxed">Remplissez le formulaire et attendez la validation.</p>
+          </div>
+      
+          <MaterialIcon name="arrow_forward" className="w-4 h-4 text-slate-300 group-hover:text-[var(--aduti-primary)] transition-colors mt-auto" />
+        </button>
+      </div>
+              )
+            }
+  if (mode ==="invitation" && !token){ 
+    return(
               <div className="py-4">
                 <div className="text-center mb-8">
                   <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-blue-50 mb-4 ring-8 ring-blue-50/50">
@@ -253,24 +255,23 @@ function RegisterContent() {
                     </Link>
                   </p>
                 </div>
-              </div>
-
-            */}
-            {/* 
-
-            ) : ( 
-              <>  
-
-              */}  
-              
-
-
-                <div className="flex gap-4 mb-8 p-4 rounded-2xl bg-slate-50 border border-slate-100 text-slate-600 items-center">
+              </div>)
+            }
+  return (
+          <>
+              <div className="flex gap-4 mb-8 p-4 rounded-2xl bg-slate-50 border border-slate-100 text-slate-600 items-center">
                   <div className="w-10 h-10 rounded-xl bg-white border border-slate-100 flex items-center justify-center shadow-sm">
                     <MaterialIcon name="info" className="w-5 h-5 text-[var(--aduti-primary)]" />
                   </div>
                   <div className="text-xs font-bold uppercase tracking-wider leading-tight">
-                    Réservé aux membres de l&apos;ADUTI <span className="text-slate-400 font-medium tracking-normal normal-case">(DUT/DTS)</span> INPHB
+                    {mode === "request" ? 
+                      ("Votre demande sera traitée par un administrateur"
+
+                      ) : (
+                        <>Réservé aux membres de l&apos;ADUTI <span className="text-slate-400 font-medium tracking-normal normal-case">(DUT/DTS)</span> INPHB</>
+                      )
+                    }
+                    
                   </div>
                 </div>
 
@@ -580,7 +581,7 @@ function RegisterContent() {
                       ) : (
                         <MaterialIcon name="check_circle" className="w-5 h-5" />
                       )}
-                      {isPending ? "Traitement..." : "S'enregistrer"}
+                      {isPending ? "Traitement..." : mode ==="request" ? "Soumettre la demande" : "S'enregistrer"}
                     </button>
                   </div>
                 </form>
@@ -596,10 +597,74 @@ function RegisterContent() {
                     </Link>
                   </p>
                 </div>
-                {/*
-              </>
-            )}
-            */}
+      </>
+            
+            )
+}
+
+
+
+  return (
+    <main className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-slate-50 font-sans">
+      {/* Bouton de retour en haut à gauche */}
+      {mode === "choice" ? 
+        ( <>
+        <div className="absolute top-6 left-6 sm:top-8 sm:left-8 z-50">
+        <BackButton className="bg-white/80 backdrop-blur-md rounded-full border border-slate-200/50 shadow-sm hover:border-[var(--aduti-primary)]/50 hover:bg-white" />
+      </div>
+      </>
+    )
+      : (
+        <div className="absolute top-6 left-6 sm:top-8 sm:left-8 z-50">
+          <button 
+              onClick={() => setMode("choice")}
+              className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-[var(--aduti-primary)] transition-colors w-fit focus:outline-none bg-white/80 backdrop-blur-md rounded-full border border-slate-200/50 shadow-sm hover:border-[var(--aduti-primary)]/50 hover:bg-white"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Retour
+            </button>
+      </div>
+    )}
+      
+
+      {/* Bouton d'accueil en haut à droite */}
+      <div className="absolute top-6 right-6 sm:top-8 sm:right-8 z-50">
+        <Link 
+           href="/"
+           className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-[var(--aduti-primary)] transition-colors w-fit focus:outline-none bg-white/80 backdrop-blur-md px-4 py-2 rounded-full border border-slate-200/50 shadow-sm hover:border-[var(--aduti-primary)]/50 hover:bg-white"
+         >
+           <Home className="w-4 h-4" />
+           <span className="hidden sm:inline">Accueil</span>
+         </Link>
+      </div>
+
+      {/* Animated Background Canvas */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-80">
+        <div className="absolute top-[-20%] left-[-10%] w-[70vw] h-[70vw] bg-[radial-gradient(circle,rgba(19,146,236,0.15)_0%,transparent_60%)] rounded-full blur-[80px] animate-pulse-slow mix-blend-multiply" />
+        <div className="absolute bottom-[-20%] right-[-10%] w-[60vw] h-[60vw] bg-[radial-gradient(circle,rgba(37,99,235,0.12)_0%,transparent_60%)] rounded-full blur-[100px] animate-pulse-slow animation-delay-4000 mix-blend-multiply" />
+        <div className="absolute top-[30%] left-[20%] w-[40vw] h-[40vw] bg-[radial-gradient(circle,rgba(59,130,246,0.1)_0%,transparent_60%)] rounded-full blur-[60px] animate-float mix-blend-multiply" />
+      </div>
+      
+      {/* Subtle grid overlay */}
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0ZerrblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgTSAxMCAwIEwgMTAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgwLDAsMCwwLjAyKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-60 z-0"></div>
+
+      {/* Main Content (Centered Form) */}
+      <div className="w-full max-w-[720px] z-10 flex flex-col gap-6 pt-20 sm:pt-8 pb-12">
+
+        <div className="bg-white rounded-[32px] border border-slate-200/60 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.08)] backdrop-blur-xl relative overflow-hidden">
+          {/* Loading Progress Bar */}
+          <div className={cn(
+            "absolute top-0 left-0 right-0 h-1.5 bg-slate-100 overflow-hidden z-20 transition-opacity duration-300",
+            isPending ? "opacity-100" : "opacity-0"
+          )}>
+            <div className="h-full bg-[var(--aduti-primary)] animate-shimmer w-full origin-left" />
+          </div>
+
+          <div className="p-6 md:p-8 lg:p-12">
+          {/*logique conditionnelle sur  mode poiur savoir ce que l'utilisateur doit voir */}
+          {chargementContenu(mode)}
+          
+            
           </div>
         </div>
       </div>

@@ -20,8 +20,8 @@ export const registerSchema = z.object({
   gender: z.enum(['MALE', 'FEMALE'], {
     message: 'Veuillez sélectionner votre genre',
   }),
-  // suppresion de la gestion du token d'invitation
-  //token: z.string().optional(),
+  // on garde la gestion du token d'invitation
+  token: z.string().optional(),
 }).refine((data) => data.password === data.confirmPassword, {
   message: 'Les mots de passe ne correspondent pas',
   path: ['confirmPassword'],

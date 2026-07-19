@@ -6,186 +6,104 @@ import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import logger from "@/lib/logger";
-
-const MEMBERS_PER_PAGE = 10;
+// gestion des urls
+import { headers } from "next/headers";
+// gestion de l'envoi emails
+import {sendEmail} from "@/lib/mail";
+// gestion des templates d'emails
+import { approvalEmailTemplate, rejectionEmailTemplate } from "@/lib/email-templates";
 
 async function requireSuperAdmin() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error("Unauthorized");
   const member = await prisma.member.findUnique({ where: { id: user.id } });
-  if (!member || member.role !== "SUPER_ADMIN") {
-    logger.warn({ userId: user.id, role: member?.role }, "Unauthorized access attempt to super admin action");
-    throw new Error("Unauthorized");
-  }
-  return { user, member };
+  if (!member || member.role !== "SUPER_ADMIN") throw new Error("Unauthorized");
+  return user;
 }
 
-export async function getMembersPaginated(
-  page: number = 1,
-  search: string = "",
-  promoId: string = "",
-  status: string = "",
-  role: string = ""
-) {
-  const where: Prisma.MemberWhereInput = {};
 
-  if (search) {
-    where.OR = [
-      { first_name: { contains: search, mode: "insensitive" } },
-      { last_name: { contains: search, mode: "insensitive" } },
-      { email: { contains: search, mode: "insensitive" } },
-    ];
-  }
-  if (promoId) where.promo_id = promoId;
-  if (status) where.status = status as MemberStatus;
-  if (role) where.role = role as MemberRole;
 
-  const [members, total] = await Promise.all([
-    prisma.member.findMany({
-      where,
-      include: { promotion: { select: { name: true } } },
-      orderBy: { created_at: "desc" },
-      skip: (page - 1) * MEMBERS_PER_PAGE,
-      take: MEMBERS_PER_PAGE,
-    }),
-    prisma.member.count({ where }),
-  ]);
 
-  return {
-    members,
-    total,
-    totalPages: Math.ceil(total / MEMBERS_PER_PAGE),
-    currentPage: page,
-  };
+// formation de la base de l'url
+async function getBaseOrigin(){
+  const hearderlist = await headers();
+  const host = hearderlist.get('host') || 'aduticsi.com'
+  const isLocal = host.includes('localhost') || host.includes('192.168') || host.includes('127.0.0.1')
+  const proto = hearderlist.get('x-forwarded-proto') || (isLocal ? 'http' : 'https')
+  const baseOrigin = `${proto}://${host}`
 }
 
-export async function updateMemberRole(memberId: string, newRole: "MEMBER" | "ADMIN" | "SUPER_ADMIN") {
+// on récupère les demandes d'enregistrement en attentes
+export async function getPendingRegistration() {
   await requireSuperAdmin();
-  await prisma.member.update({
-    where: { id: memberId },
-    data: {
-      role: newRole,
-      // Si on r\u00e9trograde en MEMBER, on r\u00e9initialise sa fonction.
-      // Si on pr\u00f4meut, on ne touche pas \u00e0 la fonction existante.
-      ...(newRole === "MEMBER" ? { function: "NONE" } : {}),
-    },
+    return prisma.member.findMany({
+    where: { registration_status: "PENDING" },
+    include: { promotion: true },
+    orderBy: { created_at: "asc" },
   });
-  revalidatePath("/dashboard/super-admin/members");
-  return { success: true };
 }
 
-export async function updateMemberPoste(
-  memberId: string,
-  posteId: string | null
-) {
-  await requireSuperAdmin();
-  await prisma.member.update({ where: { id: memberId }, data: { poste_id: posteId } });
-  revalidatePath("/dashboard/super-admin/members");
-  return { success: true };
-}
+// on modifie l'état du membre et on envoi un email
 
-export async function updateMemberGender(memberId: string, gender: "MALE" | "FEMALE" | null) {
-  await requireSuperAdmin();
-  await prisma.member.update({ where: { id: memberId }, data: { gender } });
-  revalidatePath("/dashboard/super-admin/members");
-  return { success: true };
-}
-
-export async function updateMemberStatus(memberId: string, newStatus: "STUDENT" | "ALUMNI") {
-  await requireSuperAdmin();
-  await prisma.member.update({ where: { id: memberId }, data: { status: newStatus } });
-  revalidatePath("/dashboard/super-admin/members");
-  return { success: true };
-}
-
-export async function deleteMember(memberId: string) {
+export async function approveMember(memberId: string) {
   await requireSuperAdmin();
 
-  // 1. Récupérer les infos du membre avant suppression (avatar à nettoyer)
-  const member = await prisma.member.findUnique({
-    where: { id: memberId },
-    select: { photo_url: true },
-  });
-
-  // 2. Supprimer l'avatar du Storage si présent
-  if (member?.photo_url) {
-    try {
-      const supabaseAdmin = createAdminClient();
-      const fileName = member.photo_url.split("/").pop();
-      if (fileName) {
-        // Le fichier est dans le sous-dossier 'avatars/'
-        await supabaseAdmin.storage.from("membres_images").remove([`avatars/${fileName}`]);
-        logger.info({ fileName }, "deleteMember: Avatar supprimé du Storage");
-      }
-    } catch (err) {
-      // On log l'erreur mais on ne bloque pas la suppression
-      logger.warn({ err, memberId }, "deleteMember: Échec de suppression de l'avatar");
-    }
-  }
-
-  // 3. Supprimer le membre de Prisma (cascade sur ses publications, activités, etc.)
-  await prisma.member.delete({ where: { id: memberId } });
-
-  // 4. Supprimer le compte Supabase Auth — empêche toute reconnexion
   try {
-    const supabaseAdmin = createAdminClient();
-    const { error } = await supabaseAdmin.auth.admin.deleteUser(memberId);
-    if (error) {
-      logger.warn({ error, memberId }, "deleteMember: Échec de suppression du compte Supabase Auth");
-    } else {
-      logger.info({ memberId }, "deleteMember: Compte Supabase Auth supprimé avec succès");
+    const member = await prisma.member.update({
+      where: { id: memberId },
+      data: { registration_status: "APPROVED" },
+    });
+
+    const origin = await getBaseOrigin();
+    const loginUrl = `${origin}/auth/login`;
+
+    const emailResult = await sendEmail({
+      to: member.email,
+      subject: "Votre compte ADUTI-INPHB a été approuvé",
+      html: approvalEmailTemplate(loginUrl),
+    });
+
+    if (!emailResult.success) {
+      logger.error({ memberId, error: emailResult.error }, "Failed to send approval email");
     }
-  } catch (err) {
-    logger.warn({ err, memberId }, "deleteMember: Erreur lors de la suppression Supabase Auth");
-  }
 
-  revalidatePath("/dashboard/super-admin/members");
-  revalidatePath("/members");
-  return { success: true };
+    revalidatePath("/dashboard/super-admin/registrations");
+    return { success: true };
+  } catch (error) {
+    logger.error({ error, memberId }, "Error approving member");
+    return { success: false, error: "Une erreur est survenue lors de l'approbation." };
+  }
 }
 
-export async function updateMemberFunction(
-  memberId: string,
-  nextFunction: "NONE" | "GESTION_ACTIVITES"
-) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) throw new Error("Unauthorized");
 
-  const actor = await prisma.member.findUnique({ where: { id: user.id } });
-  if (!actor) throw new Error("Unauthorized");
+export async function rejectMember(memberId: string) {
+  await requireSuperAdmin();
 
-  const target = await prisma.member.findUnique({
-    where: { id: memberId },
-    select: { id: true, promo_id: true, role: true },
-  });
-  if (!target) throw new Error("Member not found");
+  try {
+    const member = await prisma.member.update({
+      where: { id: memberId },
+      data: { registration_status: "REJECTED" },
+    });
 
-  const isSuperAdmin = actor.role === "SUPER_ADMIN";
-  const isAdminSamePromo =
-    actor.role === "ADMIN" && actor.promo_id === target.promo_id;
+    const origin = await getBaseOrigin();
+    const loginUrl = `${origin}/auth/login`;
 
-  if (!isSuperAdmin && !isAdminSamePromo) {
-    throw new Error("Unauthorized");
+    const emailResult = await sendEmail({
+      to: member.email,
+      subject: "Votre compte ADUTI-INPHB a été approuvé",
+      html: rejectionEmailTemplate(),
+    });
+
+    if (!emailResult.success) {
+      logger.error({ memberId, error: emailResult.error }, "Failed to send approval email");
+    }
+
+    revalidatePath("/dashboard/super-admin/registrations");
+    return { success: true };
+  } catch (error) {
+    logger.error({ error, memberId }, "Error approving member");
+    return { success: false, error: "Une erreur est survenue lors de l'approbation." };
   }
-
-  if (target.role !== "MEMBER") {
-    throw new Error("Action autorisée uniquement sur les membres simples.");
-  }
-
-  await prisma.member.update({
-    where: { id: memberId },
-    data: { function: nextFunction },
-  });
-
-  revalidatePath("/dashboard/admin");
-  revalidatePath("/dashboard/super-admin/members");
-  return { success: true };
 }
 
-export async function getAllPostes() {
-  return prisma.poste.findMany({
-    orderBy: { name: "asc" },
-  });
-}
