@@ -36,7 +36,7 @@ export function ExpandableText({ text, className, maxLength = 180 }: ExpandableT
         {isExpanded ? (
           <>Voir moins <ChevronUp className="w-3.5 h-3.5" /></>
         ) : (
-          <>Lire la suite <ChevronDown className="w-3.5 h-3.5" /></>
+          <>Lire la suite <ChevronDown  className="w-3.5 h-3.5" /></>
         )}
       </button>
     </div>
