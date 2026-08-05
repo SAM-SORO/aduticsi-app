@@ -6,6 +6,7 @@ import { AutoSubmitInput } from "@/components/ui/auto-submit-input";
 import { AutoSubmitSelect } from "@/components/ui/auto-submit-select";
 import { prisma } from "@/lib/prisma";
 import { MaterialIcon } from "@/components/icons/material-icon";
+import { createClient } from "@/lib/supabase/server";
 
 const MEMBERS_PER_PAGE = 12;
 
@@ -14,10 +15,14 @@ export const dynamic = "force-dynamic";
 
 export default async function MembersPage({
   searchParams,
+  
 }: {
   searchParams: Promise<{ page?: string; search?: string; promo?: string; status?: string; role?: string; gender?: string }>;
 }) {
   const params = await searchParams;
+  const supabase = await createClient()
+  // récupérer les infos du user connecté
+  const { data: { user } } = await supabase.auth.getUser()
   const currentPage = parseInt(params.page || "1", 10);
   const search = params.search || "";
   const promoId = params.promo || "";
@@ -39,6 +44,10 @@ export default async function MembersPage({
   if (status) where.status = status;
   if (role) where.poste_id = role; 
   if (gender) where.gender = gender;
+  // seulement affiché les profil publi si l'utilisateur n'est pas un membre
+  if (!user) { where.profile_status = 'PUBLIC' }
+  // n'afficher que les utilisateur approuvé
+  where.registration_status = 'APPROVED'
 
   // Fetch promotions pour le select
   const promotions = await prisma.promotion.findMany({
@@ -122,7 +131,8 @@ export default async function MembersPage({
                 { name: "promo", defaultValue: promoId, options: [{ value: "", label: "Toutes Promotions" }, ...promotions.map(p => ({ value: p.id, label: p.name }))] },
                 { name: "status", defaultValue: status, options: [{ value: "", label: "Tous Statuts" }, { value: "STUDENT", label: "Étudiant" }, { value: "ALUMNI", label: "Alumni" }] },
                   { name: "role", defaultValue: role, options: [
-                    { value: "", label: "Tous Postes Bureau" },
+                    // on va utiliser "adhérents" comme label pour le rôle vide
+                    { value: "", label: "Adhérents" },
                     ...postes.map(p => ({ value: p.id, label: p.name })),
                   ] },
                   { name: "gender", defaultValue: gender, options: [

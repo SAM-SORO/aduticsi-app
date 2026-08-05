@@ -38,12 +38,16 @@ export async function GET(request: Request) {
       if (!existingMember) {
         logger.info({ userId: user.id }, 'Auth Callback: Creating new member in Prisma');
         
-        const { first_name, last_name, name, promo_id, status, gender, invitation_token } = user.user_metadata
-
-        if (!invitation_token) {
+        // on ne log plus l'absence de token d'invitation
+        
+        
+        /*if (!invitation_token) {
           logger.warn({ userId: user.id }, 'Auth Callback: Missing invitation token in metadata');
           // Don't block redirect, but log warning
         }
+           */
+
+        const { first_name, last_name, name, promo_id, status, gender, invitation_token, profile_status } = user.user_metadata
 
         // Validate and sanitize status and gender for Prisma Enums
         const sanitizedStatus = (status as string || 'STUDENT').toUpperCase() as 'STUDENT' | 'ALUMNI';
@@ -75,7 +79,9 @@ export async function GET(request: Request) {
                 promo_id,
                 status: sanitizedStatus,
                 gender: sanitizedGender,
+                registration_status : invitation_token ? 'APPROVED' :  'PENDING', // s'il a un lien d'invitation, on l'enregistre directement
                 role: 'MEMBER', // Toujours MEMBER — ne jamais faire confiance aux métadonnées client
+                profile_status: profile_status || 'PUBLIC', // lire le statut du profil
                 poste_id: null,
                 function: 'NONE',
                 slug,
@@ -83,18 +89,32 @@ export async function GET(request: Request) {
             })
             logger.info({ memberId: newMember.id, slug }, 'Auth Callback: SUCCESS! Member created');
 
-            // Creation succeeded. Let's redirect with the welcome animation flag.
+            // on rédirige l'utilisateur vers une page d'informaiton en attendant la validation de son enregistrement
+            if (invitation_token) {
+               // Creation succeeded. Let's redirect with the welcome animation flag.
             const urlToRedirect = new URL(`${baseOrigin}${next}`);
             urlToRedirect.searchParams.set("welcome", "true");
             return NextResponse.redirect(urlToRedirect.toString());
+            }else{
+              return NextResponse.redirect(`${baseOrigin}/auth/pending-review`);
+            }
           } catch (prismaError) {
             logger.error({ prismaError }, 'Auth Callback ERROR (Prisma)');
           }
         }
       } else {
+        
         logger.info('Auth Callback: Member already exists in Prisma, skipping creation.');
+        // on vérifie le statut d'enregistrement de l'utilisateur pour faire la bonne redirection
+        if (existingMember.registration_status === "PENDING"){
+          return NextResponse.redirect(`${baseOrigin}/auth/pending-review`)
+        }
+        if (existingMember.registration_status === 'REJECTED') {
+          return NextResponse.redirect(`${baseOrigin}/auth/registration-rejected`);
+        }
       }
-
+      
+        
       return NextResponse.redirect(`${baseOrigin}${next}`)
     }
   }

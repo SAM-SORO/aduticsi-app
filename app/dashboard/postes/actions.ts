@@ -5,6 +5,12 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
 import logger from "@/lib/logger";
+// gestion des urls
+import { headers } from "next/headers";
+// gestion de l'envoi emails
+import {sendEmail} from "@/lib/mail";
+// gestion des templates d'emails
+import { approvalEmailTemplate, rejectionEmailTemplate } from "@/lib/email-templates";
 
 async function requireSuperAdmin() {
   const supabase = await createClient();
@@ -69,3 +75,6 @@ export async function deletePoste(id: string) {
     return { success: false, error: "Impossible de supprimer ce poste. Vérifiez s'il est utilisé par des membres." };
   }
 }
+
+
+

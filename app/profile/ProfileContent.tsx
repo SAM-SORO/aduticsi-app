@@ -13,6 +13,7 @@ import { ImageCropper } from '@/components/ui/ImageCropper'
 import { MaterialIcon } from '@/components/icons/material-icon'
 import { ExpandableText } from '@/components/ui/expandable-text'
 import { SelectField } from '@/components/ui/select-field'
+import { ProfileVisibilityToggle } from '@/components/Profile/ProfileVisibilityToggle'
 import { logout } from '@/app/auth/actions'
 import { cn } from '@/lib/utils'
 import { Dialog, DialogContent, DialogTrigger, DialogTitle, DialogHeader } from '@/components/ui/dialog'
@@ -26,6 +27,7 @@ interface ProfileContentProps {
     email: string;
     role: string;
     status: string;
+    profile_status: 'PUBLIC' | 'PRIVATE';
     function?: string | null;
     phone?: string | null;
     linkedin_url?: string | null;
@@ -418,7 +420,10 @@ export function ProfileContent({ member }: ProfileContentProps) {
       )}
 
       {/* Header */}
-      <div className="flex items-start sm:items-center justify-end mb-6 sm:mb-8 gap-4">
+      <div className="flex items-start sm:items-center justify-between mb-6 sm:mb-8 gap-4">
+        {/* Statut du profil */}
+        <ProfileVisibilityToggle initialStatus={member.profile_status} />
+
         <button
           onClick={handleLogout}
           className="px-3 sm:px-5 py-2 sm:py-2.5 text-xs font-black text-red-500 hover:text-red-600 hover:bg-red-50 rounded-xl sm:rounded-2xl transition-all flex items-center gap-1.5 sm:gap-2 uppercase tracking-widest border border-transparent hover:border-red-100 shrink-0"

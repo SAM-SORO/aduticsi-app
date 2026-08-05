@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { MaterialIcon } from "@/components/icons/material-icon";
 
-export default function VerifyEmailPage() {
+export default function pendingReviewPage() {
   return (
     <main className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-slate-50 font-sans">
       {/* Animated Background */}
@@ -15,11 +15,11 @@ export default function VerifyEmailPage() {
       <div className="w-full max-w-[500px] z-10 flex flex-col gap-6">
         <div className="text-center space-y-2 flex flex-col items-center">
           <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-white shadow-[0_20px_40px_-10px_rgba(0,0,0,0.1)] text-[var(--aduti-primary)] mb-4 border border-slate-100 ring-8 ring-white/50 animate-bounce-subtle">
-            <MaterialIcon name="mark_email_unread" className="w-12 h-12" />
+            <MaterialIcon name="verified" className="w-12 h-12" />
           </div>
-          <h1 className="text-3xl font-black text-slate-900 tracking-tight">Vérifiez votre boîte mail</h1>
+          <h1 className="text-3xl font-black text-slate-900 tracking-tight">Demande d&apos;enregistrement</h1>
           <p className="text-slate-500 font-bold text-sm uppercase tracking-widest bg-blue-50 px-3 py-1 rounded-full border border-blue-100/50">
-            Activation du compte
+            En cour de vérification par un Administrateur
           </p>
         </div>
 
@@ -27,8 +27,7 @@ export default function VerifyEmailPage() {
           <div className="p-8 md:p-10">
             <div className="space-y-6 text-center">
               <p className="text-slate-600 text-lg font-medium leading-relaxed">
-                Un lien de confirmation sécurisé a été envoyé à votre adresse. 
-                Veuillez cliquer sur ce lien pour finaliser votre inscription.
+                Vous receverez un email lorsque la vérification sera terminée. 
               </p>
 
               <div className="bg-slate-50 rounded-2xl p-6 border border-dashed border-slate-200">
@@ -40,11 +39,11 @@ export default function VerifyEmailPage() {
 
               <div className="pt-6">
                 <Link 
-                  href="/auth/login" 
+                  href="/" 
                   className="group w-full flex justify-center items-center gap-3 py-4 px-6 rounded-2xl shadow-xl shadow-blue-100 text-sm font-black text-white bg-[var(--aduti-primary)] hover:bg-blue-600 focus:outline-none transition-all active:scale-[0.98] uppercase tracking-widest"
                 >
                   <MaterialIcon name="arrow_back" className="w-5 h-5 transition-transform group-hover:-translate-x-1" />
-                  Retour à la connexion
+                  Retour à l&apos;acceuil
                 </Link>
               </div>
             </div>
