@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { FadeInScroll } from "@/components/fade-in-scroll";
+import { LandingHero } from "@/components/landing/landing-hero";
 
 import { Button } from "@/components/ui/button";
 import { Counter } from "@/components/ui/counter";
@@ -20,59 +21,11 @@ export default async function Home() {
 
   return (
     <main className="flex-1 w-full overflow-x-hidden">
-      {/* Hero */}
-      <section className="relative overflow-hidden pt-8 pb-16 lg:pt-24 lg:pb-30 px-4">
-        {/* Animated Background Elements — overflow-hidden evite le scroll horizontal */}
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
-          <div className="absolute top-[-10%] right-0 w-[min(600px,90vw)] h-[min(600px,90vw)] bg-[var(--aduti-primary)]/10 rounded-full blur-[120px] animate-pulse" />
-          <div className="absolute bottom-[10%] left-0 w-[min(500px,80vw)] h-[min(500px,80vw)] bg-[var(--aduti-secondary)]/5 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '2s' }} />
-        </div>
-        
+      <LandingHero />
+
+      {/* Statistiques existantes — hors du périmètre visuel de la Phase 1. */}
+      <section className="relative overflow-hidden pb-16 lg:pb-30 px-4">
         <div className="max-w-7xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/80 backdrop-blur-md text-[var(--aduti-primary)] text-xs font-bold tracking-[0.1em] uppercase border border-blue-100/50 mb-8 shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-[var(--aduti-primary)] animate-pulse" />
-            Portail Officiel
-          </div>
-
-          <div className="flex justify-center mb-10">
-            <div className="relative w-64 h-28 md:w-80 md:h-36 group">
-              <div className="absolute -inset-4 bg-gradient-to-tr from-[var(--aduti-primary)]/10 to-[var(--aduti-secondary)]/10 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-              <Image
-                src="/logo_association.jpeg"
-                alt="Logo ADUTI"
-                fill
-                className="object-contain relative z-10 transition-transform duration-500 group-hover:scale-105"
-                priority
-              />
-            </div>
-          </div>
-
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-[family-name:var(--font-display)] font-bold text-slate-900 tracking-tight text-balance max-w-5xl mx-auto leading-[1.1]">
-            Association des <span className="text-[var(--aduti-primary)] relative italic">DUT<span className="absolute -bottom-1 left-0 w-full h-1 bg-[var(--aduti-primary)]/10 -rotate-1 rounded-full" /></span> et <span className="text-[var(--aduti-primary)] relative italic">DTS<span className="absolute -bottom-1 left-0 w-full h-1 bg-[var(--aduti-primary)]/10 -rotate-1 rounded-full" /></span>{" "}
-            <br className="hidden md:block" /> en <span className="text-[var(--aduti-secondary)]">Informatique</span>
-          </h1>
-
-          <p className="mt-8 text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed font-medium opacity-90">
-            Fédérer, Innover et Exceller. Découvrez le réseau officiel des étudiants et diplômés du cycle de Technicien supérieur de la filière STIC de l&apos;INP-HB.
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-5 pt-10">
-            <Link href="/about">
-              <Button className="w-full sm:w-auto h-14 px-10 rounded-2xl bg-[var(--aduti-primary)] hover:bg-blue-600 text-white font-bold transition-all shadow-[0_15px_30px_-10px_rgba(19,146,236,0.3)] hover:-translate-y-1">
-                {"Découvrir l'ADUTI"}
-                <MaterialIcon name="arrow_forward" className="ml-2 w-5 h-5" />
-              </Button>
-            </Link>
-            <Link href="/activities">
-              <Button
-                variant="outline"
-                className="w-full sm:w-auto h-14 px-10 rounded-2xl bg-white/50 backdrop-blur-sm border border-slate-200 hover:border-slate-300 text-slate-700 font-bold transition-all hover:bg-white hover:-translate-y-1"
-              >
-                Explorer nos activités
-              </Button>
-            </Link>
-          </div>
-
           <div className="pt-12 md:pt-20 grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-10 max-w-5xl mx-auto">
             {[
               { label: "d'histoire", value: 31, suffix: " ans" },
