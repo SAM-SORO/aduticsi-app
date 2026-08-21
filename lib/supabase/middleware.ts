@@ -12,11 +12,6 @@ const MOCK_USER = {
   id: 'iic1k5nexfajurej9rrwc6xc',
   email: "test@test.flow",
 }
-
-
-
-
-
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
