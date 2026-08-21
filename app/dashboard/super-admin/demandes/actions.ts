@@ -48,7 +48,6 @@ export async function getPendingRegistrations() {
 
 export async function approveMember(memberId: string) {
   await requireSuperAdmin();
-
   try {
     const member = await prisma.member.update({
       where: { id: memberId },
@@ -79,7 +78,6 @@ export async function approveMember(memberId: string) {
 
 export async function rejectMember(memberId: string) {
   await requireSuperAdmin();
-
   try {
     const member = await prisma.member.update({
       where: { id: memberId },

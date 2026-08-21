@@ -1,6 +1,6 @@
 
 
-export function approvalEmailTemplate( loginUrl: string) {
+export function  approvalEmailTemplate( loginUrl: string) {
   return `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px;">
       <h2 style="color: #1392ec;">Bienvenue à l'ADUTI</h2>
