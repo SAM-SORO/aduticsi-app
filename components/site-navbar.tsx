@@ -26,6 +26,7 @@ import { getProfile } from "@/app/profile/actions";
 // import du NavDropdown pour le menu "Activités" avec chargement dynamique des catégories
 import { NavDropdown } from "@/components/ui/nav-dropdown";
 
+
 // Sumulation d'un utilisateur connecté en développement pour tests locaux
 const IS_DEV = process.env.NODE_ENV === 'development';
 const MOCK_USER = {
@@ -360,6 +361,7 @@ export function SiteNavbar() {
                   label={link.label}
                   baseHref="/activities"
                   isActive={pathname === link.href}
+<<<<<<< HEAD
                   cible= "activities"
                 />
                 ) : link.href === "/members" ?(
@@ -372,6 +374,10 @@ export function SiteNavbar() {
                 />
                 ):
                  (
+=======
+                />
+                ) : (
+>>>>>>> a53053a (gestion du dropdown de 'Activités')
                 <Link
                   key={link.href}
                   href={link.href}

@@ -4,30 +4,17 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { getActivityCategories } from "@/app/dashboard/super-admin/activities/actions";
-import { getPostes } from "@/app/dashboard/postes/actions";
-import { ChevronDown } from "lucide-react";
+import { getActivityCategories } from "@/app/dashboard/super-admin/activities/actions.ts";
 
 type Category = { id: string; name: string };
-type poste = { id: string; name: string };
 
 interface NavDropdownProps {
   label: string;
   baseHref: string; // ex: "/activities"
   isActive: boolean;
-  cible : string;  // l'onglet de départ
 }
 
-export function NavDropdown({ label, baseHref, isActive, cible }: NavDropdownProps) {
-
-    useEffect(() => {
-  console.log("NavDropdown MOUNTED:", cible);
-  return () => {
-    console.log("NavDropdown UNMOUNTED:", cible);
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-  };
-}, []);
-    
+export function NavDropdown({ label, baseHref, isActive }: NavDropdownProps) {
   const [open, setOpen] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loaded, setLoaded] = useState(false);
@@ -36,10 +23,7 @@ export function NavDropdown({ label, baseHref, isActive, cible }: NavDropdownPro
   // Charge les catégories une seule fois, au premier survol
   const loadCategories = async () => {
     if (loaded) return;
-    const data = cible === "activities" 
-        ? await getActivityCategories()
-        : await getPostes()
-    
+    const data = await getActivityCategories();
     setCategories(data);
     setLoaded(true);
   };
@@ -77,7 +61,10 @@ export function NavDropdown({ label, baseHref, isActive, cible }: NavDropdownPro
         )}
       >
         {label}
+<<<<<<< HEAD
         <ChevronDown  className="w-4 h-4" />
+=======
+>>>>>>> a53053a (gestion du dropdown de 'Activités')
         
       </Link>
 
@@ -87,10 +74,15 @@ export function NavDropdown({ label, baseHref, isActive, cible }: NavDropdownPro
             <Link
               href={baseHref}
               className="block px-2 py-0.7 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:text-[var(--aduti-primary)] transition-colors"
+<<<<<<< HEAD
 
             >
 
               {cible === "activities" ? "Toutes les activités" : "Tous les adhérents"}
+=======
+            >
+              Toutes les activités
+>>>>>>> a53053a (gestion du dropdown de 'Activités')
             </Link>
 
             <div className="h-px bg-slate-100 my-1.5 mx-2" />
@@ -99,7 +91,11 @@ export function NavDropdown({ label, baseHref, isActive, cible }: NavDropdownPro
               categories.map((category) => (
                 <Link
                   key={category.id}
+<<<<<<< HEAD
                   href={ cible ==="activities" ?`/activities?search=&promo=&category=${category.id}` : `/members?promo=&status=&role=${category.id}&gender=&search=`}
+=======
+                  href={`/activities?search=&promo=&category=${category.id}`}
+>>>>>>> a53053a (gestion du dropdown de 'Activités')
                   className="block px-2 py-0.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-[var(--aduti-primary)] transition-colors"
                 >
                   {category.name}
