@@ -361,7 +361,6 @@ export function SiteNavbar() {
                   label={link.label}
                   baseHref="/activities"
                   isActive={pathname === link.href}
-<<<<<<< HEAD
                   cible= "activities"
                 />
                 ) : link.href === "/members" ?(
@@ -374,10 +373,6 @@ export function SiteNavbar() {
                 />
                 ):
                  (
-=======
-                />
-                ) : (
->>>>>>> a53053a (gestion du dropdown de 'Activités')
                 <Link
                   key={link.href}
                   href={link.href}
