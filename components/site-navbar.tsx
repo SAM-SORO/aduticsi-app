@@ -99,7 +99,6 @@ export function SiteNavbar() {
     // On ajoute l'utilisateur test en dev
     if(IS_DEV){
       setUser(MOCK_USER)
-<<<<<<< HEAD
       
       // on récupère les infos du membre depuis la base de données pour le mock user
         getProfile()
@@ -112,9 +111,6 @@ export function SiteNavbar() {
             setLoading(false);
           });
           return;
-=======
-      return
->>>>>>> 6e3415f (mock d'un super-admin pour les tests)
     }
 
 
