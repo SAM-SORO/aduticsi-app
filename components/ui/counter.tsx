@@ -46,7 +46,13 @@ export function Counter({
   useEffect(() => {
     if (!isVisible) return;
 
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const reducedMotionFrame = window.requestAnimationFrame(() => setCount(end));
+      return () => window.cancelAnimationFrame(reducedMotionFrame);
+    }
+
     let startTimestamp: number | null = null;
+    let animationFrame = 0;
     const step = (timestamp: number) => {
       if (!startTimestamp) startTimestamp = timestamp;
       const progress = Math.min((timestamp - startTimestamp) / duration, 1);
@@ -57,11 +63,13 @@ export function Counter({
       setCount(Math.floor(easeOutQuart * end));
       
       if (progress < 1) {
-        window.requestAnimationFrame(step);
+        animationFrame = window.requestAnimationFrame(step);
       }
     };
 
-    window.requestAnimationFrame(step);
+    animationFrame = window.requestAnimationFrame(step);
+
+    return () => window.cancelAnimationFrame(animationFrame);
   }, [isVisible, end, duration]);
 
   return (

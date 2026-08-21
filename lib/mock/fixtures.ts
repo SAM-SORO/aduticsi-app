@@ -216,9 +216,9 @@ export const mockPublications = [
 ];
 
 export const mockPartners = [
-  { id: "mock-partner-1", name: "École Supérieure d'Industrie", logo_url: "/image_logo_esi.png", is_active: true, created_at: new Date("2024-01-01"), updated_at: new Date("2024-01-01") },
-  { id: "mock-partner-2", name: "INP-HB", logo_url: "/image_logo_inphb.png", is_active: true, created_at: new Date("2024-01-02"), updated_at: new Date("2024-01-02") },
-  { id: "mock-partner-3", name: "ADUTI Alumni Network", logo_url: "/image_aduti_logo_2.png", is_active: true, created_at: new Date("2024-01-03"), updated_at: new Date("2024-01-03") },
+  { id: "mock-partner-1", name: "PARACLET", logo_url: "/images/landing/partners/paraclet.png", is_active: true, created_at: new Date("2024-01-01"), updated_at: new Date("2024-01-01") },
+  { id: "mock-partner-2", name: "QALILAB", logo_url: "/images/landing/partners/qalilab.webp", is_active: true, created_at: new Date("2024-01-02"), updated_at: new Date("2024-01-02") },
+  { id: "mock-partner-3", name: "CSI", logo_url: "/images/landing/partners/csi.png", is_active: true, created_at: new Date("2024-01-03"), updated_at: new Date("2024-01-03") },
 ];
 
 export const mockContactMessages: {

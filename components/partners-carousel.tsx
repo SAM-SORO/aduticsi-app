@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import { prisma } from "@/lib/prisma";
 import logger from "@/lib/logger";
+import type { Partner } from "@/types";
 
 export async function PartnersCarousel() {
   if (!prisma.partner) {
@@ -9,7 +10,7 @@ export async function PartnersCarousel() {
     return null;
   }
   
-  let activePartners = [];
+  let activePartners: Partner[] = [];
   
   try {
     activePartners = await prisma.partner.findMany({
@@ -23,35 +24,26 @@ export async function PartnersCarousel() {
 
   if (activePartners.length === 0) return null;
 
-  const doubled = [...activePartners, ...activePartners];
-
   return (
-    <div 
-      className="relative overflow-hidden py-8"
-      style={{
-        maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)',
-        WebkitMaskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)'
-      }}
-    >
-      <div className="flex animate-scroll gap-16 md:gap-24 w-max items-center">
-        {doubled.map((partner, i) => (
-          <div
-            key={`${partner.id}-${i}`}
-            title={partner.name}
-            className="flex-shrink-0 flex items-center justify-center h-20 w-40 opacity-40 grayscale transition-all duration-500 hover:grayscale-0 hover:opacity-100 hover:scale-105 cursor-default"
-          >
-            <div className="relative w-full h-full">
-              <Image
-                src={partner.logo_url}
-                alt={partner.name}
-                fill
-                className="object-contain"
-                sizes="(max-width: 768px) 100px, 160px"
-              />
-            </div>
+    <div className="landing-v14-partner-grid">
+      {activePartners.map((partner) => (
+        <article
+          key={partner.id}
+          title={partner.name}
+          className="landing-v14-partner-card"
+        >
+          <div className="landing-v14-partner-logo">
+            <Image
+              src={partner.logo_url}
+              alt={partner.name}
+              fill
+              sizes="(max-width: 680px) 132px, 150px"
+            />
           </div>
-        ))}
-      </div>
+          <span className="landing-v14-partner-line" aria-hidden="true" />
+          <h3>{partner.name}</h3>
+        </article>
+      ))}
     </div>
   );
 }
