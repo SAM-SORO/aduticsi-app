@@ -26,8 +26,9 @@ import { getProfile } from "@/app/profile/actions";
 // import du NavDropdown pour le menu "Activités" avec chargement dynamique des catégories
 import { NavDropdown } from "@/components/ui/nav-dropdown";
 
-// Sumulation d'un utilisateur connecté en développement pour tests locaux
+// Simulation opt-in d'un utilisateur connecté pour les tests locaux.
 const IS_DEV = process.env.NODE_ENV === 'development';
+const USE_MOCK_USER = process.env.NEXT_PUBLIC_USE_MOCK_USER === 'true';
 const MOCK_USER = {
   id: 'iic1k5nexfajurej9rrwc6xc',
   email: "test@test.flow",
@@ -60,7 +61,6 @@ const navLinks = [
 
 export function SiteNavbar() {
   const pathname = usePathname();
-  const isLandingV14 = pathname === "/";
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState<AuthUser | null>(null);
   const [member, setMember] = useState<{first_name: string | null; last_name: string | null; role: string; function: string; photo_url: string | null; email: string} | null>(null);
@@ -73,8 +73,8 @@ export function SiteNavbar() {
   const supabase = createClient();
 
   useEffect(() => {
-    // On ajoute l'utilisateur test en dev
-    if(IS_DEV){
+    // Le compte de test n'est activé que sur demande explicite en développement.
+    if(IS_DEV && USE_MOCK_USER){
       setUser(MOCK_USER)
       
       // on récupère les infos du membre depuis la base de données pour le mock user
@@ -185,7 +185,7 @@ export function SiteNavbar() {
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button className={cn("flex items-center gap-3 p-1.5 rounded-full hover:bg-slate-100 transition-all group border border-transparent hover:border-slate-200", isLandingV14 && "landing-v14-profile-button", className)}>
+            <button className={cn("flex items-center gap-3 p-1.5 rounded-full hover:bg-slate-100 transition-all group border border-transparent hover:border-slate-200 landing-v14-profile-button", className)}>
               <div className="size-9 rounded-full bg-[var(--aduti-primary)]/10 text-[var(--aduti-primary)] flex items-center justify-center font-bold text-sm overflow-hidden shrink-0 group-hover:bg-[var(--aduti-primary)] group-hover:text-white transition-colors">
                 {member.photo_url ? (
                   <Image src={member.photo_url} alt="Profil" width={36} height={36} className="object-cover w-full h-full" />
@@ -258,7 +258,7 @@ export function SiteNavbar() {
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button className={cn("flex items-center gap-3 p-1.5 rounded-full hover:bg-slate-100 transition-all group border border-transparent hover:border-slate-200", isLandingV14 && "landing-v14-profile-button", className)}>
+            <button className={cn("flex items-center gap-3 p-1.5 rounded-full hover:bg-slate-100 transition-all group border border-transparent hover:border-slate-200 landing-v14-profile-button", className)}>
               <div className="size-9 rounded-full bg-[var(--aduti-primary)]/10 text-[var(--aduti-primary)] flex items-center justify-center font-bold text-sm overflow-hidden shrink-0 group-hover:bg-[var(--aduti-primary)] group-hover:text-white transition-colors">
                 <User className="h-4 w-4" />
               </div>
@@ -292,22 +292,18 @@ export function SiteNavbar() {
         asChild
         className={cn(
           "inline-flex items-center justify-center rounded-lg h-10 px-6 bg-[var(--aduti-primary)] hover:bg-blue-600 transition-colors text-white text-sm font-semibold tracking-wide shadow-sm",
-          isLandingV14 && "landing-v14-member-button",
+          "landing-v14-member-button",
           className
         )}
       >
         <Link href="/auth/login">
-          {isLandingV14 ? (
-            <>
-              <User aria-hidden="true" />
-              <span>
-                <strong>ESPACE MEMBRE</strong>
-                <small>Accéder à mon espace</small>
-              </span>
-            </>
-          ) : (
-            "Se connecter"
-          )}
+          <span className="landing-v14-member-icon" aria-hidden="true">
+            <User />
+          </span>
+          <span className="landing-v14-member-copy">
+            <strong data-text="ESPACE MEMBRE">ESPACE MEMBRE</strong>
+            <small>Accéder à mon espace</small>
+          </span>
         </Link>
       </Button>
     );
@@ -322,21 +318,21 @@ export function SiteNavbar() {
       <header 
         className={cn(
           "sticky top-0 z-50 w-full border-b border-slate-100 bg-white/95 backdrop-blur-md transition-transform duration-300 ease-in-out",
-          isLandingV14 && "landing-v14-header",
+          "landing-v14-header",
           isVisible ? "translate-y-0" : "-translate-y-full"
         )}
       >
         <div className={cn(
           "px-4 py-4 layout-container flex items-center justify-between max-w-7xl mx-auto w-full",
-          isLandingV14 && "landing-v14-header-inner"
+          "landing-v14-header-inner"
         )}>
           <Link
             href="/"
             className="flex items-center gap-2 select-none no-underline"
           >
-            <div className={cn("relative h-14 w-auto aspect-[3/1]", isLandingV14 && "landing-v14-header-logo")}>
+            <div className="landing-v14-header-logo relative h-14 w-auto aspect-[3/1]">
               <Image
-                src="/logo_association.jpeg"
+                src="/logo_aduti - Edited.png"
                 alt="Logo ADUTI"
                 fill
                 priority
@@ -345,8 +341,8 @@ export function SiteNavbar() {
             </div>
           </Link>
 
-          <div className={cn("hidden md:flex flex-1 justify-end gap-8 items-center", isLandingV14 && "landing-v14-desktop-nav")}>
-            <nav className={cn("flex items-center gap-8", isLandingV14 && "landing-v14-nav-links")}>
+          <div className="landing-v14-desktop-nav hidden flex-1 items-center justify-end gap-8 md:flex">
+            <nav className="landing-v14-nav-links flex items-center gap-8">
               {dynamicNavLinks.map((link) => (
                 link.href === "/activities" ? (
                 <NavDropdown
@@ -380,12 +376,12 @@ export function SiteNavbar() {
                 </Link>)
               ))}
             </nav>
-            <div className={cn("flex items-center pl-4 border-l border-slate-200", isLandingV14 && "landing-v14-auth-area")}>
+            <div className="landing-v14-auth-area flex items-center border-l border-slate-200 pl-4">
               {renderAuthButton()}
             </div>
           </div>
 
-          <div className={cn("flex items-center gap-4 md:hidden", isLandingV14 && "landing-v14-mobile-actions")}>
+          <div className="landing-v14-mobile-actions flex items-center gap-4 md:hidden">
             {user && renderAuthButton()}
             <Button
               variant="ghost"
@@ -409,7 +405,7 @@ export function SiteNavbar() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
-                className={cn("absolute top-full left-0 w-full h-[100vh] bg-slate-900/10 backdrop-blur-[2px] md:hidden", isLandingV14 && "landing-v14-mobile-overlay")}
+                className="landing-v14-mobile-overlay absolute left-0 top-full h-[100vh] w-full bg-slate-900/10 backdrop-blur-[2px] md:hidden"
                 onClick={() => setIsOpen(false)}
               />
               
@@ -418,7 +414,7 @@ export function SiteNavbar() {
                 animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
                 transition={{ duration: 0.3, ease: "easeInOut" }}
-                className={cn("md:hidden overflow-hidden bg-white/95", isLandingV14 && "landing-v14-mobile-panel")}
+                className="landing-v14-mobile-panel overflow-hidden bg-white/95 md:hidden"
               >
               <div className="border-t border-slate-100">
                 <nav className="flex flex-col px-4 py-6 gap-2">

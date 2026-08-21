@@ -54,7 +54,7 @@ export function LandingQuoteCarousel() {
               aria-label="Masquer les citations"
               onClick={() => setIsOpen(false)}
             >
-              ×
+              <span aria-hidden="true">×</span>
             </button>
 
             <AnimatePresence mode="wait" initial={false}>
@@ -91,7 +91,7 @@ export function LandingQuoteCarousel() {
                 aria-label="Citation précédente"
                 onClick={() => selectCitation(index - 1)}
               >
-                ‹
+                <span aria-hidden="true">‹</span>
               </button>
               <div className="landing-v14-quote-dots">
                 {citations.map((item, itemIndex) => (
@@ -110,7 +110,7 @@ export function LandingQuoteCarousel() {
                 aria-label="Citation suivante"
                 onClick={() => selectCitation(index + 1)}
               >
-                ›
+                <span aria-hidden="true">›</span>
               </button>
             </div>
           </motion.article>

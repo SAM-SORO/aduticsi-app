@@ -3,13 +3,12 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getActivityCategories } from "@/app/dashboard/super-admin/activities/actions";
 import { getPostes } from "@/app/dashboard/postes/actions";
-import { ChevronDown } from "lucide-react";
 
 type Category = { id: string; name: string };
-type poste = { id: string; name: string };
 
 interface NavDropdownProps {
   label: string;
@@ -19,15 +18,6 @@ interface NavDropdownProps {
 }
 
 export function NavDropdown({ label, baseHref, isActive, cible }: NavDropdownProps) {
-
-    useEffect(() => {
-  console.log("NavDropdown MOUNTED:", cible);
-  return () => {
-    console.log("NavDropdown UNMOUNTED:", cible);
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-  };
-}, []);
-    
   const [open, setOpen] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loaded, setLoaded] = useState(false);
@@ -77,35 +67,36 @@ export function NavDropdown({ label, baseHref, isActive, cible }: NavDropdownPro
         )}
       >
         {label}
-        <ChevronDown  className="w-4 h-4" />
+        <ChevronDown
+          className={cn("h-4 w-4 transition-transform duration-200", open && "rotate-180")}
+        />
         
       </Link>
 
       {open && (
-        <div className="absolute top-full left-1/2 -translate-x-1/2 pt-3 z-50">
-          <div className="bg-white rounded-md border border-slate-200/60 shadow-sm min-w-[180px]">
-            <Link
-              href={baseHref}
-              className="block px-2 py-0.7 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:text-[var(--aduti-primary)] transition-colors"
-
-            >
-
-              {cible === "activities" ? "Toutes les activités" : "Tous les adhérents"}
-            </Link>
-
-            <div className="h-px bg-slate-100 my-1.5 mx-2" />
-
-            {loaded && (
-              categories.map((category) => (
+        <div className="absolute left-1/2 top-full z-50 -translate-x-1/2 pt-4">
+          <div className="w-max min-w-[268px] max-w-[calc(100vw-32px)] overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-2.5 shadow-[0_18px_45px_rgba(15,39,73,0.14)]">
+            <div className="flex flex-col gap-1">
+              {loaded && categories.map((category) => (
                 <Link
                   key={category.id}
                   href={ cible ==="activities" ?`/activities?search=&promo=&category=${category.id}` : `/members?promo=&status=&role=${category.id}&gender=&search=`}
-                  className="block px-2 py-0.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-[var(--aduti-primary)] transition-colors"
+                  title={category.name}
+                  className="flex min-h-10 items-center whitespace-nowrap rounded-xl px-3.5 py-2 text-[15px] font-semibold leading-5 text-slate-700 transition-colors hover:bg-slate-50 hover:text-[var(--aduti-primary)] focus-visible:bg-slate-50 focus-visible:text-[var(--aduti-primary)] focus-visible:outline-none"
                 >
-                  {category.name}
+                  <span className="truncate">{category.name}</span>
                 </Link>
-              ))
-            )}
+              ))}
+            </div>
+
+            <div className="mt-2 border-t border-slate-100 pt-2">
+              <Link
+                href={baseHref}
+                className="flex min-h-10 items-center whitespace-nowrap rounded-xl bg-slate-50 px-3.5 py-2 text-[13px] font-bold leading-5 text-[var(--aduti-primary)] transition-colors hover:bg-rose-50 focus-visible:bg-rose-50 focus-visible:outline-none"
+              >
+                {cible === "activities" ? "Voir toutes les activités" : "Annuaire des membres"}
+              </Link>
+            </div>
           </div>
         </div>
       )}

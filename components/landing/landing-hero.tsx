@@ -38,7 +38,7 @@ export function LandingHero() {
               </div>
             </div>
 
-            <LandingMediaSlot />
+            <LandingMediaSlot videoSrc="/videos/landing/hero-aduti.mp4" />
             <LandingQuoteCarousel />
           </div>
           <LandingScrollTicker />
