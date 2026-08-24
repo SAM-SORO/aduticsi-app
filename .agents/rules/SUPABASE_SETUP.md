@@ -1,14 +1,19 @@
+> ⚠️ **Document historique — instance Supabase Cloud (décommissionnée).**
+> Le projet tourne désormais sur une instance **self-hosted** : `https://supabase.aduticsi.com`.
+> Les URLs de pooler AWS et le dashboard hébergé ci-dessous ne s'appliquent plus.
+> Les identifiants ont été retirés de ce fichier — voir `.env.example`.
+
 # Guide : Configuration de la connexion Supabase pour Prisma
 
 ## 📋 Étapes à suivre
 
 ### 1. Créer l'utilisateur Prisma dans Supabase
 
-1. **Ouvrez votre projet Supabase** : https://supabase.com/dashboard/project/nqofzuoozxnwyylxidne
+1. **Ouvrez votre projet Supabase** : https://supabase.aduticsi.com  (Studio self-hosted)
 
 2. **Allez dans le SQL Editor** :
    - Cliquez sur "SQL Editor" dans le menu de gauche
-   - Ou accédez directement à : https://supabase.com/dashboard/project/nqofzuoozxnwyylxidne/sql
+   - Ou accédez directement à : https://supabase.aduticsi.com  (Studio self-hosted) > SQL Editor
 
 3. **Créez une nouvelle requête** :
    - Cliquez sur "+ New query"
@@ -67,10 +72,10 @@ Votre fichier `.env.local` est maintenant configuré avec :
 
 ```bash
 # Connexion directe avec utilisateur prisma (pour migrations)
-DATABASE_URL="postgresql://prisma:Clover@@MyPg@db15@db.nqofzuoozxnwyylxidne.supabase.co:5432/postgres"
+DATABASE_URL="postgresql://<user>:<password>@<host-self-hosted>:5432/postgres"
 
 # Connexion poolée pour production (optionnel)
-POOLED_DATABASE_URL="postgres://postgres.nqofzuoozxnwyylxidne:Clover@@MyPg@db15@aws-0-eu-west-1.pooler.supabase.com:6543/postgres"
+POOLED_DATABASE_URL="postgres://<user>:<password>@<host-pooler>:6543/postgres"  # si un pooler est en place
 ```
 
 ## ⚠️ En cas de problème

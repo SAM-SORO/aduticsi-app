@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "supabase": {
+      "type": "http",
+      "url": "https://supabase.aduticsi.com/mcp"
+    }
+  }
+}

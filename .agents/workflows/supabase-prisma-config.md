@@ -1,3 +1,8 @@
+> ⚠️ **Document historique — contraintes propres au pooler Supabase Cloud (AWS).**
+> Le projet est passé sur une instance **self-hosted** (`https://supabase.aduticsi.com`),
+> où Postgres est joint directement : le tableau de ports ci-dessous ne s'applique plus.
+> Reste valable : le rôle respectif de `DATABASE_URL` (runtime) et `DIRECT_URL` (migrations).
+
 ---
 description: Configuration Supabase + Prisma 7 — règles à ne jamais modifier
 ---
@@ -57,13 +62,13 @@ La seule URL accessible depuis le réseau de développement est le **pgBouncer p
 |---|---|---|
 | `aws-1-eu-west-1.pooler.supabase.com` | **6543** + `?pgbouncer=true` | ✅ **FONCTIONNE** |
 | `aws-1-eu-west-1.pooler.supabase.com` | 5432 (session) | ❌ P1001 |
-| `db.nqofzuoozxnwyylxidne.supabase.co` | 5432 (direct) | ❌ P1001 |
+| `db.<ancien-ref>.supabase.co` | 5432 (direct) | ❌ P1001 |
 
 ### .env.local obligatoire
 
 ```env
-DATABASE_URL="postgresql://prisma.nqofzuoozxnwyylxidne:[PASSWORD]@aws-1-eu-west-1.pooler.supabase.com:6543/postgres?pgbouncer=true"
-DIRECT_URL="postgresql://prisma.nqofzuoozxnwyylxidne:[PASSWORD]@aws-1-eu-west-1.pooler.supabase.com:5432/postgres"
+DATABASE_URL="postgresql://<user>:<password>@<host-self-hosted>:5432/postgres"
+DIRECT_URL="postgresql://<user>:<password>@<host-self-hosted>:5432/postgres"
 ```
 
 - `DATABASE_URL` → utilisé par l'adapter `pg Pool` pour **toutes les requêtes runtime**
