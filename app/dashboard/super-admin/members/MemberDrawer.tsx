@@ -29,6 +29,7 @@ import {
   updateMemberPoste,
   updateMemberGender,
   updateMemberFunction,
+  updateMemberPromotion,
   deleteMember,
 } from './actions'
 import {
@@ -63,12 +64,14 @@ export interface DrawerMember {
   poste_id?: string | null
   poste?: { id: string; name: string } | null
   promotion: { name: string }
+  promo_id: string
   created_at: Date
 }
 
 interface MemberDrawerProps {
   member: DrawerMember | null
   postes: { id: string; name: string }[]
+  promotions: { id: string; name: string }[]
   onClose: () => void
   /** Si false, le mode édition n'est pas accessible (ex: ADMIN) */
   canEdit?: boolean
@@ -149,7 +152,7 @@ function RadioGroup<T extends string>({
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 
-export function MemberDrawer({ member, postes, onClose, canEdit = true }: MemberDrawerProps) {
+export function MemberDrawer({ member, postes, promotions, onClose, canEdit = true }: MemberDrawerProps) {
   const [mode, setMode] = useState<'view' | 'edit'>('view')
   const [isPending, startTransition] = useTransition()
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
@@ -160,6 +163,7 @@ export function MemberDrawer({ member, postes, onClose, canEdit = true }: Member
   const [editPosteId, setEditPosteId] = useState<string>(member?.poste_id ?? 'none')
   const [editGender, setEditGender] = useState<string>(member?.gender ?? 'none')
   const [editFunction, setEditFunction] = useState<string>(member?.function ?? 'NONE')
+  const [editPromoId, setEditPromoId] = useState<string>(member?.promo_id ?? '')
 
   // Reset edit state when member changes
   if (member && editRole !== member.role && mode === 'view') {
@@ -168,6 +172,7 @@ export function MemberDrawer({ member, postes, onClose, canEdit = true }: Member
     setEditPosteId(member.poste_id ?? 'none')
     setEditGender(member.gender ?? 'none')
     setEditFunction(member.function ?? 'NONE')
+    setEditPromoId(member.promo_id)
   }
 
   const handleRoleChange = (newRole: 'MEMBER' | 'ADMIN' | 'SUPER_ADMIN') => {
@@ -201,6 +206,14 @@ export function MemberDrawer({ member, postes, onClose, canEdit = true }: Member
     startTransition(async () => {
       const res = await updateMemberGender(member!.id, effectiveGender)
       if (res.success) toast.success('Genre mis à jour')
+    })
+  }
+
+  const handlePromoChange = (promoId: string) => {
+    setEditPromoId(promoId)
+    startTransition(async () => {
+      const res = await updateMemberPromotion(member!.id, promoId)
+      if (res.success) toast.success('Promotion mise à jour')
     })
   }
 
@@ -468,6 +481,22 @@ export function MemberDrawer({ member, postes, onClose, canEdit = true }: Member
                         </option>
                       ))}
                     </SelectField>
+                    </div>
+
+                    {/* Section: Promotion */}
+                    <div>
+                      <SectionLabel icon={GraduationCap} label="Changer la promotion" />
+                      <SelectField
+                        value={editPromoId}
+                        disabled={isPending}
+                        onChange={(e) => handlePromoChange(e.target.value)}
+                      >
+                        {promotions.map((p) => (
+                          <option key={p.id} value={p.id}>
+                            {p.name}
+                          </option>
+                        ))}
+                      </SelectField>
                     </div>
 
                     {/* Section: Gestion Activités */}

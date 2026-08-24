@@ -99,6 +99,38 @@ export async function updateMemberStatus(memberId: string, newStatus: "STUDENT" 
   return { success: true };
 }
 
+export async function updateMemberPromotion(memberId: string, promoId: string) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error("Unauthorized");
+
+  const actor = await prisma.member.findUnique({ where: { id: user.id } });
+  if (!actor) throw new Error("Unauthorized");
+
+  const target = await prisma.member.findUnique({
+    where: { id: memberId },
+    select: { id: true, promo_id: true },
+  });
+  if (!target) throw new Error("Member not found");
+
+  const isSuperAdmin = actor.role === "SUPER_ADMIN";
+  const isAdminSamePromo = actor.role === "ADMIN" && actor.promo_id === target.promo_id;
+
+  if (!isSuperAdmin && !isAdminSamePromo) {
+    throw new Error("Unauthorized");
+  }
+
+  await prisma.member.update({
+    where: { id: memberId },
+    data: { promo_id: promoId },
+  });
+
+  revalidatePath("/dashboard/super-admin/members");
+  revalidatePath("/dashboard/admin");
+  revalidatePath("/members");
+  return { success: true };
+}
+
 export async function deleteMember(memberId: string) {
   await requireSuperAdmin();
 

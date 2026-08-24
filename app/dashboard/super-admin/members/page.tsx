@@ -141,7 +141,7 @@ export default async function MembersAdminPage({
         </div>
 
         {/* Grid */}
-        <MembersGrid members={members} postes={postes} />
+        <MembersGrid members={members} postes={postes} promotions={promotions} />
 
         {/* Pagination Controls */}
         {totalPages > 1 && (

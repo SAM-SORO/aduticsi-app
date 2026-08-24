@@ -2,9 +2,9 @@
 
 import { useState, useTransition } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Activity, ChevronRight, ShieldCheck } from 'lucide-react'
+import { X, Activity, ChevronRight, ShieldCheck, GraduationCap } from 'lucide-react'
 import { toast } from 'sonner'
-import { updateMemberFunction } from '@/app/dashboard/super-admin/members/actions'
+import { updateMemberFunction, updateMemberPromotion } from '@/app/dashboard/super-admin/members/actions'
 
 interface AdminMember {
   id: string
@@ -13,14 +13,16 @@ interface AdminMember {
   email: string
   status: 'STUDENT' | 'ALUMNI'
   gender?: 'MALE' | 'FEMALE' | null
+  promo_id: string
   function: string
 }
 
 interface AdminMembersGridProps {
   members: AdminMember[]
+  promotions: { id: string; name: string }[]
 }
 
-export function AdminMembersGrid({ members }: AdminMembersGridProps) {
+export function AdminMembersGrid({ members, promotions }: AdminMembersGridProps) {
   const [selectedMember, setSelectedMember] = useState<AdminMember | null>(null)
   const [isPending, startTransition] = useTransition()
 
@@ -37,6 +39,16 @@ export function AdminMembersGrid({ members }: AdminMembersGridProps) {
       // Refresh selected member state
       if (selectedMember?.id === member.id) {
         setSelectedMember({ ...selectedMember, function: nextFunction })
+      }
+    })
+  }
+
+  const handlePromoChange = (memberId: string, promoId: string) => {
+    startTransition(async () => {
+      await updateMemberPromotion(memberId, promoId)
+      toast.success('Promotion mise à jour')
+      if (selectedMember?.id === memberId) {
+        setSelectedMember({ ...selectedMember, promo_id: promoId })
       }
     })
   }
@@ -67,7 +79,7 @@ export function AdminMembersGrid({ members }: AdminMembersGridProps) {
 
               {/* Info */}
               <div className="flex-1 min-w-0">
-                <p className="font-bold text-slate-900 truncate text-sm group-hover:text-[var(--aduti-primary)] transition-colors">
+                <p className="font-bold text-slate-900 break-words line-clamp-2 text-sm group-hover:text-[var(--aduti-primary)] transition-colors">
                   {m.last_name.toUpperCase()} {m.first_name}
                 </p>
                 <p className="text-xs text-slate-500 truncate">{m.email}</p>
@@ -192,6 +204,29 @@ export function AdminMembersGrid({ members }: AdminMembersGridProps) {
                       </button>
                     </div>
                   </div>
+                </div>
+
+                {/* Promotion Selector */}
+                <div>
+                  <div className="flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4">
+                    <GraduationCap className="w-3.5 h-3.5" />
+                    Changer la promotion
+                  </div>
+                  <select
+                    value={selectedMember.promo_id}
+                    disabled={isPending}
+                    onChange={(e) => handlePromoChange(selectedMember.id, e.target.value)}
+                    className="w-full h-11 bg-slate-50 border border-slate-100 rounded-xl px-4 text-sm font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-[var(--aduti-primary)] focus:bg-white transition-all disabled:opacity-50"
+                  >
+                    {promotions.map((p) => (
+                      <option key={p.id} value={p.id}>
+                        {p.name}
+                      </option>
+                    ))}
+                  </select>
+                  <p className="text-[10px] text-slate-400 mt-2 italic">
+                    Note : Déplacer ce membre hors de votre promotion vous en fera perdre l&apos;accès.
+                  </p>
                 </div>
               </div>
             </motion.div>

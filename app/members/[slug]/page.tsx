@@ -86,7 +86,7 @@ export default async function MemberProfilePage({
               <div className="flex items-center">
                 <MaterialIcon name="chevron_right" className="w-[18px] h-[18px] text-slate-400" />
                 <span className="ml-1 font-medium text-slate-900 md:ml-2">
-                  {member.first_name} {member.last_name}
+                  {member.first_name}
                 </span>
               </div>
             </li>

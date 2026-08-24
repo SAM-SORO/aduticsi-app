@@ -36,7 +36,7 @@ export default async function DashboardAdminPage() {
   }
 
   const promo = member.promotion;
-  const [membersCount, activitiesCount, managedMembers] = await Promise.all([
+  const [membersCount, activitiesCount, managedMembers, promotions] = await Promise.all([
     prisma.member.count({ where: { promo_id: promo.id, role: "MEMBER" } }),
     prisma.activity.count({ where: { promo_id: promo.id } }),
     prisma.member.findMany({
@@ -52,9 +52,11 @@ export default async function DashboardAdminPage() {
         email: true,
         status: true,
         gender: true,
+        promo_id: true,
         function: true,
       },
     }),
+    prisma.promotion.findMany({ orderBy: { name: "desc" } }),
   ]);
 
   return (
@@ -85,7 +87,7 @@ export default async function DashboardAdminPage() {
           <div className="mb-4">
             <h3 className="text-lg font-bold text-slate-900">Membres de ma promotion</h3>
           </div>
-          <AdminMembersGrid members={managedMembers} />
+          <AdminMembersGrid members={managedMembers} promotions={promotions} />
         </div>
       </div>
     </DashboardLayout>

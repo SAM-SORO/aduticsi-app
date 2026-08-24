@@ -9,9 +9,10 @@ import { MaterialIcon } from '@/components/icons/material-icon'
 interface MembersGridProps {
   members: DrawerMember[]
   postes: { id: string; name: string }[]
+  promotions: { id: string; name: string }[]
 }
 
-export function MembersGrid({ members, postes }: MembersGridProps) {
+export function MembersGrid({ members, postes, promotions }: MembersGridProps) {
   const [selectedMember, setSelectedMember] = useState<DrawerMember | null>(null)
 
   function getInitials(m: DrawerMember) {
@@ -79,7 +80,7 @@ export function MembersGrid({ members, postes }: MembersGridProps) {
               </div>
 
               <h3
-                className="text-base font-bold text-slate-900 group-hover:text-[var(--aduti-primary)] transition-colors truncate w-full flex items-center justify-center gap-1.5"
+                className="text-base font-bold text-slate-900 group-hover:text-[var(--aduti-primary)] transition-colors break-words line-clamp-2 w-full flex items-center justify-center gap-1.5"
                 title={`${m.last_name?.toUpperCase()} ${m.first_name}`}
               >
                 {m.last_name?.toUpperCase()} {m.first_name}
@@ -119,6 +120,7 @@ export function MembersGrid({ members, postes }: MembersGridProps) {
       <MemberDrawer
         member={selectedMember}
         postes={postes}
+        promotions={promotions}
         onClose={() => setSelectedMember(null)}
         canEdit={true}
       />
