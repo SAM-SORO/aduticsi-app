@@ -7,13 +7,18 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 // Prisma 7 requires a driver adapter.
-// We use pg Pool with SSL disabled (rejectUnauthorized: false) to allow
-// connection to Supabase's self-signed SSL certificate in local dev.
+// Par défaut on accepte les certificats auto-signés de Supabase. Un Postgres
+// sans TLS (cas d'une stack self-hosted) refuse la négociation : y ajouter
+// sslmode=disable dans DATABASE_URL, ou DATABASE_SSL=false.
 const connectionString = process.env.DATABASE_URL;
+
+const sslDisabled =
+  process.env.DATABASE_SSL === 'false' ||
+  /[?&]sslmode=disable/.test(connectionString ?? '');
 
 const pool = new Pool({
   connectionString,
-  ssl: { rejectUnauthorized: false },
+  ssl: sslDisabled ? false : { rejectUnauthorized: false },
 });
 
 const adapter = new PrismaPg(pool);
