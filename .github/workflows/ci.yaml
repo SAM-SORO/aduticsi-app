@@ -100,7 +100,40 @@ jobs:
 
     steps:
       - name: Trigger Coolify Webhook
+        env:
+          WEBHOOK: ${{ secrets.COOLIFY_SELFHOSTED_WEBHOOK }}
+          # Optionnel : si le webhook Coolify exige un jeton d'API.
+          TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
         run: |
           echo "🚀 Initialisation du webhook de déploiement Coolify..."
-          curl --request GET "${{ secrets.COOLIFY_SELFHOSTED_WEBHOOK}}"
+
+          # Un secret absent est résolu en chaîne vide : on le dit clairement
+          # plutôt que de laisser curl échouer avec "URL rejected".
+          if [ -z "$WEBHOOK" ]; then
+            echo "::error::Le secret COOLIFY_SELFHOSTED_WEBHOOK est vide ou absent."
+            echo "Vérifier : Settings > Secrets and variables > Actions du dépôt."
+            exit 1
+          fi
+
+          if [ -n "$TOKEN" ]; then
+            AUTH=(--header "Authorization: Bearer $TOKEN")
+          else
+            AUTH=()
+          fi
+
+          OUT=$(mktemp)
+
+          # -f : échouer sur un code HTTP >= 400 (sinon un 401 passerait pour un succès)
+          # -sS : silencieux mais affiche les erreurs
+          HTTP=$(curl -fsS -o "$OUT" -w '%{http_code}' \
+                      --retry 3 --retry-delay 5 --max-time 60 \
+                      "${AUTH[@]}" --request GET "$WEBHOOK") || {
+            echo "::error::Appel du webhook Coolify en échec (HTTP ${HTTP:-erreur réseau})."
+            cat "$OUT"
+            exit 1
+          }
+
+          echo "Réponse Coolify (HTTP $HTTP) :"
+          cat "$OUT"
+          echo ""
           echo "✅ Signal de déploiement envoyé à Coolify avec succès!"
