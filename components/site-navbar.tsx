@@ -23,6 +23,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { logout } from "@/app/auth/actions";
 import { getProfile } from "@/app/profile/actions";
+// import du NavDropdown pour le menu "Activités" avec chargement dynamique des catégories
+import { NavDropdown } from "@/components/ui/nav-dropdown";
+
 
 const navLinks = [
   { href: "/", label: "Accueil" },
@@ -284,6 +287,24 @@ export function SiteNavbar() {
           <div className="hidden md:flex flex-1 justify-end gap-8 items-center">
             <nav className="flex items-center gap-8">
               {dynamicNavLinks.map((link) => (
+                link.href === "/activities" ? (
+                <NavDropdown
+                  key={link.href}
+                  label={link.label}
+                  baseHref="/activities"
+                  isActive={pathname === link.href}
+                  cible= "activities"
+                />
+                ) : link.href === "/members" ?(
+                  <NavDropdown
+                  key={link.href}
+                  label={link.label}
+                  baseHref="/members"
+                  isActive={pathname === link.href}
+                  cible= "members"
+                />
+                ):
+                 (
                 <Link
                   key={link.href}
                   href={link.href}
@@ -295,7 +316,7 @@ export function SiteNavbar() {
                   )}
                 >
                   {link.label}
-                </Link>
+                </Link>)
               ))}
             </nav>
             <div className="flex items-center pl-4 border-l border-slate-200">

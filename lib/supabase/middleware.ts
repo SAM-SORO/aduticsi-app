@@ -1,5 +1,6 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import { prisma } from '@/lib/prisma'
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -55,6 +56,23 @@ export async function updateSession(request: NextRequest) {
     const url = request.nextUrl.clone()
     url.pathname = '/auth/login'
     return NextResponse.redirect(url)
+  }
+
+  if (user && !isPublicPath) {
+    const member = await prisma.member.findUnique({
+      where : {id : user.id},
+      select : { registration_status: true},
+    })
+    if (member?.registration_status === 'PENDING' && pathname !== '/auth/pending-review'){
+      const url = request.nextUrl.clone()
+      url.pathname = '/auth/pending-review'
+      return NextResponse.redirect(url)
+    }
+    if (member?.registration_status === 'REJECTED' && pathname !== '/auth/registration-rejected'){
+      const url = request.nextUrl.clone()
+      url.pathname = '/auth/registration-rejected'
+      return NextResponse.redirect(url)
+    }
   }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're

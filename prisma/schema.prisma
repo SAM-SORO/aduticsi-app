@@ -39,6 +39,12 @@ enum Gender {
   FEMALE
 }
 
+enum RegistrationStatus {
+  PENDING        // En attente de validation par un administrateur
+  APPROVED       // Validée par un administrateur
+  REJECTED       // Refusée
+}
+
 // Table Promotions
 model Promotion {
   id              String    @id @default(cuid())
@@ -54,6 +60,11 @@ model Promotion {
   @@index([is_current_promo])
 }
 
+enum ProfileStatus {
+  PRIVATE      // Profil visible des seuls membres
+  PUBLIC       // Profil visible des visiteurs
+}
+
 // Table Members
 model Member {
   id              String          @id @default(cuid())
@@ -64,6 +75,8 @@ model Member {
   role            MemberRole      @default(MEMBER)
   function        MemberFunction  @default(NONE)
   status          MemberStatus    @default(STUDENT)
+  registration_status RegistrationStatus @default(PENDING)
+  profile_status  ProfileStatus   @default(PUBLIC)
   poste_id        String?
   gender          Gender?
   

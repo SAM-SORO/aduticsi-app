@@ -1,4 +1,5 @@
 ignoredBuiltDependencies:
+  - '@parcel/watcher'
   - '@prisma/engines'
   - prisma
   - sharp

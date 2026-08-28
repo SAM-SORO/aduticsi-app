@@ -49,6 +49,7 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 .env*.local
+Nouveau Document texte.txt
 
 # typescript
 *.tsbuildinfo
