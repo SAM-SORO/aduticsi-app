@@ -50,7 +50,6 @@
 
 :root {
   --radius: 0.625rem;
-  --aduti-primaryff: #1392ec;
   --aduti-primary: #13254b;
   --aduti-secondary: #a9111f;
   --background: oklch(1 0 0);
@@ -59,7 +58,6 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primarypff: #1392ec;
   --primary: #13254b;
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);

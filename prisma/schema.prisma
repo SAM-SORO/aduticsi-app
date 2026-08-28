@@ -39,14 +39,11 @@ enum Gender {
   FEMALE
 }
 
-// statu de l'enregistrement d'un nouvel utilisateur
 enum RegistrationStatus {
-  PENDING        // demande d'enregistrement en attende de validation d'un administrateur
-  APPROVED       // demande d'enregistrement validée par un administrateur
-  REJECTED       // demande d'enregistrement refusée
+  PENDING        // En attente de validation par un administrateur
+  APPROVED       // Validée par un administrateur
+  REJECTED       // Refusée
 }
-
-
 
 // Table Promotions
 model Promotion {
@@ -64,11 +61,9 @@ model Promotion {
 }
 
 enum ProfileStatus {
-  PRIVATE      // profiel uniquement visible par les membres 
-  PUBLIC       // profile visible par les visiteurs
+  PRIVATE      // Profil visible des seuls membres
+  PUBLIC       // Profil visible des visiteurs
 }
-
-
 
 // Table Members
 model Member {
@@ -104,7 +99,7 @@ model Member {
   created_at      DateTime        @default(now())
   updated_at      DateTime        @updatedAt
   
-  // Slug u(pour les URLs lisibles (ex: jean-dupont)
+  // Slug pour les URLs lisibles (ex: jean-dupont)
   slug            String?         @unique
 
   // Relations

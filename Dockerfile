@@ -9,8 +9,10 @@ WORKDIR /app
 RUN corepack enable && corepack prepare pnpm@10.28.2 --activate
 
 # Copy lockfile and package.json
-COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+# --ignore-scripts : le postinstall lance prisma generate, or le schema n'est
+# copie qu'a l'etape builder, qui le regenere explicitement.
+RUN pnpm install --frozen-lockfile --ignore-scripts
 
 # 2. Rebuild the source code only when needed
 FROM node:20-alpine AS builder

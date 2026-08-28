@@ -1,16 +1,11 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import type { Prisma, MemberStatus, MemberRole } from "@prisma/client";
+import { headers } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
-import { createAdminClient } from "@/lib/supabase/admin";
 import logger from "@/lib/logger";
-// gestion des urls
-import { headers } from "next/headers";
-// gestion de l'envoi emails
-import {sendEmail} from "@/lib/mail";
-// gestion des templates d'emails
+import { sendEmail } from "@/lib/mail";
 import { approvalEmailTemplate, rejectionEmailTemplate } from "@/lib/email-templates";
 
 async function requireSuperAdmin() {
@@ -25,16 +20,14 @@ async function requireSuperAdmin() {
 
 
 
-// formation de la base de l'url
 async function getBaseOrigin(){
-  const hearderlist = await headers();
-  const host = hearderlist.get('host') || 'aduticsi.com'
+  const headerList = await headers();
+  const host = headerList.get('host') || 'aduticsi.com'
   const isLocal = host.includes('localhost') || host.includes('192.168') || host.includes('127.0.0.1')
-  const proto = hearderlist.get('x-forwarded-proto') || (isLocal ? 'http' : 'https')
+  const proto = headerList.get('x-forwarded-proto') || (isLocal ? 'http' : 'https')
   return `${proto}://${host}`;
 }
 
-// on récupère les demandes d'enregistrement en attentes
 export async function getPendingRegistrations() {
   await requireSuperAdmin();
     return prisma.member.findMany({
@@ -44,7 +37,6 @@ export async function getPendingRegistrations() {
   });
 }
 
-// on modifie l'état du membre et on envoi un email
 
 export async function approveMember(memberId: string) {
   await requireSuperAdmin();
@@ -84,9 +76,6 @@ export async function rejectMember(memberId: string) {
       data: { registration_status: "REJECTED" },
     });
 
-    const origin = await getBaseOrigin();
-    const loginUrl = `${origin}/auth/login`;
-
     const emailResult = await sendEmail({
       to: member.email,
       subject: "Votre demande d'inscription ADUTI-INPHB",
@@ -94,7 +83,7 @@ export async function rejectMember(memberId: string) {
     });
 
     if (!emailResult.success) {
-      logger.error({ memberId, error: emailResult.error }, "Failed to send approval email");
+      logger.error({ memberId, error: emailResult.error }, "Failed to send rejection email");
     }
 
     revalidatePath("/dashboard/super-admin/demandes");

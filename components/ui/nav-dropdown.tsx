@@ -3,13 +3,12 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getActivityCategories } from "@/app/dashboard/super-admin/activities/actions";
 import { getPostes } from "@/app/dashboard/postes/actions";
-import { ChevronDown } from "lucide-react";
 
 type Category = { id: string; name: string };
-type poste = { id: string; name: string };
 
 interface NavDropdownProps {
   label: string;
@@ -19,15 +18,6 @@ interface NavDropdownProps {
 }
 
 export function NavDropdown({ label, baseHref, isActive, cible }: NavDropdownProps) {
-
-    useEffect(() => {
-  console.log("NavDropdown MOUNTED:", cible);
-  return () => {
-    console.log("NavDropdown UNMOUNTED:", cible);
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-  };
-}, []);
-    
   const [open, setOpen] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loaded, setLoaded] = useState(false);

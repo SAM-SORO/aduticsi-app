@@ -1,48 +1,11 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
-
-//import de prisma pour récupérer des données en base
 import { prisma } from '@/lib/prisma'
-import { AwardIcon } from 'lucide-react'
-
-
-// Sumulation d'un utilisateur connecté en développement pour tests locaux
-const IS_DEV = process.env.NODE_ENV === 'development'
-const MOCK_USER = {
-  id: 'iic1k5nexfajurej9rrwc6xc',
-  email: "test@test.flow",
-}
-
-
-
-
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
   })
-
-  // ajout d'un utilisateur fictif pour les tests en développement
-
-  if(IS_DEV){
-      const headers = new Headers(request.headers)
-      headers.set("x-mock-user-id", MOCK_USER.id)
-      headers.set("x-mock-user-email", MOCK_USER.email)
-      return NextResponse.next({ request:{headers}})
-    }
-
-
-
-  // ajout d'un utilisateur fictif pour les tests en développement
-
-  if(IS_DEV){
-      const headers = new Headers(request.headers)
-      headers.set("x-mock-user-id", MOCK_USER.id)
-      headers.set("x-mock-user-email", MOCK_USER.email)
-      return NextResponse.next({ request:{headers}})
-    }
-
-
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -74,8 +37,6 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-
-
   const { pathname } = request.nextUrl
 
   // List of public paths that don't require authentication
@@ -90,18 +51,14 @@ export async function updateSession(request: NextRequest) {
     pathname.startsWith('/_next') ||
     pathname.includes('.') // Static files
 
-    
-
-    
-
   if (!user && !isPublicPath) {
     // redirect unauthenticated users to login page
     const url = request.nextUrl.clone()
     url.pathname = '/auth/login'
     return NextResponse.redirect(url)
   }
-  if (user && !isPublicPath){
-    // recupération du statut d'enregistrement de l'utilisateur
+
+  if (user && !isPublicPath) {
     const member = await prisma.member.findUnique({
       where : {id : user.id},
       select : { registration_status: true},

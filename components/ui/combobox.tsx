@@ -1,7 +1,7 @@
 // components/ui/combobox.tsx
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -34,6 +34,8 @@ interface ComboboxProps {
   emptyMessage?: string;
 }
 
+const subscribeNoop = () => () => {};
+
 export function Combobox({
   options,
   value,
@@ -43,13 +45,10 @@ export function Combobox({
   emptyMessage = "Aucun résultat trouvé.",
 }: ComboboxProps) {
   const [open, setOpen] = useState(false);
-  
-  // vérifie si le composant est monté coté client pour éviter les problèmes d'hydratation côté serveur
-  const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  // Le rendu serveur affiche un bouton inerte : le contenu Radix ne s'aligne
+  // pas entre serveur et client.
+  const mounted = useSyncExternalStore(subscribeNoop, () => true, () => false);
 
 
   const selectedLabel = options.find((option) => option.value === value)?.label;

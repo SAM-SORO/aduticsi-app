@@ -25,10 +25,6 @@ export default async function DashboardPage() {
     },
   });
 
-  // Log the user ID and member result for debugging
-  console.log('USER ID:', user.id)
-  console.log('MEMBER TROUVÉ:', member)
-
   // Fallback to email if not found by ID (for accounts with ID mismatch)
   if (!member && user.email) {
     logger.info({ userId: user.id, email: user.email }, 'Dashboard: Member not found by ID, trying email');

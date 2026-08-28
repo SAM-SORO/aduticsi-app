@@ -30,7 +30,7 @@ import {
   updateMemberGender,
   updateMemberFunction,
   deleteMember,
-} from './actions'
+} from '../members/actions'
 import {
   Dialog,
   DialogContent,

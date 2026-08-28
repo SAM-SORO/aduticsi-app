@@ -25,10 +25,7 @@ import { BackButton } from "@/components/ui/back-button";
 import { Combobox } from "@/components/ui/combobox";
 import { Controller } from "react-hook-form";
 
-<<<<<<< HEAD
 
-=======
->>>>>>> db2414d (gestion du choix de l'année de promotion lors de l'enregistrement de l'utilisateur)
 type SignupData = RegisterInput & { captchaToken: string; token: string };
 {/* système de choix de la méthode d'enregistrement*/}
 type RegisterMode = "choice" | "invitation" | "request"
@@ -412,11 +409,7 @@ function RegisterContent() {
                                 }))}
                                 value={field.value}
                                 onChange={field.onChange}
-<<<<<<< HEAD
                                 placeholder={"Sélectionner"}
-=======
-                                placeholder={loadingPromos ? "Chargement..." : "Sélectionner"}
->>>>>>> db2414d (gestion du choix de l'année de promotion lors de l'enregistrement de l'utilisateur)
                                 searchPlaceholder="Rechercher une année..."
                                 emptyMessage="Aucune promotion trouvée."
                                 
@@ -432,11 +425,7 @@ function RegisterContent() {
 
                     </div>
                       
-<<<<<<< HEAD
                       {/*suppresion de l'ancien select*/}
-=======
-
->>>>>>> db2414d (gestion du choix de l'année de promotion lors de l'enregistrement de l'utilisateur)
                       {/* 
                         <select
                           id="promo_id"

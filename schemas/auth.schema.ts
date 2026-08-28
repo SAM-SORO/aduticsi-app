@@ -20,8 +20,7 @@ export const registerSchema = z.object({
   gender: z.enum(['MALE', 'FEMALE'], {
     message: 'Veuillez sélectionner votre genre',
   }),
-  // statut du profil
-  profile_status: z.enum(['PUBLIC', 'PRIVATE']).default('PUBLIC'),
+  profile_status: z.enum(['PUBLIC', 'PRIVATE']).optional(),
   token: z.string().optional(),
 }).refine((data) => data.password === data.confirmPassword, {
   message: 'Les mots de passe ne correspondent pas',
