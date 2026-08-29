@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, Activity, ChevronRight, ShieldCheck, GraduationCap } from 'lucide-react'
 import { toast } from 'sonner'
 import { updateMemberFunction, updateMemberPromotion } from '@/app/dashboard/super-admin/members/actions'
+import { StatusPill } from '@/components/ui/status-pill'
 
 interface AdminMember {
   id: string
@@ -60,7 +61,7 @@ export function AdminMembersGrid({ members, promotions }: AdminMembersGridProps)
   return (
     <>
       {members.length === 0 ? (
-        <div className="bg-white rounded-3xl p-16 text-center border-2 border-dashed border-slate-100">
+        <div className="rounded-2xl border border-dashed border-slate-200 bg-white p-16 text-center">
           <p className="text-slate-400">Aucun membre dans votre promotion.</p>
         </div>
       ) : (
@@ -70,37 +71,33 @@ export function AdminMembersGrid({ members, promotions }: AdminMembersGridProps)
               key={m.id}
               type="button"
               onClick={() => setSelectedMember(m)}
-              className="group bg-white rounded-2xl border border-slate-100 p-4 hover:shadow-lg hover:border-[var(--aduti-primary)]/20 transition-all duration-200 flex items-center gap-4 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--aduti-primary)]"
+              className="group flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-4 text-left transition-colors duration-200 hover:border-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--aduti-primary)]"
             >
               {/* Avatar */}
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center text-slate-600 font-bold text-lg shrink-0 group-hover:from-[var(--aduti-primary)]/10 group-hover:to-[var(--aduti-primary)]/5 transition-all">
+              <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-slate-100 text-sm font-semibold text-slate-600">
                 {getInitials(m.first_name, m.last_name)}
               </div>
 
               {/* Info */}
               <div className="flex-1 min-w-0">
-                <p className="font-bold text-slate-900 break-words line-clamp-2 text-sm group-hover:text-[var(--aduti-primary)] transition-colors">
+                <p className="line-clamp-2 break-words text-sm font-semibold text-slate-900">
                   {m.last_name.toUpperCase()} {m.first_name}
                 </p>
-                <p className="text-xs text-slate-500 truncate">{m.email}</p>
-                <div className="flex items-center gap-1.5 mt-1">
-                  <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${
-                    m.status === 'ALUMNI'
-                      ? 'bg-emerald-50 text-emerald-600 border border-emerald-100'
-                      : 'bg-blue-50 text-blue-600 border border-blue-100'
-                  }`}>
+                <p className="truncate text-xs text-slate-500">{m.email}</p>
+                <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
+                  <StatusPill tone={m.status === 'ALUMNI' ? 'accent' : 'neutral'}>
                     {m.status === 'ALUMNI' ? 'Alumni' : (m.gender === 'FEMALE' ? 'Étudiante' : 'Étudiant')}
-                  </span>
+                  </StatusPill>
                   {m.function === 'GESTION_ACTIVITES' && (
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-violet-50 text-violet-600 border border-violet-100">
-                      <Activity className="w-2.5 h-2.5" />
+                    <StatusPill>
+                      <Activity className="size-3" />
                       Activités
-                    </span>
+                    </StatusPill>
                   )}
                 </div>
               </div>
 
-              <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-[var(--aduti-primary)] shrink-0 transition-colors" />
+              <ChevronRight className="size-4 shrink-0 text-slate-300 transition-colors group-hover:text-slate-500" />
             </button>
           ))}
         </div>
@@ -193,7 +190,7 @@ export function AdminMembersGrid({ members, promotions }: AdminMembersGridProps)
                         className={`shrink-0 px-3 py-2 rounded-xl text-xs font-bold transition-all disabled:opacity-50 ${
                           selectedMember.function === 'GESTION_ACTIVITES'
                             ? 'bg-red-50 text-red-600 hover:bg-red-100 border border-red-100'
-                            : 'bg-[var(--aduti-primary)] text-white hover:bg-blue-600 shadow-sm'
+                            : 'bg-[var(--aduti-primary)] text-white hover:bg-[var(--aduti-primary-hover)] shadow-sm'
                         }`}
                       >
                         {isPending

@@ -75,15 +75,15 @@ export function MemberProfileView({ member, currentUserId }: MemberProfileViewPr
         variants={fadeUp}
         initial="hidden"
         animate="show"
-        className="relative bg-white rounded-[2.5rem] border border-slate-100 shadow-xl overflow-hidden"
+        className="relative bg-white rounded-3xl border border-slate-100 shadow-xl overflow-hidden"
       >
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-blue-50/60 via-slate-50/30 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
         
         <div className="relative flex flex-col md:flex-row gap-8 md:gap-12 items-center md:items-start text-center md:text-left z-10 p-8 md:p-12">
           {/* Avatar Section */}
           <div className="relative group flex-shrink-0">
-            <div className="relative w-36 h-36 md:w-44 md:h-44 p-1 bg-white rounded-[2.5rem] shadow-sm border border-slate-100 hover:shadow-md transition-shadow duration-300">
-              <div className="w-full h-full rounded-[2.2rem] overflow-hidden bg-slate-50 relative">
+            <div className="relative w-36 h-36 md:w-44 md:h-44 p-1 bg-white rounded-3xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow duration-300">
+              <div className="w-full h-full rounded-3xl overflow-hidden bg-slate-50 relative">
                 {member.photo_url ? (
                   <Dialog>
                     <DialogTrigger asChild>
@@ -177,7 +177,7 @@ export function MemberProfileView({ member, currentUserId }: MemberProfileViewPr
 
         {/* Contacts */}
         <motion.div custom={1} variants={fadeUp} initial="hidden" animate="show"
-          className="bg-white rounded-[2rem] border border-slate-100 shadow-sm p-8 space-y-5">
+          className="bg-white rounded-2xl border border-slate-100 shadow-sm p-8 space-y-5">
           <div className="flex items-center gap-3 pb-4 border-b border-slate-50">
             <div className="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center text-[var(--aduti-primary)]">
               <MaterialIcon name="contacts" className="w-[18px] h-[18px]" />
@@ -193,7 +193,7 @@ export function MemberProfileView({ member, currentUserId }: MemberProfileViewPr
         {/* Parcours Alumni */}
         {hasJob && (
           <motion.div custom={2} variants={fadeUp} initial="hidden" animate="show"
-            className="bg-white rounded-[2rem] border border-slate-100 shadow-sm p-8 space-y-5">
+            className="bg-white rounded-2xl border border-slate-100 shadow-sm p-8 space-y-5">
             <div className="flex items-center gap-3 pb-4 border-b border-slate-50">
               <div className="w-9 h-9 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600">
                 <MaterialIcon name="work" className="w-[18px] h-[18px]" />
@@ -216,7 +216,7 @@ export function MemberProfileView({ member, currentUserId }: MemberProfileViewPr
       {/* Réseaux sociaux */}
       {hasSocials && (
         <motion.div custom={3} variants={fadeUp} initial="hidden" animate="show"
-          className="bg-white rounded-[2rem] border border-slate-100 shadow-sm p-8 space-y-6">
+          className="bg-white rounded-2xl border border-slate-100 shadow-sm p-8 space-y-6">
           <div className="flex items-center gap-3 pb-4 border-b border-slate-50">
             <div className="w-9 h-9 rounded-xl bg-violet-50 flex items-center justify-center text-violet-500">
               <MaterialIcon name="share" className="w-[18px] h-[18px]" />

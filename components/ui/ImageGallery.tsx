@@ -156,7 +156,7 @@ export function ImageGallery({ images, alt = '' }: ImageGalleryProps) {
 
           {/* Thumbnail strip */}
           {images.length > 1 && (
-            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-10 max-w-[90vw] overflow-x-auto px-6 py-3 bg-black/20 backdrop-blur-xl rounded-[2rem] border border-white/10">
+            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-10 max-w-[90vw] overflow-x-auto px-6 py-3 bg-black/20 backdrop-blur-xl rounded-2xl border border-white/10">
               {images.map((img, idx) => (
                 <button
                   key={idx}

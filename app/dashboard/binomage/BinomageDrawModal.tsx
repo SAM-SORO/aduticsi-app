@@ -1,22 +1,13 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useMemo, useRef } from "react";
 import Image from "next/image";
 import { X, Shuffle, CheckCircle, AlertTriangle, PartyPopper } from "lucide-react";
 import confetti from "canvas-confetti";
 import type { MemberLight } from "./actions";
 import { createBinome } from "./actions";
+import { initPairing, drawPair, commitPair, type Pair, type PairingState } from "./pairing";
 
-// ─── Utilitaire shuffle ───────────────────────────────────────────────────────
-
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -24,6 +15,7 @@ interface BinomageDrawModalProps {
   promoCombo: string;
   parrains: MemberLight[];
   fieuls: MemberLight[];
+  existingPairs: Pair[];
   onClose: () => void;
   onBinomeDone: (parrainId: string, filleulId: string) => void;
   onAllDone: () => void;
@@ -37,14 +29,18 @@ export function BinomageDrawModal({
   promoCombo,
   parrains: initialParrains,
   fieuls: initialFieuls,
+  existingPairs,
   onClose,
   onBinomeDone,
   onAllDone,
 }: BinomageDrawModalProps) {
-  const [parrains, setParrains] = useState<MemberLight[]>(() => shuffle(initialParrains));
-  const [fieuls, setFieuls] = useState<MemberLight[]>(() => shuffle(initialFieuls));
-  const [parrainIndex, setParrainIndex] = useState(0);
-  const [filleulIndex, setFilleulIndex] = useState(0);
+  const [pairing, setPairing] = useState<PairingState>(() =>
+    initPairing({
+      parrainIds: initialParrains.map((m) => m.id),
+      filleulIds: initialFieuls.map((m) => m.id),
+      existingPairs,
+    })
+  );
 
   const [drawState, setDrawState] = useState<DrawState>("idle");
   const [currentParrain, setCurrentParrain] = useState<MemberLight | null>(null);
@@ -54,10 +50,14 @@ export function BinomageDrawModal({
   // Quand true : tous les membres sont associés mais on attend le clic "Terminer"
   const [allPaired, setAllPaired] = useState(false);
 
-  // filleuls >= parrains → parrains en cycle, filleul aléatoire
-  // parrains > filleuls  → filleuls en cycle, parrain aléatoire
-  const listFieulSuperiorOrEqual = initialFieuls.length >= initialParrains.length;
-  const totalToProcess = listFieulSuperiorOrEqual ? initialFieuls.length : initialParrains.length;
+  const byId = useMemo(
+    () => new Map<string, MemberLight>(
+      [...initialParrains, ...initialFieuls].map((m) => [m.id, m])
+    ),
+    [initialParrains, initialFieuls]
+  );
+  // Le cote le plus nombreux fixe le nombre de paires a former.
+  const totalToProcess = Math.max(initialParrains.length, initialFieuls.length);
 
   const isProcessing = useRef(false);
 
@@ -107,98 +107,54 @@ export function BinomageDrawModal({
     isProcessing.current = true;
     setError(null);
 
-    // Phase suspense : masque les résultats précédents et met les images de suspense
+    const pair = drawPair(pairing);
+    if (!pair) {
+      setError("Plus aucune association possible pour cette promotion.");
+      isProcessing.current = false;
+      return;
+    }
+
+    const parrain = byId.get(pair.parrainId);
+    const filleul = byId.get(pair.filleulId);
+    if (!parrain || !filleul) {
+      setError("Membre introuvable, rechargez la page.");
+      isProcessing.current = false;
+      return;
+    }
+
+    // Phase suspense : masque le résultat précédent avant de révéler le nouveau
     setDrawState("suspense");
     setCurrentParrain(null);
     setCurrentFilleul(null);
-
-    // 2 secondes d'effet suspense
     await new Promise<void>((r) => setTimeout(r, 2000));
 
-    let parrain: MemberLight;
-    let filleul: MemberLight;
+    setCurrentParrain(parrain);
+    setCurrentFilleul(filleul);
+    setDrawState("saving");
 
-    if (listFieulSuperiorOrEqual) {
-      parrain = parrains[parrainIndex % parrains.length];
-      const randIdx = Math.floor(Math.random() * fieuls.length);
-      filleul = fieuls[randIdx];
-
-      setCurrentParrain(parrain);
-      setCurrentFilleul(filleul);
-      setDrawState("saving");
-
-      const result = await createBinome(parrain.id, filleul.id, promoCombo);
-      if (!result.success) {
-        setError(result.error ?? "Erreur lors de l'enregistrement");
-        setDrawState("revealed");
-        isProcessing.current = false;
-        return;
-      }
-
-      const newFieuls = fieuls.filter((_, i) => i !== randIdx);
-      setFieuls(newFieuls);
-      setParrainIndex((prev) => (prev + 1) % parrains.length);
-      const newTotal = totalDone + 1;
-      setTotalDone(newTotal);
-      onBinomeDone(parrain.id, filleul.id);
-
+    const result = await createBinome(pair.parrainId, pair.filleulId, promoCombo);
+    if (!result.success) {
+      setError(result.error ?? "Erreur lors de l'enregistrement");
       setDrawState("revealed");
-      firePairConfetti();
+      isProcessing.current = false;
+      return;
+    }
 
-      // Tous associés → on reste sur "revealed", on affiche juste le badge "terminé"
-      if (newFieuls.length === 0) {
-        setAllPaired(true);
-        fireEndConfetti();
-        isProcessing.current = false;
-        return;
-      }
-    } else {
-      filleul = fieuls[filleulIndex % fieuls.length];
-      const randIdx = Math.floor(Math.random() * parrains.length);
-      parrain = parrains[randIdx];
+    const next = commitPair(pairing, pair);
+    setPairing(next);
+    setTotalDone((prev) => prev + 1);
+    onBinomeDone(pair.parrainId, pair.filleulId);
 
-      setCurrentParrain(parrain);
-      setCurrentFilleul(filleul);
-      setDrawState("saving");
+    setDrawState("revealed");
+    firePairConfetti();
 
-      const result = await createBinome(parrain.id, filleul.id, promoCombo);
-      if (!result.success) {
-        setError(result.error ?? "Erreur lors de l'enregistrement");
-        setDrawState("revealed");
-        isProcessing.current = false;
-        return;
-      }
-
-      const newParrains = parrains.filter((_, i) => i !== randIdx);
-      setParrains(newParrains);
-      setFilleulIndex((prev) => (prev + 1) % fieuls.length);
-      const newTotal = totalDone + 1;
-      setTotalDone(newTotal);
-      onBinomeDone(parrain.id, filleul.id);
-
-      setDrawState("revealed");
-      firePairConfetti();
-
-      // Tous associés → on reste sur "revealed", on affiche juste le badge "terminé"
-      if (newParrains.length === 0) {
-        setAllPaired(true);
-        fireEndConfetti();
-        isProcessing.current = false;
-        return;
-      }
+    if (next.remaining === 0) {
+      setAllPaired(true);
+      fireEndConfetti();
     }
 
     isProcessing.current = false;
-  }, [
-    parrains,
-    fieuls,
-    parrainIndex,
-    filleulIndex,
-    totalDone,
-    listFieulSuperiorOrEqual,
-    promoCombo,
-    onBinomeDone,
-  ]);
+  }, [pairing, byId, promoCombo, onBinomeDone]);
 
   const handleTerminer = () => {
     onAllDone();
@@ -209,7 +165,7 @@ export function BinomageDrawModal({
   const isSaving = drawState === "saving";
   const isRevealed = drawState === "revealed" || isSaving;
 
-  const remaining = listFieulSuperiorOrEqual ? fieuls.length : parrains.length;
+  const remaining = pairing.remaining;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md p-3 sm:p-6">
@@ -306,9 +262,9 @@ export function BinomageDrawModal({
           {/* ── Info restants ── */}
           {!allPaired && (
             <p className="mt-6 text-center text-xs text-slate-400 font-medium">
-              {listFieulSuperiorOrEqual
-                ? `${remaining} filleul(s) restant(s)`
-                : `${remaining} parrain(s) restant(s)`}
+              {pairing.majoritySide === "parrain"
+                ? `${remaining} parrain(s) restant(s)`
+                : `${remaining} filleul(s) restant(s)`}
             </p>
           )}
         </div>

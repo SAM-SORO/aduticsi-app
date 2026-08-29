@@ -30,8 +30,7 @@ export default async function Home() {
         
         <div className="max-w-7xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/80 backdrop-blur-md text-[var(--aduti-primary)] text-xs font-bold tracking-[0.1em] uppercase border border-blue-100/50 mb-8 shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-[var(--aduti-primary)] animate-pulse" />
-            Portail Officiel
+                        Portail Officiel
           </div>
 
           <div className="flex justify-center mb-10">
@@ -58,7 +57,7 @@ export default async function Home() {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-5 pt-10">
             <Link href="/about">
-              <Button className="w-full sm:w-auto h-14 px-10 rounded-2xl bg-[var(--aduti-primary)] hover:bg-blue-600 text-white font-bold transition-all shadow-[0_15px_30px_-10px_rgba(19,37,75,0.3)] hover:-translate-y-1">
+              <Button className="w-full sm:w-auto h-14 px-10 rounded-2xl bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] text-white font-bold transition-all shadow-[0_15px_30px_-10px_rgba(19,37,75,0.3)] hover:-translate-y-1">
                 {"Découvrir l'ADUTI"}
                 <MaterialIcon name="arrow_forward" className="ml-2 w-5 h-5" />
               </Button>
@@ -125,8 +124,8 @@ export default async function Home() {
                 glow: "from-indigo-500/10"
               }
             ].map((item, i) => (
-              <div key={i} className="group relative bg-white/70 backdrop-blur-xl p-10 rounded-[2.5rem] border border-white/60 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.05)] transition-all duration-500 hover:shadow-[0_30px_60px_-20px_rgba(0,0,0,0.1)] hover:-translate-y-2 hover:bg-white/90">
-                <div className={`absolute inset-0 bg-gradient-to-br ${item.glow} to-transparent opacity-0 group-hover:opacity-100 rounded-[2.5rem] transition-opacity duration-500`} />
+              <div key={i} className="group relative bg-white/70 backdrop-blur-xl p-10 rounded-3xl border border-white/60 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.05)] transition-all duration-500 hover:shadow-[0_30px_60px_-20px_rgba(0,0,0,0.1)] hover:-translate-y-2 hover:bg-white/90">
+                <div className={`absolute inset-0 bg-gradient-to-br ${item.glow} to-transparent opacity-0 group-hover:opacity-100 rounded-3xl transition-opacity duration-500`} />
                 <div className={`w-14 h-14 ${item.color} backdrop-blur-sm rounded-2xl flex items-center justify-center mb-8 relative z-10 shadow-sm transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3`}>
                   <MaterialIcon name={item.icon} className="w-8 h-8" />
                 </div>
@@ -175,7 +174,7 @@ export default async function Home() {
               </ul>
             </div>
             <div>
-              <div className="bg-white rounded-[2.5rem] p-6 sm:p-8 lg:p-14 space-y-8 lg:space-y-12 border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
+              <div className="bg-white rounded-3xl p-6 sm:p-8 lg:p-14 space-y-8 lg:space-y-12 border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
                 <div className="flex items-start gap-6">
                   <div className="flex-shrink-0 w-16 h-16 rounded-3xl bg-blue-50 flex items-center justify-center text-[var(--aduti-primary)] shadow-sm">
                     <MaterialIcon name="school" className="w-8 h-8" />
@@ -274,8 +273,8 @@ export default async function Home() {
               const catId = catBySlug[activity.slug];
               const href = catId ? `/activities?category=${catId}` : "/activities";
               return (
-              <div key={i} className="group relative bg-white rounded-[3rem] p-4 border border-slate-100 shadow-[0_15px_40px_-20px_rgba(0,0,0,0.05)] transition-all duration-700 hover:shadow-[0_40px_80px_-30px_rgba(0,0,0,0.12)] hover:-translate-y-2">
-                <div className="aspect-[4/5] relative rounded-[2.5rem] overflow-hidden mb-8">
+              <div key={i} className="group relative bg-white rounded-3xl p-4 border border-slate-100 shadow-[0_15px_40px_-20px_rgba(0,0,0,0.05)] transition-all duration-700 hover:shadow-[0_40px_80px_-30px_rgba(0,0,0,0.12)] hover:-translate-y-2">
+                <div className="aspect-[4/5] relative rounded-3xl overflow-hidden mb-8">
                   <Image
                     src={activity.img}
                     alt={activity.title}
@@ -323,7 +322,7 @@ export default async function Home() {
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-4">
             <Link href="/about">
-              <Button className="w-full sm:w-auto h-16 px-12 rounded-2xl bg-[var(--aduti-primary)] text-white font-black text-lg hover:bg-blue-600 transition-all shadow-[0_15px_30px_-10px_rgba(19,37,75,0.3)] hover:-translate-y-1">
+              <Button className="w-full sm:w-auto h-16 px-12 rounded-2xl bg-[var(--aduti-primary)] text-white font-black text-lg hover:bg-[var(--aduti-primary-hover)] transition-all shadow-[0_15px_30px_-10px_rgba(19,37,75,0.3)] hover:-translate-y-1">
                 En savoir plus
               </Button>
             </Link>

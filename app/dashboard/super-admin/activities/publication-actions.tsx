@@ -58,7 +58,7 @@ export function PublicationActions({ publication, activityId }: Omit<Publication
             <Pencil className="h-4 w-4" />
           </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto rounded-[2rem]">
+        <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto rounded-2xl">
           <DialogHeader>
             <DialogTitle>Modifier la publication</DialogTitle>
           </DialogHeader>

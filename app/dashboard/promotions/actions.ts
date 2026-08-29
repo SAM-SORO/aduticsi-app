@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import logger from "@/lib/logger";
+import { requireAdmin } from "@/lib/auth-guard";
 
 export async function getPromotions() {
   try {
@@ -22,6 +23,7 @@ export async function createPromotion(data: {
   name: string;
   is_current_promo: boolean;
 }) {
+  await requireAdmin();
   try {
     // If setting as current promo, unset others
     if (data.is_current_promo) {
@@ -57,6 +59,7 @@ export async function updatePromotion(
     is_current_promo?: boolean;
   }
 ) {
+  await requireAdmin();
   try {
     // If setting as current promo, unset others
     if (data.is_current_promo) {
@@ -90,6 +93,7 @@ export async function updatePromotion(
 }
 
 export async function deletePromotion(id: string) {
+  await requireAdmin();
   try {
     await prisma.promotion.delete({
       where: { id },

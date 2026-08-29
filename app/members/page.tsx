@@ -1,11 +1,11 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Search } from "lucide-react";
 
 import { AutoSubmitInput } from "@/components/ui/auto-submit-input";
 import { AutoSubmitSelect } from "@/components/ui/auto-submit-select";
 import { prisma } from "@/lib/prisma";
 import { MaterialIcon } from "@/components/icons/material-icon";
+import { MemberCard } from "@/components/members/MemberCard";
 import { createClient } from "@/lib/supabase/server";
 
 const MEMBERS_PER_PAGE = 12;
@@ -81,25 +81,21 @@ export default async function MembersPage({
     <main className="flex-1 overflow-hidden bg-white">
       {/* Hero Section */}
       <section className="relative pt-12 md:pt-16 lg:pt-20 pb-12 px-4 shadow-[0_1px_0_0_rgba(0,0,0,0.02)]">
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
-          <div className="absolute top-0 left-0 w-[min(400px,80vw)] h-[min(400px,80vw)] bg-[var(--aduti-primary)]/5 rounded-full blur-3xl opacity-60 pointer-events-none" />
-          <div className="absolute bottom-[20%] right-0 w-[min(300px,70vw)] h-[min(300px,70vw)] bg-[var(--aduti-secondary)]/5 rounded-full blur-3xl opacity-60 pointer-events-none" />
-        </div>
-        
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 md:gap-10 border-b border-slate-100 pb-8 md:pb-12">
-            <div className="space-y-3 max-w-2xl text-center md:text-left">
-              <div className="inline-flex items-center justify-center md:justify-start gap-2 px-3 py-1 rounded-full bg-blue-50 text-[var(--aduti-primary)] text-xs font-semibold tracking-wide uppercase border border-blue-100 w-fit mx-auto md:mx-0">
-                <span className="w-2 h-2 rounded-full bg-[var(--aduti-primary)] animate-pulse" />
-                Communauté ADUTI
-              </div>
+          <div className="flex flex-col gap-6 border-b border-slate-100 pb-8 md:flex-row md:items-end md:justify-between md:pb-12">
+            <div className="max-w-2xl space-y-3">
+              <h1 className="text-3xl font-semibold tracking-tight text-slate-900 md:text-4xl">
+                Les membres de l’ADUTI
+              </h1>
+              <p className="text-base leading-relaxed text-slate-500">
+                Étudiants et anciens du DUT et DTS en informatique de l’INP-HB.
+                Parcourez l’annuaire pour retrouver un camarade ou identifier une
+                compétence.
+              </p>
             </div>
-            <div className="flex items-center justify-center md:justify-end gap-3 pb-0 md:pb-2">
-              <span className="inline-flex items-center px-4 py-2 rounded-full text-xs font-bold bg-white text-slate-700 border border-slate-100 shadow-[0_4px_15px_rgba(0,0,0,0.03)] uppercase tracking-wide">
-                <span className="w-2 h-2 rounded-full bg-[var(--aduti-primary)] mr-2.5 shadow-[0_0_8px_var(--aduti-primary)]" />
-                {totalCount} Membre{totalCount > 1 ? "s" : ""}
-              </span>
-            </div>
+            <p className="shrink-0 text-sm text-slate-500 md:pb-2">
+              {totalCount} membre{totalCount > 1 ? "s" : ""} référencé{totalCount > 1 ? "s" : ""}
+            </p>
           </div>
         </div>
       </section>
@@ -171,7 +167,7 @@ export default async function MembersPage({
           <div className="mt-16">
             {/* Grille des membres */}
             {members.length === 0 ? (
-              <div className="bg-slate-50 rounded-[3rem] p-16 text-center border-2 border-dashed border-slate-200">
+              <div className="bg-slate-50 rounded-3xl p-16 text-center border-2 border-dashed border-slate-200">
                 <MaterialIcon name="group_off" className="w-14 h-14 text-slate-300 mb-4 block mx-auto" />
                 <h2 className="text-2xl font-bold text-slate-900 mb-2">Aucun membre trouvé</h2>
                 <p className="text-slate-500 font-medium">Réinitialisez vos filtres pour voir toute la communauté.</p>
@@ -181,112 +177,9 @@ export default async function MembersPage({
                 </Link>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {members.map((member) => (
-                  <div
-                    key={member.id}
-                    className="group bg-white rounded-[2rem] border border-slate-100 p-6 hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] hover:border-[var(--aduti-primary)]/20 transition-all duration-500 flex flex-col items-center text-center relative overflow-hidden hover:-translate-y-1.5"
-                  >
-                    <div
-                      className={`absolute top-0 left-0 w-full h-1.5 ${
-                        member.status === "ALUMNI"
-                          ? "bg-gradient-to-r from-[var(--aduti-primary)] to-[var(--aduti-secondary)] opacity-80"
-                          : "bg-slate-100"
-                      }`}
-                    />
-                    
-                    <div className="flex absolute top-5 inset-x-5 justify-between z-10 pointer-events-none">
-                      <span
-                        className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${
-                          member.status === "ALUMNI"
-                            ? "bg-emerald-50 text-emerald-600 border border-emerald-100"
-                            : "bg-blue-50 text-blue-600 border border-blue-100"
-                        } shadow-sm backdrop-blur-sm pointer-events-auto`}
-                      >
-                        {member.status === "ALUMNI" ? "Alumni" : (member.gender === "FEMALE" ? "Étudiante" : "Étudiant")}
-                      </span>
-                      {member.poste_id && (
-                        <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-rose-50 text-rose-600 border border-rose-100 shadow-sm backdrop-blur-sm pointer-events-auto">
-                          Bureau
-                        </span>
-                      )}
-                    </div>
-
-                    <Link href={`/members/${member.slug ?? member.id}`} className="relative mt-8 mb-6 block outline-none">
-                      <div className="w-32 h-32 rounded-full p-1 bg-gradient-to-tr from-slate-100 via-white to-slate-100 group-hover:from-[var(--aduti-primary)]/20 group-hover:to-[var(--aduti-secondary)]/20 transition-all duration-700 shadow-md">
-                        <div className="w-full h-full rounded-full bg-white overflow-hidden ring-4 ring-white group-hover:ring-transparent transition-all relative">
-                          {member.photo_url ? (
-                            <Image
-                              alt={`Photo de profil de ${member.last_name?.toUpperCase()} ${member.first_name}`}
-                              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 grayscale-[0.1] group-hover:grayscale-0"
-                              src={member.photo_url}
-                              fill
-                            />
-                          ) : (
-                            <div className="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300 text-4xl font-black group-hover:scale-110 transition-transform">
-                              {member.first_name?.charAt(0).toUpperCase()}
-                            </div>
-                          )}
-                          <div className="absolute inset-0 bg-[var(--aduti-primary)]/0 group-hover:bg-[var(--aduti-primary)]/5 transition-colors duration-500" />
-                        </div>
-                      </div>
-                    </Link>
-
-                    <h3 className="text-xl font-bold text-slate-900 group-hover:text-[var(--aduti-primary)] transition-colors tracking-tight w-full flex flex-wrap items-center justify-center gap-x-2 gap-y-1 px-2" title={`${member.last_name?.toUpperCase()} ${member.first_name}`}>
-                      <span className="break-words line-clamp-2">{member.last_name?.toUpperCase()} {member.first_name}</span>
-                      <span className="flex items-center shrink-0">
-                        {member.gender === "FEMALE" && (
-                          <MaterialIcon name="female" className="w-[18px] h-[18px] text-rose-400" />
-                        )}
-                        {member.gender === "MALE" && (
-                          <MaterialIcon name="male" className="w-[18px] h-[18px] text-blue-400" />
-                        )}
-                      </span>
-                    </h3>
-                    <p className="text-sm font-semibold text-slate-500 mt-1 mb-2 group-hover:text-slate-600 transition-colors px-4 line-clamp-2 min-h-[40px] flex items-center justify-center pointer-events-none" title={member.current_job_title || member.poste?.name || ""}>
-                      {member.current_job_title || member.poste?.name || ""}
-                    </p>
-                    
-                    <span
-                      className={`text-[11px] font-black px-3 py-1.5 rounded-lg mb-6 uppercase tracking-widest pointer-events-none ${
-                        member.status === "ALUMNI"
-                          ? "text-[var(--aduti-secondary)] bg-red-50/50"
-                          : "text-slate-600 bg-slate-50"
-                      }`}
-                    >
-                      Promo {member.promotion.name}
-                    </span>
-
-                    <div className="w-full pt-6 mt-auto border-t border-slate-50 flex items-center justify-between pointer-events-auto">
-                      <div className="flex gap-1.5 focus-within:z-10">
-                        <a
-                          href={`mailto:${member.email}`}
-                          className="w-9 h-9 flex items-center justify-center rounded-xl text-slate-400 hover:text-white hover:bg-[var(--aduti-primary)] hover:shadow-[0_4px_15px_rgba(37,99,235,0.2)] transition-all active:scale-90"
-                          title="Envoyer un email"
-                        >
-                          <MaterialIcon name="mail" className="w-[18px] h-[18px]" />
-                        </a>
-                        {member.linkedin_url && (
-                          <a
-                            href={member.linkedin_url}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="w-9 h-9 flex items-center justify-center rounded-xl text-slate-400 hover:text-white hover:bg-[#0077b5] hover:shadow-[0_4px_15px_rgba(0,119,181,0.2)] transition-all active:scale-90"
-                            title="LinkedIn"
-                          >
-                            <MaterialIcon name="link" className="w-[18px] h-[18px]" />
-                          </a>
-                        )}
-                      </div>
-                      <Link
-                        href={`/members/${member.slug ?? member.id}`}
-                        className="text-xs font-black uppercase tracking-widest text-[var(--aduti-primary)] hover:text-blue-700 flex items-center gap-1 group/link transition-opacity active:scale-95"
-                      >
-                        PROFIL
-                        <MaterialIcon name="arrow_forward" className="w-4 h-4 group-hover/link:translate-x-0.5 transition-transform" />
-                      </Link>
-                    </div>
-                  </div>
+                  <MemberCard key={member.id} member={member} />
                 ))}
               </div>
             )}
@@ -312,7 +205,7 @@ export default async function MembersPage({
                         href={href}
                         className={`w-11 h-11 flex items-center justify-center rounded-xl transition-all active:scale-90 font-bold ${
                           isActive
-                            ? "bg-[var(--aduti-primary)] text-white shadow-[0_4px_20px_rgba(37,99,235,0.25)] hover:bg-blue-600"
+                            ? "bg-[var(--aduti-primary)] text-white shadow-[0_4px_20px_rgba(37,99,235,0.25)] hover:bg-[var(--aduti-primary-hover)]"
                             : "text-slate-500 hover:bg-white border border-transparent hover:border-slate-200"
                         }`}
                       >

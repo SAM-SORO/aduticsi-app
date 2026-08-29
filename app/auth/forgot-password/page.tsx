@@ -65,7 +65,7 @@ export default function ForgotPasswordPage() {
           </p>
         </div>
 
-        <div className="bg-white rounded-[32px] border border-slate-200/60 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.08)] backdrop-blur-xl relative overflow-hidden">
+        <div className="bg-white rounded-3xl border border-slate-200/60 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.08)] backdrop-blur-xl relative overflow-hidden">
           {/* Loading Progress Bar */}
           <div className={cn(
             "absolute top-0 left-0 right-0 h-1.5 bg-slate-100 overflow-hidden z-20 transition-opacity duration-300",
@@ -98,7 +98,7 @@ export default function ForgotPasswordPage() {
               
               <button
                 disabled={isPending}
-                className="w-full flex justify-center items-center gap-3 py-4 px-6 rounded-2xl shadow-xl shadow-blue-100 text-sm font-black text-white bg-[var(--aduti-primary)] hover:bg-blue-600 focus:outline-none transition-all active:scale-[0.98] uppercase tracking-widest disabled:opacity-50"
+                className="w-full flex justify-center items-center gap-3 py-4 px-6 rounded-2xl shadow-xl shadow-blue-100 text-sm font-black text-white bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] focus:outline-none transition-all active:scale-[0.98] uppercase tracking-widest disabled:opacity-50"
               >
                 {isPending ? (
                   <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />

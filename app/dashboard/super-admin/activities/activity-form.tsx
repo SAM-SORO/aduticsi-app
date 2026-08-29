@@ -291,7 +291,7 @@ export function ActivityForm({ activity, promotions, categories: initialCategori
             <button
               type="button"
               onClick={() => document.getElementById("image-upload")?.click()}
-              className="w-full border-2 border-dashed border-slate-200 rounded-2xl h-32 flex flex-col items-center justify-center gap-2 hover:border-[var(--aduti-primary)]/40 hover:bg-blue-50/30 transition-all group"
+              className="w-full border-2 border-dashed border-slate-200 rounded-2xl h-32 flex flex-col items-center justify-center gap-2 hover:border-[var(--aduti-primary)]/40 hover:bg-[var(--aduti-primary)]/5/30 transition-all group"
             >
               <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-white group-hover:shadow-sm transition-all">
                 <Upload className="w-5 h-5 text-slate-400 group-hover:text-[var(--aduti-primary)] transition-colors" />
@@ -316,7 +316,7 @@ export function ActivityForm({ activity, promotions, categories: initialCategori
         <Button
           type="submit"
           disabled={isPending || isNewCategory}
-          className="bg-[var(--aduti-primary)] hover:bg-blue-600 text-white px-8 h-12 rounded-xl"
+          className="bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] text-white px-8 h-12 rounded-xl"
         >
           {isPending ? (
             <>

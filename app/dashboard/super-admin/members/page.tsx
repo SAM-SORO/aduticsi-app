@@ -164,7 +164,7 @@ export default async function MembersAdminPage({
                     href={href}
                     className={`w-10 h-10 flex items-center justify-center rounded-xl text-sm transition-all active:scale-90 font-bold ${
                       isActive
-                        ? "bg-[var(--aduti-primary)] text-white shadow-md hover:bg-blue-600"
+                        ? "bg-[var(--aduti-primary)] text-white shadow-md hover:bg-[var(--aduti-primary-hover)]"
                         : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
                     }`}
                   >

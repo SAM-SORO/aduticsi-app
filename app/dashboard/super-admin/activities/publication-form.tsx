@@ -122,7 +122,7 @@ export function PublicationForm({ publication, activityId, onSuccess }: Publicat
           <button
             type="button"
             onClick={() => document.getElementById("pub-images-upload")?.click()}
-            className="flex items-center gap-1.5 text-xs font-bold text-[var(--aduti-primary)] hover:text-blue-700 transition-colors"
+            className="flex items-center gap-1.5 text-xs font-bold text-[var(--aduti-primary)] hover:text-[var(--aduti-primary-hover)] transition-colors"
           >
             <Plus className="w-3.5 h-3.5" />
             Ajouter
@@ -172,7 +172,7 @@ export function PublicationForm({ publication, activityId, onSuccess }: Publicat
           <button
             type="button"
             onClick={() => document.getElementById("pub-images-upload")?.click()}
-            className="w-full border-2 border-dashed border-slate-200 rounded-xl h-20 flex flex-col items-center justify-center gap-1.5 hover:border-[var(--aduti-primary)]/40 hover:bg-blue-50/30 transition-all group"
+            className="w-full border-2 border-dashed border-slate-200 rounded-xl h-20 flex flex-col items-center justify-center gap-1.5 hover:border-[var(--aduti-primary)]/40 hover:bg-[var(--aduti-primary)]/5/30 transition-all group"
           >
             <Upload className="w-5 h-5 text-slate-300 group-hover:text-[var(--aduti-primary)]/50 transition-colors" />
             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider group-hover:text-[var(--aduti-primary)]/70 transition-colors">Ajouter des photos</span>
@@ -185,7 +185,7 @@ export function PublicationForm({ publication, activityId, onSuccess }: Publicat
       <Button
         type="submit"
         disabled={isPending}
-        className="w-full bg-[var(--aduti-primary)] hover:bg-blue-600 text-white h-12 rounded-xl font-bold"
+        className="w-full bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] text-white h-12 rounded-xl font-bold"
       >
         {isPending ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Enregistrement...</> : isEditing ? "Mettre à jour" : "Publier"}
       </Button>

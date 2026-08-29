@@ -7,6 +7,7 @@ import { prisma } from '@/lib/prisma'
 import { createClient } from '@/lib/supabase/server'
 import { buildStorageName } from '@/lib/storage-names'
 import logger from '@/lib/logger'
+import { validateImage } from '@/lib/image-upload'
 
 export async function getProfile() {
   const supabase = await createClient()
@@ -110,12 +111,15 @@ export async function uploadAvatar(formData: FormData) {
   const file = formData.get('file') as File
   if (!file) return { error: 'Aucun fichier fourni' }
 
+  const check = validateImage(file)
+  if (!check.ok) return { error: check.error }
+
   const member = await prisma.member.findUnique({
     where: { id: user.id },
     select: { first_name: true, last_name: true }
   })
 
-  const fileExt = file.name.split('.').pop() ?? 'jpg'
+  const fileExt = check.ext
   const fullName = member ? `${member.first_name}-${member.last_name}` : user.id;
   const fileName = buildStorageName(fullName, fileExt)
   const filePath = `avatars/${fileName}`

@@ -23,7 +23,7 @@ export default function pendingReviewPage() {
           </p>
         </div>
 
-        <div className="bg-white rounded-[32px] border border-slate-200/60 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.08)] backdrop-blur-xl relative overflow-hidden">
+        <div className="bg-white rounded-3xl border border-slate-200/60 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.08)] backdrop-blur-xl relative overflow-hidden">
           <div className="p-8 md:p-10">
             <div className="space-y-6 text-center">
               <p className="text-slate-600 text-lg font-medium leading-relaxed">
@@ -40,7 +40,7 @@ export default function pendingReviewPage() {
               <div className="pt-6">
                 <Link 
                   href="/" 
-                  className="group w-full flex justify-center items-center gap-3 py-4 px-6 rounded-2xl shadow-xl shadow-blue-100 text-sm font-black text-white bg-[var(--aduti-primary)] hover:bg-blue-600 focus:outline-none transition-all active:scale-[0.98] uppercase tracking-widest"
+                  className="group w-full flex justify-center items-center gap-3 py-4 px-6 rounded-2xl shadow-xl shadow-blue-100 text-sm font-black text-white bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] focus:outline-none transition-all active:scale-[0.98] uppercase tracking-widest"
                 >
                   <MaterialIcon name="arrow_back" className="w-5 h-5 transition-transform group-hover:-translate-x-1" />
                   Retour à l&apos;acceuil

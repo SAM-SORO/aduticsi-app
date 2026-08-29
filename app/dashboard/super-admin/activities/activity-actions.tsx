@@ -57,7 +57,7 @@ export function ActivityActions({ activity, promotions, categories }: Omit<Activ
             <Pencil className="h-4 w-4" />
           </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto rounded-[2rem]">
+        <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto rounded-2xl">
           <DialogHeader>
             <DialogTitle>Modifier l&apos;activité</DialogTitle>
           </DialogHeader>

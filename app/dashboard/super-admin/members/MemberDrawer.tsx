@@ -527,7 +527,7 @@ export function MemberDrawer({ member, postes, promotions, onClose, canEdit = tr
                               className={`shrink-0 px-3 py-2 rounded-xl text-xs font-bold transition-all disabled:opacity-50 ${
                                 editFunction === 'GESTION_ACTIVITES'
                                   ? 'bg-red-50 text-red-600 hover:bg-red-100 border border-red-100'
-                                  : 'bg-[var(--aduti-primary)] text-white hover:bg-blue-600 shadow-sm'
+                                  : 'bg-[var(--aduti-primary)] text-white hover:bg-[var(--aduti-primary-hover)] shadow-sm'
                               }`}
                             >
                               {editFunction === 'GESTION_ACTIVITES' ? 'Retirer' : 'Accorder'}

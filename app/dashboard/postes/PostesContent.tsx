@@ -89,7 +89,7 @@ export function PostesContent({ initialPostes }: PostesContentProps) {
             setEditingPoste(null);
             setIsFormOpen(true);
           }}
-          className="bg-[var(--aduti-primary)] hover:bg-blue-600 text-white rounded-2xl h-12 px-6 shadow-md transition-all hover:scale-[1.02] active:scale-[0.98] font-bold text-sm gap-2"
+          className="bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] text-white rounded-2xl h-12 px-6 shadow-md transition-all hover:scale-[1.02] active:scale-[0.98] font-bold text-sm gap-2"
         >
           <Plus className="w-4 h-4" />
           Ajouter un poste
@@ -195,7 +195,7 @@ export function PostesContent({ initialPostes }: PostesContentProps) {
 
       {/* Dialog: Add/Edit Form */}
       <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
-        <DialogContent className="sm:max-w-[450px] rounded-[2rem] p-8 border-none shadow-2xl">
+        <DialogContent className="sm:max-w-[450px] rounded-2xl p-8 border-none shadow-2xl">
           <DialogHeader className="space-y-2 text-left">
             <DialogTitle className="text-2xl font-bold text-slate-900 tracking-tight">
               {editingPoste ? "Modifier le poste" : "Créer un poste"}
@@ -218,7 +218,7 @@ export function PostesContent({ initialPostes }: PostesContentProps) {
 
       {/* Dialog: Delete Confirmation */}
       <Dialog open={!!deletingPoste} onOpenChange={(open) => !open && setDeletingPoste(null)}>
-        <DialogContent className="sm:max-w-[400px] p-0 overflow-hidden border-none shadow-2xl rounded-[2.5rem]">
+        <DialogContent className="sm:max-w-[400px] p-0 overflow-hidden border-none shadow-2xl rounded-3xl">
           <div className="bg-white p-8">
             <div className="flex flex-col items-center text-center space-y-4">
               <div className="w-16 h-16 rounded-3xl bg-red-50 flex items-center justify-center text-red-500 mb-2">

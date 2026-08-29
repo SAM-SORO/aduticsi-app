@@ -126,8 +126,9 @@ export function BinomagePageClient({ combos }: BinomagePageClientProps) {
 
   const canDraw =
     comboData !== null &&
-    nonBinomedParrains.length > 0 &&
-    nonBinomedFieuls.length > 0;
+    comboData.parrains.length > 0 &&
+    comboData.fieuls.length > 0 &&
+    (nonBinomedParrains.length > 0 || nonBinomedFieuls.length > 0);
 
   return (
     <div className="space-y-6">
@@ -359,8 +360,12 @@ export function BinomagePageClient({ combos }: BinomagePageClientProps) {
       {isDrawModalOpen && selectedCombo && comboData && (
         <BinomageDrawModal
           promoCombo={selectedCombo.label}
-          parrains={nonBinomedParrains}
-          fieuls={nonBinomedFieuls}
+          parrains={comboData.parrains}
+          fieuls={comboData.fieuls}
+          existingPairs={comboData.binomes.map((b) => ({
+            parrainId: b.parrain.id,
+            filleulId: b.filleul.id,
+          }))}
           onClose={() => {
             setIsDrawModalOpen(false);
             refreshData();
@@ -424,7 +429,7 @@ function BinomesTab({ binomes }: { binomes: BinomePair[] }) {
       </div>
 
       {filteredBinomes.length === 0 ? (
-        <div className="py-12 border-2 border-dashed border-slate-100 rounded-[2rem] flex flex-col items-center justify-center text-center">
+        <div className="py-12 border-2 border-dashed border-slate-100 rounded-2xl flex flex-col items-center justify-center text-center">
             <div className="size-12 bg-slate-50 rounded-2xl flex items-center justify-center mb-3">
                 <UserSearch className="w-6 h-6 text-slate-300" />
             </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Menu, X, User, LogOut, Settings } from "lucide-react";
+import { Menu, X, User, LogOut, Settings, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 
 import { DashboardSidebar } from "./Sidebar";
 import { 
@@ -13,6 +13,8 @@ import {
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu";
 import { logout } from "@/app/auth/actions";
+import { useSidebarCollapsed } from "@/lib/use-sidebar-collapsed";
+import { cn } from "@/lib/utils";
 
 
 interface DashboardShellProps {
@@ -34,6 +36,7 @@ export function DashboardShell({
   title,
 }: DashboardShellProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isCollapsed, toggleCollapsed] = useSidebarCollapsed();
 
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
@@ -62,14 +65,17 @@ export function DashboardShell({
 
       {/* Sidebar - Desktop and Mobile Drawer */}
       <div
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-white transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 ${
-          isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={cn(
+          "fixed inset-y-0 left-0 z-50 w-64 transform bg-white transition-[transform,width] duration-300 ease-in-out lg:relative lg:translate-x-0",
+          isMobileMenuOpen ? "translate-x-0" : "-translate-x-full",
+          isCollapsed && "lg:w-20"
+        )}
       >
         <DashboardSidebar
           member={member}
           activePath={activePath}
           onCloseMobile={closeMobileMenu}
+          collapsed={isCollapsed}
         />
         {/* Mobile Close Button */}
         <button
@@ -88,10 +94,20 @@ export function DashboardShell({
           <div className="flex items-center gap-4">
             <button
               onClick={toggleMobileMenu}
-              className="p-2 text-slate-500 hover:bg-slate-100 rounded-lg lg:hidden transition-colors"
+              className="rounded-lg p-2 text-slate-500 transition-colors hover:bg-slate-100 lg:hidden"
               type="button"
             >
-              <Menu className="w-6 h-6" />
+              <Menu className="size-6" />
+            </button>
+            <button
+              onClick={toggleCollapsed}
+              className="hidden rounded-lg p-2 text-slate-500 transition-colors hover:bg-slate-100 lg:block"
+              type="button"
+              aria-pressed={isCollapsed}
+              aria-label={isCollapsed ? "Déplier le menu" : "Replier le menu"}
+              title={isCollapsed ? "Déplier le menu" : "Replier le menu"}
+            >
+              {isCollapsed ? <PanelLeftOpen className="size-5" /> : <PanelLeftClose className="size-5" />}
             </button>
             <h2 className="text-sm font-bold text-slate-500 uppercase tracking-widest truncate">
               {title}

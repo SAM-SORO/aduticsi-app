@@ -105,7 +105,7 @@ function WelcomeConfettiInner() {
       {/* ── Desktop ─────────────────────────────── */}
       <div
         onClick={(e) => e.stopPropagation()}
-        className={`relative bg-white px-10 py-14 sm:px-16 sm:py-16 rounded-[3rem] shadow-[0_40px_120px_rgba(0,0,0,0.18)] border border-slate-100 text-center max-w-xl w-full overflow-hidden cursor-default hidden sm:flex flex-col items-center transition-all duration-600 ${
+        className={`relative bg-white px-10 py-14 sm:px-16 sm:py-16 rounded-3xl shadow-[0_40px_120px_rgba(0,0,0,0.18)] border border-slate-100 text-center max-w-xl w-full overflow-hidden cursor-default hidden sm:flex flex-col items-center transition-all duration-600 ${
           fadingOut ? "scale-95 opacity-0" : visible ? "scale-100 opacity-100" : "scale-95 opacity-0"
         }`}
       >
@@ -124,7 +124,7 @@ function WelcomeConfettiInner() {
 
         <div className="relative z-10 flex flex-col items-center gap-5">
           {/* Icône animée */}
-          <div className="w-28 h-28 bg-gradient-to-br from-[var(--aduti-primary)] to-indigo-600 rounded-[2.2rem] flex items-center justify-center shadow-[0_20px_60px_rgba(59,130,246,0.35)] mb-2">
+          <div className="w-28 h-28 bg-gradient-to-br from-[var(--aduti-primary)] to-indigo-600 rounded-3xl flex items-center justify-center shadow-[0_20px_60px_rgba(59,130,246,0.35)] mb-2">
             <PartyPopper className="w-14 h-14 text-white" />
           </div>
 
@@ -160,7 +160,7 @@ function WelcomeConfettiInner() {
       {/* ── Mobile ──────────────────────────────── */}
       <div
         onClick={(e) => e.stopPropagation()}
-        className={`relative bg-white px-6 py-12 rounded-[2.5rem] shadow-[0_20px_80px_rgba(0,0,0,0.15)] border border-slate-100 text-center w-full max-w-sm sm:hidden overflow-hidden cursor-default transition-all duration-600 ${
+        className={`relative bg-white px-6 py-12 rounded-3xl shadow-[0_20px_80px_rgba(0,0,0,0.15)] border border-slate-100 text-center w-full max-w-sm sm:hidden overflow-hidden cursor-default transition-all duration-600 ${
           fadingOut ? "scale-95 opacity-0" : visible ? "scale-100 opacity-100" : "scale-95 opacity-0"
         }`}
       >
@@ -176,7 +176,7 @@ function WelcomeConfettiInner() {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-32 bg-gradient-to-b from-[var(--aduti-primary)]/8 to-transparent blur-2xl pointer-events-none" />
 
         <div className="relative z-10 flex flex-col items-center gap-4">
-          <div className="w-20 h-20 bg-gradient-to-br from-[var(--aduti-primary)] to-indigo-600 rounded-[1.5rem] flex items-center justify-center shadow-[0_10px_40px_rgba(59,130,246,0.3)] mb-1">
+          <div className="w-20 h-20 bg-gradient-to-br from-[var(--aduti-primary)] to-indigo-600 rounded-2xl flex items-center justify-center shadow-[0_10px_40px_rgba(59,130,246,0.3)] mb-1">
             <PartyPopper className="w-10 h-10 text-white" />
           </div>
 

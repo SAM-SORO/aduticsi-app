@@ -174,7 +174,7 @@ function RegisterContent() {
         <button
           type="button"
           onClick={() => setMode("invitation")}
-          className="group flex flex-col items-start gap-3 p-5 bg-white hover:bg-blue-50 border border-slate-200 hover:border-[var(--aduti-primary)]/40 rounded-2xl transition-all duration-150 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--aduti-primary)]"
+          className="group flex flex-col items-start gap-3 p-5 bg-white hover:bg-[var(--aduti-primary)]/5 border border-slate-200 hover:border-[var(--aduti-primary)]/40 rounded-2xl transition-all duration-150 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--aduti-primary)]"
         >
           <div className="w-10 h-10 rounded-xl bg-slate-50 group-hover:bg-[var(--aduti-primary)] border border-slate-100 group-hover:border-[var(--aduti-primary)] flex items-center justify-center transition-all duration-150">
             <MaterialIcon name="vpn_key" className="w-5 h-5 text-[var(--aduti-primary)] group-hover:text-white transition-colors duration-150" />
@@ -191,7 +191,7 @@ function RegisterContent() {
         <button
           type="button"
           onClick={() => setMode("request")}
-          className="group flex flex-col items-start gap-3 p-5 bg-white hover:bg-blue-50 border border-slate-200 hover:border-[var(--aduti-primary)]/40 rounded-2xl transition-all duration-150 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--aduti-primary)]"
+          className="group flex flex-col items-start gap-3 p-5 bg-white hover:bg-[var(--aduti-primary)]/5 border border-slate-200 hover:border-[var(--aduti-primary)]/40 rounded-2xl transition-all duration-150 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--aduti-primary)]"
         >
           <div className="w-10 h-10 rounded-xl bg-slate-50 group-hover:bg-[var(--aduti-primary)] border border-slate-100 group-hover:border-[var(--aduti-primary)] flex items-center justify-center transition-all duration-150">
             <MaterialIcon name="edit_note" className="w-5 h-5 text-[var(--aduti-primary)] group-hover:text-white transition-colors duration-150" />
@@ -239,7 +239,7 @@ function RegisterContent() {
                   <button
                     type="submit"
                     disabled={isPending}
-                    className="w-full flex justify-center items-center gap-3 py-4 px-6 rounded-2xl shadow-xl shadow-blue-100 text-sm font-black text-white bg-[var(--aduti-primary)] hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest"
+                    className="w-full flex justify-center items-center gap-3 py-4 px-6 rounded-2xl shadow-xl shadow-blue-100 text-sm font-black text-white bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest"
                   >
                     {isPending ? (
                       <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -617,7 +617,7 @@ function RegisterContent() {
                     <button
                       type="submit"
                       disabled={isPending}
-                      className="w-full flex justify-center items-center gap-3 py-4 px-6 rounded-2xl shadow-xl shadow-blue-100 text-sm font-black text-white bg-[var(--aduti-primary)] hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest"
+                      className="w-full flex justify-center items-center gap-3 py-4 px-6 rounded-2xl shadow-xl shadow-blue-100 text-sm font-black text-white bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest"
                     >
                       {isPending ? (
                         <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -694,7 +694,7 @@ function RegisterContent() {
       {/* Main Content (Centered Form) */}
       <div className="w-full max-w-[720px] z-10 flex flex-col gap-6 pt-20 sm:pt-8 pb-12">
 
-        <div className="bg-white rounded-[32px] border border-slate-200/60 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.08)] backdrop-blur-xl relative overflow-hidden">
+        <div className="bg-white rounded-3xl border border-slate-200/60 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.08)] backdrop-blur-xl relative overflow-hidden">
           {/* Loading Progress Bar */}
           <div className={cn(
             "absolute top-0 left-0 right-0 h-1.5 bg-slate-100 overflow-hidden z-20 transition-opacity duration-300",

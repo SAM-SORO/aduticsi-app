@@ -17,6 +17,7 @@ import {
 
 
 import { logout } from "@/app/auth/actions";
+import { cn } from "@/lib/utils";
 
 interface SidebarProps {
   member: {
@@ -27,9 +28,10 @@ interface SidebarProps {
   };
   activePath: string;
   onCloseMobile?: () => void;
+  collapsed?: boolean;
 }
 
-export function Sidebar({ member, activePath, onCloseMobile }: SidebarProps) {
+export function Sidebar({ member, activePath, onCloseMobile, collapsed = false }: SidebarProps) {
   const isSuperAdmin = member.role === "SUPER_ADMIN";
   const isAdmin = member.role === "ADMIN";
   const hasActivityFunction = !isSuperAdmin && !isAdmin;
@@ -73,20 +75,22 @@ export function Sidebar({ member, activePath, onCloseMobile }: SidebarProps) {
   return (
     <aside className="w-full h-full bg-white border-r border-slate-200 flex flex-col shadow-sm">
       {/* Logo — fixed */}
-      <div className="p-6 pb-0 shrink-0">
-        <div className="flex items-center gap-3 mb-6">
-          <div className="size-10 bg-[var(--aduti-primary)]/10 rounded-lg flex items-center justify-center text-[var(--aduti-primary)]">
-            <School className="w-6 h-6" />
+      <div className={cn("shrink-0 pb-0", collapsed ? "px-3 pt-6" : "p-6 pb-0")}>
+        <div className={cn("mb-6 flex items-center gap-3", collapsed && "justify-center")}>
+          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-[var(--aduti-primary)]/10 text-[var(--aduti-primary)]">
+            <School className="size-6" />
           </div>
-          <div>
-            <h1 className="font-bold text-xl tracking-tight text-slate-900">ADUTI</h1>
-            <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">{roleLabel}</p>
-          </div>
+          {!collapsed && (
+            <div className="min-w-0">
+              <h1 className="text-xl font-bold tracking-tight text-slate-900">ADUTI</h1>
+              <p className="truncate text-xs font-medium uppercase tracking-wider text-slate-500">{roleLabel}</p>
+            </div>
+          )}
         </div>
       </div>
 
       {/* Nav — scrollable */}
-      <div className="flex-1 overflow-y-auto px-6 pb-4">
+      <div className={cn("flex-1 overflow-y-auto pb-4", collapsed ? "px-3" : "px-6")}>
         <nav className="flex flex-col gap-1">
           {menuItems.map((item, index) => {
             const isActive = activePath === item.path;
@@ -96,14 +100,18 @@ export function Sidebar({ member, activePath, onCloseMobile }: SidebarProps) {
                 <a
                   href={item.href}
                   onClick={onCloseMobile}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-colors ${
+                  title={collapsed ? item.name : undefined}
+                  aria-label={collapsed ? item.name : undefined}
+                  className={cn(
+                    "flex items-center gap-3 rounded-lg py-3 font-medium transition-colors",
+                    collapsed ? "justify-center px-0" : "px-4",
                     isActive
                       ? "bg-[var(--aduti-primary)]/10 text-[var(--aduti-primary)]"
                       : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
-                  }`}
+                  )}
                 >
-                  {item.icon}
-                  <span className="truncate">{item.name}</span>
+                  <span className="shrink-0">{item.icon}</span>
+                  {!collapsed && <span className="truncate">{item.name}</span>}
                 </a>
               </div>
             );
@@ -112,32 +120,44 @@ export function Sidebar({ member, activePath, onCloseMobile }: SidebarProps) {
       </div>
 
     {/* Footer — fixed */}
-    <div className="p-4 border-t border-slate-100 shrink-0">
+    <div className={cn("shrink-0 border-t border-slate-100", collapsed ? "p-3" : "p-4")}>
       <a
         href="/dashboard/profile"
         onClick={onCloseMobile}
-        className="w-full mb-2 flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors text-left"
+        title={collapsed ? "Mon profil" : undefined}
+        className={cn(
+          "mb-2 flex w-full items-center gap-3 rounded-lg p-3 text-left transition-colors hover:bg-slate-50",
+          collapsed && "justify-center"
+        )}
       >
-        <User className="w-4 h-4 text-slate-400" />
-        <span className="text-sm font-medium text-slate-700">Mon profil</span>
+        <User className="size-4 shrink-0 text-slate-400" />
+        {!collapsed && <span className="text-sm font-medium text-slate-700">Mon profil</span>}
       </a>
       <form action={logout}>
         <button
           type="submit"
-          className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors group text-left"
+          title={collapsed ? "Déconnexion" : undefined}
+          className={cn(
+            "group flex w-full items-center gap-3 rounded-lg p-3 text-left transition-colors hover:bg-slate-50",
+            collapsed && "justify-center"
+          )}
         >
-          <div className="size-10 rounded-full bg-slate-200 flex items-center justify-center font-bold text-slate-700 overflow-hidden shrink-0 group-hover:bg-slate-300 transition-colors">
+          <div className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-slate-200 font-bold text-slate-700 transition-colors group-hover:bg-slate-300">
             {member.first_name?.slice(0, 1).toUpperCase() || "A"}
           </div>
-          <div className="overflow-hidden">
-            <p className="text-sm font-semibold text-slate-900 truncate">
-              {member.first_name && member.last_name 
-                ? `${member.first_name} ${member.last_name}` 
-                : member.first_name || "Super Admin"}
-            </p>
-            <p className="text-xs text-slate-500 truncate">{member.email}</p>
-          </div>
-          <LogOut className="w-4 h-4 text-slate-400 ml-auto group-hover:text-red-500 transition-colors shrink-0" />
+          {!collapsed && (
+            <>
+              <div className="overflow-hidden">
+                <p className="truncate text-sm font-semibold text-slate-900">
+                  {member.first_name && member.last_name
+                    ? `${member.first_name} ${member.last_name}`
+                    : member.first_name || "Super Admin"}
+                </p>
+                <p className="truncate text-xs text-slate-500">{member.email}</p>
+              </div>
+              <LogOut className="ml-auto size-4 shrink-0 text-slate-400 transition-colors group-hover:text-red-500" />
+            </>
+          )}
         </button>
       </form>
     </div>

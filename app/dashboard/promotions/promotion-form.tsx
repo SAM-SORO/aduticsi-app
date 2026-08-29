@@ -83,7 +83,7 @@ export function PromotionForm({ promotion, onSuccess }: PromotionFormProps) {
         <Button
           type="submit"
           disabled={isPending}
-          className="bg-[var(--aduti-primary)] hover:bg-blue-600 text-white"
+          className="bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] text-white"
         >
           {isPending ? "Enregistrement..." : isEditing ? "Mettre à jour" : "Créer la promotion"}
         </Button>

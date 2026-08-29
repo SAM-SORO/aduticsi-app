@@ -94,7 +94,7 @@ export function BackToTop() {
         </svg>
 
         {/* Icon */}
-        <div className="relative z-10 w-10 h-10 bg-slate-50 group-hover:bg-blue-50 rounded-full flex items-center justify-center transition-colors">
+        <div className="relative z-10 w-10 h-10 bg-slate-50 group-hover:bg-[var(--aduti-primary)]/5 rounded-full flex items-center justify-center transition-colors">
           <ArrowUp className="w-5 h-5 text-slate-600 group-hover:text-[var(--aduti-primary)] transition-colors group-hover:animate-bounce" />
         </div>
       </button>

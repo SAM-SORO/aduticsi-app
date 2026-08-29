@@ -72,8 +72,7 @@ export default function AboutPage() {
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/80 backdrop-blur-md text-[var(--aduti-primary)] text-xs font-bold tracking-[0.1em] uppercase border border-blue-100/50 shadow-sm"
               style={{ animationDelay: "0ms" }}
             >
-              <span className="w-2 h-2 rounded-full bg-[var(--aduti-primary)] animate-pulse" />
-              Association DUT / DTS · INP-HB
+                            Association DUT / DTS · INP-HB
             </div>
 
             {/* Headline */}
@@ -113,7 +112,7 @@ export default function AboutPage() {
             <div className="flex flex-col sm:flex-row gap-4 pt-4" style={{ animationDelay: "400ms" }}>
               <Button
                 onClick={scrollToHistory}
-                className="h-14 px-8 rounded-2xl bg-[var(--aduti-primary)] hover:bg-blue-800 text-white font-bold transition-all shadow-[0_15px_30px_-10px_rgba(19,37,75,0.3)] gap-3 hover:-translate-y-1 active:scale-95 text-sm"
+                className="h-14 px-8 rounded-2xl bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] text-white font-bold transition-all shadow-[0_15px_30px_-10px_rgba(19,37,75,0.3)] gap-3 hover:-translate-y-1 active:scale-95 text-sm"
               >
                 <MaterialIcon name="history_edu" className="w-5 h-5" />
                 Notre Histoire
@@ -133,10 +132,10 @@ export default function AboutPage() {
           {/* ── RIGHT: Logo Showcase Card ── */}
           <div className="relative animate-fade-in-right" style={{ animationDelay: "200ms" }}>
             {/* Outer glow halo */}
-            <div className="absolute inset-0 -m-8 bg-[var(--aduti-primary)]/5 rounded-[4rem] blur-3xl" />
+            <div className="absolute inset-0 -m-8 bg-[var(--aduti-primary)]/5 rounded-3xl blur-3xl" />
 
             {/* Main card — light theme */}
-            <div className="relative bg-white rounded-[3rem] border border-slate-100 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.12)] overflow-hidden p-12 flex flex-col items-center gap-12 animate-float-slow">
+            <div className="relative bg-white rounded-3xl border border-slate-100 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.12)] overflow-hidden p-12 flex flex-col items-center gap-12 animate-float-slow">
               {/* Top label */}
 
               {/* ADUTI logo — large */}
@@ -146,7 +145,7 @@ export default function AboutPage() {
                   <div className="relative bg-slate-50 rounded-3xl p-6 shadow-sm border border-slate-100">
                     <Image
                       src="/logo_association.jpeg"
-                      alt="ADUTI — Association des DUT/DTS en Informatique"
+                      alt="ADUTI, Association des DUT/DTS en Informatique"
                       width={280}
                       height={120}
                       className="object-contain max-h-28 w-auto"
@@ -161,7 +160,7 @@ export default function AboutPage() {
                   <div className="relative bg-white rounded-3xl p-6 shadow-sm border border-slate-100">
                     <Image
                       src="/image_aduti_logo_2.png"
-                      alt="ESI / STIC — École Supérieure d'Industrie"
+                      alt="ESI / STIC, École Supérieure d'Industrie"
                       width={120}
                       height={120}
                       className="object-contain w-24 h-24"
@@ -226,7 +225,7 @@ export default function AboutPage() {
                   }
                 ].map((item, i) => (
                   <div key={i} className="flex gap-8 p-8 rounded-3xl bg-white shadow-[0_10px_40px_rgba(0,0,0,0.03)] border border-slate-100 hover:shadow-2xl transition-all duration-500 group">
-                    <div className={`flex-shrink-0 w-16 h-16 rounded-[1.25rem] ${item.bg} flex items-center justify-center transition-transform group-hover:scale-110 group-hover:rotate-6`}>
+                    <div className={`flex-shrink-0 w-16 h-16 rounded-2xl ${item.bg} flex items-center justify-center transition-transform group-hover:scale-110 group-hover:rotate-6`}>
                       <MaterialIcon name={item.icon} className={`w-8 h-8 ${item.color}`} />
                     </div>
                     <div className="space-y-2">
@@ -241,14 +240,14 @@ export default function AboutPage() {
             <FadeInScroll delay={200} className="grid grid-cols-2 gap-8 relative">
               <div className="absolute inset-0 bg-indigo-200/20 blur-[120px] -z-10" />
               <div className="space-y-8 mt-16">
-                <div className="bg-white p-10 rounded-[3rem] shadow-2xl border border-slate-100 space-y-6 hover:-translate-y-3 transition-transform duration-500">
+                <div className="bg-white p-10 rounded-3xl shadow-2xl border border-slate-100 space-y-6 hover:-translate-y-3 transition-transform duration-500">
                   <div className="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center">
                     <MaterialIcon name="verified" className="w-8 h-8" />
                   </div>
                   <h5 className="text-xl font-bold text-slate-900">Excellence</h5>
                   <p className="text-sm text-slate-500 font-semibold leading-relaxed">{"Standard de formation et de rigueur académique certifié."}</p>
                 </div>
-                <div className="bg-slate-900 p-10 rounded-[3rem] shadow-[0_30px_60px_rgba(0,0,0,0.3)] text-white space-y-6 hover:-translate-y-3 transition-transform duration-500">
+                <div className="bg-slate-900 p-10 rounded-3xl shadow-[0_30px_60px_rgba(0,0,0,0.3)] text-white space-y-6 hover:-translate-y-3 transition-transform duration-500">
                   <div className="w-14 h-14 bg-white/10 text-white rounded-2xl flex items-center justify-center">
                     <MaterialIcon name="history" className="w-8 h-8" />
                   </div>
@@ -257,14 +256,14 @@ export default function AboutPage() {
                 </div>
               </div>
               <div className="space-y-8">
-                <div className="bg-indigo-600 p-10 rounded-[3rem] shadow-[0_30px_60px_rgba(79,70,229,0.3)] text-white space-y-6 hover:-translate-y-3 transition-transform duration-500">
+                <div className="bg-indigo-600 p-10 rounded-3xl shadow-[0_30px_60px_rgba(79,70,229,0.3)] text-white space-y-6 hover:-translate-y-3 transition-transform duration-500">
                   <div className="w-14 h-14 bg-white/20 text-white rounded-2xl flex items-center justify-center">
                     <MaterialIcon name="diversity_1" className="w-8 h-8" />
                   </div>
                   <h5 className="text-xl font-bold text-white">Réseau</h5>
                   <p className="text-sm text-indigo-100 font-semibold leading-relaxed">{"Une force collective prête pour le monde professionnel."}</p>
                 </div>
-                <div className="bg-white p-10 rounded-[3rem] shadow-2xl border border-slate-100 space-y-6 hover:-translate-y-3 transition-transform duration-500">
+                <div className="bg-white p-10 rounded-3xl shadow-2xl border border-slate-100 space-y-6 hover:-translate-y-3 transition-transform duration-500">
                   <div className="w-14 h-14 bg-red-50 text-red-600 rounded-2xl flex items-center justify-center">
                     <MaterialIcon name="ads_click" className="w-8 h-8" />
                   </div>
@@ -320,7 +319,7 @@ export default function AboutPage() {
               }
             ].map((chapter, i) => (
               <FadeInScroll key={i} delay={i * 200} className="relative group">
-                <div className="h-full bg-white/40 backdrop-blur-sm p-10 rounded-[3rem] border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.03)] transition-all duration-700 hover:shadow-[0_40px_80px_rgba(0,0,0,0.08)] hover:-translate-y-4 group-hover:bg-white">
+                <div className="h-full bg-white/40 backdrop-blur-sm p-10 rounded-3xl border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.03)] transition-all duration-700 hover:shadow-[0_40px_80px_rgba(0,0,0,0.08)] hover:-translate-y-4 group-hover:bg-white">
                   <div className={`w-16 h-16 ${chapter.bg} ${chapter.color} rounded-2xl flex items-center justify-center mb-10 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6`}>
                     <MaterialIcon name={chapter.icon} className="w-8 h-8 font-bold" />
                   </div>
@@ -379,7 +378,7 @@ export default function AboutPage() {
 
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Cycle TS */}
-            <FadeInScroll delay={100} className="bg-white p-12 rounded-[4rem] border border-slate-100 shadow-2xl relative overflow-hidden">
+            <FadeInScroll delay={100} className="bg-white p-12 rounded-3xl border border-slate-100 shadow-2xl relative overflow-hidden">
               <div className="absolute top-0 right-0 w-40 h-40 bg-[#c2185b]/5 rounded-bl-[6rem]" />
               <div className="relative z-10 space-y-12">
                 <div className="flex items-center gap-6">
@@ -404,7 +403,7 @@ export default function AboutPage() {
             </FadeInScroll>
 
             {/* Cycle Ingénieur */}
-            <FadeInScroll delay={300} className="bg-white p-12 rounded-[4rem] border border-slate-100 shadow-2xl relative overflow-hidden">
+            <FadeInScroll delay={300} className="bg-white p-12 rounded-3xl border border-slate-100 shadow-2xl relative overflow-hidden">
               <div className="absolute top-0 right-0 w-40 h-40 bg-[var(--aduti-primary)]/5 rounded-bl-[6rem]" />
               <div className="relative z-10 space-y-12">
                 <div className="flex items-center gap-6">

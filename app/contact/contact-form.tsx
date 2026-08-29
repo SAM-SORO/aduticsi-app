@@ -171,7 +171,7 @@ export function ContactForm() {
         <button
           type="submit"
           disabled={isPending}
-          className="w-full flex items-center justify-center py-3.5 px-6 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white bg-[var(--aduti-primary)] hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--aduti-primary)] transition-all disabled:opacity-70"
+          className="w-full flex items-center justify-center py-3.5 px-6 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--aduti-primary)] transition-all disabled:opacity-70"
         >
           {isPending ? (
             <>

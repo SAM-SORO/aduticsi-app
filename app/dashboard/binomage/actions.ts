@@ -1,6 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/auth-guard";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -202,6 +203,7 @@ export async function createBinome(
   filleulId: string,
   promoCombo: string
 ): Promise<{ success: boolean; error?: string }> {
+  await requireAdmin();
   try {
     await prisma.binome.create({
       data: {
@@ -222,6 +224,7 @@ export async function createBinome(
 export async function reinitializeBinomage(
   promoCombo: string
 ): Promise<{ success: boolean; count: number }> {
+  await requireAdmin();
   const result = await prisma.binome.deleteMany({
     where: { promo_combo: promoCombo },
   });

@@ -244,7 +244,11 @@ model Binome {
   parrain  Member @relation("ParrainBinomes", fields: [parrain_id], references: [id], onDelete: Cascade)
   filleul  Member @relation("FilleulBinomes", fields: [filleul_id], references: [id], onDelete: Cascade)
 
-  @@unique([filleul_id, promo_combo])
+  // Un couple ne peut exister qu'une fois, mais un filleul peut avoir
+  // plusieurs parrains et un parrain plusieurs filleuls : c'est le cas
+  // des promotions d'effectifs inegaux.
+  @@unique([parrain_id, filleul_id, promo_combo])
   @@index([promo_combo])
   @@index([parrain_id])
+  @@index([filleul_id])
 }

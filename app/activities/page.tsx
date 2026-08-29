@@ -2,7 +2,6 @@ import Link from "next/link";
 import { Search } from "lucide-react";
 import { ImageGallery } from "@/components/ui/ImageGallery";
 
-import type { Activity } from "@/types";
 import { prisma } from "@/lib/prisma";
 import { Input } from "@/components/ui/input";
 import { AutoSubmitSelect } from "@/components/ui/auto-submit-select";
@@ -13,14 +12,6 @@ import { MaterialIcon } from "@/components/icons/material-icon";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-// Color + icon mapping for well-known category slugs
-const CATEGORY_STYLES: Record<string, { bg: string; text: string; border: string; icon: string }> = {
-  hackathon:  { bg: "bg-blue-50",   text: "text-[var(--aduti-primary)]", border: "border-blue-100",   icon: "code" },
-  "fun-night": { bg: "bg-indigo-50",  text: "text-indigo-600",             border: "border-indigo-100", icon: "celebration" },
-  "infos-day": { bg: "bg-orange-50",  text: "text-orange-600",             border: "border-orange-100", icon: "campaign" },
-};
-
-const defaultStyle = { bg: "bg-slate-50", text: "text-slate-600", border: "border-slate-100", icon: "label" };
 
 export default async function ActivitiesPage({
   searchParams,
@@ -54,25 +45,20 @@ export default async function ActivitiesPage({
     <main className="flex-1 overflow-hidden bg-white">
       {/* Hero */}
       <section className="relative pt-12 md:pt-16 lg:pt-20 pb-12 px-4 shadow-[0_1px_0_0_rgba(0,0,0,0.02)]">
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
-          <div className="absolute top-0 right-0 w-[min(400px,80vw)] h-[min(400px,80vw)] bg-[var(--aduti-primary)]/5 rounded-full blur-3xl opacity-60 pointer-events-none" />
-          <div className="absolute bottom-[20%] left-0 w-[min(300px,70vw)] h-[min(300px,70vw)] bg-[var(--aduti-secondary)]/5 rounded-full blur-3xl opacity-60 pointer-events-none" />
-        </div>
-
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 md:gap-10 border-b border-slate-100 pb-8 md:pb-12 text-center md:text-left">
-            <div className="space-y-3 max-w-2xl">
-              <div className="inline-flex items-center justify-center md:justify-start gap-2 px-3 py-1 rounded-full bg-blue-50 text-[var(--aduti-primary)] text-xs font-semibold tracking-wide uppercase border border-blue-100 w-fit mx-auto md:mx-0">
-                <span className="w-2 h-2 rounded-full bg-[var(--aduti-primary)] animate-pulse" />
-                Vie Associative ADUTI
-              </div>
+          <div className="flex flex-col gap-6 border-b border-slate-100 pb-8 md:flex-row md:items-end md:justify-between md:pb-12">
+            <div className="max-w-2xl space-y-3">
+              <h1 className="text-3xl font-semibold tracking-tight text-slate-900 md:text-4xl">
+                La vie associative
+              </h1>
+              <p className="text-base leading-relaxed text-slate-500">
+                Hackathons, journées d’information, soirées : retrouvez ce que les
+                promotions de l’ADUTI organisent tout au long de l’année.
+              </p>
             </div>
-            <div className="flex items-center justify-center md:justify-end gap-3 pb-0 md:pb-2">
-              <span className="inline-flex items-center px-4 py-2 rounded-full text-xs font-bold bg-white text-slate-700 border border-slate-100 shadow-[0_4px_15px_rgba(0,0,0,0.03)] uppercase tracking-wide">
-                <span className="w-2 h-2 rounded-full bg-[var(--aduti-primary)] mr-2.5 shadow-[0_0_8px_var(--aduti-primary)]" />
-                {total} Événement{total > 1 ? "s" : ""}
-              </span>
-            </div>
+            <p className="shrink-0 text-sm text-slate-500 md:pb-2">
+              {total} événement{total > 1 ? "s" : ""} publié{total > 1 ? "s" : ""}
+            </p>
           </div>
         </div>
       </section>
@@ -80,7 +66,7 @@ export default async function ActivitiesPage({
       <section className="pb-24 px-4 bg-white">
         <div className="mx-auto max-w-7xl">
           {/* Filter bar */}
-          <div className="bg-white p-6 md:p-8 rounded-[2.5rem] border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] flex flex-col xl:flex-row gap-4 items-center relative z-10 -mt-10">
+          <div className="bg-white p-6 md:p-8 rounded-3xl border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] flex flex-col xl:flex-row gap-4 items-center relative z-10 -mt-10">
             {/* Search */}
             <form className="relative w-full xl:flex-1" method="GET">
               <input type="hidden" name="promo" value={promoId} />
@@ -143,7 +129,7 @@ export default async function ActivitiesPage({
 
           <div className="mt-16">
             {activities.length === 0 ? (
-              <div className="bg-slate-50 rounded-[3rem] p-16 text-center border-2 border-dashed border-slate-200">
+              <div className="bg-slate-50 rounded-3xl p-16 text-center border-2 border-dashed border-slate-200">
                 <MaterialIcon name="event_busy" className="w-14 h-14 text-slate-300 mb-4 block mx-auto" />
                 <h2 className="text-2xl font-bold text-slate-900 mb-2">Aucune activité trouvée</h2>
                 <p className="text-slate-500 font-medium">Réinitialisez les filtres pour voir les événements passés.</p>
@@ -154,15 +140,10 @@ export default async function ActivitiesPage({
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {activities.map((activity) => {
-                  const catStyle = activity.category
-                    ? (CATEGORY_STYLES[activity.category.slug] ?? defaultStyle)
-                    : defaultStyle;
-
-                  return (
+                {activities.map((activity) => (
                     <div
                       key={activity.id}
-                      className="flex flex-col gap-0 rounded-[2.5rem] bg-white border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_25px_50px_rgba(0,0,0,0.08)] transition-all duration-500 group overflow-hidden"
+                      className="flex flex-col gap-0 rounded-3xl bg-white border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_25px_50px_rgba(0,0,0,0.08)] transition-all duration-500 group overflow-hidden"
                     >
                       {/* Cover image */}
                       <div className="relative w-full aspect-[16/10] overflow-hidden bg-slate-100 z-20">
@@ -181,27 +162,25 @@ export default async function ActivitiesPage({
                             {activity.promotion.name}
                           </span>
                         </div>
-                        
-                        {/* Category badge */}
-                        {activity.category && (
-                          <div className="absolute top-5 left-5 z-20 pointer-events-none">
-                            <span className={`inline-flex items-center gap-1 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.15em] rounded-full backdrop-blur-md border ${catStyle.bg} ${catStyle.text} ${catStyle.border}`}>
-                              <MaterialIcon name={catStyle.icon} className="w-3 h-3" />
-                              {activity.category.name}
-                            </span>
-                          </div>
-                        )}
                       </div>
 
                       {/* Content area */}
                       <div className="flex flex-col gap-3 p-8">
-                        <div className="flex items-center text-slate-400 text-[10px] font-black uppercase tracking-widest gap-2.5">
-                          <MaterialIcon name="calendar_today" className="w-[18px] h-[18px] text-[var(--aduti-primary)]" />
-                          {new Date(activity.date || activity.created_at).toLocaleDateString("fr-FR", {
-                            day: "numeric",
-                            month: "long",
-                            year: "numeric",
-                          })}
+                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-medium text-slate-500">
+                          <span className="inline-flex items-center gap-1.5">
+                            <MaterialIcon name="calendar_today" className="w-4 h-4 text-slate-400" />
+                            {new Date(activity.date || activity.created_at).toLocaleDateString("fr-FR", {
+                              day: "numeric",
+                              month: "long",
+                              year: "numeric",
+                            })}
+                          </span>
+                          {activity.category && (
+                            <>
+                              <span aria-hidden className="h-3 w-px bg-slate-200" />
+                              <span className="text-slate-500">{activity.category.name}</span>
+                            </>
+                          )}
                         </div>
                         <h3 className="text-slate-900 text-2xl font-bold leading-tight line-clamp-2 tracking-tight">
                           {activity.title}
@@ -229,15 +208,14 @@ export default async function ActivitiesPage({
                         </Link>
                       </div>
                     </div>
-                  );
-                })}
+                ))}
               </div>
             )}
 
             {/* Pagination */}
             {totalPages > 1 && (
               <div className="mt-20 flex justify-center pb-8 animate-in fade-in fill-mode-both duration-700 delay-300">
-                <nav className="flex items-center gap-2 bg-slate-50 p-2.5 rounded-[1.5rem] border border-slate-100">
+                <nav className="flex items-center gap-2 bg-slate-50 p-2.5 rounded-2xl border border-slate-100">
                   {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => {
                     const isActive = p === currentPage;
                     const sp = new URLSearchParams();
@@ -253,7 +231,7 @@ export default async function ActivitiesPage({
                         href={href}
                         className={`w-12 h-12 flex items-center justify-center rounded-2xl transition-all active:scale-90 font-bold text-sm ${
                           isActive
-                            ? "bg-[var(--aduti-primary)] text-white shadow-[0_8px_25px_rgba(37,99,235,0.3)] hover:bg-blue-600"
+                            ? "bg-[var(--aduti-primary)] text-white shadow-[0_8px_25px_rgba(37,99,235,0.3)] hover:bg-[var(--aduti-primary-hover)]"
                             : "text-slate-400 hover:bg-white border border-transparent hover:border-slate-200"
                         }`}
                       >

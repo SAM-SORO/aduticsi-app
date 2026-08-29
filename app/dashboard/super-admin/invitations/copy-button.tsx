@@ -58,7 +58,7 @@ export function CopyButton({ text }: CopyButtonProps) {
       className={`flex items-center justify-center p-2 rounded-lg transition-all ${
         copied 
           ? 'text-emerald-600 bg-emerald-50' 
-          : 'text-slate-400 hover:text-[var(--aduti-primary)] hover:bg-blue-50'
+          : 'text-slate-400 hover:text-[var(--aduti-primary)] hover:bg-[var(--aduti-primary)]/5'
       }`}
       title="Copier le lien"
     >

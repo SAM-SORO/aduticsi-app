@@ -8,6 +8,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { buildStorageName } from "@/lib/storage-names";
 import logger from "@/lib/logger";
 import type { Member } from "@/types";
+import { validateImage } from "@/lib/image-upload";
 
 export type ActivityWithDetails = Prisma.ActivityGetPayload<{
   include: {
@@ -30,7 +31,6 @@ export type PublicationWithDetails = Prisma.PublicationGetPayload<{
 
 const ACTIVITY_BUCKET = "activity_images";
 const PUBLICATION_BUCKET = "publications_images";
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ITEMS_PER_PAGE = 6;
 
 // ─── Helpers ────────────────────────────────────────────
@@ -71,10 +71,13 @@ async function uploadImages(
   const supabaseAdmin = createAdminClient();
   let fileIndex = 0;
   for (const file of files) {
-    if (file.size === 0) continue;
-    if (file.size > MAX_FILE_SIZE) continue;
+    const check = validateImage(file);
+    if (!check.ok) {
+      logger.warn({ name: file.name, reason: check.error }, "uploadImages: fichier refusé");
+      continue;
+    }
 
-    const ext = file.name.split(".").pop() ?? "jpg";
+    const ext = check.ext;
     // Si startIndex est fourni, on numérote les images : _01, _02, …
     // Sinon (image unique d'une activité), pas de numéro
     const index = startIndex !== undefined ? startIndex + fileIndex : undefined;
@@ -100,6 +103,7 @@ export async function getActivityCategories() {
 }
 
 export async function createActivityCategory(name: string) {
+  await requireActivityManager();
   const trimmed = name.trim();
   if (!trimmed) return { success: false, error: "Le nom de la catégorie est requis." };
 

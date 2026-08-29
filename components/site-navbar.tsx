@@ -247,7 +247,7 @@ export function SiteNavbar() {
       <Button
         asChild
         className={cn(
-          "inline-flex items-center justify-center rounded-lg h-10 px-6 bg-[var(--aduti-primary)] hover:bg-blue-600 transition-colors text-white text-sm font-semibold tracking-wide shadow-sm",
+          "inline-flex items-center justify-center rounded-lg h-10 px-6 bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] transition-colors text-white text-sm font-semibold tracking-wide shadow-sm",
           className
         )}
       >

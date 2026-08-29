@@ -53,7 +53,7 @@ export default async function PromotionsPage() {
 
           <Dialog>
             <DialogTrigger asChild>
-              <Button className="bg-[var(--aduti-primary)] hover:bg-blue-600 text-white px-6 h-12 rounded-xl shadow-lg shadow-blue-100 transition-all active:scale-95 gap-2">
+              <Button className="bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] text-white px-6 h-12 rounded-xl shadow-lg shadow-blue-100 transition-all active:scale-95 gap-2">
                 <Plus className="w-5 h-5" />
                 Nouvelle Promotion
               </Button>

@@ -51,6 +51,7 @@
 :root {
   --radius: 0.625rem;
   --aduti-primary: #13254b;
+  --aduti-primary-hover: #1d3a70;
   --aduti-secondary: #a9111f;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);

@@ -111,12 +111,12 @@ export default async function ActivitiesAdminPage({
             {!selectedActivityId && (
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button className="bg-[var(--aduti-primary)] hover:bg-blue-600 text-white px-4 h-10 rounded-lg shadow-sm transition-all active:scale-95 gap-2 text-sm font-bold">
+                  <Button className="bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] text-white px-4 h-10 rounded-lg shadow-sm transition-all active:scale-95 gap-2 text-sm font-bold">
                     <Plus className="w-4 h-4" />
                     Nouvelle Activité
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto rounded-[2rem]">
+                <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto rounded-2xl">
                   <DialogHeader>
                     <DialogTitle>Ajouter une activité</DialogTitle>
                   </DialogHeader>
@@ -127,12 +127,12 @@ export default async function ActivitiesAdminPage({
             {selectedActivityId && (
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button className="bg-[var(--aduti-primary)] hover:bg-blue-600 text-white px-4 h-10 rounded-lg shadow-sm transition-all active:scale-95 gap-2 text-sm font-bold">
+                  <Button className="bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] text-white px-4 h-10 rounded-lg shadow-sm transition-all active:scale-95 gap-2 text-sm font-bold">
                     <Plus className="w-4 h-4" />
                     Nouvelle Publication
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto rounded-[2rem]">
+                <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto rounded-2xl">
                   <DialogHeader>
                     <DialogTitle>Ajouter une publication</DialogTitle>
                   </DialogHeader>

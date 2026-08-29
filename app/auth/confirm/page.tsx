@@ -40,7 +40,7 @@ function ConfirmEmailContent() {
         <div className="absolute bottom-[-20%] right-[-10%] w-[60vw] h-[60vw] bg-[radial-gradient(circle,rgba(37,99,235,0.12)_0%,transparent_60%)] rounded-full blur-[100px] animate-pulse-slow animation-delay-4000 mix-blend-multiply" />
       </div>
 
-      <div className="w-full max-w-[480px] z-10 text-center space-y-6 bg-white/70 backdrop-blur-xl p-8 rounded-[2rem] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.08)] border border-slate-200/60 relative overflow-hidden">
+      <div className="w-full max-w-[480px] z-10 text-center space-y-6 bg-white/70 backdrop-blur-xl p-8 rounded-2xl shadow-[0_30px_60px_-15px_rgba(0,0,0,0.08)] border border-slate-200/60 relative overflow-hidden">
         {/* Loading progress bar */}
         {isPending && (
           <div className="absolute top-0 left-0 right-0 h-1.5 bg-slate-100 overflow-hidden z-20">
@@ -66,7 +66,7 @@ function ConfirmEmailContent() {
           <button 
             onClick={handleConfirm}
             disabled={isPending || !token_hash}
-            className="w-full flex justify-center items-center gap-3 py-4 px-6 rounded-2xl shadow-xl shadow-blue-100 text-sm font-black text-white bg-[var(--aduti-primary)] hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest"
+            className="w-full flex justify-center items-center gap-3 py-4 px-6 rounded-2xl shadow-xl shadow-blue-100 text-sm font-black text-white bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest"
           >
             {isPending ? (
               <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />

@@ -90,7 +90,7 @@ export function InvitationForm({ memberId }: InvitationFormProps) {
         <Button
           type="submit"
           disabled={isPending}
-          className="w-full bg-[var(--aduti-primary)] text-white font-medium py-2.5 px-4 rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center gap-2 mt-2"
+          className="w-full bg-[var(--aduti-primary)] text-white font-medium py-2.5 px-4 rounded-lg hover:bg-[var(--aduti-primary-hover)] transition-colors flex items-center justify-center gap-2 mt-2"
         >
           {isPending ? "Génération..." : "Générer le lien"}
         </Button>

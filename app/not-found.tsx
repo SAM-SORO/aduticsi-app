@@ -22,7 +22,7 @@ export default function NotFound() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link 
             href="/" 
-            className="flex min-w-[200px] cursor-pointer items-center justify-center rounded-lg h-14 px-8 bg-[var(--aduti-primary)] text-white text-lg font-bold transition-all hover:bg-blue-900 shadow-lg group"
+            className="flex min-w-[200px] cursor-pointer items-center justify-center rounded-lg h-14 px-8 bg-[var(--aduti-primary)] text-white text-lg font-bold transition-all hover:bg-[var(--aduti-primary-hover)] shadow-lg group"
           >
             <MaterialIcon name="arrow_back" className="mr-2 w-5 h-5 group-hover:-translate-x-1 transition-transform" />
             <span className="truncate">Retour à l&apos;accueil</span>

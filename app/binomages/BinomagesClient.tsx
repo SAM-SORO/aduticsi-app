@@ -69,7 +69,7 @@ export function BinomagesClient({ combos }: { combos: PromoCombo[] }) {
       </div> */}
 
       {combos.length === 0 ? (
-        <div className="text-center py-20 bg-white rounded-[2rem] border border-slate-100 shadow-sm mt-8">
+        <div className="text-center py-20 bg-white rounded-2xl border border-slate-100 shadow-sm mt-8">
           <Users2 className="w-12 h-12 text-slate-300 mx-auto mb-4" />
           <p className="text-slate-500 text-lg">Aucun groupe de promotion trouvé.</p>
         </div>
@@ -126,7 +126,7 @@ export function BinomagesClient({ combos }: { combos: PromoCombo[] }) {
               <p className="text-slate-500 font-medium animate-pulse">Chargement des liens...</p>
             </div>
           ) : filteredBinomes.length === 0 ? (
-            <div className="text-center py-20 bg-white rounded-[2rem] border border-slate-100 shadow-sm">
+            <div className="text-center py-20 bg-white rounded-2xl border border-slate-100 shadow-sm">
               <Users2 className="w-12 h-12 text-slate-300 mx-auto mb-4" />
               <p className="text-slate-500 text-lg">Aucun binôme trouvé pour cette sélection.</p>
             </div>
@@ -136,9 +136,9 @@ export function BinomagesClient({ combos }: { combos: PromoCombo[] }) {
                 {currentBinomes.map((binome) => (
                   <div 
                     key={binome.id} 
-                    className="group relative bg-white rounded-[2rem] p-6 shadow-sm hover:shadow-xl border border-slate-100 transition-all duration-300 hover:-translate-y-1 block"
+                    className="group relative bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl border border-slate-100 transition-all duration-300 hover:-translate-y-1 block"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-br from-[var(--aduti-primary)]/5 to-transparent rounded-[2rem] opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-[var(--aduti-primary)]/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
                     
                     <div className="relative z-10 flex flex-col h-full">
                       <div className="flex items-center justify-between mb-6 relative">
