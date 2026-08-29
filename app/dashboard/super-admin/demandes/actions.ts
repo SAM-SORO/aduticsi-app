@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import logger from "@/lib/logger";
 import { sendEmail } from "@/lib/mail";
 import { approvalEmailTemplate, rejectionEmailTemplate } from "@/lib/email-templates";
@@ -47,12 +48,25 @@ export async function approveMember(memberId: string) {
     });
 
     const origin = await getBaseOrigin();
-    const loginUrl = `${origin}/auth/login`;
+
+    // Le membre n'a jamais choisi de mot de passe : ce lien est sa seule
+    // porte d'entree. A defaut, on le renvoie vers "mot de passe oublie".
+    let actionUrl = `${origin}/auth/forgot-password`;
+    const { data: link, error: linkError } = await createAdminClient().auth.admin.generateLink({
+      type: "recovery",
+      email: member.email,
+      options: { redirectTo: `${origin}/auth/callback?next=/auth/reset-password` },
+    });
+    if (linkError || !link?.properties?.action_link) {
+      logger.error({ memberId, error: linkError }, "Lien de définition du mot de passe indisponible");
+    } else {
+      actionUrl = link.properties.action_link;
+    }
 
     const emailResult = await sendEmail({
       to: member.email,
-      subject: "Votre compte ADUTI-INPHB a été approuvé",
-      html: approvalEmailTemplate(loginUrl),
+      subject: "Votre demande ADUTI-INPHB est approuvée",
+      html: approvalEmailTemplate(actionUrl),
     });
 
     if (!emailResult.success) {

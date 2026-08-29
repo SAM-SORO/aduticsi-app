@@ -27,6 +27,24 @@ export const registerSchema = z.object({
   path: ['confirmPassword'],
 })
 
+// Demande d'adhesion : l'utilisateur ne choisit pas son mot de passe. Il le
+// definit via le lien recu apres approbation par un administrateur.
+export const registerRequestSchema = z.object({
+  first_name: z.string().min(2, 'Le prénom doit contenir au moins 2 caractères'),
+  last_name: z.string().min(2, 'Le nom doit contenir au moins 2 caractères'),
+  email: z.string().email('Email invalide'),
+  promo_id: z.string().min(1, 'Veuillez sélectionner une promotion'),
+  status: z.enum(['STUDENT', 'ALUMNI'], {
+    message: 'Veuillez sélectionner un statut',
+  }),
+  gender: z.enum(['MALE', 'FEMALE'], {
+    message: 'Veuillez sélectionner votre genre',
+  }),
+  profile_status: z.enum(['PUBLIC', 'PRIVATE']).optional(),
+})
+
+export type RegisterRequestInput = z.infer<typeof registerRequestSchema>
+
 // Types dérivés
 export type LoginInput = z.infer<typeof loginSchema>
 export type RegisterInput = z.infer<typeof registerSchema>

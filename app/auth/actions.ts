@@ -6,7 +6,19 @@ import { headers } from 'next/headers'
 
 import { createClient } from '@/lib/supabase/server'
 import { prisma } from '@/lib/prisma'
-import { loginSchema, registerSchema, type LoginInput, type RegisterInput } from '@/schemas/auth.schema'
+import { randomBytes } from 'crypto'
+
+import { createAdminClient } from '@/lib/supabase/admin'
+import { generateUniqueSlug } from '@/lib/slug'
+import { buildStorageName } from '@/lib/storage-names'
+import { validateImage } from '@/lib/image-upload'
+import {
+  loginSchema,
+  registerSchema,
+  registerRequestSchema,
+  type LoginInput,
+  type RegisterInput,
+} from '@/schemas/auth.schema'
 import { verifyTurnstile } from '@/lib/captcha'
 import logger from '@/lib/logger'
 
@@ -313,4 +325,105 @@ export async function verifyEmailOtp(token_hash: string, type: 'signup' | 'recov
     logger.error({ err }, 'Exception in verifyEmailOtp');
     return { error: "Erreur inattendue." }
   }
+}
+
+/**
+ * Demande d'adhesion sans lien d'invitation. Aucun mot de passe n'est saisi :
+ * le compte est cree avec un secret aleatoire que personne ne connait, et le
+ * membre definit le sien via le lien recu apres approbation.
+ */
+export async function requestRegistration(formData: FormData) {
+  const captchaToken = String(formData.get('captchaToken') ?? '')
+  if (process.env.NODE_ENV === 'production' && !captchaToken) {
+    return { error: 'Le captcha est requis.' }
+  }
+
+  const parsed = registerRequestSchema.safeParse({
+    first_name: formData.get('first_name'),
+    last_name: formData.get('last_name'),
+    email: formData.get('email'),
+    promo_id: formData.get('promo_id'),
+    status: formData.get('status'),
+    gender: formData.get('gender'),
+    profile_status: formData.get('profile_status') || undefined,
+  })
+  if (!parsed.success) {
+    return { error: parsed.error.issues[0]?.message ?? 'Formulaire invalide.' }
+  }
+
+  const { email, first_name, last_name, promo_id, status, gender, profile_status } = parsed.data
+
+  const existing = await prisma.member.findUnique({ where: { email } })
+  if (existing) {
+    return { error: 'Un compte existe déjà avec cet email.' }
+  }
+
+  const admin = createAdminClient()
+
+  // L'email est marque confirme : la verification d'adresse a lieu de fait
+  // quand le membre ouvre le lien envoye apres approbation.
+  const { data: created, error: createError } = await admin.auth.admin.createUser({
+    email,
+    password: randomBytes(24).toString('base64url'),
+    email_confirm: true,
+    user_metadata: { first_name, last_name, promo_id, status, gender, profile_status },
+  })
+
+  if (createError || !created?.user) {
+    logger.error({ error: createError }, 'requestRegistration: création du compte impossible')
+    return { error: "Impossible d'enregistrer la demande. Réessayez plus tard." }
+  }
+
+  const userId = created.user.id
+
+  try {
+    const photo = formData.get('photo')
+    let photoUrl: string | null = null
+    if (photo instanceof File && photo.size > 0) {
+      const check = validateImage(photo)
+      if (!check.ok) {
+        await admin.auth.admin.deleteUser(userId)
+        return { error: check.error }
+      }
+      const path = `avatars/${buildStorageName(`${first_name}-${last_name}`, check.ext)}`
+      const { error: uploadError } = await admin.storage
+        .from('membres_images')
+        .upload(path, photo, { upsert: true })
+      if (uploadError) {
+        logger.warn({ error: uploadError }, 'requestRegistration: photo non enregistrée')
+      } else {
+        photoUrl = admin.storage.from('membres_images').getPublicUrl(path).data.publicUrl
+      }
+    }
+
+    const slug = await generateUniqueSlug(`${last_name} ${first_name}`, async (candidate) => {
+      const found = await prisma.member.findUnique({ where: { slug: candidate } })
+      return found !== null
+    })
+
+    await prisma.member.create({
+      data: {
+        id: userId,
+        email,
+        first_name,
+        last_name,
+        promo_id,
+        status,
+        gender,
+        photo_url: photoUrl,
+        profile_status: profile_status ?? 'PUBLIC',
+        registration_status: 'PENDING',
+        role: 'MEMBER',
+        function: 'NONE',
+        slug,
+      },
+    })
+  } catch (error) {
+    // Sans fiche membre, le compte d'authentification serait orphelin.
+    await admin.auth.admin.deleteUser(userId)
+    logger.error({ error }, 'requestRegistration: création de la fiche membre impossible')
+    return { error: "Impossible d'enregistrer la demande. Réessayez plus tard." }
+  }
+
+  return { success: true }
 }

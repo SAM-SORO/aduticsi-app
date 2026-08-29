@@ -3,32 +3,17 @@
 import { useEffect, useState, useTransition, Suspense } from "react";
 import type { FormEvent } from "react";
 import Link from "next/link";
-//on remet en place la logique de gestion lien d'invitation (token) 
 import { useSearchParams, useRouter } from "next/navigation";
-import { Home } from "lucide-react";
-
-import { Turnstile } from "@marsidev/react-turnstile";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { ArrowLeft, Home } from "lucide-react";
 import { toast } from "sonner";
-import { ArrowLeft } from 'lucide-react'
 
-import { registerSchema, type RegisterInput } from "@/schemas/auth.schema";
-
-{/*on remet en place la logique de gestion lien d'invitation (token) */}
-import { getPromotions, signup, verifyInvitationToken } from "@/app/auth/actions";
+import { RegisterWizard } from "./RegisterWizard";
+import { getPromotions, verifyInvitationToken } from "@/app/auth/actions";
 import { MaterialIcon } from "@/components/icons/material-icon";
-import { cn } from "@/lib/utils";
 import { BackButton } from "@/components/ui/back-button";
+import { cn } from "@/lib/utils";
 
-// importation du combobox pour gérer la date des promotions
-import { Combobox } from "@/components/ui/combobox";
-import { Controller } from "react-hook-form";
-
-
-type SignupData = RegisterInput & { captchaToken: string; token: string };
-{/* système de choix de la méthode d'enregistrement*/}
-type RegisterMode = "choice" | "invitation" | "request"
+type RegisterMode = "choice" | "invitation" | "request";
 
 export default function RegisterPage() {
   return (
@@ -56,38 +41,12 @@ function RegisterContent() {
     []
   );
   const [loadingPromos, setLoadingPromos] = useState(true);
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   {/*Mode par défaut d'enregistrement */}
   const [mode, setMode] = useState<RegisterMode>("choice")
   useEffect(() => {
   if (token) setMode("invitation");
 }, [token]);
 
-  //ajout de control à la destruction de useForm pour le combobox
-  const {
-    register,
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm<RegisterInput>({
-    resolver: zodResolver(registerSchema),
-    mode: "onSubmit",
-    defaultValues: {
-      first_name: "",
-      last_name: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      promo_id: "",
-      status: "" as "STUDENT" | "ALUMNI",
-      gender: "" as "MALE" | "FEMALE",
-      // gestion du statut du profil
-      profile_status: "PUBLIC",
-    },
-    shouldUnregister: false,
-  });
 
   useEffect(() => {
     const fetchPromos = async () => {
@@ -103,28 +62,6 @@ function RegisterContent() {
     fetchPromos();
   }, []);
 
-  const onSubmit = (data: RegisterInput) => {
-    // Captcha validation only in production
-    if (process.env.NODE_ENV === 'production' && !captchaToken) {
-      toast.error("Veuillez valider le captcha.");
-      return;
-    }
-
-
-
-    {/*on envoie le token à singup en fonction du choix de l'utilisateur */}
-    startTransition(async () => {
-      const result = await signup({ 
-        ...data, 
-        token: mode==="invitation" ? ( token || "") : "",
-        captchaToken: captchaToken || ""
-      } as SignupData);
-      
-      if (result?.error) {
-        toast.error(result.error);
-      }
-    });
-  };
   
 
   
@@ -261,373 +198,23 @@ function RegisterContent() {
             }
   return (
           <>
-              <div className="flex gap-4 mb-8 p-4 rounded-2xl bg-slate-50 border border-slate-100 text-slate-600 items-center">
-                  <div className="w-10 h-10 rounded-xl bg-white border border-slate-100 flex items-center justify-center shadow-sm">
-                    <MaterialIcon name="info" className="w-5 h-5 text-[var(--aduti-primary)]" />
-                  </div>
-                  <div className="text-xs font-bold uppercase tracking-wider leading-tight">
-                    {mode === "request" ? 
-                      ("Votre demande sera traitée par un administrateur"
-
-                      ) : (
-                        <>Réservé aux membres de l&apos;ADUTI <span className="text-slate-400 font-medium tracking-normal normal-case">(DUT/DTS)</span> INPHB</>
-                      )
-                    }
-                    
-                  </div>
+              <div className="mb-8 flex items-center gap-4 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-slate-600">
+                <div className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-white">
+                  <MaterialIcon name="info" className="size-5 text-[var(--aduti-primary)]" />
                 </div>
+                <p className="text-sm leading-relaxed">
+                  {mode === "request"
+                    ? "Votre demande sera examinée par un administrateur. Vous définirez votre mot de passe après approbation."
+                    : "Réservé aux membres de l’ADUTI (DUT/DTS) de l’INP-HB."}
+                </p>
+              </div>
 
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                  {/* Row 0 toggle du statut du profil */}
-                  <div className = "mb-2">
-                      <Controller
-                      name="profile_status"
-                      control={control}
-                      render={({ field }) => (
-                        <button
-                          type="button"
-                          onClick={() => field.onChange(field.value === 'PUBLIC' ? 'PRIVATE' : 'PUBLIC')}
-                          className={cn(
-                            "w-full flex items-center justify-between px-4 py-2.5 rounded-2xl border transition-all duration-200 text-sm font-medium",
-                            field.value === 'PUBLIC'
-                              ? "bg-blue-50 border-[var(--aduti-primary)]/30 text-[var(--aduti-primary)]"
-                              : "bg-slate-50 border-slate-200 text-slate-500"
-                          )}
-                        >
-                          <div className="flex items-center gap-2">
-                            <MaterialIcon
-                              name={field.value === 'PUBLIC' ? "public" : "lock"}
-                              className="w-4 h-4"
-                            />
-                            <span>
-                              {field.value === 'PUBLIC' ? 'Profil public' : 'Profil privé'}
-                            </span>
-                          </div>
-                          {/* Switch visuel */}
-                          <div className={cn(
-                            "relative w-9 h-5 rounded-full transition-colors duration-200 shrink-0",
-                            field.value === 'PUBLIC' ? "bg-[var(--aduti-primary)]" : "bg-slate-300"
-                          )}>
-                            <div className={cn(
-                              "absolute top-0.5 w-4 h-4 bg-white rounded-full shadow-sm transition-transform duration-200",
-                              field.value === 'PUBLIC' ? "translate-x-4" : "translate-x-0.5"
-                            )} />
-                          </div>
-                        </button>
-                      )}
-                    />
-
-                    </div>
-
-                  {/* Row 1: Last Name & First Name */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                       <label className="block text-sm font-bold text-slate-700 ml-1" htmlFor="last_name">
-                        Nom
-                      </label>
-                      <input
-                        id="last_name"
-                        type="text"
-                        className={cn(
-                          "block w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 focus:outline-none focus:bg-white focus:ring-4 transition-all text-sm font-medium",
-                          errors.last_name 
-                            ? "border-red-500/50 ring-red-500/10 focus:ring-red-500/20 focus:border-red-500" 
-                            : "focus:ring-[var(--aduti-primary)]/10 focus:border-[var(--aduti-primary)]"
-                        )}
-                        disabled={isPending}
-                        {...register("last_name")}
-                      />
-                      {errors.last_name && (
-                        <p className="text-[11px] font-bold text-red-500 ml-2 tracking-wide">
-                          {errors.last_name.message}
-                        </p>
-                      )}
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <label className="block text-sm font-bold text-slate-700 ml-1" htmlFor="first_name">
-                        Prénoms
-                      </label>
-                      <input
-                        id="first_name"
-                        type="text"
-                        className={cn(
-                          "block w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 focus:outline-none focus:bg-white focus:ring-4 transition-all text-sm font-medium",
-                          errors.first_name 
-                            ? "border-red-500/50 ring-red-500/10 focus:ring-red-500/20 focus:border-red-500" 
-                            : "focus:ring-[var(--aduti-primary)]/10 focus:border-[var(--aduti-primary)]"
-                        )}
-                        disabled={isPending}
-                        {...register("first_name")}
-                      />
-                      {errors.first_name && (
-                        <p className="text-[11px] font-bold text-red-500 ml-2 tracking-wide">
-                          {errors.first_name.message}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Row 2: Email & Promotion */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <label className="block text-sm font-bold text-slate-700 ml-1" htmlFor="email">
-                        Email
-                      </label>
-                      <input
-                        id="email"
-                        type="email"
-                        className={cn(
-                          "block w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 focus:outline-none focus:bg-white focus:ring-4 transition-all text-sm font-medium",
-                          errors.email 
-                            ? "border-red-500/50 ring-red-500/10 focus:ring-red-500/20 focus:border-red-500" 
-                            : "focus:ring-[var(--aduti-primary)]/10 focus:border-[var(--aduti-primary)]"
-                        )}
-                        disabled={isPending}
-                        {...register("email")}
-                      />
-                      {errors.email && (
-                        <p className="text-[11px] font-bold text-red-500 ml-2 tracking-wide">
-                          {errors.email.message}
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="space-y-2">
-                      <label className="block text-sm font-bold text-slate-700 ml-1" htmlFor="promo_id">
-                        Année d’entrée à l’INP-HB / INSET
-                      </label>
-                      <div className="relative">
-                          <Controller
-                            name="promo_id"
-                            control={control}
-                            render={({ field }) => (
-                              <Combobox
-                                options={promotions.map((promo) => ({
-                                  value: promo.id,
-                                  label: promo.name,
-                                }))}
-                                value={field.value}
-                                onChange={field.onChange}
-                                placeholder={"Sélectionner"}
-                                searchPlaceholder="Rechercher une année..."
-                                emptyMessage="Aucune promotion trouvée."
-                                
-                            />
-                          )}
-                        />
-                        {errors.promo_id && (
-                          <p className="text-[11px] font-bold text-red-500 ml-2 tracking-wide">
-                            {errors.promo_id.message}
-                          </p>
-                        )}
-                      </div>
-
-                    </div>
-                      
-                      {/*suppresion de l'ancien select*/}
-                      {/* 
-                        <select
-                          id="promo_id"
-                          disabled={isPending || loadingPromos}
-                          className={cn(
-                            "block w-full pl-5 pr-10 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 focus:outline-none focus:bg-white focus:ring-4 transition-all text-sm font-medium appearance-none",
-                            errors.promo_id 
-                              ? "border-red-500/50 ring-red-500/10 focus:ring-red-500/20 focus:border-red-500" 
-                              : "focus:ring-[var(--aduti-primary)]/10 focus:border-[var(--aduti-primary)]"
-                          )}
-                          {...register("promo_id")}
-                        >
-                          <option value="">
-                            {loadingPromos ? "Chargement..." : "Sélectionner"}
-                          </option>
-                          {promotions.map((promo) => (
-                            <option key={promo.id} value={promo.id}>
-                              {promo.name}
-                            </option>
-                          ))}
-                        </select>
-                        <div className="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-slate-400">
-                          <MaterialIcon name="expand_more" className="w-5 h-5" />
-                        </div>
-                      </div>
-                      {errors.promo_id && (
-                        <p className="text-[11px] font-bold text-red-500 ml-2 tracking-wide">
-                          {errors.promo_id.message}
-                        </p>
-                      )}
-                    </div>
-                      */}
-
-
-                  </div>
-
-                  
-
-                  {/* Row 3: Statut & Genre */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <label className="block text-sm font-bold text-slate-700 ml-1" htmlFor="status">
-                        Statut
-                      </label>
-                      <div className="relative">
-                        <select
-                          id="status"
-                          disabled={isPending}
-                          className={cn(
-                            "block w-full pl-5 pr-10 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 focus:outline-none focus:bg-white focus:ring-4 transition-all text-sm font-medium appearance-none",
-                            errors.status 
-                              ? "border-red-500/50 ring-red-500/10 focus:ring-red-500/20 focus:border-red-500" 
-                              : "focus:ring-[var(--aduti-primary)]/10 focus:border-[var(--aduti-primary)]"
-                          )}
-                          {...register("status")}
-                        >
-                          <option value="">Sélectionner</option>
-                          <option value="STUDENT">Étudiant</option>
-                          <option value="ALUMNI">Alumni</option>
-                        </select>
-                        <div className="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-slate-400">
-                          <MaterialIcon name="expand_more" className="w-5 h-5" />
-                        </div>
-                      </div>
-                      {errors.status && (
-                        <p className="text-[11px] font-bold text-red-500 ml-2 tracking-wide">
-                          {errors.status.message}
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="space-y-2">
-                      <label className="block text-sm font-bold text-slate-700 ml-1" htmlFor="gender">
-                        Genre
-                      </label>
-                      <div className="relative">
-                        <select
-                          id="gender"
-                          disabled={isPending}
-                          className={cn(
-                            "block w-full pl-5 pr-10 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 focus:outline-none focus:bg-white focus:ring-4 transition-all text-sm font-medium appearance-none",
-                            errors.gender 
-                              ? "border-red-500/50 ring-red-500/10 focus:ring-red-500/20 focus:border-red-500" 
-                              : "focus:ring-[var(--aduti-primary)]/10 focus:border-[var(--aduti-primary)]"
-                          )}
-                          {...register("gender")}
-                        >
-                          <option value="">Sélectionner</option>
-                          <option value="MALE">Masculin</option>
-                          <option value="FEMALE">Féminin</option>
-                        </select>
-                        <div className="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-slate-400">
-                          <MaterialIcon name="expand_more" className="w-5 h-5" />
-                        </div>
-                      </div>
-                      {errors.gender && (
-                        <p className="text-[11px] font-bold text-red-500 ml-2 tracking-wide">
-                          {errors.gender.message}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Row 4: Passwords */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <label className="block text-sm font-bold text-slate-700 ml-1" htmlFor="password">
-                        Mot de passe
-                      </label>
-                      <div className="relative group">
-                        <input
-                          id="password"
-                          type={showPassword ? "text" : "password"}
-                          className={cn(
-                            "block w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 focus:outline-none focus:bg-white focus:ring-4 transition-all text-sm font-medium placeholder:text-slate-300",
-                            errors.password 
-                              ? "border-red-500/50 ring-red-500/10 focus:ring-red-500/20 focus:border-red-500" 
-                            : "focus:ring-[var(--aduti-primary)]/10 focus:border-[var(--aduti-primary)]"
-                          )}
-                          disabled={isPending}
-                          {...register("password")}
-                        />
-                        <button
-                          type="button"
-                          onClick={() => setShowPassword(!showPassword)}
-                          className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 transition-colors"
-                        >
-                          <MaterialIcon
-                            name={showPassword ? "visibility" : "visibility_off"}
-                            className="w-5 h-5"
-                          />
-                        </button>
-                      </div>
-                      {errors.password && (
-                        <p className="text-[11px] font-bold text-red-500 ml-2 tracking-wide">
-                          {errors.password.message}
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="space-y-2">
-                      <label className="block text-sm font-bold text-slate-700 ml-1" htmlFor="confirmPassword">
-                        Confirmation
-                      </label>
-                      <div className="relative group">
-                        <input
-                          id="confirmPassword"
-                          type={showConfirmPassword ? "text" : "password"}
-                          className={cn(
-                            "block w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 focus:outline-none focus:bg-white focus:ring-4 transition-all text-sm font-medium placeholder:text-slate-300",
-                            errors.confirmPassword 
-                              ? "border-red-500/50 ring-red-500/10 focus:ring-red-500/20 focus:border-red-500" 
-                              : "focus:ring-[var(--aduti-primary)]/10 focus:border-[var(--aduti-primary)]"
-                          )}
-                          disabled={isPending}
-                          {...register("confirmPassword")}
-                        />
-                        <button
-                          type="button"
-                          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                          className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 transition-colors"
-                        >
-                          <MaterialIcon
-                            name={showConfirmPassword ? "visibility" : "visibility_off"}
-                            className="w-5 h-5"
-                          />
-                        </button>
-                      </div>
-                      {errors.confirmPassword && (
-                        <p className="text-[11px] font-bold text-red-500 ml-2 tracking-wide">
-                          {errors.confirmPassword.message}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col items-center gap-4 pt-2">
-                    <Turnstile
-                      siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
-                      onSuccess={(token) => setCaptchaToken(token)}
-                      options={{
-                        theme: 'light',
-                        size: 'normal',
-                      }}
-                    />
-                  </div>
-
-                  <div className="pt-4">
-                    <button
-                      type="submit"
-                      disabled={isPending}
-                      className="w-full flex justify-center items-center gap-3 py-4 px-6 rounded-2xl shadow-xl shadow-blue-100 text-sm font-black text-white bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest"
-                    >
-                      {isPending ? (
-                        <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                      ) : (
-                        <MaterialIcon name="check_circle" className="w-5 h-5" />
-                      )}
-                      {isPending ? "Traitement..." : mode ==="request" ? "Soumettre la demande" : "S'enregistrer"}
-                    </button>
-                  </div>
-                </form>
+              <RegisterWizard
+                mode={mode === "invitation" ? "invitation" : "request"}
+                token={token ?? ""}
+                promotions={promotions}
+                loadingPromos={loadingPromos}
+              />
 
                 <div className="mt-8 pt-8 border-t border-slate-100 text-center">
                   <p className="text-sm font-medium text-slate-500">
@@ -653,7 +240,7 @@ function RegisterContent() {
       {mode === "choice" ? 
         ( <>
         <div className="absolute top-6 left-6 sm:top-8 sm:left-8 z-50">
-        <BackButton className="bg-white/80 backdrop-blur-md rounded-full border border-slate-200/50 shadow-sm hover:border-[var(--aduti-primary)]/50 hover:bg-white" />
+        <BackButton className="bg-white/80 backdrop-blur-md px-4 py-2 rounded-full border border-slate-200/50 shadow-sm hover:border-[var(--aduti-primary)]/50 hover:bg-white" />
       </div>
       </>
     )
