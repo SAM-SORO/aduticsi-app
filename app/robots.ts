@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/api/', '/auth/callback/', '/dashboard/'],
+      disallow: ['/api/', '/auth/', '/dashboard/', '/profile/'],
     },
     sitemap: 'https://aduticsi.com/sitemap.xml',
   }

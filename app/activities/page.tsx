@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Search } from "lucide-react";
 import { ImageGallery } from "@/components/ui/ImageGallery";
@@ -10,6 +11,19 @@ import type { ActivityWithDetails } from "@/app/dashboard/super-admin/activities
 import { MaterialIcon } from "@/components/icons/material-icon";
 
 export const runtime = "nodejs";
+export const metadata: Metadata = {
+  title: "Activités et événements",
+  description:
+    "Hackathons, journées d'information et soirées organisés par les promotions de l'ADUTI tout au long de l'année.",
+  alternates: { canonical: "/activities" },
+  openGraph: {
+    title: "Activités et événements",
+    description:
+      "Hackathons, journées d'information et soirées organisés par les promotions de l'ADUTI tout au long de l'année.",
+    url: "/activities",
+  },
+};
+
 export const dynamic = "force-dynamic";
 
 

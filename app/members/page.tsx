@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Search } from "lucide-react";
 
@@ -11,6 +12,19 @@ import { createClient } from "@/lib/supabase/server";
 const MEMBERS_PER_PAGE = 12;
 
 export const runtime = "nodejs";
+export const metadata: Metadata = {
+  title: "Annuaire des membres",
+  description:
+    "Étudiants et anciens du DUT et DTS en Informatique de l'INP-HB : parcourez l'annuaire par promotion, statut ou poste.",
+  alternates: { canonical: "/members" },
+  openGraph: {
+    title: "Annuaire des membres",
+    description:
+      "Étudiants et anciens du DUT et DTS en Informatique de l'INP-HB : parcourez l'annuaire par promotion, statut ou poste.",
+    url: "/members",
+  },
+};
+
 export const dynamic = "force-dynamic";
 
 export default async function MembersPage({

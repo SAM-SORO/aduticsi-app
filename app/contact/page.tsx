@@ -1,5 +1,19 @@
+import type { Metadata } from "next";
 import { ContactForm } from './contact-form';
 import { MaterialIcon } from "@/components/icons/material-icon";
+
+export const metadata: Metadata = {
+  title: "Contact",
+  description:
+    "Écrivez à l'Association des DUT et DTS en Informatique de l'INP-HB.",
+  alternates: { canonical: "/contact" },
+  openGraph: {
+    title: "Contact",
+    description:
+      "Écrivez à l'Association des DUT et DTS en Informatique de l'INP-HB.",
+    url: "/contact",
+  },
+};
 
 export default function ContactPage() {
   return (

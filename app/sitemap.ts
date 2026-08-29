@@ -23,7 +23,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   try {
     // Pages dynamiques (ex: profils membres)
+    // Un profil prive ou non approuve repond 404 a un visiteur : le referencer
+    // ferait remonter des URLs mortes.
     const members = await prisma.member.findMany({
+      where: { registration_status: 'APPROVED', profile_status: 'PUBLIC' },
       select: { id: true, slug: true, updated_at: true },
     })
 

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -7,10 +8,24 @@ import { Button } from "@/components/ui/button";
 import { Counter } from "@/components/ui/counter";
 import { PartnersCarousel } from "@/components/partners-carousel";
 import { MaterialIcon } from "@/components/icons/material-icon";
+import { TechBackdrop } from "@/components/tech-backdrop";
 import { prisma } from "@/lib/prisma";
 import type { ActivityCategory } from "@/types";
 
 export const runtime = "nodejs";
+export const metadata: Metadata = {
+  title: "ADUTI, la communauté des informaticiens de l'INP-HB",
+  description:
+    "Association des DUT et DTS en Informatique de l'INP-HB : découvrez l'association, ses membres, ses promotions et ses activités à Yamoussoukro.",
+  alternates: { canonical: "/" },
+  openGraph: {
+    title: "ADUTI, la communauté des informaticiens de l'INP-HB",
+    description:
+      "Association des DUT et DTS en Informatique de l'INP-HB : découvrez l'association, ses membres, ses promotions et ses activités à Yamoussoukro.",
+    url: "/",
+  },
+};
+
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
@@ -21,133 +36,133 @@ export default async function Home() {
   return (
     <main className="flex-1 w-full overflow-x-hidden">
       {/* Hero */}
-      <section className="relative overflow-hidden pt-8 pb-16 lg:pt-24 lg:pb-30 px-4">
-        {/* Animated Background Elements — overflow-hidden evite le scroll horizontal */}
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
-          <div className="absolute top-[-10%] right-0 w-[min(600px,90vw)] h-[min(600px,90vw)] bg-[var(--aduti-primary)]/10 rounded-full blur-[120px] animate-pulse" />
-          <div className="absolute bottom-[10%] left-0 w-[min(500px,80vw)] h-[min(500px,80vw)] bg-[var(--aduti-secondary)]/5 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '2s' }} />
-        </div>
-        
-        <div className="max-w-7xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/80 backdrop-blur-md text-[var(--aduti-primary)] text-xs font-bold tracking-[0.1em] uppercase border border-blue-100/50 mb-8 shadow-sm">
-                        Portail Officiel
-          </div>
+      <section className="relative overflow-hidden px-4 pt-10 pb-20 lg:pt-20 lg:pb-28">
+        <TechBackdrop variant="grid" />
 
-          <div className="flex justify-center mb-10">
-            <div className="relative w-64 h-28 md:w-80 md:h-36 group">
-              <div className="absolute -inset-4 bg-gradient-to-tr from-[var(--aduti-primary)]/10 to-[var(--aduti-secondary)]/10 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-              <Image
-                src="/logo_association.jpeg"
-                alt="Logo ADUTI"
-                fill
-                className="object-contain relative z-10 transition-transform duration-500 group-hover:scale-105"
-                priority
-              />
+        <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-7">
+            <p className="text-sm font-medium uppercase tracking-wide text-slate-500">
+              INP-HB, Yamoussoukro
+            </p>
+
+            <h1 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-bold leading-[1.1] tracking-tight text-slate-900 text-balance md:text-6xl">
+              Association des <span className="text-[var(--aduti-primary)]">DUT</span> et{" "}
+              <span className="text-[var(--aduti-primary)]">DTS</span> en{" "}
+              <span className="text-[var(--aduti-secondary)]">Informatique</span>
+            </h1>
+
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-600">
+              Le réseau des étudiants et diplômés du cycle de technicien supérieur
+              de la filière STIC. Fédérer, innover, exceller.
+            </p>
+
+            <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+              <Link href="/about">
+                <Button className="h-14 w-full rounded-2xl bg-[var(--aduti-primary)] px-8 font-bold text-white transition-colors hover:bg-[var(--aduti-primary-hover)] sm:w-auto">
+                  {"Découvrir l'ADUTI"}
+                  <MaterialIcon name="arrow_forward" className="ml-2 size-5" />
+                </Button>
+              </Link>
+              <Link href="/activities">
+                <Button
+                  variant="outline"
+                  className="h-14 w-full rounded-2xl border-slate-300 bg-white px-8 font-bold text-slate-700 transition-colors hover:border-slate-400 hover:bg-white sm:w-auto"
+                >
+                  Explorer nos activités
+                </Button>
+              </Link>
             </div>
           </div>
 
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-[family-name:var(--font-display)] font-bold text-slate-900 tracking-tight text-balance max-w-5xl mx-auto leading-[1.1]">
-            Association des <span className="text-[var(--aduti-primary)] relative italic">DUT<span className="absolute -bottom-1 left-0 w-full h-1 bg-[var(--aduti-primary)]/10 -rotate-1 rounded-full" /></span> et <span className="text-[var(--aduti-primary)] relative italic">DTS<span className="absolute -bottom-1 left-0 w-full h-1 bg-[var(--aduti-primary)]/10 -rotate-1 rounded-full" /></span>{" "}
-            <br className="hidden md:block" /> en <span className="text-[var(--aduti-secondary)]">Informatique</span>
-          </h1>
-
-          <p className="mt-8 text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed font-medium opacity-90">
-            Fédérer, Innover et Exceller. Découvrez le réseau officiel des étudiants et diplômés du cycle de Technicien supérieur de la filière STIC de l&apos;INP-HB.
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-5 pt-10">
-            <Link href="/about">
-              <Button className="w-full sm:w-auto h-14 px-10 rounded-2xl bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] text-white font-bold transition-all shadow-[0_15px_30px_-10px_rgba(19,37,75,0.3)] hover:-translate-y-1">
-                {"Découvrir l'ADUTI"}
-                <MaterialIcon name="arrow_forward" className="ml-2 w-5 h-5" />
-              </Button>
-            </Link>
-            <Link href="/activities">
-              <Button
-                variant="outline"
-                className="w-full sm:w-auto h-14 px-10 rounded-2xl bg-white/50 backdrop-blur-sm border border-slate-200 hover:border-slate-300 text-slate-700 font-bold transition-all hover:bg-white hover:-translate-y-1"
-              >
-                Explorer nos activités
-              </Button>
-            </Link>
-          </div>
-
-          <div className="pt-12 md:pt-20 grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-10 max-w-5xl mx-auto">
-            {[
-              { label: "d'histoire", value: 31, suffix: " ans" },
-              { label: "2A-TS · 3A-TS · Alumnis", value: 3, suffix: " profils" },
-              { label: "Promotions", value: 25, suffix: "+" },
-              { label: "Insertion Pro", value: 100, suffix: "%" },
-            ].map((stat, i) => (
-              <div key={i} className="relative group p-4 md:p-6 rounded-2xl md:rounded-3xl bg-white border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.02)] transition-all hover:shadow-[0_20px_40px_rgba(0,0,0,0.04)] hover:-translate-y-1">
-                <div className="text-3xl md:text-5xl font-[family-name:var(--font-display)] font-black text-slate-900 mb-1 md:mb-2">
-                  <Counter end={stat.value} suffix={stat.suffix} />
-                </div>
-                <div className="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-widest leading-tight">{stat.label}</div>
+          <div className="lg:col-span-5">
+            <div className="rounded-3xl border border-slate-200 bg-white p-8">
+              <div className="relative mx-auto h-24 w-56 md:h-28 md:w-64">
+                <Image
+                  src="/logo_association.jpeg"
+                  alt="Logo ADUTI"
+                  fill
+                  className="object-contain"
+                  priority
+                />
               </div>
-            ))}
+
+              <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-6 border-t border-slate-100 pt-8">
+                {[
+                  { label: "d'histoire", value: 31, suffix: " ans" },
+                  { label: "Promotions", value: 25, suffix: "+" },
+                  { label: "Profils", value: 3, suffix: "" },
+                  { label: "Insertion", value: 100, suffix: "%" },
+                ].map((stat) => (
+                  <div key={stat.label}>
+                    <dt className="sr-only">{stat.label}</dt>
+                    <dd className="font-[family-name:var(--font-display)] text-3xl font-semibold text-slate-900">
+                      <Counter end={stat.value} suffix={stat.suffix} />
+                    </dd>
+                    <p className="mt-1 text-sm text-slate-500">{stat.label}</p>
+                  </div>
+                ))}
+              </dl>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Mission & Vision - Luxury Cards */}
-      <section className="py-12 sm:py-16 md:py-24 px-4 bg-slate-50/80 relative overflow-hidden">
-        <FadeInScroll className="max-w-7xl mx-auto text-center">
-          <div className="text-center mb-20 space-y-4 relative z-10">
-            <span className="text-[var(--aduti-primary)] font-bold text-xs uppercase tracking-[0.3em]">Ambitions</span>
-            <h2 className="text-3xl md:text-5xl font-[family-name:var(--font-display)] font-bold text-slate-900">
-              Notre Mission & Vision
-            </h2>
-            <div className="w-12 h-1 bg-[var(--aduti-primary)]/20 mx-auto rounded-full" />
-          </div>
-          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 relative z-10">
-            {[
-              {
-                title: "Notre Mission",
-                desc: "Promouvoir la filière Informatique de la STIC et favoriser l'intégration socio-professionnelle des étudiants.",
-                icon: "flag",
-                color: "bg-blue-50/80 text-[var(--aduti-primary)]",
-                glow: "from-blue-500/10"
-              },
-              {
-                title: "Notre Vision",
-                desc: "Faire de la communauté des informaticiens de la STIC un réseau professionnel solide et reconnu.",
-                icon: "visibility",
-                color: "bg-red-50/80 text-[var(--aduti-secondary)]",
-                glow: "from-red-500/10"
-              },
-              {
-                title: "Nos Valeurs",
-                desc: "Solidarité entre promotions, excellence technique et entraide intergénérationnelle.",
-                icon: "groups",
-                color: "bg-indigo-50/80 text-indigo-600",
-                glow: "from-indigo-500/10"
-              }
-            ].map((item, i) => (
-              <div key={i} className="group relative bg-white/70 backdrop-blur-xl p-10 rounded-3xl border border-white/60 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.05)] transition-all duration-500 hover:shadow-[0_30px_60px_-20px_rgba(0,0,0,0.1)] hover:-translate-y-2 hover:bg-white/90">
-                <div className={`absolute inset-0 bg-gradient-to-br ${item.glow} to-transparent opacity-0 group-hover:opacity-100 rounded-3xl transition-opacity duration-500`} />
-                <div className={`w-14 h-14 ${item.color} backdrop-blur-sm rounded-2xl flex items-center justify-center mb-8 relative z-10 shadow-sm transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3`}>
-                  <MaterialIcon name={item.icon} className="w-8 h-8" />
+      {/* Mission, vision, valeurs */}
+      <section className="border-y border-slate-200 bg-slate-50 px-4 py-20 md:py-28">
+        <FadeInScroll className="mx-auto max-w-7xl">
+          <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+            <div className="lg:col-span-4">
+              <h2 className="font-[family-name:var(--font-display)] text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
+                Ce qui nous guide
+              </h2>
+              <p className="mt-4 text-base leading-relaxed text-slate-600">
+                Trois engagements qui structurent l&apos;action de l&apos;association
+                depuis sa création.
+              </p>
+            </div>
+
+            <dl className="divide-y divide-slate-200 lg:col-span-8">
+              {[
+                {
+                  title: "Notre mission",
+                  desc: "Promouvoir la filière Informatique de la STIC et favoriser l'intégration socio-professionnelle des étudiants.",
+                  icon: "flag",
+                },
+                {
+                  title: "Notre vision",
+                  desc: "Faire de la communauté des informaticiens de la STIC un réseau professionnel solide et reconnu.",
+                  icon: "visibility",
+                },
+                {
+                  title: "Nos valeurs",
+                  desc: "Solidarité entre promotions, excellence technique et entraide intergénérationnelle.",
+                  icon: "groups",
+                },
+              ].map((item) => (
+                <div key={item.title} className="flex gap-6 py-8 first:pt-0 last:pb-0">
+                  <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[var(--aduti-primary)]/10 text-[var(--aduti-primary)]">
+                    <MaterialIcon name={item.icon} className="size-6" />
+                  </div>
+                  <div>
+                    <dt className="text-xl font-semibold text-slate-900">{item.title}</dt>
+                    <dd className="mt-2 max-w-2xl leading-relaxed text-slate-600">{item.desc}</dd>
+                  </div>
                 </div>
-                <h3 className="text-2xl font-bold text-slate-900 mb-4 relative z-10">{item.title}</h3>
-                <p className="text-slate-500 leading-relaxed relative z-10 text-balance group-hover:text-slate-600 transition-colors">
-                  {item.desc}
-                </p>
-              </div>
-            ))}
+              ))}
+            </dl>
           </div>
         </FadeInScroll>
       </section>
 
       {/* Nos Objectifs - Interactive Layout */}
-      <section className="py-12 sm:py-16 md:py-24 px-4 bg-white">
+      <section className="bg-white px-4 py-20 md:py-28">
         <FadeInScroll 
           className="max-w-7xl mx-auto"
 >
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-20 items-center">
             <div className="space-y-10">
               <div className="space-y-4">
-                <h2 className="text-4xl md:text-5xl font-[family-name:var(--font-display)] font-bold text-slate-900 leading-[1.15]">
+                <h2 className="font-[family-name:var(--font-display)] text-3xl font-bold leading-tight tracking-tight text-slate-900 md:text-4xl">
                   {"Nos piliers d'"}<span className="text-[var(--aduti-primary)]">action</span>
                 </h2>
                 <p className="text-slate-600 text-lg leading-relaxed max-w-xl">
@@ -176,7 +191,7 @@ export default async function Home() {
             <div>
               <div className="bg-white rounded-3xl p-6 sm:p-8 lg:p-14 space-y-8 lg:space-y-12 border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
                 <div className="flex items-start gap-6">
-                  <div className="flex-shrink-0 w-16 h-16 rounded-3xl bg-blue-50 flex items-center justify-center text-[var(--aduti-primary)] shadow-sm">
+                  <div className="flex size-16 shrink-0 items-center justify-center rounded-2xl bg-[var(--aduti-primary)]/10 text-[var(--aduti-primary)]">
                     <MaterialIcon name="school" className="w-8 h-8" />
                   </div>
                   <div className="space-y-2">
@@ -188,7 +203,7 @@ export default async function Home() {
                 </div>
                 <div className="h-px bg-slate-100 w-full" />
                 <div className="flex items-start gap-6">
-                  <div className="flex-shrink-0 w-16 h-16 rounded-3xl bg-red-50 flex items-center justify-center text-[var(--aduti-secondary)] shadow-sm">
+                  <div className="flex size-16 shrink-0 items-center justify-center rounded-2xl bg-[var(--aduti-primary)]/10 text-[var(--aduti-primary)]">
                     <MaterialIcon name="diversity_3" className="w-8 h-8" />
                   </div>
                   <div className="space-y-2">
@@ -205,16 +220,15 @@ export default async function Home() {
       </section>
 
       {/* Nos Partenaires - Elegant Background */}
-      <section className="py-12 sm:py-16 md:py-24 px-4 bg-slate-50/80 border-y border-slate-100">
+      <section className="border-b border-slate-200 bg-white px-4 py-20 md:py-28">
         <FadeInScroll 
           className="max-w-7xl mx-auto"
 >
           <div className="text-center mb-16 space-y-4">
-            <h2 className="text-3xl md:text-5xl font-[family-name:var(--font-display)] font-bold text-slate-900">
+            <h2 className="font-[family-name:var(--font-display)] text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
               Nos <span className="text-[var(--aduti-primary)]">Partenaires</span>
             </h2>
-            <div className="w-12 h-1 bg-slate-200 mx-auto rounded-full mb-6" />
-            <p className="text-slate-500 max-w-2xl mx-auto font-medium">
+                        <p className="text-slate-500 max-w-2xl mx-auto font-medium">
               Nous collaborons avec les leaders engagés dans le développement numérique.
             </p>
           </div>
@@ -223,14 +237,14 @@ export default async function Home() {
       </section>
 
       {/* Activités Phares - Premium Video-like Cards */}
-      <section className="py-12 sm:py-16 md:py-24 px-4 bg-white overflow-hidden">
+      <section className="relative overflow-hidden bg-slate-50 px-4 py-20 md:py-28">
         <FadeInScroll 
           className="max-w-7xl mx-auto"
 >
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 md:mb-20 gap-6">
             <div className="space-y-4">
-              <span className="text-[var(--aduti-secondary)] font-bold text-xs uppercase tracking-[0.3em]">Vie associative</span>
-              <h2 className="text-4xl md:text-5xl font-[family-name:var(--font-display)] font-bold text-slate-900 leading-none">
+              <p className="text-sm font-medium uppercase tracking-wide text-slate-500">Vie associative</p>
+              <h2 className="font-[family-name:var(--font-display)] text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
                 Nos Activités Phares
               </h2>
             </div>
@@ -282,9 +296,9 @@ export default async function Home() {
                     className="object-cover transition-transform duration-1000 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900 flex flex-col justify-end p-8 text-white">
-                    <div className="text-[var(--aduti-primary)] text-[10px] font-black uppercase tracking-[0.4em] mb-2">{activity.cat}</div>
+                    <p className="mb-2 text-xs font-medium uppercase tracking-wide text-white/70">{activity.cat}</p>
                     <h3 className="text-3xl font-bold mb-4">{activity.title}</h3>
-                    <p className="text-slate-300 text-sm leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100">
+                    <p className="text-sm leading-relaxed text-slate-200">
                       {activity.desc}
                     </p>
                   </div>
@@ -305,14 +319,12 @@ export default async function Home() {
       </section>
 
       {/* Final CTA - The "Wow" Exit */}
-      <section className="py-16 sm:py-24 md:py-32 px-4 bg-slate-50 relative overflow-hidden border-t border-slate-100">
-        {/* Blobs décoratifs confinés — pas de débordement */}
-        <div className="absolute top-0 right-0 w-[min(800px,100vw)] h-[min(800px,100vw)] bg-[var(--aduti-primary)]/10 rounded-full blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-[min(600px,80vw)] h-[min(600px,80vw)] bg-[var(--aduti-secondary)]/10 rounded-full blur-[120px] pointer-events-none" />
-        
+      <section className="relative overflow-hidden border-t border-slate-200 bg-white px-4 py-24 md:py-32">
+        <TechBackdrop variant="dots" />
+
         <FadeInScroll className="max-w-4xl mx-auto text-center relative z-10 space-y-12">
           <div className="space-y-6">
-            <h2 className="text-4xl sm:text-5xl md:text-7xl font-[family-name:var(--font-display)] font-bold tracking-tight text-slate-900">
+            <h2 className="font-[family-name:var(--font-display)] text-3xl font-bold tracking-tight text-slate-900 md:text-5xl">
               En Savoir <span className="text-[var(--aduti-primary)]">Plus</span>
             </h2>
             <p className="text-slate-600 text-base sm:text-xl font-medium max-w-2xl mx-auto leading-relaxed">
@@ -322,14 +334,14 @@ export default async function Home() {
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-4">
             <Link href="/about">
-              <Button className="w-full sm:w-auto h-16 px-12 rounded-2xl bg-[var(--aduti-primary)] text-white font-black text-lg hover:bg-[var(--aduti-primary-hover)] transition-all shadow-[0_15px_30px_-10px_rgba(19,37,75,0.3)] hover:-translate-y-1">
+              <Button className="h-14 w-full rounded-2xl bg-[var(--aduti-primary)] px-10 font-bold text-white transition-colors hover:bg-[var(--aduti-primary-hover)] sm:w-auto">
                 En savoir plus
               </Button>
             </Link>
             <Link href="/contact">
               <Button
                 variant="outline"
-                className="w-full sm:w-auto h-16 px-12 rounded-2xl bg-white border border-slate-200 text-slate-700 font-bold text-lg hover:bg-slate-50 hover:text-slate-900 transition-all shadow-sm hover:-translate-y-1"
+                className="h-14 w-full rounded-2xl border-slate-300 bg-white px-10 font-bold text-slate-700 transition-colors hover:border-slate-400 hover:text-slate-900 sm:w-auto"
               >
                 Nous contacter
               </Button>

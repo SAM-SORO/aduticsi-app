@@ -30,6 +30,12 @@ export const metadata: Metadata = {
   generator: "Next.js",
   keywords: ["ADUTI", "INP-HB", "Informatique", "DUT", "DTS", "Yamoussoukro", "Côte d'Ivoire", "TIC"],
   referrer: "origin-when-cross-origin",
+  alternates: { canonical: "/" },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
+  },
   creator: "Clover INP-HB",
   publisher: "Aduticsi",
   openGraph: {
@@ -42,8 +48,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "/logo_association.jpeg",
-        width: 800,
-        height: 600,
+        width: 640,
+        height: 320,
         alt: "Logo ADUTI",
       },
     ],
