@@ -3,10 +3,15 @@
 import Link from 'next/link'
 import { MaterialIcon } from "@/components/icons/material-icon";
 import { TechBackdrop } from "@/components/tech-backdrop";
+import { BackButton } from "@/components/ui/back-button";
 
 export default function rejectedPage() {
   return (
     <main className="min-h-dvh flex items-center justify-center p-4 relative overflow-hidden bg-slate-50 font-sans">
+      <div className="absolute left-6 top-6 z-50 sm:left-8 sm:top-8">
+        <BackButton className="bg-white/80 backdrop-blur-md px-4 py-2 rounded-full border border-slate-200/50 shadow-sm hover:border-(--aduti-primary)/50 hover:bg-white" />
+      </div>
+
       {/* Animated Background */}
         <TechBackdrop variant="grid" />
 

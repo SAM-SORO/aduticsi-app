@@ -35,14 +35,14 @@ export default async function InvitationsPage() {
 
   let member = await prisma.member.findUnique({
     where: { id: user.id },
-    select: { id: true, role: true, first_name: true, last_name: true, email: true },
+    select: { id: true, role: true, first_name: true, last_name: true, email: true, photo_url: true },
   });
 
   // Fallback to email if not found by ID
   if (!member && user.email) {
     member = await prisma.member.findUnique({
       where: { email: user.email },
-      select: { id: true, role: true, first_name: true, last_name: true, email: true },
+      select: { id: true, role: true, first_name: true, last_name: true, email: true, photo_url: true },
     });
   }
 

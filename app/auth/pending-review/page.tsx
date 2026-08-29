@@ -3,10 +3,16 @@
 import Link from 'next/link'
 import { MaterialIcon } from "@/components/icons/material-icon";
 import { TechBackdrop } from "@/components/tech-backdrop";
+import { MAIL_LINK_VALIDITY_LABEL } from "@/lib/auth-links";
+import { BackButton } from "@/components/ui/back-button";
 
 export default function pendingReviewPage() {
   return (
     <main className="min-h-dvh flex items-center justify-center p-4 relative overflow-hidden bg-slate-50 font-sans">
+      <div className="absolute left-6 top-6 z-50 sm:left-8 sm:top-8">
+        <BackButton className="bg-white/80 backdrop-blur-md px-4 py-2 rounded-full border border-slate-200/50 shadow-sm hover:border-(--aduti-primary)/50 hover:bg-white" />
+      </div>
+
       {/* Animated Background */}
         <TechBackdrop variant="grid" />
 
@@ -17,21 +23,31 @@ export default function pendingReviewPage() {
           </div>
           <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Demande d&apos;enregistrement</h1>
           <p className="text-slate-500 font-bold text-sm uppercase tracking-widest bg-blue-50 px-3 py-1 rounded-full border border-blue-100/50">
-            En cour de vérification par un Administrateur
+            En cours de vérification
           </p>
         </div>
 
         <div className="bg-white rounded-3xl border border-slate-200/60 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.08)] backdrop-blur-xl relative overflow-hidden">
           <div className="p-8 md:p-10">
             <div className="space-y-6 text-center">
-              <p className="text-slate-600 text-lg font-medium leading-relaxed">
-                Vous receverez un email lorsque la vérification sera terminée. 
+              <p className="text-lg leading-relaxed text-slate-600">
+                Votre demande a bien été enregistrée. Un administrateur va
+                l&apos;examiner.
               </p>
 
-              <div className="bg-slate-50 rounded-2xl p-6 border border-dashed border-slate-200">
-                <p className="text-xs text-slate-400 font-bold uppercase tracking-wider mb-2">Conseil</p>
-                <p className="text-xs text-slate-500 leading-normal italic">
-                  Si vous ne voyez pas l&apos;email dans quelques minutes, n&apos;oubliez pas de vérifier votre dossier <span className="text-slate-700 font-bold uppercase">Spams</span> ou <span className="text-slate-700 font-bold uppercase">Courrier indésirable</span>.
+              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6 text-left">
+                <p className="mb-3 text-sm font-medium text-slate-700">La suite</p>
+                <ol className="space-y-2 text-sm leading-relaxed text-slate-600">
+                  <li>1. Un administrateur valide votre demande.</li>
+                  <li>2. Vous recevez alors un email contenant un lien.</li>
+                  <li>
+                    3. Ce lien vous permet de choisir votre mot de passe. Il reste
+                    valable {MAIL_LINK_VALIDITY_LABEL}.
+                  </li>
+                </ol>
+                <p className="mt-4 text-xs leading-normal text-slate-500">
+                  Aucun email ne vous est envoyé avant cette validation. Pensez à
+                  regarder vos courriers indésirables le moment venu.
                 </p>
               </div>
 
@@ -41,7 +57,7 @@ export default function pendingReviewPage() {
                   className="group w-full flex justify-center items-center gap-3 py-4 px-6 rounded-2xl shadow-xl shadow-blue-100 text-sm font-bold text-white bg-aduti-primary hover:bg-aduti-primary-hover focus:outline-none transition-all active:scale-[0.98] uppercase tracking-widest"
                 >
                   <MaterialIcon name="arrow_back" className="w-5 h-5 transition-transform group-hover:-translate-x-1" />
-                  Retour à l&apos;acceuil
+                  Retour à l&apos;accueil
                 </Link>
               </div>
             </div>

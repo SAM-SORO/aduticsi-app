@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { Menu, X, User, LogOut, Settings, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 
 import { DashboardSidebar } from "./Sidebar";
@@ -24,6 +25,7 @@ interface DashboardShellProps {
     last_name: string | null;
     email: string;
     role: string;
+    photo_url?: string | null;
   };
   activePath: string;
   title: string;
@@ -118,8 +120,12 @@ export function DashboardShell({
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button className="flex items-center gap-3 p-1.5 rounded-full hover:bg-slate-100 transition-all group border border-transparent hover:border-slate-200">
-                  <div className="size-9 rounded-full bg-(--aduti-primary)/10 text-aduti-primary flex items-center justify-center font-bold text-sm overflow-hidden shrink-0 group-hover:bg-aduti-primary group-hover:text-white transition-colors">
-                    {member.first_name?.slice(0, 1).toUpperCase() || "A"}
+                  <div className="relative flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-(--aduti-primary)/10 text-sm font-semibold text-aduti-primary">
+                    {member.photo_url ? (
+                      <Image src={member.photo_url} alt="" fill sizes="36px" className="object-cover" />
+                    ) : (
+                      member.first_name?.slice(0, 1).toUpperCase() || "A"
+                    )}
                   </div>
                   <div className="hidden md:block text-left">
                     <p className="mb-0.5 text-sm font-medium leading-none text-slate-900">

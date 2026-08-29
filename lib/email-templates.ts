@@ -1,3 +1,5 @@
+import { MAIL_LINK_VALIDITY_LABEL } from "@/lib/auth-links";
+
 
 
 export function approvalEmailTemplate(actionUrl: string) {
@@ -14,7 +16,7 @@ export function approvalEmailTemplate(actionUrl: string) {
         </a>
       </div>
       <p style="font-size: 13px; color: #64748b; line-height: 1.6;">
-        Ce lien est valable un temps limité. Passé ce délai, utilisez
+        Ce lien reste valable ${MAIL_LINK_VALIDITY_LABEL}. Passé ce délai, utilisez
         « Mot de passe oublié » depuis la page de connexion.
       </p>
     </div>

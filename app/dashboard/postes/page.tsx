@@ -22,7 +22,7 @@ export default async function PostesPage() {
 
   const currentMember = await prisma.member.findUnique({
     where: { id: user.id },
-    select: { id: true, role: true, first_name: true, last_name: true, email: true },
+    select: { id: true, role: true, first_name: true, last_name: true, email: true, photo_url: true },
   });
 
   if (!currentMember || (currentMember.role !== "SUPER_ADMIN" && currentMember.role !== "ADMIN")) {

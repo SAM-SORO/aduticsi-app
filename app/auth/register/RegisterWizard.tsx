@@ -34,7 +34,7 @@ interface Step {
 const IDENTITY: Step = {
   id: "identity",
   title: "Identité",
-  fields: ["first_name", "last_name", "email", "gender"],
+  fields: ["last_name", "first_name", "email", "gender"],
 };
 const PATH: Step = { id: "path", title: "Parcours", fields: ["promo_id", "status"] };
 const PHOTO: Step = { id: "photo", title: "Photo", fields: [] };
@@ -212,20 +212,6 @@ export function RegisterWizard({
           <div className="space-y-5">
             <div className="grid gap-5 sm:grid-cols-2">
               <div>
-                <FieldLabel htmlFor="first_name" required>
-                  Prénom
-                </FieldLabel>
-                <input
-                  id="first_name"
-                  className={cn(fieldClass, errors.first_name && fieldErrorClass)}
-                  disabled={isPending}
-                  {...register("first_name")}
-                />
-                {errors.first_name && (
-                  <p className="mt-1.5 text-xs text-red-600">{errors.first_name.message}</p>
-                )}
-              </div>
-              <div>
                 <FieldLabel htmlFor="last_name" required>
                   Nom
                 </FieldLabel>
@@ -237,6 +223,20 @@ export function RegisterWizard({
                 />
                 {errors.last_name && (
                   <p className="mt-1.5 text-xs text-red-600">{errors.last_name.message}</p>
+                )}
+              </div>
+              <div>
+                <FieldLabel htmlFor="first_name" required>
+                  Prénom
+                </FieldLabel>
+                <input
+                  id="first_name"
+                  className={cn(fieldClass, errors.first_name && fieldErrorClass)}
+                  disabled={isPending}
+                  {...register("first_name")}
+                />
+                {errors.first_name && (
+                  <p className="mt-1.5 text-xs text-red-600">{errors.first_name.message}</p>
                 )}
               </div>
             </div>

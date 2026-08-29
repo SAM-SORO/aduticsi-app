@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import { 
   LayoutDashboard, 
   Users, 
@@ -7,7 +9,6 @@ import {
   History, 
   LogOut, 
   ShieldCheck,
-  School,
   Home,
   GraduationCap,
   Briefcase,
@@ -17,6 +18,7 @@ import {
 
 
 import { logout } from "@/app/auth/actions";
+import { usePendingRegistrations } from "@/components/dashboard/PendingRegistrationsProvider";
 import { cn } from "@/lib/utils";
 
 interface SidebarProps {
@@ -32,6 +34,7 @@ interface SidebarProps {
 }
 
 export function Sidebar({ member, activePath, onCloseMobile, collapsed = false }: SidebarProps) {
+  const pendingCount = usePendingRegistrations();
   const isSuperAdmin = member.role === "SUPER_ADMIN";
   const isAdmin = member.role === "ADMIN";
   const hasActivityFunction = !isSuperAdmin && !isAdmin;
@@ -51,7 +54,7 @@ export function Sidebar({ member, activePath, onCloseMobile, collapsed = false }
       ? [
           { name: "Membres", href: "/dashboard/super-admin/members", icon: <Users className="w-5 h-5" />, path: "/dashboard/super-admin/members" },
           { name: "Liens d'invitation", href: "/dashboard/super-admin/invitations", icon: <Link2 className="w-5 h-5" />, path: "/dashboard/super-admin/invitations" },
-          { name: "Demandes d'enregistrement", href: "/dashboard/super-admin/demandes", icon: <ShieldCheck className="w-5 h-5" />, path: "/dashboard/super-admin/demandes" },
+          { name: "Demandes d'enregistrement", href: "/dashboard/super-admin/demandes", icon: <ShieldCheck className="size-5" />, path: "/dashboard/super-admin/demandes", badge: pendingCount },
         ]
       : []),
 
@@ -77,9 +80,13 @@ export function Sidebar({ member, activePath, onCloseMobile, collapsed = false }
       {/* Logo — fixed */}
       <div className={cn("shrink-0 pb-0", collapsed ? "px-3 pt-6" : "p-6 pb-0")}>
         <div className={cn("mb-6 flex items-center gap-3", collapsed && "justify-center")}>
-          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-(--aduti-primary)/10 text-aduti-primary">
-            <School className="size-6" />
-          </div>
+          <Image
+            src="/logo_association.jpeg"
+            alt="ADUTI"
+            width={40}
+            height={40}
+            className="size-10 shrink-0 rounded-lg object-contain"
+          />
           {!collapsed && (
             <div className="min-w-0">
               <h1 className="text-xl font-bold tracking-tight text-slate-900">ADUTI</h1>
@@ -110,8 +117,27 @@ export function Sidebar({ member, activePath, onCloseMobile, collapsed = false }
                       : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
                   )}
                 >
-                  <span className="shrink-0">{item.icon}</span>
-                  {!collapsed && <span className="truncate">{item.name}</span>}
+                  <span className="relative shrink-0">
+                    {item.icon}
+                    {collapsed && Boolean(item.badge) && (
+                      <span className="absolute -right-1.5 -top-1.5 flex size-4 items-center justify-center rounded-full bg-(--aduti-secondary) text-[10px] font-semibold text-white">
+                        {item.badge! > 9 ? "9+" : item.badge}
+                      </span>
+                    )}
+                  </span>
+                  {!collapsed && (
+                    <>
+                      <span className="truncate">{item.name}</span>
+                      {Boolean(item.badge) && (
+                        <span
+                          className="ml-auto flex min-w-5 shrink-0 items-center justify-center rounded-full bg-(--aduti-secondary) px-1.5 py-0.5 text-xs font-semibold text-white"
+                          aria-label={`${item.badge} demande${item.badge! > 1 ? "s" : ""} en attente`}
+                        >
+                          {item.badge! > 99 ? "99+" : item.badge}
+                        </span>
+                      )}
+                    </>
+                  )}
                 </a>
               </div>
             );

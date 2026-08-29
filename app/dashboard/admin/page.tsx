@@ -49,7 +49,7 @@ export default async function DashboardAdminPage() {
         id: true,
         first_name: true,
         last_name: true,
-        email: true,
+        email: true, photo_url: true,
         status: true,
         gender: true,
         promo_id: true,

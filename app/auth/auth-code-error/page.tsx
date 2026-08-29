@@ -1,10 +1,15 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { MaterialIcon } from "@/components/icons/material-icon";
+import { BackButton } from "@/components/ui/back-button";
 
 export default function AuthCodeErrorPage() {
   return (
-    <main className="flex-1 flex flex-col items-center justify-center px-4 py-8 bg-slate-50/50 min-h-[calc(100vh-80px)]">
+    <main className="flex-1 flex flex-col items-center justify-center px-4 py-8 bg-slate-50/50 min-h-[calc(100vh-80px)] relative">
+      <div className="absolute left-6 top-6 z-50 sm:left-8 sm:top-8">
+        <BackButton className="bg-white/80 backdrop-blur-md px-4 py-2 rounded-full border border-slate-200/50 shadow-sm hover:border-(--aduti-primary)/50 hover:bg-white" />
+      </div>
+
       <div className="w-full max-w-[480px] text-center space-y-6 bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
         <div className="flex justify-center mb-6">
           <Image 

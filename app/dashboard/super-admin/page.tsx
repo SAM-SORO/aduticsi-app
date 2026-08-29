@@ -23,7 +23,7 @@ export default async function SuperAdminDashboardPage() {
   // Attempt to find the member by Supabase ID first
   let member = await prisma.member.findUnique({
     where: { id: user.id },
-    select: { id: true, role: true, first_name: true, last_name: true, email: true },
+    select: { id: true, role: true, first_name: true, last_name: true, email: true, photo_url: true },
   });
 
   // Fallback to email if not found by ID
@@ -31,7 +31,7 @@ export default async function SuperAdminDashboardPage() {
     logger.info({ userId: user.id, email: user.email }, 'SuperAdmin: Member not found by ID, trying email');
     member = await prisma.member.findUnique({
       where: { email: user.email },
-      select: { id: true, role: true, first_name: true, last_name: true, email: true },
+      select: { id: true, role: true, first_name: true, last_name: true, email: true, photo_url: true },
     });
 
     if (member) {

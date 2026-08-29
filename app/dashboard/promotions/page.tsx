@@ -30,7 +30,7 @@ export default async function PromotionsPage() {
 
   const member = await prisma.member.findUnique({
     where: { id: user.id },
-    select: { id: true, role: true, first_name: true, last_name: true, email: true },
+    select: { id: true, role: true, first_name: true, last_name: true, email: true, photo_url: true },
   });
 
   if (!member || (member.role !== "SUPER_ADMIN" && member.role !== "ADMIN")) {

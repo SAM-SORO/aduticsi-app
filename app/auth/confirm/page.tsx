@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import { MaterialIcon } from '@/components/icons/material-icon';
 import { verifyEmailOtp } from '@/app/auth/actions';
 import { TechBackdrop } from "@/components/tech-backdrop";
+import { BackButton } from "@/components/ui/back-button";
 
 function ConfirmEmailContent() {
   const searchParams = useSearchParams();
@@ -14,6 +15,14 @@ function ConfirmEmailContent() {
 
   const token_hash = searchParams.get('token_hash');
   const type = searchParams.get('type') as 'signup' | 'recovery' | 'magiclink' | 'email_change' | null;
+  // Destination interne uniquement : un next absolu permettrait de rediriger
+  // vers un site tiers depuis un lien qui parait venir de l'ADUTI.
+  const rawNext = searchParams.get('next');
+  const next = rawNext && rawNext.startsWith('/') && !rawNext.startsWith('//') ? rawNext : null;
+
+  // Un compte approuve n'a pas encore de mot de passe : la page ne parle plus
+  // de creation de compte mais de la derniere etape qui reste a faire.
+  const isPasswordSetup = type === 'recovery';
 
   const handleConfirm = () => {
     if (!token_hash || !type) {
@@ -26,15 +35,23 @@ function ConfirmEmailContent() {
       if (result.error) {
         toast.error(result.error);
         router.push('/auth/auth-code-error');
-      } else {
-        toast.success("Votre compte a été confirmé avec succès !");
-        router.push('/?welcome=true');
+        return;
       }
+      if (next) {
+        router.push(next);
+        return;
+      }
+      toast.success("Votre compte a été confirmé avec succès !");
+      router.push('/?welcome=true');
     });
   };
 
   return (
     <main className="min-h-[calc(100vh-80px)] flex flex-col items-center justify-center px-4 py-8 bg-slate-50 relative overflow-hidden">
+      <div className="absolute left-6 top-6 z-50 sm:left-8 sm:top-8">
+        <BackButton className="bg-white/80 backdrop-blur-md px-4 py-2 rounded-full border border-slate-200/50 shadow-sm hover:border-(--aduti-primary)/50 hover:bg-white" />
+      </div>
+
       {/* Background decorations */}
         <TechBackdrop variant="grid" />
 
@@ -53,11 +70,13 @@ function ConfirmEmailContent() {
         </div>
         
         <h1 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight font-display">
-          Confirmation requise
+          {isPasswordSetup ? "Définissez votre mot de passe" : "Confirmation requise"}
         </h1>
-        
+
         <p className="text-slate-600 text-sm md:text-base leading-relaxed px-4">
-          Bienvenue ! Pour finaliser la création de votre compte, veuillez cliquer sur le bouton ci-dessous.
+          {isPasswordSetup
+            ? "Votre demande a été approuvée. Cliquez ci-dessous pour choisir votre mot de passe et accéder à votre compte."
+            : "Bienvenue ! Pour finaliser la création de votre compte, veuillez cliquer sur le bouton ci-dessous."}
         </p>
 
         <div className="pt-8">
@@ -71,7 +90,7 @@ function ConfirmEmailContent() {
              ) : (
                <MaterialIcon name="check_circle" className="w-5 h-5" />
              )}
-            {isPending ? "Vérification en cours..." : "Confirmer mon compte"}
+            {isPending ? "Vérification en cours..." : isPasswordSetup ? "Choisir mon mot de passe" : "Confirmer mon compte"}
           </button>
         </div>
         

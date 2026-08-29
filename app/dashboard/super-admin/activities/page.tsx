@@ -41,7 +41,7 @@ export default async function ActivitiesAdminPage({
 
   const member = await prisma.member.findUnique({
     where: { id: user.id },
-    select: { id: true, role: true, function: true, promo_id: true, first_name: true, last_name: true, email: true },
+    select: { id: true, role: true, function: true, promo_id: true, first_name: true, last_name: true, email: true, photo_url: true },
   });
 
   const canManage =

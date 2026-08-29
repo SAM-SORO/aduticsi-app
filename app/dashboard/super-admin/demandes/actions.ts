@@ -55,12 +55,22 @@ export async function approveMember(memberId: string) {
     const { data: link, error: linkError } = await createAdminClient().auth.admin.generateLink({
       type: "recovery",
       email: member.email,
-      options: { redirectTo: `${origin}/auth/callback?next=/auth/reset-password` },
     });
-    if (linkError || !link?.properties?.action_link) {
+
+    // On envoie le jeton hache vers notre propre page plutot que le lien
+    // action_link : celui-ci passe par /auth/callback, dont l'echange PKCE
+    // reclame un code_verifier depose en cookie lors d'une demande faite par
+    // l'utilisateur. Ici le lien nait cote serveur, ce cookie n'existe nulle
+    // part, et l'echange echouerait a coup sur.
+    const tokenHash = link?.properties?.hashed_token;
+    if (linkError || !tokenHash) {
       logger.error({ memberId, error: linkError }, "Lien de définition du mot de passe indisponible");
     } else {
-      actionUrl = link.properties.action_link;
+      const target = new URL(`${origin}/auth/confirm`);
+      target.searchParams.set("token_hash", tokenHash);
+      target.searchParams.set("type", "recovery");
+      target.searchParams.set("next", "/auth/reset-password");
+      actionUrl = target.toString();
     }
 
     const emailResult = await sendEmail({

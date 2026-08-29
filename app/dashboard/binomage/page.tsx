@@ -19,14 +19,14 @@ export default async function BinomagePage() {
 
   let member = await prisma.member.findUnique({
     where: { id: user.id },
-    select: { id: true, role: true, first_name: true, last_name: true, email: true },
+    select: { id: true, role: true, first_name: true, last_name: true, email: true, photo_url: true },
   });
 
   if (!member && user.email) {
     logger.info({ userId: user.id }, "Binomage: fallback to email lookup");
     member = await prisma.member.findUnique({
       where: { email: user.email },
-      select: { id: true, role: true, first_name: true, last_name: true, email: true },
+      select: { id: true, role: true, first_name: true, last_name: true, email: true, photo_url: true },
     });
     if (member) {
       await prisma.member.update({
