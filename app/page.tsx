@@ -58,7 +58,7 @@ export default async function Home() {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-5 pt-10">
             <Link href="/about">
-              <Button className="w-full sm:w-auto h-14 px-10 rounded-2xl bg-[var(--aduti-primary)] hover:bg-blue-600 text-white font-bold transition-all shadow-[0_15px_30px_-10px_rgba(19,146,236,0.3)] hover:-translate-y-1">
+              <Button className="w-full sm:w-auto h-14 px-10 rounded-2xl bg-[var(--aduti-primary)] hover:bg-blue-600 text-white font-bold transition-all shadow-[0_15px_30px_-10px_rgba(19,37,75,0.3)] hover:-translate-y-1">
                 {"Découvrir l'ADUTI"}
                 <MaterialIcon name="arrow_forward" className="ml-2 w-5 h-5" />
               </Button>
@@ -323,7 +323,7 @@ export default async function Home() {
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-4">
             <Link href="/about">
-              <Button className="w-full sm:w-auto h-16 px-12 rounded-2xl bg-[var(--aduti-primary)] text-white font-black text-lg hover:bg-blue-600 transition-all shadow-[0_15px_30px_-10px_rgba(19,146,236,0.3)] hover:-translate-y-1">
+              <Button className="w-full sm:w-auto h-16 px-12 rounded-2xl bg-[var(--aduti-primary)] text-white font-black text-lg hover:bg-blue-600 transition-all shadow-[0_15px_30px_-10px_rgba(19,37,75,0.3)] hover:-translate-y-1">
                 En savoir plus
               </Button>
             </Link>

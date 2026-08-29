@@ -113,7 +113,7 @@ export default function AboutPage() {
             <div className="flex flex-col sm:flex-row gap-4 pt-4" style={{ animationDelay: "400ms" }}>
               <Button
                 onClick={scrollToHistory}
-                className="h-14 px-8 rounded-2xl bg-[var(--aduti-primary)] hover:bg-blue-800 text-white font-bold transition-all shadow-[0_15px_30px_-10px_rgba(19,146,236,0.3)] gap-3 hover:-translate-y-1 active:scale-95 text-sm"
+                className="h-14 px-8 rounded-2xl bg-[var(--aduti-primary)] hover:bg-blue-800 text-white font-bold transition-all shadow-[0_15px_30px_-10px_rgba(19,37,75,0.3)] gap-3 hover:-translate-y-1 active:scale-95 text-sm"
               >
                 <MaterialIcon name="history_edu" className="w-5 h-5" />
                 Notre Histoire
