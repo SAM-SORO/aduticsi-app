@@ -137,7 +137,7 @@ export default async function ActivitiesPage({
                         
                         {/* Promo badge */}
                         <div className="absolute top-5 right-5 z-20 pointer-events-none">
-                          <span className="bg-[var(--aduti-primary)] px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-white shadow-xl rounded-full backdrop-blur-md">
+                          <span className="bg-[var(--aduti-primary)] px-4 py-1.5 text-[10px] font-bold uppercase tracking-wide text-white shadow-xl rounded-full backdrop-blur-md">
                             {activity.promotion.name}
                           </span>
                         </div>
@@ -174,12 +174,12 @@ export default async function ActivitiesPage({
                         >
                           <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 rounded-xl group-hover/link:bg-blue-50 border border-transparent group-hover/link:border-[var(--aduti-primary)]/20 transition-all">
                             <MaterialIcon name="article" className="w-[18px] h-[18px] text-[var(--aduti-primary)]" />
-                            <span className="text-[10px] font-black text-slate-600 uppercase tracking-widest">
+                            <span className="text-[10px] font-bold text-slate-600 uppercase tracking-widest">
                               {activity._count.publications} Publications
                             </span>
                           </div>
                           <div className="flex items-center gap-2 group/btn">
-                            <span className="text-[var(--aduti-primary)] text-sm font-black group-hover/link:translate-x-1 transition-transform inline-flex items-center uppercase tracking-[0.1em] gap-1.5">
+                            <span className="text-[var(--aduti-primary)] text-sm font-bold group-hover/link:translate-x-1 transition-transform inline-flex items-center uppercase tracking-wide gap-1.5">
                               <span className="hover:underline decoration-2 underline-offset-4">Découvrir</span>
                               <MaterialIcon name="east" className="w-[18px] h-[18px]" />
                             </span>

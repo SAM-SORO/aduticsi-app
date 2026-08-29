@@ -353,7 +353,7 @@ export default function AboutPage() {
             <div className="relative z-10 max-w-2xl space-y-8">
               <div className="flex items-center gap-6">
                 <div className="h-px w-16 bg-gradient-to-r from-[#c2185b] to-transparent"></div>
-                <span className="text-[#c2185b] font-bold text-sm lg:text-base uppercase tracking-[0.4em]">Excellence Académique</span>
+                <span className="text-[#c2185b] font-bold text-sm lg:text-base uppercase tracking-wide">Excellence Académique</span>
               </div>
               
               <h2 className="font-[family-name:var(--font-display)] text-3xl font-bold leading-tight tracking-tight text-slate-900 md:text-4xler">

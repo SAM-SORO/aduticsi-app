@@ -79,7 +79,7 @@ export function ImageGallery({ images, alt = '' }: ImageGalleryProps) {
                   <Image src={images[3]} alt={alt} fill className="object-cover opacity-60 group-hover:opacity-40 transition-opacity duration-300" />
                   {showExtra && (
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="text-white text-2xl font-black drop-shadow-lg">
+                      <span className="text-white text-2xl font-bold drop-shadow-lg">
                         +{images.length - 4}
                       </span>
                     </div>
@@ -112,7 +112,7 @@ export function ImageGallery({ images, alt = '' }: ImageGalleryProps) {
           </button>
 
           {/* Counter */}
-          <div className="absolute top-6 left-1/2 -translate-x-1/2 z-10 px-6 py-2 rounded-full bg-white/10 backdrop-blur-md text-white text-xs font-black tracking-[0.2em] uppercase border border-white/10">
+          <div className="absolute top-6 left-1/2 -translate-x-1/2 z-10 px-6 py-2 rounded-full bg-white/10 backdrop-blur-md text-white text-xs font-bold tracking-[0.2em] uppercase border border-white/10">
             {lightboxIndex + 1} / {images.length}
           </div>
 

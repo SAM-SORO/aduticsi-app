@@ -147,7 +147,7 @@ export function AdminMembersGrid({ members, promotions }: AdminMembersGridProps)
                     <h3 className="text-lg font-bold text-slate-900">{selectedMember.last_name.toUpperCase()} {selectedMember.first_name}</h3>
                     <p className="text-sm text-slate-500">{selectedMember.email}</p>
                     <div className="flex gap-1.5 mt-2">
-                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider border ${
+                      <span className={`px-2 py-0.5 rounded-full text-xs font-medium uppercase tracking-wide border ${
                         selectedMember.status === 'ALUMNI'
                           ? 'bg-emerald-50 text-emerald-700 border-emerald-100'
                           : 'bg-blue-50 text-blue-700 border-blue-100'
@@ -162,7 +162,7 @@ export function AdminMembersGrid({ members, promotions }: AdminMembersGridProps)
 
                 {/* Function Toggle Section */}
                 <div>
-                  <div className="flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4">
+                  <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide text-slate-400 mb-4">
                     <ShieldCheck className="w-3.5 h-3.5" />
                     Gestion des accès
                   </div>
@@ -205,7 +205,7 @@ export function AdminMembersGrid({ members, promotions }: AdminMembersGridProps)
 
                 {/* Promotion Selector */}
                 <div>
-                  <div className="flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4">
+                  <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide text-slate-400 mb-4">
                     <GraduationCap className="w-3.5 h-3.5" />
                     Changer la promotion
                   </div>

@@ -78,7 +78,7 @@ function InfoChip({ icon, label, value }: { icon: string; label: string; value: 
         <MaterialIcon name={icon} className="w-[18px] h-[18px]" />
       </div>
       <div className="min-w-0">
-        <div className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">{label}</div>
+        <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wide">{label}</div>
         <div className="text-sm font-bold text-slate-800 truncate">{value}</div>
       </div>
     </div>
@@ -140,7 +140,7 @@ function PublicPreview({ member }: { member: ProfileContentProps['member'] }) {
           {/* Identity */}
           <div className="flex-1 w-full text-center md:text-left space-y-4 min-w-0">
             <div>
-              <h2 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight break-words">
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight break-words">
                 {member.last_name?.toUpperCase()} {member.first_name}
               </h2>
               {hasJob && (
@@ -150,26 +150,26 @@ function PublicPreview({ member }: { member: ProfileContentProps['member'] }) {
 
             {/* Badges */}
             <div className="flex flex-wrap gap-2 justify-center md:justify-start">
-              <span className={`px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-sm flex items-center gap-1.5 ${member.status === 'ALUMNI' ? 'bg-emerald-500 text-white' : 'bg-[var(--aduti-primary)] text-white'}`}>
+              <span className={`px-4 py-1.5 rounded-xl text-xs font-medium uppercase tracking-wide shadow-sm flex items-center gap-1.5 ${member.status === 'ALUMNI' ? 'bg-emerald-500 text-white' : 'bg-[var(--aduti-primary)] text-white'}`}>
                 <MaterialIcon name="workspace_premium" className="w-3.5 h-3.5" />
                 {member.status === 'STUDENT' 
                   ? (member.gender === 'FEMALE' ? 'Étudiante' : 'Étudiant') 
                   : (STATUS_LABELS[member.status] ?? member.status)}
               </span>
               {member.gender && (
-                <span className="px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-slate-100 text-slate-600 border border-slate-200 flex items-center gap-1.5 shadow-sm">
+                <span className="px-4 py-1.5 rounded-xl text-xs font-medium uppercase tracking-wide bg-slate-100 text-slate-600 border border-slate-200 flex items-center gap-1.5 shadow-sm">
                   <MaterialIcon name={member.gender === 'MALE' ? 'male' : 'female'} className="w-3.5 h-3.5" />
                   {GENDER_LABELS[member.gender] ?? member.gender}
                 </span>
               )}
               {member.promotion && (
-                <span className="px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-slate-900 text-white shadow-sm flex items-center gap-1.5">
+                <span className="px-4 py-1.5 rounded-xl text-xs font-medium uppercase tracking-wide bg-slate-900 text-white shadow-sm flex items-center gap-1.5">
                   <MaterialIcon name="school" className="w-3.5 h-3.5" />
                   Promo {member.promotion.name}
                 </span>
               )}
               {member.poste && (
-                <span className="px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-amber-100/80 text-amber-700 border border-amber-200/50 flex items-center gap-1.5 shadow-sm">
+                <span className="px-4 py-1.5 rounded-xl text-xs font-medium uppercase tracking-wide bg-amber-100/80 text-amber-700 border border-amber-200/50 flex items-center gap-1.5 shadow-sm">
                   <MaterialIcon name="verified" className="w-3.5 h-3.5" />
                   {member.poste.name}
                 </span>
@@ -196,7 +196,7 @@ function PublicPreview({ member }: { member: ProfileContentProps['member'] }) {
             <div className="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center text-[var(--aduti-primary)]">
               <MaterialIcon name="contacts" className="w-[18px] h-[18px]" />
             </div>
-            <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">Coordonnées</h3>
+            <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-wide">Coordonnées</h3>
           </div>
           <div className="space-y-3">
             <InfoChip icon="mail" label="Email" value={member.email} />
@@ -212,13 +212,13 @@ function PublicPreview({ member }: { member: ProfileContentProps['member'] }) {
               <div className="w-9 h-9 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600">
                 <MaterialIcon name="work" className="w-[18px] h-[18px]" />
               </div>
-              <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">Parcours Professionnel</h3>
+              <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-wide">Parcours Professionnel</h3>
             </div>
             <div className="space-y-3">
               {member.current_job_title && <InfoChip icon="badge" label="Poste actuel" value={member.current_job_title} />}
               {member.current_job_description && (
                 <div className="p-4 bg-slate-50/80 rounded-2xl border border-slate-100">
-                  <div className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2">Missions</div>
+                  <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2">Missions</div>
                   <ExpandableText text={member.current_job_description} className="text-sm font-medium text-slate-600 leading-relaxed" />
                 </div>
               )}
@@ -235,7 +235,7 @@ function PublicPreview({ member }: { member: ProfileContentProps['member'] }) {
             <div className="w-9 h-9 rounded-xl bg-violet-50 flex items-center justify-center text-violet-500">
               <MaterialIcon name="share" className="w-[18px] h-[18px]" />
             </div>
-            <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">Réseaux & Liens</h3>
+            <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-wide">Réseaux & Liens</h3>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {member.linkedin_url && (
@@ -426,7 +426,7 @@ export function ProfileContent({ member }: ProfileContentProps) {
 
         <button
           onClick={handleLogout}
-          className="px-3 sm:px-5 py-2 sm:py-2.5 text-xs font-black text-red-500 hover:text-red-600 hover:bg-red-50 rounded-xl sm:rounded-2xl transition-all flex items-center gap-1.5 sm:gap-2 uppercase tracking-widest border border-transparent hover:border-red-100 shrink-0"
+          className="px-3 sm:px-5 py-2 sm:py-2.5 text-xs font-bold text-red-500 hover:text-red-600 hover:bg-red-50 rounded-xl sm:rounded-2xl transition-all flex items-center gap-1.5 sm:gap-2 uppercase tracking-widest border border-transparent hover:border-red-100 shrink-0"
         >
           <MaterialIcon name="logout" className="w-[16px] h-[16px] sm:w-[18px] sm:h-[18px]" />
           <span className="hidden sm:inline">Déconnexion</span>
@@ -442,7 +442,7 @@ export function ProfileContent({ member }: ProfileContentProps) {
               key={tab}
               onClick={() => handleTabChange(tab)}
               className={cn(
-                "relative px-6 py-2.5 rounded-xl text-sm font-black uppercase tracking-widest transition-all duration-300",
+                "relative px-6 py-2.5 rounded-xl text-sm font-medium uppercase tracking-wide transition-all duration-300",
                 activeTab === tab
                   ? "bg-white text-slate-900 shadow-md"
                   : "text-slate-400 hover:text-slate-600"
@@ -469,7 +469,7 @@ export function ProfileContent({ member }: ProfileContentProps) {
             type="submit"
             form="profile-form"
             disabled={isPending || isUploading}
-            className="flex items-center gap-2 px-6 py-2.5 bg-[var(--aduti-primary)] text-white text-xs font-black uppercase tracking-widest rounded-xl hover:bg-[var(--aduti-primary-hover)] transition-all shadow-lg shadow-blue-100 disabled:opacity-50 active:scale-95"
+            className="flex items-center gap-2 px-6 py-2.5 bg-[var(--aduti-primary)] text-white text-xs font-medium uppercase tracking-wide rounded-xl hover:bg-[var(--aduti-primary-hover)] transition-all shadow-lg shadow-blue-100 disabled:opacity-50 active:scale-95"
           >
             {isPending ? <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <MaterialIcon name="save" className="w-4 h-4" />}
             Mettre à jour
@@ -559,7 +559,7 @@ export function ProfileContent({ member }: ProfileContentProps) {
                           ) : (
                             <>
                               <MaterialIcon name="photo_camera" className="w-9 h-9 mb-1 shadow-sm" />
-                              <span className="text-[10px] font-black uppercase tracking-widest bg-white/20 px-3 py-1.5 rounded-lg backdrop-blur-md mt-2">Modifier</span>
+                              <span className="text-xs font-medium uppercase tracking-wide bg-white/20 px-3 py-1.5 rounded-lg backdrop-blur-md mt-2">Modifier</span>
                               <span className="text-[9px] font-bold opacity-80 mt-1">MAX 5 MB</span>
                             </>
                           )}
@@ -568,14 +568,14 @@ export function ProfileContent({ member }: ProfileContentProps) {
                     </div>
                     
                     <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
-                    <p className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-full text-[9px] font-black text-slate-400 uppercase tracking-widest text-center whitespace-nowrap">
+                    <p className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-full text-[9px] font-bold text-slate-400 uppercase tracking-widest text-center whitespace-nowrap">
                       Format JPG/PNG • Max 5 MB
                     </p>
                   </div>
 
                   <div className="space-y-4 py-2 flex-1 w-full min-w-0">
                     <div>
-                      <h2 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight break-words">
+                      <h2 className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight break-words">
                         {member.last_name?.toUpperCase()} {member.first_name}
                       </h2>
                       {member.current_job_title && (
@@ -591,18 +591,18 @@ export function ProfileContent({ member }: ProfileContentProps) {
                     </div>
 
                     <div className="flex flex-wrap gap-2 mt-4 justify-center md:justify-start">
-                      <span className={`px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-sm flex items-center gap-1.5 ${member.status === 'ALUMNI' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200/60' : 'bg-blue-50 text-blue-700 border border-blue-200/60'}`}>
+                      <span className={`px-4 py-1.5 rounded-xl text-xs font-medium uppercase tracking-wide shadow-sm flex items-center gap-1.5 ${member.status === 'ALUMNI' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200/60' : 'bg-blue-50 text-blue-700 border border-blue-200/60'}`}>
                         <MaterialIcon name="workspace_premium" className="w-3.5 h-3.5" />
                         {STATUS_LABELS[member.status] ?? member.status}
                       </span>
                       {member.gender && (
-                        <span className="px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-slate-50 text-slate-600 border border-slate-200 flex items-center gap-1.5 shadow-sm">
+                        <span className="px-4 py-1.5 rounded-xl text-xs font-medium uppercase tracking-wide bg-slate-50 text-slate-600 border border-slate-200 flex items-center gap-1.5 shadow-sm">
                           <MaterialIcon name={member.gender === 'MALE' ? 'male' : 'female'} className="w-3.5 h-3.5" />
                           {GENDER_LABELS[member.gender] ?? member.gender}
                         </span>
                       )}
                       {member.promotion && (
-                        <span className="px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-slate-900 text-white flex items-center gap-1.5 shadow-sm">
+                        <span className="px-4 py-1.5 rounded-xl text-xs font-medium uppercase tracking-wide bg-slate-900 text-white flex items-center gap-1.5 shadow-sm">
                           <MaterialIcon name="school" className="w-3.5 h-3.5" />
                           Promo {member.promotion.name}
                         </span>
@@ -626,22 +626,22 @@ export function ProfileContent({ member }: ProfileContentProps) {
                       <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center">
                         <MaterialIcon name="person" className="w-[18px] h-[18px] text-slate-500" />
                       </div>
-                      <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">Profil Public</h3>
+                      <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-wide">Profil Public</h3>
                     </div>
                     <div className="flex flex-col gap-4">
                       <div className="space-y-2">
-                        <label className="text-xs font-black text-slate-500 uppercase tracking-wider ml-1">Nom</label>
+                        <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Nom</label>
                         <input name="last_name" defaultValue={member.last_name || ''} 
                           className="w-full px-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all text-slate-700" />
                       </div>
                       <div className="space-y-2">
-                        <label className="text-xs font-black text-slate-500 uppercase tracking-wider ml-1">Prénoms</label>
+                        <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Prénoms</label>
                         <input name="first_name" defaultValue={member.first_name || ''} 
                           className="w-full px-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all text-slate-700" />
                       </div>
                     </div>
                     <div className="space-y-2">
-                      <label className="text-xs font-black text-slate-500 uppercase tracking-wider ml-1">Téléphone</label>
+                      <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Téléphone</label>
                       <div className="relative">
                         <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
                           <MaterialIcon name="call" className="w-5 h-5" />
@@ -677,26 +677,26 @@ export function ProfileContent({ member }: ProfileContentProps) {
                       <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center">
                         <MaterialIcon name="share" className="w-[18px] h-[18px] text-slate-500" />
                       </div>
-                      <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">Réseaux & Liens</h3>
+                      <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-wide">Réseaux & Liens</h3>
                     </div>
                     <div className="space-y-2">
-                      <label className="text-xs font-black text-slate-500 uppercase tracking-wider ml-1">LinkedIn</label>
+                      <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">LinkedIn</label>
                       <div className="relative">
-                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-black">in/</span>
+                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-bold">in/</span>
                         <input name="linkedin_url" defaultValue={member.linkedin_url || ''} 
                           className="w-full px-5 pl-12 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all text-slate-700" />
                       </div>
                     </div>
                     <div className="space-y-2">
-                      <label className="text-xs font-black text-slate-500 uppercase tracking-wider ml-1">GitHub</label>
+                      <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">GitHub</label>
                       <div className="relative">
-                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-black">@</span>
+                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-bold">@</span>
                         <input name="github_url" defaultValue={member.github_url || ''} 
                           className="w-full px-5 pl-10 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all text-slate-700" />
                       </div>
                     </div>
                     <div className="space-y-2">
-                      <label className="text-xs font-black text-slate-500 uppercase tracking-wider ml-1">Youtube</label>
+                      <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Youtube</label>
                       <div className="relative">
                         <div className="absolute left-4 top-1/2 -translate-y-1/2 text-red-500/60">
                           <MaterialIcon name="play_circle" className="w-5 h-5" />
@@ -706,7 +706,7 @@ export function ProfileContent({ member }: ProfileContentProps) {
                       </div>
                     </div>
                     <div className="space-y-2">
-                      <label className="text-xs font-black text-slate-500 uppercase tracking-wider ml-1">Portfolio</label>
+                      <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Portfolio</label>
                       <div className="relative">
                         <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
                           <MaterialIcon name="language" className="w-5 h-5" />
@@ -724,16 +724,16 @@ export function ProfileContent({ member }: ProfileContentProps) {
                     <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center">
                       <MaterialIcon name="work" className="w-[18px] h-[18px] text-slate-500" />
                     </div>
-                    <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">Parcours Professionnel</h3>
+                    <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-wide">Parcours Professionnel</h3>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="space-y-2">
-                      <label className="text-xs font-black text-slate-500 uppercase tracking-wider ml-1">Poste actuel</label>
+                      <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Poste actuel</label>
                       <input name="current_job_title" defaultValue={member.current_job_title || ''} 
                         className="w-full px-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all text-slate-700" />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-xs font-black text-slate-500 uppercase tracking-wider ml-1">Description du poste</label>
+                      <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Description du poste</label>
                       <input name="current_job_description" defaultValue={member.current_job_description || ''} 
                         className="w-full px-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all text-slate-700" />
                     </div>
@@ -746,7 +746,7 @@ export function ProfileContent({ member }: ProfileContentProps) {
                     <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center">
                       <MaterialIcon name="article" className="w-[18px] h-[18px] text-slate-500" />
                     </div>
-                    <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">Bio & Présentation</h3>
+                    <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-wide">Bio & Présentation</h3>
                   </div>
                   <div className="space-y-2">
                     <textarea name="description" defaultValue={member.description || ''} rows={5}
@@ -756,7 +756,7 @@ export function ProfileContent({ member }: ProfileContentProps) {
 
                 <div className="pt-10 flex flex-col sm:flex-row items-center justify-between gap-8 border-t border-slate-100">
                   <button type="submit" disabled={isPending || isUploading}
-                    className="w-full sm:w-auto px-12 py-5 bg-[var(--aduti-primary)] text-white font-black rounded-2xl hover:bg-[var(--aduti-primary-hover)] transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest text-sm flex items-center justify-center gap-3">
+                    className="w-full sm:w-auto px-12 py-5 bg-[var(--aduti-primary)] text-white font-bold rounded-2xl hover:bg-[var(--aduti-primary-hover)] transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest text-sm flex items-center justify-center gap-3">
                     {isPending ? <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <MaterialIcon name="save" className="w-5 h-5" />}
                     {isPending ? 'Enregistrement...' : 'Mettre à jour'}
                   </button>
@@ -776,7 +776,7 @@ export function ProfileContent({ member }: ProfileContentProps) {
                 <MaterialIcon name="warning" className="h-8 w-8" />
               </div>
               <DialogHeader className="p-0 border-none">
-                <DialogTitle className="text-2xl font-black text-slate-900 tracking-tight whitespace-nowrap">Modifications non enregistrées</DialogTitle>
+                <DialogTitle className="text-2xl font-bold text-slate-900 tracking-tight whitespace-nowrap">Modifications non enregistrées</DialogTitle>
               </DialogHeader>
               <p className="text-slate-500 font-medium leading-relaxed">
                 Vous avez apporté des changements à votre profil qui ne sont pas encore enregistrés. Voulez-vous vraiment quitter ?
@@ -786,14 +786,14 @@ export function ProfileContent({ member }: ProfileContentProps) {
             <div className="flex flex-col sm:flex-row gap-3 mt-8">
               <Button
                 variant="outline"
-                className="flex-1 h-12 rounded-xl text-slate-600 font-black uppercase tracking-widest text-[10px] border-slate-200 hover:bg-slate-50"
+                className="flex-1 h-12 rounded-xl text-slate-600 font-medium uppercase tracking-wide text-[10px] border-slate-200 hover:bg-slate-50"
                 onClick={() => setIsTabModalOpen(false)}
               >
                 Rester ici
               </Button>
               <Button
                 variant="destructive"
-                className="flex-1 h-12 rounded-xl bg-red-600 hover:bg-red-700 text-white font-black uppercase tracking-widest text-[10px] shadow-lg shadow-red-200"
+                className="flex-1 h-12 rounded-xl bg-red-600 hover:bg-red-700 text-white font-medium uppercase tracking-wide text-[10px] shadow-lg shadow-red-200"
                 onClick={confirmTabChange}
               >
                 Quitter sans sauver

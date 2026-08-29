@@ -40,8 +40,8 @@ export default async function RegistrationsAdminPage() {
             <p className="text-sm text-slate-500">Validez ou refusez les nouvelles demandes d&apos;inscription.</p>
           </div>
           <div className="bg-white px-3 py-1.5 rounded-xl border border-slate-100 shadow-sm flex flex-col items-center min-w-[80px]">
-            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">En attente</span>
-            <span className="text-xl font-black text-slate-900 leading-none">{registrations.length}</span>
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-1">En attente</span>
+            <span className="text-xl font-bold text-slate-900 leading-none">{registrations.length}</span>
           </div>
         </div>
 

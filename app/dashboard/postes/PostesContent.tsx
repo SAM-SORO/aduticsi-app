@@ -116,7 +116,7 @@ export function PostesContent({ initialPostes }: PostesContentProps) {
           {isLoading ? (
             <div className="flex flex-col items-center justify-center py-24 text-slate-400 gap-4">
               <Loader2 className="w-8 h-8 animate-spin text-[var(--aduti-primary)]" />
-              <p className="font-bold uppercase tracking-widest text-[10px]">Chargement des postes...</p>
+              <p className="font-medium uppercase tracking-wide text-[10px]">Chargement des postes...</p>
             </div>
           ) : filteredPostes.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-24 text-slate-400 text-center px-10">
@@ -133,8 +133,8 @@ export function PostesContent({ initialPostes }: PostesContentProps) {
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="bg-slate-50/50">
-                    <th className="px-8 py-4 text-[11px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100">Nom du Poste</th>
-                    <th className="px-8 py-4 text-[11px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100">Créé le</th>
+                    <th className="px-8 py-4 text-[11px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100">Nom du Poste</th>
+                    <th className="px-8 py-4 text-[11px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100">Créé le</th>
                     <th className="px-8 py-4 text-right border-b border-slate-100"></th>
                   </tr>
                 </thead>

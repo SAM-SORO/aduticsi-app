@@ -282,7 +282,7 @@ export function ActivityForm({ activity, promotions, categories: initialCategori
                 </Button>
               </div>
               {imagePreview && (
-                <div className="absolute top-2 left-2 bg-[var(--aduti-primary)] text-white text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider shadow-lg">
+                <div className="absolute top-2 left-2 bg-[var(--aduti-primary)] text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow-lg">
                   Nouveau
                 </div>
               )}

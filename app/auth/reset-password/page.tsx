@@ -72,7 +72,7 @@ export default function ResetPasswordPage() {
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white shadow-xl shadow-blue-100 text-[var(--aduti-primary)] mb-2 border border-slate-100 ring-4 ring-white/50">
             <MaterialIcon name="security" className="w-10 h-10" />
           </div>
-          <h1 className="text-3xl font-black text-slate-900 tracking-tight">Nouveau mot de passe</h1>
+          <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Nouveau mot de passe</h1>
           <p className="text-slate-500 font-bold text-sm uppercase tracking-wider">
             Sécurisation du compte
           </p>
@@ -147,7 +147,7 @@ export default function ResetPasswordPage() {
 
               <button
                 disabled={isPending}
-                className="w-full flex justify-center items-center gap-3 py-4 px-6 rounded-2xl shadow-xl shadow-blue-100 text-sm font-black text-white bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] focus:outline-none transition-all active:scale-[0.98] uppercase tracking-widest disabled:opacity-50 mt-4"
+                className="w-full flex justify-center items-center gap-3 py-4 px-6 rounded-2xl shadow-xl shadow-blue-100 text-sm font-bold text-white bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] focus:outline-none transition-all active:scale-[0.98] uppercase tracking-widest disabled:opacity-50 mt-4"
               >
                 {isPending ? (
                   <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />

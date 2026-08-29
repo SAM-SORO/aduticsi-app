@@ -96,7 +96,7 @@ export function RegistrationsList({ registrations: initialRegistrations }: Regis
                 {m.gender === "FEMALE" && <MaterialIcon name="female" className="w-4 h-4 text-rose-400 shrink-0" />}
                 {m.gender === "MALE" && <MaterialIcon name="male" className="w-4 h-4 text-blue-400 shrink-0" />}
                 <span
-                  className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${
+                  className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium uppercase tracking-wide ${
                     m.status === "ALUMNI"
                       ? "bg-emerald-50 text-emerald-600 border border-emerald-100"
                       : "bg-blue-50 text-blue-600 border border-blue-100"

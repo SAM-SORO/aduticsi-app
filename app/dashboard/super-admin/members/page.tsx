@@ -89,8 +89,8 @@ export default async function MembersAdminPage({
           </div>
           <div className="flex items-center gap-3">
              <div className="bg-white px-3 py-1.5 rounded-xl border border-slate-100 shadow-sm flex flex-col items-center min-w-[80px]">
-              <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Total</span>
-              <span className="text-xl font-black text-slate-900 leading-none">{totalCount}</span>
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-1">Total</span>
+              <span className="text-xl font-bold text-slate-900 leading-none">{totalCount}</span>
             </div>
           </div>
         </div>

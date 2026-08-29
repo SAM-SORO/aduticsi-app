@@ -52,7 +52,7 @@ function ConfirmEmailContent() {
           </div>
         </div>
         
-        <h1 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight font-display">
+        <h1 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight font-display">
           Confirmation requise
         </h1>
         
@@ -64,7 +64,7 @@ function ConfirmEmailContent() {
           <button 
             onClick={handleConfirm}
             disabled={isPending || !token_hash}
-            className="w-full flex justify-center items-center gap-3 py-4 px-6 rounded-2xl shadow-xl shadow-blue-100 text-sm font-black text-white bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest"
+            className="w-full flex justify-center items-center gap-3 py-4 px-6 rounded-2xl shadow-xl shadow-blue-100 text-sm font-bold text-white bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest"
           >
             {isPending ? (
               <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />

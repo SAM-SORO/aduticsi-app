@@ -73,9 +73,9 @@ export default function LoginPage() {
           </div>
           <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--aduti-primary)]/5 border border-[var(--aduti-primary)]/20 backdrop-blur-sm mb-2">
             <MaterialIcon name="lock" className="w-[15px] h-[15px] text-[var(--aduti-primary)]" />
-            <span className="text-[11px] font-black text-[var(--aduti-primary)] tracking-widest uppercase">Uniquement réservé aux membres</span>
+            <span className="text-[11px] font-bold text-[var(--aduti-primary)] tracking-widest uppercase">Uniquement réservé aux membres</span>
           </div>
-          {/* <h1 className="text-3xl font-black text-slate-900 tracking-tight font-display">
+          {/* <h1 className="text-3xl font-bold text-slate-900 tracking-tight font-display">
             Se connecter
           </h1> */}
         </div>
@@ -178,7 +178,7 @@ export default function LoginPage() {
                 <button
                   type="submit"
                   disabled={isPending}
-                  className="w-full flex justify-center items-center gap-3 py-4 px-6 rounded-2xl shadow-xl shadow-blue-100 text-sm font-black text-white bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest"
+                  className="w-full flex justify-center items-center gap-3 py-4 px-6 rounded-2xl shadow-xl shadow-blue-100 text-sm font-bold text-white bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest"
                 >
                   {isPending ? (
                      <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />

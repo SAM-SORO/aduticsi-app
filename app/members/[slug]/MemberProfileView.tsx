@@ -56,7 +56,7 @@ function InfoChip({ icon, label, value }: { icon: string; label: string; value: 
         <MaterialIcon name={icon} className="w-[18px] h-[18px]" />
       </div>
       <div className="min-w-0">
-        <div className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">{label}</div>
+        <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wide">{label}</div>
         <div className="text-sm font-bold text-slate-800 truncate">{value}</div>
       </div>
     </div>
@@ -114,7 +114,7 @@ export function MemberProfileView({ member, currentUserId }: MemberProfileViewPr
           {/* Identity Section */}
           <div className="space-y-4 py-2 flex-1 w-full min-w-0">
             <div>
-              <h2 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight break-words">
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight break-words">
                 {member.last_name?.toUpperCase()} {member.first_name}
               </h2>
               {member.current_job_title && (
@@ -130,26 +130,26 @@ export function MemberProfileView({ member, currentUserId }: MemberProfileViewPr
             </div>
 
             <div className="flex flex-wrap gap-2 mt-4 justify-center md:justify-start">
-              <span className={`px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-sm flex items-center gap-1.5 ${member.status === 'ALUMNI' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200/60' : 'bg-blue-50 text-blue-700 border border-blue-200/60'}`}>
+              <span className={`px-4 py-1.5 rounded-xl text-xs font-medium uppercase tracking-wide shadow-sm flex items-center gap-1.5 ${member.status === 'ALUMNI' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200/60' : 'bg-blue-50 text-blue-700 border border-blue-200/60'}`}>
                 <MaterialIcon name="workspace_premium" className="w-3.5 h-3.5" />
                 {member.status === 'STUDENT' 
                   ? (member.gender === 'FEMALE' ? 'Étudiante' : 'Étudiant') 
                   : (STATUS_LABELS[member.status] ?? member.status)}
               </span>
               {member.gender && (
-                <span className="px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-slate-50 text-slate-600 border border-slate-200 flex items-center gap-1.5 shadow-sm">
+                <span className="px-4 py-1.5 rounded-xl text-xs font-medium uppercase tracking-wide bg-slate-50 text-slate-600 border border-slate-200 flex items-center gap-1.5 shadow-sm">
                   <MaterialIcon name={member.gender === 'MALE' ? 'male' : 'female'} className="w-3.5 h-3.5" />
                   {GENDER_LABELS[member.gender] ?? member.gender}
                 </span>
               )}
               {member.promotion && (
-                <span className="px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-slate-900 text-white flex items-center gap-1.5 shadow-sm">
+                <span className="px-4 py-1.5 rounded-xl text-xs font-medium uppercase tracking-wide bg-slate-900 text-white flex items-center gap-1.5 shadow-sm">
                   <MaterialIcon name="school" className="w-3.5 h-3.5" />
                   Promo {member.promotion.name}
                 </span>
               )}
               {member.poste && (
-                <span className="px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-amber-50 text-amber-700 border border-amber-200/60 flex items-center gap-1.5 shadow-sm">
+                <span className="px-4 py-1.5 rounded-xl text-xs font-medium uppercase tracking-wide bg-amber-50 text-amber-700 border border-amber-200/60 flex items-center gap-1.5 shadow-sm">
                   <MaterialIcon name="badge" className="w-3.5 h-3.5" />
                   {member.poste.name}
                 </span>
@@ -182,7 +182,7 @@ export function MemberProfileView({ member, currentUserId }: MemberProfileViewPr
             <div className="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center text-[var(--aduti-primary)]">
               <MaterialIcon name="contacts" className="w-[18px] h-[18px]" />
             </div>
-            <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">Coordonnées</h3>
+            <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-wide">Coordonnées</h3>
           </div>
           <div className="space-y-3">
             <InfoChip icon="mail" label="Email" value={member.email} />
@@ -198,13 +198,13 @@ export function MemberProfileView({ member, currentUserId }: MemberProfileViewPr
               <div className="w-9 h-9 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600">
                 <MaterialIcon name="work" className="w-[18px] h-[18px]" />
               </div>
-              <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">Parcours Professionnel</h3>
+              <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-wide">Parcours Professionnel</h3>
             </div>
             <div className="space-y-3">
               {member.current_job_title && <InfoChip icon="badge" label="Poste actuel" value={member.current_job_title} />}
               {member.current_job_description && (
                 <div className="p-4 bg-slate-50/80 rounded-2xl border border-slate-100">
-                  <div className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2">Missions</div>
+                  <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2">Missions</div>
                   <ExpandableText text={member.current_job_description} className="text-sm font-medium text-slate-600 leading-relaxed" />
                 </div>
               )}
@@ -221,7 +221,7 @@ export function MemberProfileView({ member, currentUserId }: MemberProfileViewPr
             <div className="w-9 h-9 rounded-xl bg-violet-50 flex items-center justify-center text-violet-500">
               <MaterialIcon name="share" className="w-[18px] h-[18px]" />
             </div>
-            <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">Réseaux & Liens</h3>
+            <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-wide">Réseaux & Liens</h3>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {member.linkedin_url && (

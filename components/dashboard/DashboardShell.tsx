@@ -109,7 +109,7 @@ export function DashboardShell({
             >
               {isCollapsed ? <PanelLeftOpen className="size-5" /> : <PanelLeftClose className="size-5" />}
             </button>
-            <h2 className="text-sm font-bold text-slate-500 uppercase tracking-widest truncate">
+            <h2 className="truncate text-base font-semibold text-slate-900">
               {title}
             </h2>
           </div>
@@ -122,12 +122,12 @@ export function DashboardShell({
                     {member.first_name?.slice(0, 1).toUpperCase() || "A"}
                   </div>
                   <div className="hidden md:block text-left">
-                    <p className="text-xs font-bold text-slate-900 leading-none mb-0.5">
+                    <p className="mb-0.5 text-sm font-medium leading-none text-slate-900">
                       {member.first_name && member.last_name 
                         ? `${member.last_name.toUpperCase()} ${member.first_name}` 
                         : member.first_name || "Super Admin"}
                     </p>
-                    <p className="text-[10px] text-slate-500 font-medium leading-none uppercase tracking-wider">
+                    <p className="text-xs leading-none text-slate-500">
                       {member.role === "SUPER_ADMIN" ? "Administrateur" : member.role}
                     </p>
                   </div>

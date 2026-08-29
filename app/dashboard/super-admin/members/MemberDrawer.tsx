@@ -109,7 +109,7 @@ function formatDate(d: Date) {
 
 function SectionLabel({ icon: Icon, label }: { icon: React.ElementType; label: string }) {
   return (
-    <div className="flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3">
+    <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide text-slate-400 mb-3">
       <Icon className="w-3.5 h-3.5" />
       {label}
     </div>
@@ -334,7 +334,7 @@ export function MemberDrawer({ member, postes, promotions, onClose, canEdit = tr
                         <h3 className="text-xl font-bold text-slate-900 truncate">{member.last_name?.toUpperCase()} {member.first_name}</h3>
                         <p className="text-sm text-slate-500 truncate">{member.email}</p>
                         <div className="flex flex-wrap gap-1.5 mt-2">
-                          <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider border ${
+                          <span className={`px-2 py-0.5 rounded-full text-xs font-medium uppercase tracking-wide border ${
                             member.status === 'ALUMNI'
                               ? 'bg-emerald-50 text-emerald-700 border-emerald-100'
                               : 'bg-blue-50 text-blue-700 border-blue-100'
@@ -344,7 +344,7 @@ export function MemberDrawer({ member, postes, promotions, onClose, canEdit = tr
                               : STATUS_LABELS[member.status]}
                           </span>
                           {member.role !== 'MEMBER' && (
-                            <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-rose-50 text-rose-600 border border-rose-100">
+                            <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium uppercase tracking-wide bg-rose-50 text-rose-600 border border-rose-100">
                               <ShieldCheck className="w-3 h-3" />
                               {ROLE_LABELS[member.role]}
                             </span>
@@ -621,7 +621,7 @@ function InfoTile({
 }) {
   return (
     <div className="bg-slate-50 rounded-xl p-3 border border-slate-100">
-      <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">
+      <div className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-slate-400 mb-1">
         <Icon className="w-3 h-3" />
         {label}
       </div>

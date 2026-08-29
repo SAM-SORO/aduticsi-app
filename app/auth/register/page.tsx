@@ -151,7 +151,7 @@ function RegisterContent() {
                   <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-blue-50 mb-4 ring-8 ring-blue-50/50">
                     <MaterialIcon name="vpn_key" className="w-12 h-12 text-[var(--aduti-primary)]" />
                   </div>
-                  <h2 className="text-2xl font-black text-slate-800 mb-3 font-display">Accès sur invitation</h2>
+                  <h2 className="text-2xl font-bold text-slate-800 mb-3 font-display">Accès sur invitation</h2>
                   <p className="text-sm font-medium text-slate-500 max-w-sm mx-auto leading-relaxed">
                     Seuls les membres de l&apos;association peuvent s&apos;enregistrer. Veuillez saisir votre code ou lien d&apos;invitation.
                   </p>
@@ -177,7 +177,7 @@ function RegisterContent() {
                   <button
                     type="submit"
                     disabled={isPending}
-                    className="w-full flex justify-center items-center gap-3 py-4 px-6 rounded-2xl shadow-xl shadow-blue-100 text-sm font-black text-white bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest"
+                    className="w-full flex justify-center items-center gap-3 py-4 px-6 rounded-2xl shadow-xl shadow-blue-100 text-sm font-bold text-white bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest"
                   >
                     {isPending ? (
                       <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />

@@ -152,7 +152,7 @@ export function PublicationForm({ publication, activityId, onSuccess }: Publicat
                   {imagePreviews[idx] && (
                     <Image src={imagePreviews[idx]} alt="" fill className="object-cover" unoptimized />
                   )}
-                  <div className="absolute top-1 left-1 bg-[var(--aduti-primary)] text-white text-[8px] font-black px-1.5 py-0.5 rounded-full uppercase tracking-wide shadow z-10">
+                  <div className="absolute top-1 left-1 bg-[var(--aduti-primary)] text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-wide shadow z-10">
                     Nouveau
                   </div>
                   <button

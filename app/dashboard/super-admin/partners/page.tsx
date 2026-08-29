@@ -51,8 +51,8 @@ export default async function SuperAdminPartnersPage() {
               <Building2 className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Total</p>
-              <p className="text-xl font-black text-slate-900 leading-none">{partners.length}</p>
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-1">Total</p>
+              <p className="text-xl font-bold text-slate-900 leading-none">{partners.length}</p>
             </div>
           </div>
         </div>
@@ -107,11 +107,11 @@ export default async function SuperAdminPartnersPage() {
                       <td className="px-8 py-5">
                         <div className="flex justify-center">
                           {p.is_active ? (
-                            <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-50 text-emerald-600 border border-emerald-100">
+                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium uppercase tracking-wide bg-emerald-50 text-emerald-600 border border-emerald-100">
                               Actif
                             </span>
                           ) : (
-                            <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-slate-50 text-slate-400 border border-slate-100">
+                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium uppercase tracking-wide bg-slate-50 text-slate-400 border border-slate-100">
                               Masqué
                             </span>
                           )}

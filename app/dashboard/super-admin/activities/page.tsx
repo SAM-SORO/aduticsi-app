@@ -162,7 +162,7 @@ export default async function ActivitiesAdminPage({
                   </div>
                   <p className="text-slate-400 text-sm font-medium">Cliquez pour voir les activités</p>
                   {promo.is_current_promo && (
-                    <span className="absolute top-4 right-4 px-3 py-1 bg-emerald-50 text-emerald-600 text-[10px] font-black uppercase rounded-full">Actuelle</span>
+                    <span className="absolute top-4 right-4 px-3 py-1 bg-emerald-50 text-emerald-600 text-[10px] font-bold uppercase rounded-full">Actuelle</span>
                   )}
                 </a>
               ))}
@@ -214,7 +214,7 @@ export default async function ActivitiesAdminPage({
                       >
                         <div className="flex items-center gap-2 px-4 py-2 bg-slate-50 rounded-2xl border border-slate-100 group-hover/link:bg-blue-50 group-hover/link:border-[var(--aduti-primary)]/20 transition-all">
                           <MaterialIcon name="article" className="w-5 h-5 text-[var(--aduti-primary)]" />
-                          <span className="text-xs font-black text-slate-700 uppercase tracking-widest">{act._count.publications} Publications</span>
+                          <span className="text-xs font-bold text-slate-700 uppercase tracking-widest">{act._count.publications} Publications</span>
                         </div>
                         <div className="size-11 bg-slate-900 text-white rounded-2xl flex items-center justify-center group-hover/link:bg-[var(--aduti-primary)] group-hover/link:rotate-[-5deg] transition-all shadow-xl shadow-slate-200">
                           <ChevronRight className="w-6 h-6" />

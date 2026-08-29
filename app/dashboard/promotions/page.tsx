@@ -91,11 +91,11 @@ export default async function PromotionsPage() {
                       <td className="px-6 py-5">
                         <div className="flex justify-center">
                           {p.is_current_promo ? (
-                            <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-50 text-emerald-600 border border-emerald-100">
+                            <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium uppercase tracking-wide bg-emerald-50 text-emerald-600 border border-emerald-100">
                               Active
                             </span>
                           ) : (
-                            <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-slate-50 text-slate-400 border border-slate-100">
+                            <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium uppercase tracking-wide bg-slate-50 text-slate-400 border border-slate-100">
                               Archive
                             </span>
                           )}

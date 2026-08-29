@@ -41,7 +41,7 @@ export default async function ActivityDetailPage({
         <div className="max-w-5xl mx-auto">
           <Link
             href="/activities"
-            className="inline-flex items-center gap-2 text-slate-400 hover:text-[var(--aduti-primary)] text-xs font-bold uppercase tracking-widest transition-colors mb-6 group"
+            className="inline-flex items-center gap-2 text-slate-400 hover:text-[var(--aduti-primary)] text-xs font-medium uppercase tracking-wide transition-colors mb-6 group"
           >
             <MaterialIcon name="arrow_back" className="w-[18px] h-[18px] group-hover:-translate-x-1 transition-transform" />
             Retour aux activités
@@ -49,7 +49,7 @@ export default async function ActivityDetailPage({
           
           <div className="space-y-4 md:space-y-6">
             <div className="flex flex-wrap items-center gap-3">
-              <span className="bg-[var(--aduti-primary)]/10 text-[var(--aduti-primary)] px-3 py-1 text-[10px] font-black uppercase tracking-[0.12em] rounded-full border border-[var(--aduti-primary)]/20">
+              <span className="bg-[var(--aduti-primary)]/10 text-[var(--aduti-primary)] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em] rounded-full border border-[var(--aduti-primary)]/20">
                 Promotion {activity.promotion.name}
               </span>
               {activity.category && (() => {
@@ -57,14 +57,14 @@ export default async function ActivityDetailPage({
                 return (
                   <a
                     href={`/activities?category=${activity.category.id}`}
-                    className={`inline-flex items-center gap-1.5 px-3 py-1 text-[10px] font-black uppercase tracking-[0.12em] rounded-full border hover:opacity-80 transition-opacity ${style.bg} ${style.text} ${style.border}`}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em] rounded-full border hover:opacity-80 transition-opacity ${style.bg} ${style.text} ${style.border}`}
                   >
                     <MaterialIcon name={style.icon} className="w-3.5 h-3.5" />
                     {activity.category.name}
                   </a>
                 );
               })()}
-              <span className="text-slate-400 text-[11px] font-bold uppercase tracking-widest flex items-center gap-1.5 px-3 py-1 bg-slate-50 rounded-full border border-slate-100">
+              <span className="text-slate-400 text-[11px] font-medium uppercase tracking-wide flex items-center gap-1.5 px-3 py-1 bg-slate-50 rounded-full border border-slate-100">
                 <MaterialIcon name="calendar_month" className="w-4 h-4" />
                 {new Date(activity.date || activity.created_at).toLocaleDateString("fr-FR", {
                   day: "numeric",
@@ -111,7 +111,7 @@ export default async function ActivityDetailPage({
                   className="bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)]"
                 >
                   <div className="p-6 md:p-8 space-y-5">
-                    <div className="flex items-center gap-3 text-slate-400 text-[11px] font-black uppercase tracking-widest">
+                    <div className="flex items-center gap-3 text-slate-400 text-xs font-medium uppercase tracking-wide">
                       <MaterialIcon name="calendar_month" className="w-4 h-4 text-[var(--aduti-primary)]" />
                       {new Date(pub.date || pub.created_at).toLocaleDateString("fr-FR", {
                         day: "numeric",
