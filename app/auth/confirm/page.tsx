@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { MaterialIcon } from '@/components/icons/material-icon';
 import { verifyEmailOtp } from '@/app/auth/actions';
+import { TechBackdrop } from "@/components/tech-backdrop";
 
 function ConfirmEmailContent() {
   const searchParams = useSearchParams();
@@ -35,10 +36,7 @@ function ConfirmEmailContent() {
   return (
     <main className="min-h-[calc(100vh-80px)] flex flex-col items-center justify-center px-4 py-8 bg-slate-50 relative overflow-hidden">
       {/* Background decorations */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-80">
-        <div className="absolute top-[-20%] left-[-10%] w-[70vw] h-[70vw] bg-[radial-gradient(circle,rgba(19,37,75,0.15)_0%,transparent_60%)] rounded-full blur-[80px] animate-pulse-slow mix-blend-multiply" />
-        <div className="absolute bottom-[-20%] right-[-10%] w-[60vw] h-[60vw] bg-[radial-gradient(circle,rgba(37,99,235,0.12)_0%,transparent_60%)] rounded-full blur-[100px] animate-pulse-slow animation-delay-4000 mix-blend-multiply" />
-      </div>
+        <TechBackdrop variant="grid" />
 
       <div className="w-full max-w-[480px] z-10 text-center space-y-6 bg-white/70 backdrop-blur-xl p-8 rounded-2xl shadow-[0_30px_60px_-15px_rgba(0,0,0,0.08)] border border-slate-200/60 relative overflow-hidden">
         {/* Loading progress bar */}

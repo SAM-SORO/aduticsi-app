@@ -2,15 +2,13 @@
 
 import Link from 'next/link'
 import { MaterialIcon } from "@/components/icons/material-icon";
+import { TechBackdrop } from "@/components/tech-backdrop";
 
 export default function VerifyEmailPage() {
   return (
     <main className="min-h-[100dvh] flex items-center justify-center p-4 relative overflow-hidden bg-slate-50 font-sans">
       {/* Animated Background */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-80">
-        <div className="absolute top-[-20%] left-[-10%] w-[70vw] h-[70vw] bg-[radial-gradient(circle,rgba(19,37,75,0.15)_0%,transparent_60%)] rounded-full blur-[80px] animate-pulse-slow mix-blend-multiply" />
-        <div className="absolute bottom-[-20%] right-[-10%] w-[60vw] h-[60vw] bg-[radial-gradient(circle,rgba(37,99,235,0.12)_0%,transparent_60%)] rounded-full blur-[100px] animate-pulse-slow animation-delay-4000 mix-blend-multiply" />
-      </div>
+        <TechBackdrop variant="grid" />
 
       <div className="w-full max-w-[500px] z-10 flex flex-col gap-6">
         <div className="text-center space-y-2 flex flex-col items-center">

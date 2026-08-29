@@ -2,15 +2,13 @@
 
 import Link from 'next/link'
 import { MaterialIcon } from "@/components/icons/material-icon";
+import { TechBackdrop } from "@/components/tech-backdrop";
 
 export default function rejectedPage() {
   return (
     <main className="min-h-[100dvh] flex items-center justify-center p-4 relative overflow-hidden bg-slate-50 font-sans">
       {/* Animated Background */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-80">
-        <div className="absolute top-[-20%] left-[-10%] w-[70vw] h-[70vw] bg-[radial-gradient(circle,rgba(19,37,75,0.15)_0%,transparent_60%)] rounded-full blur-[80px] animate-pulse-slow mix-blend-multiply" />
-        <div className="absolute bottom-[-20%] right-[-10%] w-[60vw] h-[60vw] bg-[radial-gradient(circle,rgba(37,99,235,0.12)_0%,transparent_60%)] rounded-full blur-[100px] animate-pulse-slow animation-delay-4000 mix-blend-multiply" />
-      </div>
+        <TechBackdrop variant="grid" />
 
       <div className="w-full max-w-[500px] z-10 flex flex-col gap-6">
         <div className="text-center space-y-2 flex flex-col items-center">
@@ -19,7 +17,7 @@ export default function rejectedPage() {
           </div>
           <h1 className="text-3xl font-black text-slate-900 tracking-tight">Demande d&apos;enregistrement refusée</h1>
           <p className="text-slate-500 font-bold text-sm uppercase tracking-widest bg-blue-50 px-3 py-1 rounded-full border border-blue-100/50">
-            L&apos;enregistrement sur la plateforme requière d&apos;être un membre reconnu de l'association
+            L&apos;enregistrement sur la plateforme requière d&apos;être un membre reconnu de l’association
           </p>
         </div>
 
@@ -31,7 +29,7 @@ export default function rejectedPage() {
               <div className="bg-slate-50 rounded-2xl p-6 border border-dashed border-slate-200">
                 <p className="text-xs text-slate-400 font-bold uppercase tracking-wider mb-2">Conseil</p>
                 <p className="text-xs text-slate-500 leading-normal italic">
-                  Vous pouvez contacter le support pour avoir plus d'informations.
+                  Vous pouvez contacter le support pour avoir plus d’informations.
                   <Link href="/contact" >
                   <span className="text-slate-700 font-bold italic underline"> Contacter le support</span>
                   </Link>

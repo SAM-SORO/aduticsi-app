@@ -12,6 +12,7 @@ import { login } from "@/app/auth/actions";
 import { MaterialIcon } from "@/components/icons/material-icon";
 import { cn } from "@/lib/utils";
 import { BackButton } from "@/components/ui/back-button";
+import { TechBackdrop } from "@/components/tech-backdrop";
 
 export default function LoginPage() {
   const [isPending, startTransition] = useTransition();
@@ -53,11 +54,7 @@ export default function LoginPage() {
       </div>
 
       {/* Animated Background Canvas */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-80">
-        <div className="absolute top-[-20%] left-[-10%] w-[70vw] h-[70vw] bg-[radial-gradient(circle,rgba(19,37,75,0.15)_0%,transparent_60%)] rounded-full blur-[80px] animate-pulse-slow mix-blend-multiply" />
-        <div className="absolute bottom-[-20%] right-[-10%] w-[60vw] h-[60vw] bg-[radial-gradient(circle,rgba(37,99,235,0.12)_0%,transparent_60%)] rounded-full blur-[100px] animate-pulse-slow animation-delay-4000 mix-blend-multiply" />
-        <div className="absolute top-[30%] left-[20%] w-[40vw] h-[40vw] bg-[radial-gradient(circle,rgba(59,130,246,0.1)_0%,transparent_60%)] rounded-full blur-[60px] animate-float mix-blend-multiply" />
-      </div>
+        <TechBackdrop variant="grid" />
       
       {/* Subtle grid overlay */}
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0ZerrblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgTSAxMCAwIEwgMTAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgwLDAsMCwwLjAyKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-60 z-0"></div>
