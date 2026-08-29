@@ -1,0 +1,26 @@
+<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px;">
+  <div style="text-align: center; margin-bottom: 20px;">
+    <img src="https://supabase.aduticsi.com/storage/v1/object/public/branding-aduti/logo_association.jpeg" alt="ADUTI" style="width: 100px; height: 100px; border-radius: 50%; object-fit: contain; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" />
+  </div>
+
+  <h2 style="color: #0f172a; text-align: center; margin-bottom: 24px;">Confirmez votre adresse email</h2>
+
+  <p style="color: #475569; font-size: 16px; line-height: 1.5; margin-bottom: 32px;">
+    Bienvenue a l'ADUTI. Pour activer votre compte membre, confirmez votre
+    adresse email en cliquant sur le bouton ci-dessous.
+  </p>
+
+  <div style="text-align: center; margin-bottom: 32px;">
+    <a href="{{ .ConfirmationURL }}" style="background-color: #13254b; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">Confirmer mon compte</a>
+  </div>
+
+  <p style="color: #64748b; font-size: 13px; line-height: 1.5; word-break: break-all; margin-bottom: 24px;">
+    Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :<br>
+    {{ .ConfirmationURL }}
+  </p>
+
+  <p style="color: #94a3b8; font-size: 14px; text-align: center; border-top: 1px solid #e2e8f0; padding-top: 20px;">
+    Si vous n'avez pas demande la creation de ce compte, vous pouvez ignorer cet email.<br>
+    L'equipe ADUTI INP-HB.
+  </p>
+</div>
