@@ -171,7 +171,7 @@ export function ActivityForm({ activity, promotions, categories: initialCategori
                 id="categoryId"
                 value={formData.categoryId || ""}
                 onChange={handleCategoryChange}
-                className="block w-full pl-4 pr-10 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 focus:outline-none focus:bg-white focus:ring-4 focus:ring-[var(--aduti-primary)]/10 focus:border-[var(--aduti-primary)] transition-all text-sm font-medium appearance-none"
+                className="block w-full pl-4 pr-10 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 focus:outline-none focus:bg-white focus:ring-4 focus:ring-(--aduti-primary)/10 focus:border-aduti-primary transition-all text-sm font-medium appearance-none"
               >
                 <option value="">— Sélectionner un type (optionnel) —</option>
                 {categories.map((cat) => (
@@ -201,7 +201,7 @@ export function ActivityForm({ activity, promotions, categories: initialCategori
                 type="button"
                 onClick={handleCreateCategory}
                 disabled={isCreatingCategory}
-                className="h-10 px-4 rounded-xl bg-[var(--aduti-primary)] text-white text-sm font-bold shrink-0"
+                className="h-10 px-4 rounded-xl bg-aduti-primary text-white text-sm font-bold shrink-0"
               >
                 {isCreatingCategory ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
               </Button>
@@ -282,7 +282,7 @@ export function ActivityForm({ activity, promotions, categories: initialCategori
                 </Button>
               </div>
               {imagePreview && (
-                <div className="absolute top-2 left-2 bg-[var(--aduti-primary)] text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow-lg">
+                <div className="absolute top-2 left-2 bg-aduti-primary text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow-lg">
                   Nouveau
                 </div>
               )}
@@ -291,12 +291,12 @@ export function ActivityForm({ activity, promotions, categories: initialCategori
             <button
               type="button"
               onClick={() => document.getElementById("image-upload")?.click()}
-              className="w-full border-2 border-dashed border-slate-200 rounded-2xl h-32 flex flex-col items-center justify-center gap-2 hover:border-[var(--aduti-primary)]/40 hover:bg-[var(--aduti-primary)]/5/30 transition-all group"
+              className="w-full border-2 border-dashed border-slate-200 rounded-2xl h-32 flex flex-col items-center justify-center gap-2 hover:border-(--aduti-primary)/40 hover:bg-(--aduti-primary)/5/30 transition-all group"
             >
               <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-white group-hover:shadow-sm transition-all">
-                <Upload className="w-5 h-5 text-slate-400 group-hover:text-[var(--aduti-primary)] transition-colors" />
+                <Upload className="w-5 h-5 text-slate-400 group-hover:text-aduti-primary transition-colors" />
               </div>
-              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest group-hover:text-[var(--aduti-primary)] transition-colors">
+              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest group-hover:text-aduti-primary transition-colors">
                 Ajouter une photo illustrative
               </span>
             </button>
@@ -316,7 +316,7 @@ export function ActivityForm({ activity, promotions, categories: initialCategori
         <Button
           type="submit"
           disabled={isPending || isNewCategory}
-          className="bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] text-white px-8 h-12 rounded-xl"
+          className="bg-aduti-primary hover:bg-aduti-primary-hover text-white px-8 h-12 rounded-xl"
         >
           {isPending ? (
             <>

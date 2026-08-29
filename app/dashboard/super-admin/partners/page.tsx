@@ -47,7 +47,7 @@ export default async function SuperAdminPartnersPage() {
             <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Partenaires</h2>
           </div>
           <div className="bg-white px-4 py-2 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-3">
-            <div className="size-10 bg-blue-50 rounded-xl flex items-center justify-center text-[var(--aduti-primary)]">
+            <div className="size-10 bg-blue-50 rounded-xl flex items-center justify-center text-aduti-primary">
               <Building2 className="w-5 h-5" />
             </div>
             <div>
@@ -60,7 +60,7 @@ export default async function SuperAdminPartnersPage() {
         {/* Form Section */}
         <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
           <h3 className="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
-            <Plus className="w-5 h-5 text-[var(--aduti-primary)]" />
+            <Plus className="w-5 h-5 text-aduti-primary" />
             Ajouter un partenaire
           </h3>
           <PartnerForm />
@@ -100,7 +100,7 @@ export default async function SuperAdminPartnersPage() {
                         </div>
                       </td>
                       <td className="px-8 py-5">
-                        <span className="text-base font-bold text-slate-900 group-hover:text-[var(--aduti-primary)] transition-colors">
+                        <span className="text-base font-bold text-slate-900 group-hover:text-aduti-primary transition-colors">
                           {p.name}
                         </span>
                       </td>

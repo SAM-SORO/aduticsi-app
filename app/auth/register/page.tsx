@@ -18,7 +18,7 @@ type RegisterMode = "choice" | "invitation" | "request";
 
 export default function RegisterPage() {
   return (
-    <Suspense fallback={<div className="min-h-[100dvh] bg-slate-50 flex items-center justify-center">Chargement...</div>}>
+    <Suspense fallback={<div className="min-h-dvh bg-slate-50 flex items-center justify-center">Chargement...</div>}>
       <RegisterContent />
     </Suspense>
   );
@@ -112,34 +112,34 @@ function RegisterContent() {
         <button
           type="button"
           onClick={() => setMode("invitation")}
-          className="group flex flex-col items-start gap-3 p-5 bg-white hover:bg-[var(--aduti-primary)]/5 border border-slate-200 hover:border-[var(--aduti-primary)]/40 rounded-2xl transition-all duration-150 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--aduti-primary)]"
+          className="group flex flex-col items-start gap-3 p-5 bg-white hover:bg-(--aduti-primary)/5 border border-slate-200 hover:border-(--aduti-primary)/40 rounded-2xl transition-all duration-150 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-aduti-primary"
         >
-          <div className="w-10 h-10 rounded-xl bg-slate-50 group-hover:bg-[var(--aduti-primary)] border border-slate-100 group-hover:border-[var(--aduti-primary)] flex items-center justify-center transition-all duration-150">
-            <MaterialIcon name="vpn_key" className="w-5 h-5 text-[var(--aduti-primary)] group-hover:text-white transition-colors duration-150" />
+          <div className="w-10 h-10 rounded-xl bg-slate-50 group-hover:bg-aduti-primary border border-slate-100 group-hover:border-aduti-primary flex items-center justify-center transition-all duration-150">
+            <MaterialIcon name="vpn_key" className="w-5 h-5 text-aduti-primary group-hover:text-white transition-colors duration-150" />
           </div>
           <div>
             <p className="text-lg font-bold text-slate-800 mb-0.5">Lien d&apos;invitation</p>
             <p className="text-sm text-slate-500 leading-relaxed">Collez votre code ou lien reçu par email.</p>
           </div>
           
-          <MaterialIcon name="arrow_forward" className="w-4 h-4 text-slate-300 group-hover:text-[var(--aduti-primary)] transition-colors mt-auto" />
+          <MaterialIcon name="arrow_forward" className="w-4 h-4 text-slate-300 group-hover:text-aduti-primary transition-colors mt-auto" />
         </button>
 
         {/* Demande d'enregistrement */}
         <button
           type="button"
           onClick={() => setMode("request")}
-          className="group flex flex-col items-start gap-3 p-5 bg-white hover:bg-[var(--aduti-primary)]/5 border border-slate-200 hover:border-[var(--aduti-primary)]/40 rounded-2xl transition-all duration-150 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--aduti-primary)]"
+          className="group flex flex-col items-start gap-3 p-5 bg-white hover:bg-(--aduti-primary)/5 border border-slate-200 hover:border-(--aduti-primary)/40 rounded-2xl transition-all duration-150 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-aduti-primary"
         >
-          <div className="w-10 h-10 rounded-xl bg-slate-50 group-hover:bg-[var(--aduti-primary)] border border-slate-100 group-hover:border-[var(--aduti-primary)] flex items-center justify-center transition-all duration-150">
-            <MaterialIcon name="edit_note" className="w-5 h-5 text-[var(--aduti-primary)] group-hover:text-white transition-colors duration-150" />
+          <div className="w-10 h-10 rounded-xl bg-slate-50 group-hover:bg-aduti-primary border border-slate-100 group-hover:border-aduti-primary flex items-center justify-center transition-all duration-150">
+            <MaterialIcon name="edit_note" className="w-5 h-5 text-aduti-primary group-hover:text-white transition-colors duration-150" />
           </div>
           <div>
             <p className="text-lg font-bold text-slate-800 mb-0.5">Faire une demande</p>
             <p className="text-sm text-slate-500 leading-relaxed">Remplissez le formulaire et attendez la validation.</p>
           </div>
       
-          <MaterialIcon name="arrow_forward" className="w-4 h-4 text-slate-300 group-hover:text-[var(--aduti-primary)] transition-colors mt-auto" />
+          <MaterialIcon name="arrow_forward" className="w-4 h-4 text-slate-300 group-hover:text-aduti-primary transition-colors mt-auto" />
         </button>
       </div>
               )
@@ -149,7 +149,7 @@ function RegisterContent() {
               <div className="py-4">
                 <div className="text-center mb-8">
                   <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-blue-50 mb-4 ring-8 ring-blue-50/50">
-                    <MaterialIcon name="vpn_key" className="w-12 h-12 text-[var(--aduti-primary)]" />
+                    <MaterialIcon name="vpn_key" className="w-12 h-12 text-aduti-primary" />
                   </div>
                   <h2 className="text-2xl font-bold text-slate-800 mb-3 font-display">Accès sur invitation</h2>
                   <p className="text-sm font-medium text-slate-500 max-w-sm mx-auto leading-relaxed">
@@ -170,14 +170,14 @@ function RegisterContent() {
                       onChange={(e) => setTokenInput(e.target.value)}
                       disabled={isPending}
                       placeholder="Collez le lien ici..."
-                      className="block w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 focus:outline-none focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-[var(--aduti-primary)] transition-all text-sm font-medium shadow-inner disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="block w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 focus:outline-none focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-aduti-primary transition-all text-sm font-medium shadow-inner disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                   </div>
                   
                   <button
                     type="submit"
                     disabled={isPending}
-                    className="w-full flex justify-center items-center gap-3 py-4 px-6 rounded-2xl shadow-xl shadow-blue-100 text-sm font-bold text-white bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest"
+                    className="w-full flex justify-center items-center gap-3 py-4 px-6 rounded-2xl shadow-xl shadow-blue-100 text-sm font-bold text-white bg-aduti-primary hover:bg-aduti-primary-hover focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest"
                   >
                     {isPending ? (
                       <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -190,7 +190,7 @@ function RegisterContent() {
                 <div className="mt-8 text-center pt-8 border-t border-slate-50">
                   <p className="text-xs font-bold text-slate-400  tracking-wider">
                     Vous n&apos;avez pas de lien d&apos;invitation ? {" "}
-                    <Link href="/contact" className="font-semibold text-slate-500 hover:text-[var(--aduti-primary)] transition-colors underline decoration-transparent hover:decoration-[var(--aduti-primary)] underline-offset-4 tracking-wider">
+                    <Link href="/contact" className="font-semibold text-slate-500 hover:text-aduti-primary transition-colors underline decoration-transparent hover:decoration-aduti-primary underline-offset-4 tracking-wider">
                       contacter le support
                     </Link>
                   </p>
@@ -201,7 +201,7 @@ function RegisterContent() {
           <>
               <div className="mb-8 flex items-center gap-4 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-slate-600">
                 <div className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-white">
-                  <MaterialIcon name="info" className="size-5 text-[var(--aduti-primary)]" />
+                  <MaterialIcon name="info" className="size-5 text-aduti-primary" />
                 </div>
                 <p className="text-sm leading-relaxed">
                   {mode === "request"
@@ -222,7 +222,7 @@ function RegisterContent() {
                     Déjà inscrit ?{" "}
                     <Link
                       href="/auth/login"
-                      className="font-semibold text-slate-500 hover:text-[var(--aduti-primary)] transition-colors underline decoration-transparent hover:decoration-[var(--aduti-primary)] underline-offset-4 tracking-wider"
+                      className="font-semibold text-slate-500 hover:text-aduti-primary transition-colors underline decoration-transparent hover:decoration-aduti-primary underline-offset-4 tracking-wider"
                     >
                       Se connecter
                     </Link>
@@ -236,12 +236,12 @@ function RegisterContent() {
 
 
   return (
-    <main className="min-h-[100dvh] flex items-center justify-center p-4 relative overflow-hidden bg-slate-50 font-sans">
+    <main className="min-h-dvh flex items-center justify-center p-4 relative overflow-hidden bg-slate-50 font-sans">
       {/* Bouton de retour en haut à gauche */}
       {mode === "choice" ? 
         ( <>
         <div className="absolute top-6 left-6 sm:top-8 sm:left-8 z-50">
-        <BackButton className="bg-white/80 backdrop-blur-md px-4 py-2 rounded-full border border-slate-200/50 shadow-sm hover:border-[var(--aduti-primary)]/50 hover:bg-white" />
+        <BackButton className="bg-white/80 backdrop-blur-md px-4 py-2 rounded-full border border-slate-200/50 shadow-sm hover:border-(--aduti-primary)/50 hover:bg-white" />
       </div>
       </>
     )
@@ -249,7 +249,7 @@ function RegisterContent() {
         <div className="absolute top-6 left-6 sm:top-8 sm:left-8 z-50">
           <button 
               onClick={() => setMode("choice")}
-              className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-[var(--aduti-primary)] transition-colors w-fit focus:outline-none bg-white/80 backdrop-blur-md rounded-full border border-slate-200/50 shadow-sm hover:border-[var(--aduti-primary)]/50 hover:bg-white"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-aduti-primary transition-colors w-fit focus:outline-none bg-white/80 backdrop-blur-md rounded-full border border-slate-200/50 shadow-sm hover:border-(--aduti-primary)/50 hover:bg-white"
             >
               <ArrowLeft className="w-4 h-4" />
               Retour
@@ -262,7 +262,7 @@ function RegisterContent() {
       <div className="absolute top-6 right-6 sm:top-8 sm:right-8 z-50">
         <Link 
            href="/"
-           className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-[var(--aduti-primary)] transition-colors w-fit focus:outline-none bg-white/80 backdrop-blur-md px-4 py-2 rounded-full border border-slate-200/50 shadow-sm hover:border-[var(--aduti-primary)]/50 hover:bg-white"
+           className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-aduti-primary transition-colors w-fit focus:outline-none bg-white/80 backdrop-blur-md px-4 py-2 rounded-full border border-slate-200/50 shadow-sm hover:border-(--aduti-primary)/50 hover:bg-white"
          >
            <Home className="w-4 h-4" />
            <span className="hidden sm:inline">Accueil</span>
@@ -284,7 +284,7 @@ function RegisterContent() {
             "absolute top-0 left-0 right-0 h-1.5 bg-slate-100 overflow-hidden z-20 transition-opacity duration-300",
             isPending ? "opacity-100" : "opacity-0"
           )}>
-            <div className="h-full bg-[var(--aduti-primary)] animate-shimmer w-full origin-left" />
+            <div className="h-full bg-aduti-primary animate-shimmer w-full origin-left" />
           </div>
 
           <div className="p-6 md:p-8 lg:p-12">

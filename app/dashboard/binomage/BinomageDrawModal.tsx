@@ -172,7 +172,7 @@ export function BinomageDrawModal({
       <div className="relative w-full max-w-3xl bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[96vh]">
 
         {/* ── Header ── */}
-        <div className="flex items-center justify-between px-8 py-5 bg-gradient-to-r from-[var(--aduti-primary)] to-indigo-600 text-white shrink-0">
+        <div className="flex items-center justify-between px-8 py-5 bg-linear-to-r from-aduti-primary to-indigo-600 text-white shrink-0">
           <div>
             <h2 className="text-2xl font-extrabold tracking-tight">🎉 Tirage du Binomage</h2>
             <p className="text-sm text-white/70 mt-0.5">Promotion {promoCombo}</p>
@@ -217,14 +217,14 @@ export function BinomageDrawModal({
                   isSuspense
                     ? "bg-slate-100 animate-pulse scale-90"
                     : isRevealed
-                    ? "bg-[var(--aduti-primary)]/10 scale-110"
+                    ? "bg-(--aduti-primary)/10 scale-110"
                     : "bg-slate-100"
                 }`}
               >
                 🔗
               </div>
               {isRevealed && !isSuspense && (
-                <p className="text-[10px] font-bold text-[var(--aduti-primary)] uppercase tracking-widest animate-bounce">
+                <p className="text-[10px] font-bold text-aduti-primary uppercase tracking-widest animate-bounce">
                   Binôme !
                 </p>
               )}
@@ -275,7 +275,7 @@ export function BinomageDrawModal({
             /* Bouton "Terminer" — affiché seulement au clic, laisse l'admin montrer le résultat */
             <button
               onClick={handleTerminer}
-              className="flex items-center gap-3 px-10 py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-extrabold text-lg rounded-2xl shadow-xl hover:shadow-2xl active:scale-95 transition-all"
+              className="flex items-center gap-3 px-10 py-4 bg-linear-to-r from-green-500 to-emerald-600 text-white font-extrabold text-lg rounded-2xl shadow-xl hover:shadow-2xl active:scale-95 transition-all"
             >
               <PartyPopper className="w-6 h-6" />
               Terminer le binomage
@@ -284,7 +284,7 @@ export function BinomageDrawModal({
             <button
               onClick={handleDraw}
               disabled={isSuspense || isSaving}
-              className="flex items-center gap-3 px-10 py-4 bg-gradient-to-r from-[var(--aduti-primary)] to-indigo-600 text-white font-extrabold text-lg rounded-2xl shadow-xl hover:shadow-2xl active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
+              className="flex items-center gap-3 px-10 py-4 bg-linear-to-r from-aduti-primary to-indigo-600 text-white font-extrabold text-lg rounded-2xl shadow-xl hover:shadow-2xl active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
             >
               <Shuffle
                 className={`w-6 h-6 ${isSuspense ? "animate-spin" : ""}`}
@@ -335,7 +335,7 @@ function BigAvatarCard({
 
       {/* Grand cercle avatar */}
       <div
-        className={`relative w-36 h-36 sm:w-48 sm:h-48 rounded-full overflow-hidden border-4 border-white shadow-2xl ring-4 ${ringColor} bg-gradient-to-br ${gradient} transition-all duration-500 scale-100 group/avatar ${
+        className={`relative w-36 h-36 sm:w-48 sm:h-48 rounded-full overflow-hidden border-4 border-white shadow-2xl ring-4 ${ringColor} bg-linear-to-br ${gradient} transition-all duration-500 scale-100 group/avatar ${
           isSuspense ? "animate-pulse scale-95" : isVisible ? "scale-100" : "scale-90 opacity-60"
         }`}
       >
@@ -360,7 +360,7 @@ function BigAvatarCard({
                 />
               </button>
             </DialogTrigger>
-            <DialogContent className="max-w-[80vw] md:max-w-fit border-none bg-transparent shadow-none p-0 flex justify-center items-center h-[80vh] z-[100]">
+            <DialogContent className="max-w-[80vw] md:max-w-fit border-none bg-transparent shadow-none p-0 flex justify-center items-center h-[80vh] z-100">
               <DialogTitle className="sr-only">Photo de {member.last_name.toUpperCase()} {member.first_name}</DialogTitle>
               <Image 
                 src={member.photo_url} 
@@ -400,7 +400,7 @@ function BigAvatarCard({
               {member!.last_name.toUpperCase()} {member!.first_name}
             </p>
             {promoName && (
-              <span className="inline-block mt-1 text-[10px] bg-[var(--aduti-primary)]/10 text-[var(--aduti-primary)] px-2 py-0.5 rounded-full font-semibold uppercase tracking-wider">
+              <span className="inline-block mt-1 text-[10px] bg-(--aduti-primary)/10 text-aduti-primary px-2 py-0.5 rounded-full font-semibold uppercase tracking-wider">
                 {promoName}
               </span>
             )}

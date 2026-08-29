@@ -47,7 +47,7 @@ export function ActivityTableActions({ activity, promotions, categories }: Activ
     >
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
         <DialogTrigger asChild>
-          <Button variant="ghost" size="icon" className="h-8 w-8 rounded-xl text-slate-400 hover:text-[var(--aduti-primary-hover)] hover:bg-[var(--aduti-primary)]/5 transition-colors">
+          <Button variant="ghost" size="icon" className="h-8 w-8 rounded-xl text-slate-400 hover:text-aduti-primary-hover hover:bg-(--aduti-primary)/5 transition-colors">
             <Edit2 className="h-4 w-4" />
           </Button>
         </DialogTrigger>

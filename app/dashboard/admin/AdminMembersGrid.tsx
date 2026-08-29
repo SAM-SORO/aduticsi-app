@@ -71,7 +71,7 @@ export function AdminMembersGrid({ members, promotions }: AdminMembersGridProps)
               key={m.id}
               type="button"
               onClick={() => setSelectedMember(m)}
-              className="group flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-4 text-left transition-colors duration-200 hover:border-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--aduti-primary)]"
+              className="group flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-4 text-left transition-colors duration-200 hover:border-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-aduti-primary"
             >
               {/* Avatar */}
               <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-slate-100 text-sm font-semibold text-slate-600">
@@ -140,7 +140,7 @@ export function AdminMembersGrid({ members, promotions }: AdminMembersGridProps)
               <div className="flex-1 overflow-y-auto p-6 space-y-6">
                 {/* Identity */}
                 <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[var(--aduti-primary)]/10 to-[var(--aduti-primary)]/5 flex items-center justify-center text-[var(--aduti-primary)] font-bold text-2xl shrink-0">
+                  <div className="w-16 h-16 rounded-2xl bg-linear-to-br from-(--aduti-primary)/10 to-(--aduti-primary)/5 flex items-center justify-center text-aduti-primary font-bold text-2xl shrink-0">
                     {getInitials(selectedMember.first_name, selectedMember.last_name)}
                   </div>
                   <div>
@@ -190,7 +190,7 @@ export function AdminMembersGrid({ members, promotions }: AdminMembersGridProps)
                         className={`shrink-0 px-3 py-2 rounded-xl text-xs font-bold transition-all disabled:opacity-50 ${
                           selectedMember.function === 'GESTION_ACTIVITES'
                             ? 'bg-red-50 text-red-600 hover:bg-red-100 border border-red-100'
-                            : 'bg-[var(--aduti-primary)] text-white hover:bg-[var(--aduti-primary-hover)] shadow-sm'
+                            : 'bg-aduti-primary text-white hover:bg-aduti-primary-hover shadow-sm'
                         }`}
                       >
                         {isPending
@@ -213,7 +213,7 @@ export function AdminMembersGrid({ members, promotions }: AdminMembersGridProps)
                     value={selectedMember.promo_id}
                     disabled={isPending}
                     onChange={(e) => handlePromoChange(selectedMember.id, e.target.value)}
-                    className="w-full h-11 bg-slate-50 border border-slate-100 rounded-xl px-4 text-sm font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-[var(--aduti-primary)] focus:bg-white transition-all disabled:opacity-50"
+                    className="w-full h-11 bg-slate-50 border border-slate-100 rounded-xl px-4 text-sm font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-aduti-primary focus:bg-white transition-all disabled:opacity-50"
                   >
                     {promotions.map((p) => (
                       <option key={p.id} value={p.id}>

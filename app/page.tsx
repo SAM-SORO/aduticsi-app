@@ -46,9 +46,9 @@ export default async function Home() {
             </p>
 
             <h1 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-bold leading-[1.1] tracking-tight text-slate-900 text-balance md:text-6xl">
-              Association des <span className="text-[var(--aduti-primary)]">DUT</span> et{" "}
-              <span className="text-[var(--aduti-primary)]">DTS</span> en{" "}
-              <span className="text-[var(--aduti-secondary)]">Informatique</span>
+              Association des <span className="text-aduti-primary">DUT</span> et{" "}
+              <span className="text-aduti-primary">DTS</span> en{" "}
+              <span className="text-aduti-secondary">Informatique</span>
             </h1>
 
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-600">
@@ -58,7 +58,7 @@ export default async function Home() {
 
             <div className="mt-10 flex flex-col gap-4 sm:flex-row">
               <Link href="/about">
-                <Button className="h-14 w-full rounded-2xl bg-[var(--aduti-primary)] px-8 font-bold text-white transition-colors hover:bg-[var(--aduti-primary-hover)] sm:w-auto">
+                <Button className="h-14 w-full rounded-2xl bg-aduti-primary px-8 font-bold text-white transition-colors hover:bg-aduti-primary-hover sm:w-auto">
                   {"Découvrir l'ADUTI"}
                   <MaterialIcon name="arrow_forward" className="ml-2 size-5" />
                 </Button>
@@ -140,7 +140,7 @@ export default async function Home() {
                 },
               ].map((item) => (
                 <div key={item.title} className="flex gap-6 py-8 first:pt-0 last:pb-0">
-                  <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[var(--aduti-primary)]/10 text-[var(--aduti-primary)]">
+                  <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-(--aduti-primary)/10 text-aduti-primary">
                     <MaterialIcon name={item.icon} className="size-6" />
                   </div>
                   <div>
@@ -163,7 +163,7 @@ export default async function Home() {
             <div className="space-y-10">
               <div className="space-y-4">
                 <h2 className="font-[family-name:var(--font-display)] text-3xl font-bold leading-tight tracking-tight text-slate-900 md:text-4xl">
-                  {"Nos piliers d'"}<span className="text-[var(--aduti-primary)]">action</span>
+                  {"Nos piliers d'"}<span className="text-aduti-primary">action</span>
                 </h2>
                 <p className="text-slate-600 text-lg leading-relaxed max-w-xl">
                   {"L'ADUTI a pour mission de promouvoir l'informatique au sein de l'INP-HB et au-delà, "}
@@ -180,10 +180,10 @@ export default async function Home() {
                   "Faire rayonner le savoir-faire ivoirien mondialement",
                 ].map((item, i) => (
                   <li key={i} className="flex items-center gap-4 text-slate-700 group cursor-default">
-                    <span className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-[var(--aduti-primary)] transition-colors group-hover:bg-[var(--aduti-primary)] group-hover:text-white">
+                    <span className="shrink-0 w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-aduti-primary transition-colors group-hover:bg-aduti-primary group-hover:text-white">
                       <MaterialIcon name="check" className="w-4 h-4" />
                     </span>
-                    <span className="font-semibold text-slate-800 transition-colors group-hover:text-[var(--aduti-primary)]">{item}</span>
+                    <span className="font-semibold text-slate-800 transition-colors group-hover:text-aduti-primary">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -191,7 +191,7 @@ export default async function Home() {
             <div>
               <div className="bg-white rounded-3xl p-6 sm:p-8 lg:p-14 space-y-8 lg:space-y-12 border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
                 <div className="flex items-start gap-6">
-                  <div className="flex size-16 shrink-0 items-center justify-center rounded-2xl bg-[var(--aduti-primary)]/10 text-[var(--aduti-primary)]">
+                  <div className="flex size-16 shrink-0 items-center justify-center rounded-2xl bg-(--aduti-primary)/10 text-aduti-primary">
                     <MaterialIcon name="school" className="w-8 h-8" />
                   </div>
                   <div className="space-y-2">
@@ -203,7 +203,7 @@ export default async function Home() {
                 </div>
                 <div className="h-px bg-slate-100 w-full" />
                 <div className="flex items-start gap-6">
-                  <div className="flex size-16 shrink-0 items-center justify-center rounded-2xl bg-[var(--aduti-primary)]/10 text-[var(--aduti-primary)]">
+                  <div className="flex size-16 shrink-0 items-center justify-center rounded-2xl bg-(--aduti-primary)/10 text-aduti-primary">
                     <MaterialIcon name="diversity_3" className="w-8 h-8" />
                   </div>
                   <div className="space-y-2">
@@ -226,7 +226,7 @@ export default async function Home() {
 >
           <div className="text-center mb-16 space-y-4">
             <h2 className="font-[family-name:var(--font-display)] text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
-              Nos <span className="text-[var(--aduti-primary)]">Partenaires</span>
+              Nos <span className="text-aduti-primary">Partenaires</span>
             </h2>
                         <p className="text-slate-500 max-w-2xl mx-auto font-medium">
               Nous collaborons avec les leaders engagés dans le développement numérique.
@@ -288,14 +288,14 @@ export default async function Home() {
               const href = catId ? `/activities?category=${catId}` : "/activities";
               return (
               <div key={i} className="group relative bg-white rounded-3xl p-4 border border-slate-100 shadow-[0_15px_40px_-20px_rgba(0,0,0,0.05)] transition-all duration-700 hover:shadow-[0_40px_80px_-30px_rgba(0,0,0,0.12)] hover:-translate-y-2">
-                <div className="aspect-[4/5] relative rounded-3xl overflow-hidden mb-8">
+                <div className="aspect-4/5 relative rounded-3xl overflow-hidden mb-8">
                   <Image
                     src={activity.img}
                     alt={activity.title}
                     fill
                     className="object-cover transition-transform duration-1000 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900 flex flex-col justify-end p-8 text-white">
+                  <div className="absolute inset-0 bg-linear-to-t from-slate-900 flex flex-col justify-end p-8 text-white">
                     <p className="mb-2 text-xs font-medium uppercase tracking-wide text-white/70">{activity.cat}</p>
                     <h3 className="text-3xl font-bold mb-4">{activity.title}</h3>
                     <p className="text-sm leading-relaxed text-slate-200">
@@ -305,8 +305,8 @@ export default async function Home() {
                 </div>
                 <div className="px-6 pb-6">
                   <Link href={href} className="flex items-center justify-between group/link">
-                    <span className="font-bold text-slate-900 group-hover/link:text-[var(--aduti-primary)] transition-colors">{activity.linkLabel}</span>
-                    <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center group-hover/link:bg-[var(--aduti-primary)] group-hover/link:text-white transition-all">
+                    <span className="font-bold text-slate-900 group-hover/link:text-aduti-primary transition-colors">{activity.linkLabel}</span>
+                    <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center group-hover/link:bg-aduti-primary group-hover/link:text-white transition-all">
                       <MaterialIcon name="east" className="w-5 h-5" />
                     </div>
                   </Link>
@@ -325,7 +325,7 @@ export default async function Home() {
         <FadeInScroll className="max-w-4xl mx-auto text-center relative z-10 space-y-12">
           <div className="space-y-6">
             <h2 className="font-[family-name:var(--font-display)] text-3xl font-bold tracking-tight text-slate-900 md:text-5xl">
-              En Savoir <span className="text-[var(--aduti-primary)]">Plus</span>
+              En Savoir <span className="text-aduti-primary">Plus</span>
             </h2>
             <p className="text-slate-600 text-base sm:text-xl font-medium max-w-2xl mx-auto leading-relaxed">
               {"Vous Voulez en Savoir plus sur l'ADUTI et son histoire ?"}
@@ -334,7 +334,7 @@ export default async function Home() {
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-4">
             <Link href="/about">
-              <Button className="h-14 w-full rounded-2xl bg-[var(--aduti-primary)] px-10 font-bold text-white transition-colors hover:bg-[var(--aduti-primary-hover)] sm:w-auto">
+              <Button className="h-14 w-full rounded-2xl bg-aduti-primary px-10 font-bold text-white transition-colors hover:bg-aduti-primary-hover sm:w-auto">
                 En savoir plus
               </Button>
             </Link>

@@ -54,7 +54,7 @@ export function PosteForm({ poste, onSuccess }: PosteFormProps) {
         <Button
           type="submit"
           disabled={isPending}
-          className="bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] text-white min-w-[120px]"
+          className="bg-aduti-primary hover:bg-aduti-primary-hover text-white min-w-[120px]"
         >
           {isPending ? (
             <>

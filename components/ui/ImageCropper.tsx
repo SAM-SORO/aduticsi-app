@@ -96,7 +96,7 @@ export function ImageCropper({ image, onCropComplete, onCancel, circular = true 
   }
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+    <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
       <div className="bg-white rounded-2xl w-full max-w-xl overflow-hidden shadow-2xl flex flex-col">
         <div className="p-4 border-b flex items-center justify-between">
           <h3 className="font-bold text-slate-800">Recadrer votre photo</h3>
@@ -136,7 +136,7 @@ export function ImageCropper({ image, onCropComplete, onCancel, circular = true 
               step={0.1}
               aria-labelledby="Zoom"
               onChange={(e) => setZoom(Number(e.target.value))}
-              className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-[var(--aduti-primary)]"
+              className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-aduti-primary"
             />
           </div>
 
@@ -153,7 +153,7 @@ export function ImageCropper({ image, onCropComplete, onCancel, circular = true 
             </button>
             <button
               onClick={handleDone}
-              className="flex-1 px-6 py-2 bg-[var(--aduti-primary)] text-white font-bold rounded-xl hover:bg-[var(--aduti-primary-hover)] transition-all shadow-lg shadow-[var(--aduti-primary)]/20 flex items-center justify-center gap-2"
+              className="flex-1 px-6 py-2 bg-aduti-primary text-white font-bold rounded-xl hover:bg-aduti-primary-hover transition-all shadow-lg shadow-(--aduti-primary)/20 flex items-center justify-center gap-2"
             >
               <Check className="w-5 h-5" />
               Appliquer

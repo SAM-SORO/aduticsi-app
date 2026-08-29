@@ -26,7 +26,7 @@ export function MemberCard({ member }: { member: MemberCardData }) {
   const role = member.poste?.name ?? member.current_job_title;
 
   return (
-    <article className="group relative flex flex-col rounded-2xl border border-slate-200 bg-white p-6 transition-colors duration-200 hover:border-[var(--aduti-primary)]/40 hover:bg-slate-50/60 focus-within:border-[var(--aduti-primary)]">
+    <article className="group relative flex flex-col rounded-2xl border border-slate-200 bg-white p-6 transition-colors duration-200 hover:border-(--aduti-primary)/40 hover:bg-slate-50/60 focus-within:border-aduti-primary">
       <div className="flex items-start gap-5">
         <div className="relative size-20 shrink-0 overflow-hidden rounded-2xl bg-slate-100">
           {member.photo_url ? (
@@ -49,14 +49,14 @@ export function MemberCard({ member }: { member: MemberCardData }) {
             {/* Lien étiré : toute la carte est cliquable sans imbriquer de liens. */}
             <Link
               href={href}
-              className="outline-none after:absolute after:inset-0 after:rounded-2xl focus-visible:after:ring-2 focus-visible:after:ring-[var(--aduti-primary)]"
+              className="outline-none after:absolute after:inset-0 after:rounded-2xl focus-visible:after:ring-2 focus-visible:after:ring-aduti-primary"
             >
               {fullName}
             </Link>
           </h3>
           {role ? (
             <p
-              className={`mt-1 line-clamp-2 text-sm ${member.poste ? "font-medium text-[var(--aduti-primary)]" : "text-slate-500"}`}
+              className={`mt-1 line-clamp-2 text-sm ${member.poste ? "font-medium text-aduti-primary" : "text-slate-500"}`}
               title={role}
             >
               {role}
@@ -94,7 +94,7 @@ export function MemberCard({ member }: { member: MemberCardData }) {
             </a>
           )}
         </div>
-        <span className="flex items-center gap-1.5 text-sm font-medium text-slate-500 transition-colors group-hover:text-[var(--aduti-primary)]">
+        <span className="flex items-center gap-1.5 text-sm font-medium text-slate-500 transition-colors group-hover:text-aduti-primary">
           Voir le profil
           <MaterialIcon
             name="arrow_forward"

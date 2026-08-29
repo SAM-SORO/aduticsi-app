@@ -104,7 +104,7 @@ export function MessageInbox({ messages, total, currentPage, totalPages, query }
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Rechercher nom, email, sujet..."
-            className="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-200 text-sm focus:border-[var(--aduti-primary)] focus:ring-[var(--aduti-primary)] transition-all bg-white"
+            className="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-200 text-sm focus:border-aduti-primary focus:ring-aduti-primary transition-all bg-white"
           />
         </form>
 
@@ -186,7 +186,7 @@ export function MessageInbox({ messages, total, currentPage, totalPages, query }
                     if (input) input.indeterminate = someSelected
                   }}
                   onChange={(e) => toggleAll(e.target.checked)}
-                  className="rounded border-slate-300 text-[var(--aduti-primary)] focus:ring-[var(--aduti-primary)] w-4 h-4 cursor-pointer"
+                  className="rounded border-slate-300 text-aduti-primary focus:ring-aduti-primary w-4 h-4 cursor-pointer"
                 />
               </div>
               <div className="w-[180px] shrink-0">Expéditeur</div>
@@ -203,7 +203,7 @@ export function MessageInbox({ messages, total, currentPage, totalPages, query }
                 <div 
                   key={m.id} 
                   className={`flex items-start sm:items-center px-4 py-3 cursor-pointer group transition-colors border-l-4 ${
-                    checked ? 'bg-blue-50/50 border-[var(--aduti-primary)]' : 
+                    checked ? 'bg-blue-50/50 border-aduti-primary' : 
                     isReading ? 'bg-slate-50 border-slate-300' : 'bg-white border-transparent hover:bg-slate-50'
                   }`}
                   onClick={() => setReadingMessage(m)}
@@ -213,7 +213,7 @@ export function MessageInbox({ messages, total, currentPage, totalPages, query }
                       type="checkbox"
                       checked={checked}
                       onChange={(e) => toggleSelection(m.id, e.target.checked)}
-                      className="rounded border-slate-300 text-[var(--aduti-primary)] focus:ring-[var(--aduti-primary)] w-4 h-4 cursor-pointer mt-1"
+                      className="rounded border-slate-300 text-aduti-primary focus:ring-aduti-primary w-4 h-4 cursor-pointer mt-1"
                     />
                   </div>
                   
@@ -315,19 +315,19 @@ export function MessageInbox({ messages, total, currentPage, totalPages, query }
                 {/* Meta details */}
                 <div className="flex items-start justify-between">
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-lg font-bold text-[var(--aduti-primary)] shrink-0">
+                    <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-lg font-bold text-aduti-primary shrink-0">
                       {getInitials(readingMessage.name)}
                     </div>
                     <div>
                       <h4 className="text-base font-bold text-slate-900">{readingMessage.name}</h4>
                       <div className="text-sm text-slate-500 mt-0.5 space-y-1">
                         {readingMessage.email && (
-                          <a href={`mailto:${readingMessage.email}`} className="flex items-center gap-1 hover:text-[var(--aduti-primary)]">
+                          <a href={`mailto:${readingMessage.email}`} className="flex items-center gap-1 hover:text-aduti-primary">
                             <MaterialIcon name="mail" className="w-4 h-4" /> {readingMessage.email}
                           </a>
                         )}
                         {readingMessage.phone && (
-                          <a href={`tel:${readingMessage.phone}`} className="flex items-center gap-1 hover:text-[var(--aduti-primary)]">
+                          <a href={`tel:${readingMessage.phone}`} className="flex items-center gap-1 hover:text-aduti-primary">
                             <MaterialIcon name="call" className="w-4 h-4" /> {readingMessage.phone}
                           </a>
                         )}

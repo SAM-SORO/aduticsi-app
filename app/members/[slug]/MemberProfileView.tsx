@@ -52,7 +52,7 @@ function SocialLink({ href, icon, label, color }: { href: string; icon: string; 
 function InfoChip({ icon, label, value }: { icon: string; label: string; value: string }) {
   return (
     <div className="flex items-center gap-4 p-4 bg-slate-50/80 rounded-2xl border border-slate-100">
-      <div className="w-10 h-10 rounded-xl bg-white border border-slate-100 flex items-center justify-center text-slate-500 flex-shrink-0">
+      <div className="w-10 h-10 rounded-xl bg-white border border-slate-100 flex items-center justify-center text-slate-500 shrink-0">
         <MaterialIcon name={icon} className="w-[18px] h-[18px]" />
       </div>
       <div className="min-w-0">
@@ -77,11 +77,11 @@ export function MemberProfileView({ member, currentUserId }: MemberProfileViewPr
         animate="show"
         className="relative bg-white rounded-3xl border border-slate-100 shadow-xl overflow-hidden"
       >
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-blue-50/60 via-slate-50/30 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-linear-to-bl from-blue-50/60 via-slate-50/30 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
         
         <div className="relative flex flex-col md:flex-row gap-8 md:gap-12 items-center md:items-start text-center md:text-left z-10 p-8 md:p-12">
           {/* Avatar Section */}
-          <div className="relative group flex-shrink-0">
+          <div className="relative group shrink-0">
             <div className="relative w-36 h-36 md:w-44 md:h-44 p-1 bg-white rounded-3xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow duration-300">
               <div className="w-full h-full rounded-3xl overflow-hidden bg-slate-50 relative">
                 {member.photo_url ? (
@@ -103,7 +103,7 @@ export function MemberProfileView({ member, currentUserId }: MemberProfileViewPr
                     </DialogContent>
                   </Dialog>
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-b from-slate-50 to-slate-100">
+                  <div className="w-full h-full flex items-center justify-center bg-linear-to-b from-slate-50 to-slate-100">
                     <MaterialIcon name="person" className="w-16 h-16 md:w-20 md:h-20 text-slate-300/80" />
                   </div>
                 )}
@@ -118,7 +118,7 @@ export function MemberProfileView({ member, currentUserId }: MemberProfileViewPr
                 {member.last_name?.toUpperCase()} {member.first_name}
               </h2>
               {member.current_job_title && (
-                <p className="text-[var(--aduti-primary)] font-bold text-lg mt-1 break-words">{member.current_job_title}</p>
+                <p className="text-aduti-primary font-bold text-lg mt-1 break-words">{member.current_job_title}</p>
               )}
             </div>
             
@@ -179,7 +179,7 @@ export function MemberProfileView({ member, currentUserId }: MemberProfileViewPr
         <motion.div custom={1} variants={fadeUp} initial="hidden" animate="show"
           className="bg-white rounded-2xl border border-slate-100 shadow-sm p-8 space-y-5">
           <div className="flex items-center gap-3 pb-4 border-b border-slate-50">
-            <div className="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center text-[var(--aduti-primary)]">
+            <div className="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center text-aduti-primary">
               <MaterialIcon name="contacts" className="w-[18px] h-[18px]" />
             </div>
             <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-wide">Coordonnées</h3>

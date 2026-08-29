@@ -40,7 +40,7 @@ export function InvitationForm({ memberId }: InvitationFormProps) {
     <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden sticky top-6">
       <div className="p-5 border-b border-slate-100 bg-slate-50/50">
         <h3 className="font-semibold text-slate-800 flex items-center gap-2">
-          <Plus className="w-4 h-4 text-[var(--aduti-primary)]" />
+          <Plus className="w-4 h-4 text-aduti-primary" />
           Nouveau lien d&apos;invitation
         </h3>
       </div>
@@ -55,7 +55,7 @@ export function InvitationForm({ memberId }: InvitationFormProps) {
             name="title"
             required
             placeholder="ex: Rentrée 2024 - Général"
-            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[var(--aduti-primary)] focus:border-[var(--aduti-primary)] outline-none text-sm transition-all bg-slate-50 focus:bg-white"
+            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-aduti-primary focus:border-aduti-primary outline-none text-sm transition-all bg-slate-50 focus:bg-white"
           />
         </div>
 
@@ -71,7 +71,7 @@ export function InvitationForm({ memberId }: InvitationFormProps) {
               min="1"
               max="100"
               defaultValue="1"
-              className="w-2/3 px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[var(--aduti-primary)] focus:border-[var(--aduti-primary)] outline-none text-sm transition-all bg-slate-50 focus:bg-white"
+              className="w-2/3 px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-aduti-primary focus:border-aduti-primary outline-none text-sm transition-all bg-slate-50 focus:bg-white"
             />
             <SelectField
               name="expirationUnit"
@@ -90,7 +90,7 @@ export function InvitationForm({ memberId }: InvitationFormProps) {
         <Button
           type="submit"
           disabled={isPending}
-          className="w-full bg-[var(--aduti-primary)] text-white font-medium py-2.5 px-4 rounded-lg hover:bg-[var(--aduti-primary-hover)] transition-colors flex items-center justify-center gap-2 mt-2"
+          className="w-full bg-aduti-primary text-white font-medium py-2.5 px-4 rounded-lg hover:bg-aduti-primary-hover transition-colors flex items-center justify-center gap-2 mt-2"
         >
           {isPending ? "Génération..." : "Générer le lien"}
         </Button>

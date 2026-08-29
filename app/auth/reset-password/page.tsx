@@ -47,17 +47,17 @@ export default function ResetPasswordPage() {
   }
 
   return (
-    <main className="min-h-[100dvh] flex items-center justify-center p-4 relative overflow-hidden bg-slate-50 font-sans">
+    <main className="min-h-dvh flex items-center justify-center p-4 relative overflow-hidden bg-slate-50 font-sans">
       {/* Bouton de retour en haut à gauche */}
       <div className="absolute top-6 left-6 sm:top-8 sm:left-8 z-50">
-        <BackButton className="bg-white/80 backdrop-blur-md px-4 py-2 rounded-full border border-slate-200/50 shadow-sm hover:border-[var(--aduti-primary)]/50 hover:bg-white" />
+        <BackButton className="bg-white/80 backdrop-blur-md px-4 py-2 rounded-full border border-slate-200/50 shadow-sm hover:border-(--aduti-primary)/50 hover:bg-white" />
       </div>
 
       {/* Bouton d'accueil en haut à droite */}
       <div className="absolute top-6 right-6 sm:top-8 sm:right-8 z-50">
         <Link 
            href="/"
-           className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-[var(--aduti-primary)] transition-colors w-fit focus:outline-none bg-white/80 backdrop-blur-md px-4 py-2 rounded-full border border-slate-200/50 shadow-sm hover:border-[var(--aduti-primary)]/50 hover:bg-white"
+           className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-aduti-primary transition-colors w-fit focus:outline-none bg-white/80 backdrop-blur-md px-4 py-2 rounded-full border border-slate-200/50 shadow-sm hover:border-(--aduti-primary)/50 hover:bg-white"
          >
            <Home className="w-4 h-4" />
            <span className="hidden sm:inline">Accueil</span>
@@ -69,7 +69,7 @@ export default function ResetPasswordPage() {
 
       <div className="w-full max-w-[550px] z-10 flex flex-col gap-6">
         <div className="text-center space-y-2 flex flex-col items-center">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white shadow-xl shadow-blue-100 text-[var(--aduti-primary)] mb-2 border border-slate-100 ring-4 ring-white/50">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white shadow-xl shadow-blue-100 text-aduti-primary mb-2 border border-slate-100 ring-4 ring-white/50">
             <MaterialIcon name="security" className="w-10 h-10" />
           </div>
           <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Nouveau mot de passe</h1>
@@ -84,7 +84,7 @@ export default function ResetPasswordPage() {
             "absolute top-0 left-0 right-0 h-1.5 bg-slate-100 overflow-hidden z-20 transition-opacity duration-300",
             isPending ? "opacity-100" : "opacity-0"
           )}>
-            <div className="h-full bg-[var(--aduti-primary)] animate-shimmer w-full origin-left" />
+            <div className="h-full bg-aduti-primary animate-shimmer w-full origin-left" />
           </div>
 
           <div className="p-8">
@@ -104,7 +104,7 @@ export default function ResetPasswordPage() {
                     type={showPassword ? "text" : "password"}
                     required
                     placeholder="••••••••"
-                    className="block w-full pl-12 pr-12 py-4 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 focus:outline-none focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-[var(--aduti-primary)] transition-all text-sm font-medium shadow-inner"
+                    className="block w-full pl-12 pr-12 py-4 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 focus:outline-none focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-aduti-primary transition-all text-sm font-medium shadow-inner"
                   />
                   <button
                     type="button"
@@ -130,7 +130,7 @@ export default function ResetPasswordPage() {
                     type={showConfirmPassword ? "text" : "password"}
                     required
                     placeholder="••••••••"
-                    className="block w-full pl-12 pr-12 py-4 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 focus:outline-none focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-[var(--aduti-primary)] transition-all text-sm font-medium shadow-inner"
+                    className="block w-full pl-12 pr-12 py-4 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 focus:outline-none focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-aduti-primary transition-all text-sm font-medium shadow-inner"
                   />
                   <button
                     type="button"
@@ -147,7 +147,7 @@ export default function ResetPasswordPage() {
 
               <button
                 disabled={isPending}
-                className="w-full flex justify-center items-center gap-3 py-4 px-6 rounded-2xl shadow-xl shadow-blue-100 text-sm font-bold text-white bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] focus:outline-none transition-all active:scale-[0.98] uppercase tracking-widest disabled:opacity-50 mt-4"
+                className="w-full flex justify-center items-center gap-3 py-4 px-6 rounded-2xl shadow-xl shadow-blue-100 text-sm font-bold text-white bg-aduti-primary hover:bg-aduti-primary-hover focus:outline-none transition-all active:scale-[0.98] uppercase tracking-widest disabled:opacity-50 mt-4"
               >
                 {isPending ? (
                   <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />

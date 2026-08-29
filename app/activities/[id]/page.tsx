@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 
 // Color mapping for known category slugs
 const CATEGORY_STYLES: Record<string, { bg: string; text: string; border: string; icon: string }> = {
-  hackathon:   { bg: "bg-blue-50",   text: "text-[var(--aduti-primary)]", border: "border-blue-100",   icon: "code" },
+  hackathon:   { bg: "bg-blue-50",   text: "text-aduti-primary", border: "border-blue-100",   icon: "code" },
   "fun-night": { bg: "bg-indigo-50",  text: "text-indigo-600",            border: "border-indigo-100", icon: "celebration" },
   "infos-day": { bg: "bg-orange-50",  text: "text-orange-600",            border: "border-orange-100", icon: "campaign" },
 };
@@ -41,7 +41,7 @@ export default async function ActivityDetailPage({
         <div className="max-w-5xl mx-auto">
           <Link
             href="/activities"
-            className="inline-flex items-center gap-2 text-slate-400 hover:text-[var(--aduti-primary)] text-xs font-medium uppercase tracking-wide transition-colors mb-6 group"
+            className="inline-flex items-center gap-2 text-slate-400 hover:text-aduti-primary text-xs font-medium uppercase tracking-wide transition-colors mb-6 group"
           >
             <MaterialIcon name="arrow_back" className="w-[18px] h-[18px] group-hover:-translate-x-1 transition-transform" />
             Retour aux activités
@@ -49,7 +49,7 @@ export default async function ActivityDetailPage({
           
           <div className="space-y-4 md:space-y-6">
             <div className="flex flex-wrap items-center gap-3">
-              <span className="bg-[var(--aduti-primary)]/10 text-[var(--aduti-primary)] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em] rounded-full border border-[var(--aduti-primary)]/20">
+              <span className="bg-(--aduti-primary)/10 text-aduti-primary px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em] rounded-full border border-(--aduti-primary)/20">
                 Promotion {activity.promotion.name}
               </span>
               {activity.category && (() => {
@@ -90,10 +90,10 @@ export default async function ActivityDetailPage({
         <div className="max-w-5xl mx-auto space-y-8">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl md:text-3xl font-[family-name:var(--font-display)] font-bold text-slate-900 flex items-center gap-3">
-              <span className="w-2 h-8 bg-[var(--aduti-primary)] rounded-full" />
+              <span className="w-2 h-8 bg-aduti-primary rounded-full" />
               Publications
             </h2>
-            <span className="px-3 py-1 bg-blue-50 text-[var(--aduti-primary)] text-xs font-bold uppercase rounded-full border border-blue-100">
+            <span className="px-3 py-1 bg-blue-50 text-aduti-primary text-xs font-bold uppercase rounded-full border border-blue-100">
               {activity.publications.length} publication{activity.publications.length !== 1 ? "s" : ""}
             </span>
           </div>
@@ -112,7 +112,7 @@ export default async function ActivityDetailPage({
                 >
                   <div className="p-6 md:p-8 space-y-5">
                     <div className="flex items-center gap-3 text-slate-400 text-xs font-medium uppercase tracking-wide">
-                      <MaterialIcon name="calendar_month" className="w-4 h-4 text-[var(--aduti-primary)]" />
+                      <MaterialIcon name="calendar_month" className="w-4 h-4 text-aduti-primary" />
                       {new Date(pub.date || pub.created_at).toLocaleDateString("fr-FR", {
                         day: "numeric",
                         month: "long",

@@ -30,7 +30,7 @@ export function MembersGrid({ members, postes, promotions }: MembersGridProps) {
             key={m.id}
             type="button"
             onClick={() => setSelectedMember(m)}
-            className="group flex flex-col rounded-2xl border border-slate-200 bg-white p-5 text-left transition-colors duration-200 hover:border-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--aduti-primary)]"
+            className="group flex flex-col rounded-2xl border border-slate-200 bg-white p-5 text-left transition-colors duration-200 hover:border-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-aduti-primary"
           >
             <div className="flex items-start gap-4">
               <div className="relative size-14 shrink-0 overflow-hidden rounded-full bg-slate-100">

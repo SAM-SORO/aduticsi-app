@@ -108,7 +108,7 @@ export default async function MembersAdminPage({
                 name="search"
                 placeholder="Rechercher..."
                 defaultValue={search}
-                className="w-full pl-10 h-11 bg-slate-50/50 border border-slate-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[var(--aduti-primary)] focus:bg-white transition-all"
+                className="w-full pl-10 h-11 bg-slate-50/50 border border-slate-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-aduti-primary focus:bg-white transition-all"
               />
             </div>
 
@@ -164,7 +164,7 @@ export default async function MembersAdminPage({
                     href={href}
                     className={`w-10 h-10 flex items-center justify-center rounded-xl text-sm transition-all active:scale-90 font-bold ${
                       isActive
-                        ? "bg-[var(--aduti-primary)] text-white shadow-md hover:bg-[var(--aduti-primary-hover)]"
+                        ? "bg-aduti-primary text-white shadow-md hover:bg-aduti-primary-hover"
                         : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
                     }`}
                   >

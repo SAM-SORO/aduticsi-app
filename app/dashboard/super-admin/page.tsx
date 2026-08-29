@@ -73,12 +73,12 @@ export default async function SuperAdminDashboardPage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between h-32 hover:border-[var(--aduti-primary)]/50 transition-colors group">
+          <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between h-32 hover:border-(--aduti-primary)/50 transition-colors group">
             <div className="flex justify-between items-start">
               <p className="text-sm font-medium text-slate-500">
                 Total Membres
               </p>
-              <span className="p-1.5 rounded-md bg-green-50 text-green-600 group-hover:bg-[var(--aduti-primary)]/10 group-hover:text-[var(--aduti-primary)] transition-colors">
+              <span className="p-1.5 rounded-md bg-green-50 text-green-600 group-hover:bg-(--aduti-primary)/10 group-hover:text-aduti-primary transition-colors">
                 <MaterialIcon name="groups" className="w-5 h-5" />
               </span>
             </div>
@@ -92,10 +92,10 @@ export default async function SuperAdminDashboardPage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between h-32 hover:border-[var(--aduti-primary)]/50 transition-colors group">
+          <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between h-32 hover:border-(--aduti-primary)/50 transition-colors group">
             <div className="flex justify-between items-start">
               <p className="text-sm font-medium text-slate-500">Promotions</p>
-              <span className="p-1.5 rounded-md bg-blue-50 text-blue-600 group-hover:bg-[var(--aduti-primary)]/10 group-hover:text-[var(--aduti-primary)] transition-colors">
+              <span className="p-1.5 rounded-md bg-blue-50 text-blue-600 group-hover:bg-(--aduti-primary)/10 group-hover:text-aduti-primary transition-colors">
                 <MaterialIcon name="school" className="w-5 h-5" />
               </span>
             </div>
@@ -109,12 +109,12 @@ export default async function SuperAdminDashboardPage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between h-32 hover:border-[var(--aduti-primary)]/50 transition-colors group">
+          <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between h-32 hover:border-(--aduti-primary)/50 transition-colors group">
             <div className="flex justify-between items-start">
               <p className="text-sm font-medium text-slate-500">
                 Admins actifs
               </p>
-              <span className="p-1.5 rounded-md bg-purple-50 text-purple-600 group-hover:bg-[var(--aduti-primary)]/10 group-hover:text-[var(--aduti-primary)] transition-colors">
+              <span className="p-1.5 rounded-md bg-purple-50 text-purple-600 group-hover:bg-(--aduti-primary)/10 group-hover:text-aduti-primary transition-colors">
                 <MaterialIcon name="security" className="w-5 h-5" />
               </span>
             </div>
@@ -128,12 +128,12 @@ export default async function SuperAdminDashboardPage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between h-32 hover:border-[var(--aduti-primary)]/50 transition-colors group">
+          <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between h-32 hover:border-(--aduti-primary)/50 transition-colors group">
             <div className="flex justify-between items-start">
               <p className="text-sm font-medium text-slate-500">
                 Promotion active
               </p>
-              <span className="p-1.5 rounded-md bg-orange-50 text-orange-600 group-hover:bg-[var(--aduti-primary)]/10 group-hover:text-[var(--aduti-primary)] transition-colors">
+              <span className="p-1.5 rounded-md bg-orange-50 text-orange-600 group-hover:bg-(--aduti-primary)/10 group-hover:text-aduti-primary transition-colors">
                 <MaterialIcon name="toggle_on" className="w-5 h-5" />
               </span>
             </div>
@@ -174,7 +174,7 @@ export default async function SuperAdminDashboardPage() {
               />
               <div className="w-full sm:w-2/3 flex items-center gap-4 bg-slate-50 p-4 rounded-lg border border-slate-200">
                 <div className="p-3 bg-white rounded-full shadow-sm">
-                  <MaterialIcon name="toggle_on" className="w-6 h-6 text-[var(--aduti-primary)]" />
+                  <MaterialIcon name="toggle_on" className="w-6 h-6 text-aduti-primary" />
                 </div>
                 <div className="flex-1">
                   <h4 className="text-sm font-semibold text-slate-900">

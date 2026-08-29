@@ -54,7 +54,7 @@ export function PartnerTableActions({ id, isActive, logoUrl }: PartnerActionsPro
         <button 
           onClick={handleToggle}
           disabled={isPendingToggle}
-          className="text-slate-400 hover:text-[var(--aduti-primary)] transition-colors p-1 disabled:opacity-50" 
+          className="text-slate-400 hover:text-aduti-primary transition-colors p-1 disabled:opacity-50" 
           title={isActive ? "Désactiver" : "Activer"}
         >
           {isActive ? (

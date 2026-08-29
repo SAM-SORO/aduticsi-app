@@ -15,7 +15,7 @@ export function BackButton({ label = "Retour", className }: BackButtonProps) {
   return (
     <button 
       onClick={() => router.back()}
-      className={cn("inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-[var(--aduti-primary)] transition-colors w-fit focus:outline-none", className)}
+      className={cn("inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-aduti-primary transition-colors w-fit focus:outline-none", className)}
     >
       <ArrowLeft className="w-4 h-4" />
       {label}

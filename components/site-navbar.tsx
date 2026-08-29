@@ -151,7 +151,7 @@ export function SiteNavbar() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button className={cn("flex items-center gap-3 p-1.5 rounded-full hover:bg-slate-100 transition-all group border border-transparent hover:border-slate-200", className)}>
-              <div className="size-9 rounded-full bg-[var(--aduti-primary)]/10 text-[var(--aduti-primary)] flex items-center justify-center font-bold text-sm overflow-hidden shrink-0 group-hover:bg-[var(--aduti-primary)] group-hover:text-white transition-colors">
+              <div className="size-9 rounded-full bg-(--aduti-primary)/10 text-aduti-primary flex items-center justify-center font-bold text-sm overflow-hidden shrink-0 group-hover:bg-aduti-primary group-hover:text-white transition-colors">
                 {member.photo_url ? (
                   <Image src={member.photo_url} alt="Profil" width={36} height={36} className="object-cover w-full h-full" />
                 ) : (
@@ -170,7 +170,7 @@ export function SiteNavbar() {
               </div>
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56 z-[100]">
+          <DropdownMenuContent align="end" className="w-56 z-100">
             <DropdownMenuLabel>
               <div className="flex flex-col space-y-1">
                 <p className="text-sm font-medium leading-none">
@@ -224,12 +224,12 @@ export function SiteNavbar() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button className={cn("flex items-center gap-3 p-1.5 rounded-full hover:bg-slate-100 transition-all group border border-transparent hover:border-slate-200", className)}>
-              <div className="size-9 rounded-full bg-[var(--aduti-primary)]/10 text-[var(--aduti-primary)] flex items-center justify-center font-bold text-sm overflow-hidden shrink-0 group-hover:bg-[var(--aduti-primary)] group-hover:text-white transition-colors">
+              <div className="size-9 rounded-full bg-(--aduti-primary)/10 text-aduti-primary flex items-center justify-center font-bold text-sm overflow-hidden shrink-0 group-hover:bg-aduti-primary group-hover:text-white transition-colors">
                 <User className="h-4 w-4" />
               </div>
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56 z-[100]">
+          <DropdownMenuContent align="end" className="w-56 z-100">
             <DropdownMenuLabel>
               <div className="flex flex-col space-y-1">
                 <p className="text-sm font-medium leading-none">Utilisateur</p>
@@ -256,7 +256,7 @@ export function SiteNavbar() {
       <Button
         asChild
         className={cn(
-          "inline-flex items-center justify-center rounded-lg h-10 px-6 bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] transition-colors text-white text-sm font-semibold tracking-wide shadow-sm",
+          "inline-flex items-center justify-center rounded-lg h-10 px-6 bg-aduti-primary hover:bg-aduti-primary-hover transition-colors text-white text-sm font-semibold tracking-wide shadow-sm",
           className
         )}
       >
@@ -282,7 +282,7 @@ export function SiteNavbar() {
             href="/"
             className="flex items-center gap-2 select-none no-underline"
           >
-            <div className="relative h-14 w-auto aspect-[3/1]">
+            <div className="relative h-14 w-auto aspect-3/1">
               <Image
                 src="/logo_association.jpeg"
                 alt="Logo ADUTI"
@@ -320,8 +320,8 @@ export function SiteNavbar() {
                   className={cn(
                     "text-sm font-medium transition-colors",
                     pathname === link.href
-                      ? "text-[var(--aduti-primary)] font-semibold"
-                      : "text-slate-600 hover:text-[var(--aduti-primary)]"
+                      ? "text-aduti-primary font-semibold"
+                      : "text-slate-600 hover:text-aduti-primary"
                   )}
                 >
                   {link.label}
@@ -358,7 +358,7 @@ export function SiteNavbar() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
-                className="absolute top-full left-0 w-full h-[100vh] bg-slate-900/10 backdrop-blur-[2px] md:hidden"
+                className="absolute top-full left-0 w-full h-dvh bg-slate-900/10 backdrop-blur-[2px] md:hidden"
                 onClick={() => setIsOpen(false)}
               />
               
@@ -379,8 +379,8 @@ export function SiteNavbar() {
                       className={cn(
                         "block text-lg font-semibold transition-all py-3 px-4 w-full rounded-2xl active:scale-95",
                         pathname === link.href
-                          ? "text-[var(--aduti-primary)] bg-[var(--aduti-primary)]/10"
-                          : "text-slate-600 hover:text-[var(--aduti-primary)] hover:bg-slate-50/80"
+                          ? "text-aduti-primary bg-(--aduti-primary)/10"
+                          : "text-slate-600 hover:text-aduti-primary hover:bg-slate-50/80"
                       )}
                     >
                       {link.label}

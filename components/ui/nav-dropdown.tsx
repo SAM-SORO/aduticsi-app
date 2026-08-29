@@ -62,8 +62,8 @@ export function NavDropdown({ label, baseHref, isActive, cible }: NavDropdownPro
         className={cn(
           "flex items-center gap-1 text-sm font-medium transition-colors",
           isActive
-            ? "text-[var(--aduti-primary)] font-semibold"
-            : "text-slate-600 hover:text-[var(--aduti-primary)]"
+            ? "text-aduti-primary font-semibold"
+            : "text-slate-600 hover:text-aduti-primary"
         )}
       >
         {label}
@@ -76,7 +76,7 @@ export function NavDropdown({ label, baseHref, isActive, cible }: NavDropdownPro
           <div className="bg-white rounded-md border border-slate-200/60 shadow-sm min-w-[180px]">
             <Link
               href={baseHref}
-              className="block px-2 py-0.7 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:text-[var(--aduti-primary)] transition-colors"
+              className="block px-2 py-0.7 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:text-aduti-primary transition-colors"
 
             >
 
@@ -90,7 +90,7 @@ export function NavDropdown({ label, baseHref, isActive, cible }: NavDropdownPro
                 <Link
                   key={category.id}
                   href={ cible ==="activities" ?`/activities?search=&promo=&category=${category.id}` : `/members?promo=&status=&role=${category.id}&gender=&search=`}
-                  className="block px-2 py-0.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-[var(--aduti-primary)] transition-colors"
+                  className="block px-2 py-0.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-aduti-primary transition-colors"
                 >
                   {category.name}
                 </Link>

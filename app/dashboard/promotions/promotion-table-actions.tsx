@@ -43,7 +43,7 @@ export function PromotionTableActions({ promotion }: PromotionTableActionsProps)
     <div className="flex items-center gap-2">
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
         <DialogTrigger asChild>
-          <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-[var(--aduti-primary)]">
+          <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-aduti-primary">
             <Edit2 className="h-4 w-4" />
           </Button>
         </DialogTrigger>

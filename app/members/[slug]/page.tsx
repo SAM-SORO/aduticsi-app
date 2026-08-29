@@ -74,7 +74,7 @@ export default async function MemberProfilePage({
             <li className="inline-flex items-center">
               <Link
                 href="/"
-                className="inline-flex items-center text-slate-500 hover:text-[var(--aduti-primary)] transition-colors"
+                className="inline-flex items-center text-slate-500 hover:text-aduti-primary transition-colors"
               >
                 <MaterialIcon name="home" className="w-[18px] h-[18px] mr-2" />
                 Accueil
@@ -85,7 +85,7 @@ export default async function MemberProfilePage({
                 <MaterialIcon name="chevron_right" className="w-[18px] h-[18px] text-slate-400" />
                 <Link
                   href={backHref}
-                  className="ml-1 text-slate-500 hover:text-[var(--aduti-primary)] md:ml-2 transition-colors"
+                  className="ml-1 text-slate-500 hover:text-aduti-primary md:ml-2 transition-colors"
                 >
                   {backLabel}
                 </Link>

@@ -139,7 +139,7 @@ function RadioGroup<T extends string>({
           onClick={() => onChange(opt.value)}
           className={`px-3 py-1.5 rounded-lg text-sm font-semibold border transition-all ${
             value === opt.value
-              ? 'bg-[var(--aduti-primary)] text-white border-[var(--aduti-primary)] shadow-sm'
+              ? 'bg-aduti-primary text-white border-aduti-primary shadow-sm'
               : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300 hover:bg-slate-50'
           } disabled:opacity-50 disabled:cursor-not-allowed`}
         >
@@ -283,7 +283,7 @@ export function MemberDrawer({ member, postes, promotions, onClose, canEdit = tr
                   {canEdit && mode === 'view' && (
                     <button
                       onClick={() => setMode('edit')}
-                      className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-semibold text-[var(--aduti-primary)] bg-[var(--aduti-primary)]/10 rounded-lg hover:bg-[var(--aduti-primary)]/20 transition-colors"
+                      className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-semibold text-aduti-primary bg-(--aduti-primary)/10 rounded-lg hover:bg-(--aduti-primary)/20 transition-colors"
                     >
                       <Pencil className="w-3.5 h-3.5" />
                       Modifier
@@ -306,7 +306,7 @@ export function MemberDrawer({ member, postes, promotions, onClose, canEdit = tr
                   <div className="p-6 space-y-6">
                     {/* Avatar + Identity */}
                     <div className="flex items-center gap-4">
-                      <div className="w-20 h-20 rounded-2xl overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center text-slate-500 font-bold text-2xl shrink-0 border border-slate-100 relative group/avatar">
+                      <div className="w-20 h-20 rounded-2xl overflow-hidden bg-linear-to-br from-slate-100 to-slate-200 flex items-center justify-center text-slate-500 font-bold text-2xl shrink-0 border border-slate-100 relative group/avatar">
                         {member.photo_url ? (
                           <Dialog>
                             <DialogTrigger asChild>
@@ -314,7 +314,7 @@ export function MemberDrawer({ member, postes, promotions, onClose, canEdit = tr
                                 <Image src={member.photo_url} alt={`${member.last_name?.toUpperCase()} ${member.first_name}`} width={80} height={80} className="object-cover w-full h-full transition-transform duration-500 group-hover/btn:scale-110" />
                               </button>
                             </DialogTrigger>
-                            <DialogContent className="max-w-[80vw] md:max-w-fit border-none bg-transparent shadow-none p-0 flex justify-center items-center h-[80vh] z-[100]">
+                            <DialogContent className="max-w-[80vw] md:max-w-fit border-none bg-transparent shadow-none p-0 flex justify-center items-center h-[80vh] z-100">
                               <DialogTitle className="sr-only">Photo de profil de {member.last_name?.toUpperCase()} {member.first_name}</DialogTitle>
                               <Image 
                                 src={member.photo_url} 
@@ -416,7 +416,7 @@ export function MemberDrawer({ member, postes, promotions, onClose, canEdit = tr
                   <div className="p-6 space-y-7">
                     {/* Pending indicator */}
                     {isPending && (
-                      <div className="flex items-center gap-2 text-sm text-[var(--aduti-primary)] bg-blue-50 px-4 py-2.5 rounded-lg border border-blue-100">
+                      <div className="flex items-center gap-2 text-sm text-aduti-primary bg-blue-50 px-4 py-2.5 rounded-lg border border-blue-100">
                         <Loader2 className="w-4 h-4 animate-spin" />
                         Enregistrement en cours…
                       </div>
@@ -527,7 +527,7 @@ export function MemberDrawer({ member, postes, promotions, onClose, canEdit = tr
                               className={`shrink-0 px-3 py-2 rounded-xl text-xs font-bold transition-all disabled:opacity-50 ${
                                 editFunction === 'GESTION_ACTIVITES'
                                   ? 'bg-red-50 text-red-600 hover:bg-red-100 border border-red-100'
-                                  : 'bg-[var(--aduti-primary)] text-white hover:bg-[var(--aduti-primary-hover)] shadow-sm'
+                                  : 'bg-aduti-primary text-white hover:bg-aduti-primary-hover shadow-sm'
                               }`}
                             >
                               {editFunction === 'GESTION_ACTIVITES' ? 'Retirer' : 'Accorder'}
@@ -646,9 +646,9 @@ function ContactLink({
       href={href}
       target={external ? '_blank' : undefined}
       rel={external ? 'noopener noreferrer' : undefined}
-      className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-slate-50 hover:bg-[var(--aduti-primary)]/5 border border-slate-100 hover:border-[var(--aduti-primary)]/20 text-sm font-medium text-slate-700 hover:text-[var(--aduti-primary)] transition-all group"
+      className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-slate-50 hover:bg-(--aduti-primary)/5 border border-slate-100 hover:border-(--aduti-primary)/20 text-sm font-medium text-slate-700 hover:text-aduti-primary transition-all group"
     >
-      <Icon className="w-4 h-4 text-slate-400 group-hover:text-[var(--aduti-primary)] transition-colors shrink-0" />
+      <Icon className="w-4 h-4 text-slate-400 group-hover:text-aduti-primary transition-colors shrink-0" />
       {label}
     </a>
   )

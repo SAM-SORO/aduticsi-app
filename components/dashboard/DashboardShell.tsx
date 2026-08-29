@@ -54,7 +54,7 @@ export function DashboardShell({
   }, [isMobileMenuOpen]);
 
   return (
-    <div className="bg-[#f6f7f8] font-sans text-slate-900 h-screen sm:h-[100dvh] flex overflow-hidden relative">
+    <div className="bg-[#f6f7f8] font-sans text-slate-900 h-screen sm:h-dvh flex overflow-hidden relative">
       {/* Mobile Sidebar Overlay */}
       {isMobileMenuOpen && (
         <div
@@ -118,7 +118,7 @@ export function DashboardShell({
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button className="flex items-center gap-3 p-1.5 rounded-full hover:bg-slate-100 transition-all group border border-transparent hover:border-slate-200">
-                  <div className="size-9 rounded-full bg-[var(--aduti-primary)]/10 text-[var(--aduti-primary)] flex items-center justify-center font-bold text-sm overflow-hidden shrink-0 group-hover:bg-[var(--aduti-primary)] group-hover:text-white transition-colors">
+                  <div className="size-9 rounded-full bg-(--aduti-primary)/10 text-aduti-primary flex items-center justify-center font-bold text-sm overflow-hidden shrink-0 group-hover:bg-aduti-primary group-hover:text-white transition-colors">
                     {member.first_name?.slice(0, 1).toUpperCase() || "A"}
                   </div>
                   <div className="hidden md:block text-left">

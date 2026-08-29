@@ -83,7 +83,7 @@ export function ContactForm() {
           id="name"
           type="text"
           disabled={isPending}
-          className="block w-full px-4 py-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-900 focus:border-[var(--aduti-primary)] focus:ring-[var(--aduti-primary)] sm:text-sm disabled:opacity-70"
+          className="block w-full px-4 py-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-900 focus:border-aduti-primary focus:ring-aduti-primary sm:text-sm disabled:opacity-70"
         />
         {errors.name && <p className="text-xs text-red-500 font-medium">{errors.name.message}</p>}
       </div>
@@ -98,7 +98,7 @@ export function ContactForm() {
             id="email"
             type="email"
             disabled={isPending}
-            className="block w-full px-4 py-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-900 focus:border-[var(--aduti-primary)] focus:ring-[var(--aduti-primary)] sm:text-sm disabled:opacity-70"
+            className="block w-full px-4 py-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-900 focus:border-aduti-primary focus:ring-aduti-primary sm:text-sm disabled:opacity-70"
           />
           {errors.email && <p className="text-xs text-red-500 font-medium">{errors.email.message}</p>}
         </div>
@@ -111,7 +111,7 @@ export function ContactForm() {
             id="phone"
             type="text"
             disabled={isPending}
-            className="block w-full px-4 py-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-900 focus:border-[var(--aduti-primary)] focus:ring-[var(--aduti-primary)] sm:text-sm disabled:opacity-70"
+            className="block w-full px-4 py-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-900 focus:border-aduti-primary focus:ring-aduti-primary sm:text-sm disabled:opacity-70"
           />
           {errors.phone && <p className="text-xs text-red-500 font-medium">{errors.phone.message}</p>}
         </div>
@@ -125,7 +125,7 @@ export function ContactForm() {
           {...register('subject')}
           id="subject"
           disabled={isPending}
-          className="block w-full px-4 py-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-900 focus:border-[var(--aduti-primary)] focus:ring-[var(--aduti-primary)] sm:text-sm disabled:opacity-70"
+          className="block w-full px-4 py-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-900 focus:border-aduti-primary focus:ring-aduti-primary sm:text-sm disabled:opacity-70"
           defaultValue=""
         >
           <option value="">Sélectionnez un sujet</option>
@@ -147,7 +147,7 @@ export function ContactForm() {
           id="message"
           rows={5}
           disabled={isPending}
-          className="block w-full px-4 py-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-900 focus:border-[var(--aduti-primary)] focus:ring-[var(--aduti-primary)] sm:text-sm disabled:opacity-70"
+          className="block w-full px-4 py-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-900 focus:border-aduti-primary focus:ring-aduti-primary sm:text-sm disabled:opacity-70"
         />
         {errors.message && <p className="text-xs text-red-500 font-medium">{errors.message.message}</p>}
       </div>
@@ -171,7 +171,7 @@ export function ContactForm() {
         <button
           type="submit"
           disabled={isPending}
-          className="w-full flex items-center justify-center py-3.5 px-6 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--aduti-primary)] transition-all disabled:opacity-70"
+          className="w-full flex items-center justify-center py-3.5 px-6 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white bg-aduti-primary hover:bg-aduti-primary-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-aduti-primary transition-all disabled:opacity-70"
         >
           {isPending ? (
             <>

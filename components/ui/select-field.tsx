@@ -19,7 +19,7 @@ const SelectField = forwardRef<HTMLSelectElement, SelectFieldProps>(
       <select
         ref={ref}
         className={cn(
-          "w-full appearance-none bg-slate-50 border border-slate-200 rounded-[14px] py-2.5 font-medium text-slate-700 outline-none focus:border-[var(--aduti-primary)] focus:bg-white focus:ring-4 focus:ring-[var(--aduti-primary)]/10 transition-all disabled:opacity-50 cursor-pointer",
+          "w-full appearance-none bg-slate-50 border border-slate-200 rounded-[14px] py-2.5 font-medium text-slate-700 outline-none focus:border-aduti-primary focus:bg-white focus:ring-4 focus:ring-(--aduti-primary)/10 transition-all disabled:opacity-50 cursor-pointer",
           icon ? "pl-11" : "px-4",
           "bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%20stroke%3D%22%2394a3b8%22%20stroke-width%3D%222%22%3E%3Cpath%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20d%3D%22M19%209l-7%207-7-7%22%2F%3E%3C%2Fsvg%3E')]",
           "bg-[length:1em_1em] bg-[right_1rem_center] bg-no-repeat pr-10",

@@ -42,14 +42,14 @@ export function SiteFooter() {
             </div>
           </div>
           <div className="flex flex-col items-center text-center md:items-start md:text-left">
-            <h4 className="font-bold text-slate-800 mb-6 relative inline-block after:content-[''] after:absolute after:bottom-[-4px] after:left-1/2 after:-translate-x-1/2 md:after:left-0 md:after:translate-x-0 after:w-8 after:h-1 after:bg-[var(--aduti-primary)]/30 after:rounded-full">
+            <h4 className="font-bold text-slate-800 mb-6 relative inline-block after:content-[''] after:absolute after:bottom-[-4px] after:left-1/2 after:-translate-x-1/2 md:after:left-0 md:after:translate-x-0 after:w-8 after:h-1 after:bg-(--aduti-primary)/30 after:rounded-full">
               Liens Rapides
             </h4>
             <ul className="space-y-3 text-sm text-slate-500">
               <li>
                 <Link
                   href="/about"
-                  className="hover:text-[var(--aduti-primary)] transition-all hover:translate-x-1 inline-block"
+                  className="hover:text-aduti-primary transition-all hover:translate-x-1 inline-block"
                 >
                   À propos
                 </Link>
@@ -57,7 +57,7 @@ export function SiteFooter() {
               <li>
                 <Link
                   href="/members"
-                  className="hover:text-[var(--aduti-primary)] transition-all hover:translate-x-1 inline-block"
+                  className="hover:text-aduti-primary transition-all hover:translate-x-1 inline-block"
                 >
                   Membres
                 </Link>
@@ -65,7 +65,7 @@ export function SiteFooter() {
               <li>
                 <Link
                   href="/activities"
-                  className="hover:text-[var(--aduti-primary)] transition-all hover:translate-x-1 inline-block"
+                  className="hover:text-aduti-primary transition-all hover:translate-x-1 inline-block"
                 >
                   Événements
                 </Link>
@@ -73,7 +73,7 @@ export function SiteFooter() {
               <li>
                 <Link
                   href="/activities"
-                  className="hover:text-[var(--aduti-primary)] transition-all hover:translate-x-1 inline-block"
+                  className="hover:text-aduti-primary transition-all hover:translate-x-1 inline-block"
                 >
                   Actualités
                 </Link>
@@ -81,14 +81,14 @@ export function SiteFooter() {
             </ul>
           </div>
           <div className="flex flex-col items-center text-center md:items-start md:text-left">
-            <h4 className="font-bold text-slate-800 mb-6 relative inline-block after:content-[''] after:absolute after:bottom-[-4px] after:left-1/2 after:-translate-x-1/2 md:after:left-0 md:after:translate-x-0 after:w-8 after:h-1 after:bg-[var(--aduti-primary)]/30 after:rounded-full">
+            <h4 className="font-bold text-slate-800 mb-6 relative inline-block after:content-[''] after:absolute after:bottom-[-4px] after:left-1/2 after:-translate-x-1/2 md:after:left-0 md:after:translate-x-0 after:w-8 after:h-1 after:bg-(--aduti-primary)/30 after:rounded-full">
               Ressources
             </h4>
             <ul className="space-y-3 text-sm text-slate-500">
               <li>
                 <Link
                   href="/members"
-                  className="hover:text-[var(--aduti-primary)] transition-all hover:translate-x-1 inline-block"
+                  className="hover:text-aduti-primary transition-all hover:translate-x-1 inline-block"
                 >
                   Annuaire
                 </Link>
@@ -96,7 +96,7 @@ export function SiteFooter() {
               <li>
                 <Link
                   href="/contact"
-                  className="hover:text-[var(--aduti-primary)] transition-all hover:translate-x-1 inline-block"
+                  className="hover:text-aduti-primary transition-all hover:translate-x-1 inline-block"
                 >
                   Offres d&apos;emploi
                 </Link>
@@ -104,7 +104,7 @@ export function SiteFooter() {
               <li>
                 <Link
                   href="/activities"
-                  className="hover:text-[var(--aduti-primary)] transition-all hover:translate-x-1 inline-block"
+                  className="hover:text-aduti-primary transition-all hover:translate-x-1 inline-block"
                 >
                   Galerie Photo
                 </Link>
@@ -112,7 +112,7 @@ export function SiteFooter() {
               <li>
                 <Link
                   href="/contact"
-                  className="hover:text-[var(--aduti-primary)] transition-all hover:translate-x-1 inline-block"
+                  className="hover:text-aduti-primary transition-all hover:translate-x-1 inline-block"
                 >
                   Documents
                 </Link>
@@ -120,12 +120,12 @@ export function SiteFooter() {
             </ul>
           </div>
           <div className="flex flex-col items-center text-center md:items-start md:text-left">
-            <h4 className="font-bold text-slate-800 mb-6 relative inline-block after:content-[''] after:absolute after:bottom-[-4px] after:left-1/2 after:-translate-x-1/2 md:after:left-0 md:after:translate-x-0 after:w-8 after:h-1 after:bg-[var(--aduti-primary)]/30 after:rounded-full">
+            <h4 className="font-bold text-slate-800 mb-6 relative inline-block after:content-[''] after:absolute after:bottom-[-4px] after:left-1/2 after:-translate-x-1/2 md:after:left-0 md:after:translate-x-0 after:w-8 after:h-1 after:bg-(--aduti-primary)/30 after:rounded-full">
               Contact & Réseaux
             </h4>
             <ul className="space-y-4 text-sm text-slate-500 flex flex-col items-center md:items-start">
               <li className="flex items-start gap-2">
-                <MaterialIcon name="location_on" className="w-[18px] h-[18px] mt-0.5 text-[var(--aduti-primary)]" />
+                <MaterialIcon name="location_on" className="w-[18px] h-[18px] mt-0.5 text-aduti-primary" />
                 <span>
                   INP-HB Centre, Yamoussoukro,
                   <br />
@@ -133,10 +133,10 @@ export function SiteFooter() {
                 </span>
               </li>
               <li className="flex items-center gap-2 group">
-                <MaterialIcon name="mail" className="w-[18px] h-[18px] group-hover:scale-110 transition-transform text-[var(--aduti-primary)]" />
+                <MaterialIcon name="mail" className="w-[18px] h-[18px] group-hover:scale-110 transition-transform text-aduti-primary" />
                 <Link
                   href="mailto:contact@aduticsi.com"
-                  className="hover:text-[var(--aduti-primary)] transition-colors inline-block"
+                  className="hover:text-aduti-primary transition-colors inline-block"
                 >
                   contact@aduticsi.com
                 </Link>

@@ -10,7 +10,7 @@ export function SubmitButton() {
     <button
       type="submit"
       disabled={pending}
-      className="w-full bg-[var(--aduti-primary)] text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-[var(--aduti-primary-hover)] transition-colors shadow-sm disabled:opacity-50 flex justify-center items-center gap-2"
+      className="w-full bg-aduti-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-aduti-primary-hover transition-colors shadow-sm disabled:opacity-50 flex justify-center items-center gap-2"
     >
       {pending ? (
         <>

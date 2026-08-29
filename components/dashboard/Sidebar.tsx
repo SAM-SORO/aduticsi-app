@@ -77,7 +77,7 @@ export function Sidebar({ member, activePath, onCloseMobile, collapsed = false }
       {/* Logo — fixed */}
       <div className={cn("shrink-0 pb-0", collapsed ? "px-3 pt-6" : "p-6 pb-0")}>
         <div className={cn("mb-6 flex items-center gap-3", collapsed && "justify-center")}>
-          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-[var(--aduti-primary)]/10 text-[var(--aduti-primary)]">
+          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-(--aduti-primary)/10 text-aduti-primary">
             <School className="size-6" />
           </div>
           {!collapsed && (
@@ -106,7 +106,7 @@ export function Sidebar({ member, activePath, onCloseMobile, collapsed = false }
                     "flex items-center gap-3 rounded-lg py-3 font-medium transition-colors",
                     collapsed ? "justify-center px-0" : "px-4",
                     isActive
-                      ? "bg-[var(--aduti-primary)]/10 text-[var(--aduti-primary)]"
+                      ? "bg-(--aduti-primary)/10 text-aduti-primary"
                       : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
                   )}
                 >

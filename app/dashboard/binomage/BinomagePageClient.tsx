@@ -157,11 +157,11 @@ export function BinomagePageClient({ combos }: BinomagePageClientProps) {
             <button
               type="button"
               onClick={() => setIsDropdownOpen((v) => !v)}
-              className="w-full flex items-center justify-between px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-left hover:border-[var(--aduti-primary)]/50 transition-colors"
+              className="w-full flex items-center justify-between px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-left hover:border-(--aduti-primary)/50 transition-colors"
             >
               <div className="flex items-center gap-3">
-                <span className="p-1.5 bg-[var(--aduti-primary)]/10 rounded-lg">
-                  <Link2 className="w-4 h-4 text-[var(--aduti-primary)]" />
+                <span className="p-1.5 bg-(--aduti-primary)/10 rounded-lg">
+                  <Link2 className="w-4 h-4 text-aduti-primary" />
                 </span>
                 <span className="font-semibold text-slate-800">
                   {selectedCombo
@@ -185,12 +185,12 @@ export function BinomagePageClient({ combos }: BinomagePageClientProps) {
                     onClick={() => loadCombo(combo)}
                     className={`w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-50 text-left transition-colors ${
                       selectedCombo?.label === combo.label
-                        ? "bg-[var(--aduti-primary)]/5"
+                        ? "bg-(--aduti-primary)/5"
                         : ""
                     }`}
                   >
-                    <span className="p-1.5 bg-[var(--aduti-primary)]/10 rounded-lg">
-                      <Link2 className="w-4 h-4 text-[var(--aduti-primary)]" />
+                    <span className="p-1.5 bg-(--aduti-primary)/10 rounded-lg">
+                      <Link2 className="w-4 h-4 text-aduti-primary" />
                     </span>
                     <div>
                       <p className="font-semibold text-slate-800">
@@ -223,7 +223,7 @@ export function BinomagePageClient({ combos }: BinomagePageClientProps) {
         <div className="space-y-4">
           {isLoading && !comboData ? (
             <div className="flex items-center justify-center py-16">
-              <Loader2 className="w-8 h-8 animate-spin text-[var(--aduti-primary)]" />
+              <Loader2 className="w-8 h-8 animate-spin text-aduti-primary" />
             </div>
           ) : comboData ? (
             <>
@@ -299,7 +299,7 @@ export function BinomagePageClient({ combos }: BinomagePageClientProps) {
                     <button
                       type="button"
                       onClick={() => setIsDrawModalOpen(true)}
-                      className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[var(--aduti-primary)] to-indigo-600 text-white rounded-lg text-sm font-bold shadow hover:shadow-lg transition-all"
+                      className="flex items-center gap-2 px-4 py-2 bg-linear-to-r from-aduti-primary to-indigo-600 text-white rounded-lg text-sm font-bold shadow hover:shadow-lg transition-all"
                     >
                       <Shuffle className="w-4 h-4" />
                       Lancer le binomage
@@ -318,7 +318,7 @@ export function BinomagePageClient({ combos }: BinomagePageClientProps) {
                       onClick={() => setActiveTab(tab)}
                       className={`flex-1 px-4 py-3 text-sm font-semibold transition-colors ${
                         activeTab === tab
-                          ? "border-b-2 border-[var(--aduti-primary)] text-[var(--aduti-primary)] bg-[var(--aduti-primary)]/5"
+                          ? "border-b-2 border-aduti-primary text-aduti-primary bg-(--aduti-primary)/5"
                           : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
                       }`}
                     >
@@ -415,7 +415,7 @@ function BinomesTab({ binomes }: { binomes: BinomePair[] }) {
     <div className="space-y-4">
       {/* Barre de recherche locale aux binômes */}
       <div className="relative group">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-[var(--aduti-primary)] transition-colors" />
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-aduti-primary transition-colors" />
         <input
           type="text"
           placeholder="Rechercher par nom de parrain ou de filleul..."
@@ -424,7 +424,7 @@ function BinomesTab({ binomes }: { binomes: BinomePair[] }) {
             setSearchQuery(e.target.value);
             setCurrentPage(1);
           }}
-          className="w-full h-11 bg-slate-50 border border-slate-100 rounded-xl pl-11 pr-4 text-sm font-medium focus:ring-2 focus:ring-[var(--aduti-primary)]/10 focus:border-[var(--aduti-primary)]/50 transition-all outline-none"
+          className="w-full h-11 bg-slate-50 border border-slate-100 rounded-xl pl-11 pr-4 text-sm font-medium focus:ring-2 focus:ring-(--aduti-primary)/10 focus:border-(--aduti-primary)/50 transition-all outline-none"
         />
       </div>
 
@@ -441,12 +441,12 @@ function BinomesTab({ binomes }: { binomes: BinomePair[] }) {
             {currentBinomes.map((b) => (
               <div
                 key={b.id}
-                className="flex items-center gap-3 sm:gap-6 p-3 rounded-xl border border-slate-100 hover:border-[var(--aduti-primary)]/20 hover:bg-[var(--aduti-primary)]/5 transition-all animate-in fade-in slide-in-from-bottom-2 duration-300"
+                className="flex items-center gap-3 sm:gap-6 p-3 rounded-xl border border-slate-100 hover:border-(--aduti-primary)/20 hover:bg-(--aduti-primary)/5 transition-all animate-in fade-in slide-in-from-bottom-2 duration-300"
               >
                 <MemberChip member={b.parrain} badge="Parrain" badgeColor="blue" />
                 <div className="flex-1 flex items-center justify-center">
                   <div className="h-[1px] flex-1 bg-slate-100 hidden sm:block" />
-                  <Handshake className="w-5 h-5 text-[var(--aduti-primary)] mx-4 shrink-0" />
+                  <Handshake className="w-5 h-5 text-aduti-primary mx-4 shrink-0" />
                   <div className="h-[1px] flex-1 bg-slate-100 hidden sm:block" />
                 </div>
                 <MemberChip member={b.filleul} badge="Filleul" badgeColor="orange" />
@@ -515,10 +515,10 @@ function MembersTab({
             className={`flex items-center gap-3 p-3 rounded-xl border transition-all ${
               isBinomed
                 ? "border-green-200 bg-green-50"
-                : "border-slate-200 hover:border-[var(--aduti-primary)]/30"
+                : "border-slate-200 hover:border-(--aduti-primary)/30"
             }`}
           >
-            <div className="relative w-10 h-10 rounded-full overflow-hidden bg-gradient-to-br from-[var(--aduti-primary)] to-indigo-500 shrink-0 group/avatar">
+            <div className="relative w-10 h-10 rounded-full overflow-hidden bg-linear-to-br from-aduti-primary to-indigo-500 shrink-0 group/avatar">
               {m.photo_url ? (
                 <Dialog>
                   <DialogTrigger asChild>
@@ -526,7 +526,7 @@ function MembersTab({
                       <Image src={m.photo_url} alt={`${m.last_name.toUpperCase()} ${m.first_name}`} fill className="object-cover transition-transform duration-500 group-hover/avatar:scale-110" />
                     </button>
                   </DialogTrigger>
-                  <DialogContent className="max-w-[80vw] md:max-w-fit border-none bg-transparent shadow-none p-0 flex justify-center items-center h-[80vh] z-[100]">
+                  <DialogContent className="max-w-[80vw] md:max-w-fit border-none bg-transparent shadow-none p-0 flex justify-center items-center h-[80vh] z-100">
                     <DialogTitle className="sr-only">Photo de {m.last_name.toUpperCase()} {m.first_name}</DialogTitle>
                     <Image 
                       src={m.photo_url} 
@@ -576,7 +576,7 @@ function MemberChip({
 
   return (
     <div className="flex flex-col items-center gap-1.5 w-28 sm:w-36">
-      <div className="relative w-12 h-12 rounded-full overflow-hidden bg-gradient-to-br from-slate-300 to-slate-400 shadow group/avatar">
+      <div className="relative w-12 h-12 rounded-full overflow-hidden bg-linear-to-br from-slate-300 to-slate-400 shadow group/avatar">
         {member.photo_url ? (
           <Dialog>
             <DialogTrigger asChild>
@@ -584,7 +584,7 @@ function MemberChip({
                 <Image src={member.photo_url} alt={`${member.last_name.toUpperCase()} ${member.first_name}`} fill className="object-cover transition-transform duration-500 group-hover/avatar:scale-110" />
               </button>
             </DialogTrigger>
-            <DialogContent className="max-w-[80vw] md:max-w-fit border-none bg-transparent shadow-none p-0 flex justify-center items-center h-[80vh] z-[100]">
+            <DialogContent className="max-w-[80vw] md:max-w-fit border-none bg-transparent shadow-none p-0 flex justify-center items-center h-[80vh] z-100">
               <DialogTitle className="sr-only">Photo de {member.last_name.toUpperCase()} {member.first_name}</DialogTitle>
               <Image 
                 src={member.photo_url} 

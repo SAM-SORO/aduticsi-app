@@ -7,6 +7,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-aduti-primary: var(--aduti-primary);
+  --color-aduti-primary-hover: var(--aduti-primary-hover);
   --color-aduti-secondary: var(--aduti-secondary);
   --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-display), var(--font-body), ui-sans-serif, system-ui, sans-serif;

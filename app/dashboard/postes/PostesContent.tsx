@@ -89,7 +89,7 @@ export function PostesContent({ initialPostes }: PostesContentProps) {
             setEditingPoste(null);
             setIsFormOpen(true);
           }}
-          className="bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] text-white rounded-2xl h-12 px-6 shadow-md transition-all hover:scale-[1.02] active:scale-[0.98] font-bold text-sm gap-2"
+          className="bg-aduti-primary hover:bg-aduti-primary-hover text-white rounded-2xl h-12 px-6 shadow-md transition-all hover:scale-[1.02] active:scale-[0.98] font-bold text-sm gap-2"
         >
           <Plus className="w-4 h-4" />
           Ajouter un poste
@@ -101,10 +101,10 @@ export function PostesContent({ initialPostes }: PostesContentProps) {
         {/* Search Bar Area */}
         <div className="p-6 border-b border-slate-50">
           <div className="relative max-w-md group">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-[var(--aduti-primary)] transition-colors" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-aduti-primary transition-colors" />
             <Input
               placeholder="Rechercher un poste..."
-              className="pl-12 h-11 rounded-2xl border-slate-100 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-[var(--aduti-primary)]/20 shadow-none text-sm transition-all"
+              className="pl-12 h-11 rounded-2xl border-slate-100 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-(--aduti-primary)/20 shadow-none text-sm transition-all"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -115,7 +115,7 @@ export function PostesContent({ initialPostes }: PostesContentProps) {
         <div className="p-0">
           {isLoading ? (
             <div className="flex flex-col items-center justify-center py-24 text-slate-400 gap-4">
-              <Loader2 className="w-8 h-8 animate-spin text-[var(--aduti-primary)]" />
+              <Loader2 className="w-8 h-8 animate-spin text-aduti-primary" />
               <p className="font-medium uppercase tracking-wide text-[10px]">Chargement des postes...</p>
             </div>
           ) : filteredPostes.length === 0 ? (
@@ -143,7 +143,7 @@ export function PostesContent({ initialPostes }: PostesContentProps) {
                     <tr key={poste.id} className="group hover:bg-slate-50/30 transition-colors">
                       <td className="px-8 py-5">
                         <div className="flex items-center gap-4">
-                          <div className="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center text-[var(--aduti-primary)] font-bold shadow-sm border border-blue-100/30">
+                          <div className="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center text-aduti-primary font-bold shadow-sm border border-blue-100/30">
                             {poste.name.charAt(0)}
                           </div>
                           <span className="font-bold text-slate-900">{poste.name}</span>

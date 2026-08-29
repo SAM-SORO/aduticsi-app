@@ -38,7 +38,7 @@ export async function PartnersCarousel() {
           <div
             key={`${partner.id}-${i}`}
             title={partner.name}
-            className="flex-shrink-0 flex items-center justify-center h-20 w-40 opacity-40 grayscale transition-all duration-500 hover:grayscale-0 hover:opacity-100 hover:scale-105 cursor-default"
+            className="shrink-0 flex items-center justify-center h-20 w-40 opacity-40 grayscale transition-all duration-500 hover:grayscale-0 hover:opacity-100 hover:scale-105 cursor-default"
           >
             <div className="relative w-full h-full">
               <Image

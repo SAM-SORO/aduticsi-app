@@ -21,7 +21,7 @@ export default function ContactPage() {
       <div className="flex flex-col lg:flex-row gap-8 lg:gap-16">
         <div className="flex-1 space-y-8">
           <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-xs font-semibold text-[var(--aduti-primary)] uppercase tracking-wide">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-xs font-semibold text-aduti-primary uppercase tracking-wide">
               <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
               Contactez-nous
             </div>
@@ -44,7 +44,7 @@ export default function ContactPage() {
             </h3>
             <ul className="space-y-6">
               <li className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-[var(--aduti-primary)] shadow-sm">
+                <div className="shrink-0 w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-aduti-primary shadow-sm">
                   <MaterialIcon name="location_on" className="w-[20px] h-[20px]" />
                 </div>
                 <div>
@@ -59,13 +59,13 @@ export default function ContactPage() {
               </li>
 
               <li className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-[var(--aduti-primary)] shadow-sm">
+                <div className="shrink-0 w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-aduti-primary shadow-sm">
                   <MaterialIcon name="mail" className="w-[20px] h-[20px]" />
                 </div>
                 <div>
                   <h4 className="text-sm font-bold text-slate-900">Email</h4>
                   <a
-                    className="text-sm text-slate-600 mt-1 block hover:text-[var(--aduti-primary)] transition-colors"
+                    className="text-sm text-slate-600 mt-1 block hover:text-aduti-primary transition-colors"
                     href="mailto:csiaduti@gmail.com"
                   >
                     csiaduti@gmail.com
@@ -74,7 +74,7 @@ export default function ContactPage() {
               </li>
 
               <li className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-[var(--aduti-primary)] shadow-sm">
+                <div className="shrink-0 w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-aduti-primary shadow-sm">
                   <MaterialIcon name="call" className="w-[20px] h-[20px]" />
                 </div>
                 <div>
@@ -145,7 +145,7 @@ export default function ContactPage() {
                 href="https://maps.google.com/?q=INPHB+Yamoussoukro+Centre"
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center gap-2 bg-white px-4 py-2 rounded-xl shadow-lg border border-slate-100 text-xs font-bold text-slate-800 hover:text-[var(--aduti-primary)] transition-all active:scale-95"
+                className="flex items-center gap-2 bg-white px-4 py-2 rounded-xl shadow-lg border border-slate-100 text-xs font-bold text-slate-800 hover:text-aduti-primary transition-all active:scale-95"
               >
                 <MaterialIcon name="open_in_new" className="w-[18px] h-[18px]" />
                 Ouvrir dans Google Maps

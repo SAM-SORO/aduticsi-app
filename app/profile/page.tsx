@@ -22,14 +22,14 @@ export default async function ProfilePage() {
 
   // La page affiche désormais la mise en page centrée pour tout le monde (accès via Navbar)
   return (
-    <div className="bg-slate-50 min-h-[100dvh] py-12 px-4 flex flex-col items-center">
+    <div className="bg-slate-50 min-h-dvh py-12 px-4 flex flex-col items-center">
       <div className="max-w-4xl w-full space-y-6">
         {/* Retour */}
         <BackButton label="Retour" />
 
         <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm flex items-center justify-between">
             <div className="flex items-center gap-4">
-                <div className="size-12 bg-blue-50 rounded-2xl flex items-center justify-center text-[var(--aduti-primary)]">
+                <div className="size-12 bg-blue-50 rounded-2xl flex items-center justify-center text-aduti-primary">
                     <User className="w-6 h-6" />
                 </div>
                 <div>

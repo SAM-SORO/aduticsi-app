@@ -111,7 +111,7 @@ export default async function ActivitiesAdminPage({
             {!selectedActivityId && (
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button className="bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] text-white px-4 h-10 rounded-lg shadow-sm transition-all active:scale-95 gap-2 text-sm font-bold">
+                  <Button className="bg-aduti-primary hover:bg-aduti-primary-hover text-white px-4 h-10 rounded-lg shadow-sm transition-all active:scale-95 gap-2 text-sm font-bold">
                     <Plus className="w-4 h-4" />
                     Nouvelle Activité
                   </Button>
@@ -127,7 +127,7 @@ export default async function ActivitiesAdminPage({
             {selectedActivityId && (
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button className="bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] text-white px-4 h-10 rounded-lg shadow-sm transition-all active:scale-95 gap-2 text-sm font-bold">
+                  <Button className="bg-aduti-primary hover:bg-aduti-primary-hover text-white px-4 h-10 rounded-lg shadow-sm transition-all active:scale-95 gap-2 text-sm font-bold">
                     <Plus className="w-4 h-4" />
                     Nouvelle Publication
                   </Button>
@@ -151,9 +151,9 @@ export default async function ActivitiesAdminPage({
                 <a
                   key={promo.id}
                   href={`/dashboard/super-admin/activities?promo=${promo.id}`}
-                  className="group bg-white p-8 rounded-3xl border border-slate-100 hover:border-[var(--aduti-primary)]/30 hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] transition-all flex flex-col items-center text-center relative overflow-hidden"
+                  className="group bg-white p-8 rounded-3xl border border-slate-100 hover:border-(--aduti-primary)/30 hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] transition-all flex flex-col items-center text-center relative overflow-hidden"
                 >
-                  <div className="size-16 bg-blue-50 rounded-2xl flex items-center justify-center text-[var(--aduti-primary)] mb-6 group-hover:scale-110 transition-transform">
+                  <div className="size-16 bg-blue-50 rounded-2xl flex items-center justify-center text-aduti-primary mb-6 group-hover:scale-110 transition-transform">
                     <Layout className="w-8 h-8" />
                   </div>
                   <h3 className="text-xl font-bold text-slate-900 mb-2">Promotion {promo.name}</h3>
@@ -212,11 +212,11 @@ export default async function ActivitiesAdminPage({
                         href={`/dashboard/super-admin/activities?promo=${selectedPromoId}&activity=${act.id}`}
                         className="mt-auto flex items-center justify-between pt-6 border-t border-slate-50 group/link cursor-pointer"
                       >
-                        <div className="flex items-center gap-2 px-4 py-2 bg-slate-50 rounded-2xl border border-slate-100 group-hover/link:bg-blue-50 group-hover/link:border-[var(--aduti-primary)]/20 transition-all">
-                          <MaterialIcon name="article" className="w-5 h-5 text-[var(--aduti-primary)]" />
+                        <div className="flex items-center gap-2 px-4 py-2 bg-slate-50 rounded-2xl border border-slate-100 group-hover/link:bg-blue-50 group-hover/link:border-(--aduti-primary)/20 transition-all">
+                          <MaterialIcon name="article" className="w-5 h-5 text-aduti-primary" />
                           <span className="text-xs font-bold text-slate-700 uppercase tracking-widest">{act._count.publications} Publications</span>
                         </div>
-                        <div className="size-11 bg-slate-900 text-white rounded-2xl flex items-center justify-center group-hover/link:bg-[var(--aduti-primary)] group-hover/link:rotate-[-5deg] transition-all shadow-xl shadow-slate-200">
+                        <div className="size-11 bg-slate-900 text-white rounded-2xl flex items-center justify-center group-hover/link:bg-aduti-primary group-hover/link:rotate-[-5deg] transition-all shadow-xl shadow-slate-200">
                           <ChevronRight className="w-6 h-6" />
                         </div>
                       </a>

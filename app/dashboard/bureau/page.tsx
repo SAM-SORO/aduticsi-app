@@ -57,12 +57,12 @@ export default async function BureauPage() {
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <a href="/dashboard/super-admin/activities" className="bg-white rounded-xl border border-slate-200 p-6 hover:border-[var(--aduti-primary)] transition-colors">
+          <a href="/dashboard/super-admin/activities" className="bg-white rounded-xl border border-slate-200 p-6 hover:border-aduti-primary transition-colors">
             <p className="text-xs text-slate-500 uppercase tracking-wider">Gestion</p>
             <p className="mt-2 text-lg font-bold text-slate-900">Activites et publications</p>
             <p className="mt-1 text-sm text-slate-500">{activitiesCount} activites • {publicationsCount} publications</p>
           </a>
-          <a href="/profile" className="bg-white rounded-xl border border-slate-200 p-6 hover:border-[var(--aduti-primary)] transition-colors">
+          <a href="/profile" className="bg-white rounded-xl border border-slate-200 p-6 hover:border-aduti-primary transition-colors">
             <p className="text-xs text-slate-500 uppercase tracking-wider">Compte</p>
             <p className="mt-2 text-lg font-bold text-slate-900">Mon profil</p>
             <p className="mt-1 text-sm text-slate-500">Mettre a jour vos informations publiques.</p>

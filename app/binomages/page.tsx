@@ -22,7 +22,7 @@ export default async function BinomagesPublicPage() {
   const combos = await getPromoCombos();
 
   return (
-    <main className="min-h-[100dvh] pt-24 pb-12 bg-slate-50">
+    <main className="min-h-dvh pt-24 pb-12 bg-slate-50">
       <div className="layout-container max-w-7xl mx-auto px-4">
         <BinomagesClient combos={combos} />
       </div>

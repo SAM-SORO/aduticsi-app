@@ -74,7 +74,7 @@ function SocialLink({ href, icon, label, color }: { href: string; icon: string; 
 function InfoChip({ icon, label, value }: { icon: string; label: string; value: string }) {
   return (
     <div className="flex items-center gap-4 p-4 bg-slate-50/80 rounded-2xl border border-slate-100">
-      <div className="w-10 h-10 rounded-xl bg-white border border-slate-100 flex items-center justify-center text-slate-500 flex-shrink-0">
+      <div className="w-10 h-10 rounded-xl bg-white border border-slate-100 flex items-center justify-center text-slate-500 shrink-0">
         <MaterialIcon name={icon} className="w-[18px] h-[18px]" />
       </div>
       <div className="min-w-0">
@@ -98,16 +98,16 @@ function PublicPreview({ member }: { member: ProfileContentProps['member'] }) {
         variants={fadeUp}
         initial="hidden"
         animate="show"
-        className="relative bg-gradient-to-br from-[var(--aduti-primary)]/5 via-white to-blue-50/30 rounded-3xl border border-slate-100 shadow-xl overflow-hidden p-8 md:p-12"
+        className="relative bg-linear-to-br from-(--aduti-primary)/5 via-white to-blue-50/30 rounded-3xl border border-slate-100 shadow-xl overflow-hidden p-8 md:p-12"
       >
-        <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--aduti-primary)]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+        <div className="absolute top-0 right-0 w-64 h-64 bg-(--aduti-primary)/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
         
         <div className="relative flex flex-col md:flex-row gap-8 items-center md:items-start">
           {/* Avatar Premium */}
-          <div className="relative flex-shrink-0 group">
-            <div className="absolute inset-0 bg-gradient-to-tr from-[var(--aduti-primary)] to-blue-400 blur-2xl opacity-20 group-hover:opacity-30 transition-opacity duration-500 rounded-3xl"></div>
+          <div className="relative shrink-0 group">
+            <div className="absolute inset-0 bg-linear-to-tr from-aduti-primary to-blue-400 blur-2xl opacity-20 group-hover:opacity-30 transition-opacity duration-500 rounded-3xl"></div>
             
-            <div className="relative w-32 h-32 md:w-44 md:h-44 p-1.5 bg-gradient-to-tr from-slate-100 via-white to-slate-100 rounded-3xl shadow-2xl overflow-visible border border-white/50">
+            <div className="relative w-32 h-32 md:w-44 md:h-44 p-1.5 bg-linear-to-tr from-slate-100 via-white to-slate-100 rounded-3xl shadow-2xl overflow-visible border border-white/50">
               <div className="w-full h-full rounded-3xl overflow-hidden bg-slate-50 relative shadow-inner border border-slate-100/50">
                 {member.photo_url ? (
                   <Dialog>
@@ -129,7 +129,7 @@ function PublicPreview({ member }: { member: ProfileContentProps['member'] }) {
                     </DialogContent>
                   </Dialog>
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-b from-slate-50 to-slate-100">
+                  <div className="w-full h-full flex items-center justify-center bg-linear-to-b from-slate-50 to-slate-100">
                     <MaterialIcon name="person" className="w-16 h-16 md:w-20 md:h-20 text-slate-300/80" />
                   </div>
                 )}
@@ -144,13 +144,13 @@ function PublicPreview({ member }: { member: ProfileContentProps['member'] }) {
                 {member.last_name?.toUpperCase()} {member.first_name}
               </h2>
               {hasJob && (
-                <p className="text-[var(--aduti-primary)] font-bold text-lg mt-1 break-words">{member.current_job_title}</p>
+                <p className="text-aduti-primary font-bold text-lg mt-1 break-words">{member.current_job_title}</p>
               )}
             </div>
 
             {/* Badges */}
             <div className="flex flex-wrap gap-2 justify-center md:justify-start">
-              <span className={`px-4 py-1.5 rounded-xl text-xs font-medium uppercase tracking-wide shadow-sm flex items-center gap-1.5 ${member.status === 'ALUMNI' ? 'bg-emerald-500 text-white' : 'bg-[var(--aduti-primary)] text-white'}`}>
+              <span className={`px-4 py-1.5 rounded-xl text-xs font-medium uppercase tracking-wide shadow-sm flex items-center gap-1.5 ${member.status === 'ALUMNI' ? 'bg-emerald-500 text-white' : 'bg-aduti-primary text-white'}`}>
                 <MaterialIcon name="workspace_premium" className="w-3.5 h-3.5" />
                 {member.status === 'STUDENT' 
                   ? (member.gender === 'FEMALE' ? 'Étudiante' : 'Étudiant') 
@@ -193,7 +193,7 @@ function PublicPreview({ member }: { member: ProfileContentProps['member'] }) {
         <motion.div custom={1} variants={fadeUp} initial="hidden" animate="show"
           className="bg-white rounded-2xl border border-slate-100 shadow-sm p-8 space-y-5">
           <div className="flex items-center gap-3 pb-4 border-b border-slate-50">
-            <div className="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center text-[var(--aduti-primary)]">
+            <div className="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center text-aduti-primary">
               <MaterialIcon name="contacts" className="w-[18px] h-[18px]" />
             </div>
             <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-wide">Coordonnées</h3>
@@ -469,7 +469,7 @@ export function ProfileContent({ member }: ProfileContentProps) {
             type="submit"
             form="profile-form"
             disabled={isPending || isUploading}
-            className="flex items-center gap-2 px-6 py-2.5 bg-[var(--aduti-primary)] text-white text-xs font-medium uppercase tracking-wide rounded-xl hover:bg-[var(--aduti-primary-hover)] transition-all shadow-lg shadow-blue-100 disabled:opacity-50 active:scale-95"
+            className="flex items-center gap-2 px-6 py-2.5 bg-aduti-primary text-white text-xs font-medium uppercase tracking-wide rounded-xl hover:bg-aduti-primary-hover transition-all shadow-lg shadow-blue-100 disabled:opacity-50 active:scale-95"
           >
             {isPending ? <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <MaterialIcon name="save" className="w-4 h-4" />}
             Mettre à jour
@@ -503,18 +503,18 @@ export function ProfileContent({ member }: ProfileContentProps) {
                 "absolute top-0 left-0 right-0 h-1.5 bg-slate-100 overflow-hidden z-20 transition-opacity duration-300",
                 (isPending || isUploading) ? "opacity-100" : "opacity-0"
               )}>
-                <div className="h-full bg-[var(--aduti-primary)] animate-shimmer w-full origin-left" />
+                <div className="h-full bg-aduti-primary animate-shimmer w-full origin-left" />
               </div>
 
               {/* Avatar Header Premium */}
               <div className="relative bg-white border-b border-slate-100 p-8 md:p-12 overflow-hidden">
-                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-blue-50/60 via-slate-50/30 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-linear-to-bl from-blue-50/60 via-slate-50/30 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
                 
                 <div className="relative flex flex-col md:flex-row gap-8 md:gap-12 items-center md:items-start text-center md:text-left z-10">
-                  <div className="relative group flex-shrink-0">
-                    <div className="absolute inset-0 bg-gradient-to-tr from-[var(--aduti-primary)] to-blue-400 blur-xl opacity-20 group-hover:opacity-30 transition-opacity duration-300 rounded-3xl"></div>
+                  <div className="relative group shrink-0">
+                    <div className="absolute inset-0 bg-linear-to-tr from-aduti-primary to-blue-400 blur-xl opacity-20 group-hover:opacity-30 transition-opacity duration-300 rounded-3xl"></div>
                     
-                    <div className="relative w-36 h-36 md:w-44 md:h-44 p-1.5 bg-gradient-to-tr from-slate-100 via-white to-slate-100 rounded-3xl shadow-xl border border-white/80">
+                    <div className="relative w-36 h-36 md:w-44 md:h-44 p-1.5 bg-linear-to-tr from-slate-100 via-white to-slate-100 rounded-3xl shadow-xl border border-white/80">
                       <div className="w-full h-full rounded-3xl overflow-hidden bg-slate-50 relative border border-slate-100/50">
                         {photoUrl ? (
                           <>
@@ -529,7 +529,7 @@ export function ProfileContent({ member }: ProfileContentProps) {
                                   <MaterialIcon name="zoom_in" className="w-5 h-5" />
                                 </button>
                               </DialogTrigger>
-                              <DialogContent className="max-w-[80vw] md:max-w-fit border-none bg-transparent shadow-none p-0 flex justify-center items-center h-[80vh] z-[100]">
+                              <DialogContent className="max-w-[80vw] md:max-w-fit border-none bg-transparent shadow-none p-0 flex justify-center items-center h-[80vh] z-100">
                                 <DialogTitle className="sr-only">Photo de profil</DialogTitle>
                                 <Image 
                                   src={photoUrl} 
@@ -543,7 +543,7 @@ export function ProfileContent({ member }: ProfileContentProps) {
                             </Dialog>
                           </>
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center bg-gradient-to-b from-slate-50 to-slate-100">
+                          <div className="w-full h-full flex items-center justify-center bg-linear-to-b from-slate-50 to-slate-100">
                             <MaterialIcon name="person" className="w-16 h-16 md:w-20 md:h-20 text-slate-300/80" />
                           </div>
                         )}
@@ -579,7 +579,7 @@ export function ProfileContent({ member }: ProfileContentProps) {
                         {member.last_name?.toUpperCase()} {member.first_name}
                       </h2>
                       {member.current_job_title && (
-                        <p className="text-[var(--aduti-primary)] font-bold text-lg mt-1 break-words">{member.current_job_title}</p>
+                        <p className="text-aduti-primary font-bold text-lg mt-1 break-words">{member.current_job_title}</p>
                       )}
                     </div>
                     
@@ -632,12 +632,12 @@ export function ProfileContent({ member }: ProfileContentProps) {
                       <div className="space-y-2">
                         <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Nom</label>
                         <input name="last_name" defaultValue={member.last_name || ''} 
-                          className="w-full px-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all text-slate-700" />
+                          className="w-full px-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-aduti-primary outline-none transition-all text-slate-700" />
                       </div>
                       <div className="space-y-2">
                         <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Prénoms</label>
                         <input name="first_name" defaultValue={member.first_name || ''} 
-                          className="w-full px-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all text-slate-700" />
+                          className="w-full px-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-aduti-primary outline-none transition-all text-slate-700" />
                       </div>
                     </div>
                     <div className="space-y-2">
@@ -647,7 +647,7 @@ export function ProfileContent({ member }: ProfileContentProps) {
                           <MaterialIcon name="call" className="w-5 h-5" />
                         </div>
                         <input name="phone" defaultValue={member.phone || ''} 
-                          className="w-full pl-12 pr-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all text-slate-700" />
+                          className="w-full pl-12 pr-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-aduti-primary outline-none transition-all text-slate-700" />
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-4">
@@ -684,7 +684,7 @@ export function ProfileContent({ member }: ProfileContentProps) {
                       <div className="relative">
                         <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-bold">in/</span>
                         <input name="linkedin_url" defaultValue={member.linkedin_url || ''} 
-                          className="w-full px-5 pl-12 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all text-slate-700" />
+                          className="w-full px-5 pl-12 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-aduti-primary outline-none transition-all text-slate-700" />
                       </div>
                     </div>
                     <div className="space-y-2">
@@ -692,7 +692,7 @@ export function ProfileContent({ member }: ProfileContentProps) {
                       <div className="relative">
                         <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-bold">@</span>
                         <input name="github_url" defaultValue={member.github_url || ''} 
-                          className="w-full px-5 pl-10 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all text-slate-700" />
+                          className="w-full px-5 pl-10 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-aduti-primary outline-none transition-all text-slate-700" />
                       </div>
                     </div>
                     <div className="space-y-2">
@@ -702,7 +702,7 @@ export function ProfileContent({ member }: ProfileContentProps) {
                           <MaterialIcon name="play_circle" className="w-5 h-5" />
                         </div>
                         <input name="youtube_url" defaultValue={member.youtube_url || ''} 
-                          className="w-full pl-12 pr-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all text-slate-700" />
+                          className="w-full pl-12 pr-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-aduti-primary outline-none transition-all text-slate-700" />
                       </div>
                     </div>
                     <div className="space-y-2">
@@ -712,7 +712,7 @@ export function ProfileContent({ member }: ProfileContentProps) {
                           <MaterialIcon name="language" className="w-5 h-5" />
                         </div>
                         <input name="portfolio_url" defaultValue={member.portfolio_url || ''} 
-                          className="w-full pl-12 pr-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all text-slate-700" />
+                          className="w-full pl-12 pr-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-aduti-primary outline-none transition-all text-slate-700" />
                       </div>
                     </div>
                   </div>
@@ -730,12 +730,12 @@ export function ProfileContent({ member }: ProfileContentProps) {
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Poste actuel</label>
                       <input name="current_job_title" defaultValue={member.current_job_title || ''} 
-                        className="w-full px-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all text-slate-700" />
+                        className="w-full px-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-aduti-primary outline-none transition-all text-slate-700" />
                     </div>
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Description du poste</label>
                       <input name="current_job_description" defaultValue={member.current_job_description || ''} 
-                        className="w-full px-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-[var(--aduti-primary)] outline-none transition-all text-slate-700" />
+                        className="w-full px-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:border-aduti-primary outline-none transition-all text-slate-700" />
                     </div>
                   </div>
                 </div>
@@ -750,13 +750,13 @@ export function ProfileContent({ member }: ProfileContentProps) {
                   </div>
                   <div className="space-y-2">
                     <textarea name="description" defaultValue={member.description || ''} rows={5}
-                      className="w-full px-6 py-5 bg-slate-50/50 border border-slate-200 rounded-[24px] focus:border-[var(--aduti-primary)] outline-none transition-all text-slate-700 resize-none leading-relaxed" />
+                      className="w-full px-6 py-5 bg-slate-50/50 border border-slate-200 rounded-[24px] focus:border-aduti-primary outline-none transition-all text-slate-700 resize-none leading-relaxed" />
                   </div>
                 </div>
 
                 <div className="pt-10 flex flex-col sm:flex-row items-center justify-between gap-8 border-t border-slate-100">
                   <button type="submit" disabled={isPending || isUploading}
-                    className="w-full sm:w-auto px-12 py-5 bg-[var(--aduti-primary)] text-white font-bold rounded-2xl hover:bg-[var(--aduti-primary-hover)] transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest text-sm flex items-center justify-center gap-3">
+                    className="w-full sm:w-auto px-12 py-5 bg-aduti-primary text-white font-bold rounded-2xl hover:bg-aduti-primary-hover transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest text-sm flex items-center justify-center gap-3">
                     {isPending ? <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <MaterialIcon name="save" className="w-5 h-5" />}
                     {isPending ? 'Enregistrement...' : 'Mettre à jour'}
                   </button>

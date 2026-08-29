@@ -22,7 +22,7 @@ export default function NotFound() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link 
             href="/" 
-            className="flex min-w-[200px] cursor-pointer items-center justify-center rounded-lg h-14 px-8 bg-[var(--aduti-primary)] text-white text-lg font-bold transition-all hover:bg-[var(--aduti-primary-hover)] shadow-lg group"
+            className="flex min-w-[200px] cursor-pointer items-center justify-center rounded-lg h-14 px-8 bg-aduti-primary text-white text-lg font-bold transition-all hover:bg-aduti-primary-hover shadow-lg group"
           >
             <MaterialIcon name="arrow_back" className="mr-2 w-5 h-5 group-hover:-translate-x-1 transition-transform" />
             <span className="truncate">Retour à l&apos;accueil</span>
@@ -37,19 +37,19 @@ export default function NotFound() {
 
         <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 text-left border-t border-slate-100 dark:border-slate-800 pt-12">
           <Link href="/about" className="p-4 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors block group">
-            <MaterialIcon name="school" className="w-6 h-6 text-[var(--aduti-primary)] mb-2 group-hover:scale-110 transition-transform" />
+            <MaterialIcon name="school" className="w-6 h-6 text-aduti-primary mb-2 group-hover:scale-110 transition-transform" />
             <h3 className="font-bold text-slate-900 dark:text-white mb-1">Notre Histoire</h3>
             <p className="text-sm text-slate-500 dark:text-slate-400">Découvrez l&apos;historique de l&apos;ADUTI.</p>
           </Link>
           
           <Link href="/members" className="p-4 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors block group">
-            <MaterialIcon name="groups" className="w-6 h-6 text-[var(--aduti-primary)] mb-2 group-hover:scale-110 transition-transform" />
+            <MaterialIcon name="groups" className="w-6 h-6 text-aduti-primary mb-2 group-hover:scale-110 transition-transform" />
             <h3 className="font-bold text-slate-900 dark:text-white mb-1">Membres</h3>
             <p className="text-sm text-slate-500 dark:text-slate-400">Consultez l&apos;annuaire de nos membres.</p>
           </Link>
           
           <Link href="/activities" className="p-4 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors block group">
-            <MaterialIcon name="calendar_month" className="w-6 h-6 text-[var(--aduti-primary)] mb-2 group-hover:scale-110 transition-transform" />
+            <MaterialIcon name="calendar_month" className="w-6 h-6 text-aduti-primary mb-2 group-hover:scale-110 transition-transform" />
             <h3 className="font-bold text-slate-900 dark:text-white mb-1">Événements</h3>
             <p className="text-sm text-slate-500 dark:text-slate-400">Ne manquez pas nos prochaines activités.</p>
           </Link>

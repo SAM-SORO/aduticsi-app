@@ -29,13 +29,13 @@ export default function AuthCodeErrorPage() {
         <div className="pt-6 space-y-4">
           <Link 
             href="/auth/login" 
-            className="w-full flex justify-center items-center gap-2 py-2.5 px-4 rounded-lg shadow-sm text-sm font-bold text-white bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--aduti-primary)] transition-all active:scale-[0.98]"
+            className="w-full flex justify-center items-center gap-2 py-2.5 px-4 rounded-lg shadow-sm text-sm font-bold text-white bg-aduti-primary hover:bg-aduti-primary-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-aduti-primary transition-all active:scale-[0.98]"
           >
             Retour à la connexion
           </Link>
           <Link 
             href="/auth/register" 
-            className="block text-sm font-medium text-[var(--aduti-primary)] hover:underline"
+            className="block text-sm font-medium text-aduti-primary hover:underline"
           >
             Créer un nouveau compte
           </Link>

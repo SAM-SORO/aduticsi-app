@@ -73,7 +73,7 @@ export function Pagination({
             className={cn(
               "flex size-10 items-center justify-center rounded-xl text-sm font-medium transition-colors",
               item === currentPage
-                ? "bg-[var(--aduti-primary)] text-white"
+                ? "bg-aduti-primary text-white"
                 : "border border-slate-200 text-slate-600 hover:border-slate-300 hover:text-slate-900"
             )}
           >

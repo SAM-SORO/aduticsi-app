@@ -55,11 +55,11 @@ export function PartnerForm() {
   return (
     <>
       {isPending && (
-        <div className="fixed inset-0 z-[9999] bg-slate-900/40 backdrop-blur-sm flex flex-col items-center justify-center">
+        <div className="fixed inset-0 z-9999 bg-slate-900/40 backdrop-blur-sm flex flex-col items-center justify-center">
           <div className="bg-white p-8 rounded-2xl shadow-2xl flex flex-col items-center max-w-sm w-full outline outline-1 outline-white/20">
             <div className="relative mb-6">
               <div className="w-16 h-16 border-4 border-slate-100 rounded-full" />
-              <div className="w-16 h-16 border-4 border-[var(--aduti-primary)] border-t-transparent rounded-full animate-spin absolute inset-0" />
+              <div className="w-16 h-16 border-4 border-aduti-primary border-t-transparent rounded-full animate-spin absolute inset-0" />
             </div>
             <h3 className="text-xl font-bold text-slate-900 mb-2">Ajout en cours...</h3>
             <p className="text-sm text-slate-500 text-center">
@@ -72,7 +72,7 @@ export function PartnerForm() {
       <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden sticky top-6">
         <div className="p-5 border-b border-slate-100 bg-slate-50/50">
           <h3 className="font-semibold text-slate-800 flex items-center gap-2">
-            <Plus className="w-4 h-4 text-[var(--aduti-primary)]" />
+            <Plus className="w-4 h-4 text-aduti-primary" />
             Nouveau Partenaire
           </h3>
         </div>
@@ -85,7 +85,7 @@ export function PartnerForm() {
               name="name" 
               required
               placeholder="ex: Google, Microsoft..." 
-              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[var(--aduti-primary)] focus:border-[var(--aduti-primary)] outline-none text-sm transition-all"
+              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-aduti-primary focus:border-aduti-primary outline-none text-sm transition-all"
             />
           </div>
 
@@ -113,7 +113,7 @@ export function PartnerForm() {
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="w-full h-32 rounded-lg border-2 border-dashed border-slate-200 bg-slate-50 flex flex-col items-center justify-center gap-2 hover:bg-slate-100 hover:border-[var(--aduti-primary)]/30 transition-all text-slate-400 hover:text-slate-600 group"
+                className="w-full h-32 rounded-lg border-2 border-dashed border-slate-200 bg-slate-50 flex flex-col items-center justify-center gap-2 hover:bg-slate-100 hover:border-(--aduti-primary)/30 transition-all text-slate-400 hover:text-slate-600 group"
               >
                 <div className="size-10 rounded-full bg-white shadow-sm flex items-center justify-center group-hover:scale-110 transition-transform">
                   <Upload className="w-5 h-5 text-slate-400" />
@@ -137,7 +137,7 @@ export function PartnerForm() {
           <button 
             type="submit"
             disabled={isPending}
-            className="w-full py-2.5 bg-[var(--aduti-primary)] text-white rounded-lg font-bold text-sm hover:brightness-90 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-[var(--aduti-primary)]/10"
+            className="w-full py-2.5 bg-aduti-primary text-white rounded-lg font-bold text-sm hover:brightness-90 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-(--aduti-primary)/10"
           >
             {isPending ? (
               <>

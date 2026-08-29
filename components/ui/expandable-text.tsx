@@ -31,7 +31,7 @@ export function ExpandableText({ text, className, maxLength = 180 }: ExpandableT
       </div>
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="flex items-center gap-1 text-xs font-bold text-slate-400 group-hover:text-[var(--aduti-primary)] transition-colors py-1 focus:outline-none"
+        className="flex items-center gap-1 text-xs font-bold text-slate-400 group-hover:text-aduti-primary transition-colors py-1 focus:outline-none"
       >
         {isExpanded ? (
           <>Voir moins <ChevronUp className="w-3.5 h-3.5" /></>

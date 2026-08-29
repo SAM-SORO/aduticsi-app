@@ -56,7 +56,7 @@ export default function AboutPage() {
       `}</style>
 
     
-      <section className="relative min-h-[100dvh] flex items-center bg-white overflow-hidden">
+      <section className="relative min-h-dvh flex items-center bg-white overflow-hidden">
         {/* Light atmosphere background */}
         <div className="absolute inset-0 z-0 pointer-events-none">
           {/* Subtle ambient glows matching landing page */}
@@ -69,7 +69,7 @@ export default function AboutPage() {
           <div className="space-y-10 animate-fade-in-left">
             {/* Eyebrow badge */}
             <div
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/80 backdrop-blur-md text-[var(--aduti-primary)] text-xs font-bold tracking-[0.1em] uppercase border border-blue-100/50 shadow-sm"
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/80 backdrop-blur-md text-aduti-primary text-xs font-bold tracking-[0.1em] uppercase border border-blue-100/50 shadow-sm"
               style={{ animationDelay: "0ms" }}
             >
                             Association DUT / DTS · INP-HB
@@ -80,7 +80,7 @@ export default function AboutPage() {
               <h1 className="font-[family-name:var(--font-display)] text-4xl font-bold leading-[1.05] tracking-tight text-slate-900 md:text-6xl">
                 L&apos;Excellence
                 <br />
-                <span className="text-[var(--aduti-primary)] italic">
+                <span className="text-aduti-primary italic">
                   Numérique
                 </span>
                 <br />
@@ -89,7 +89,7 @@ export default function AboutPage() {
             </div>
 
             {/* Description */}
-            <p className="text-slate-600 text-lg leading-relaxed max-w-lg font-medium border-l-2 border-[var(--aduti-primary)]/30 pl-5" style={{ animationDelay: "200ms" }}>
+            <p className="text-slate-600 text-lg leading-relaxed max-w-lg font-medium border-l-2 border-(--aduti-primary)/30 pl-5" style={{ animationDelay: "200ms" }}>
               L&apos;ADUTI est l&apos;association des étudiants de la spécialité informatique du cycle
               de techniciens supérieurs de l&apos;ESI - <span className="text-slate-900 font-semibold">École Supérieure d&apos;Industrie</span>.
             </p>
@@ -112,7 +112,7 @@ export default function AboutPage() {
             <div className="flex flex-col sm:flex-row gap-4 pt-4" style={{ animationDelay: "400ms" }}>
               <Button
                 onClick={scrollToHistory}
-                className="h-14 px-8 rounded-2xl bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] text-white font-bold transition-all shadow-[0_15px_30px_-10px_rgba(19,37,75,0.3)] gap-3 hover:-translate-y-1 active:scale-95 text-sm"
+                className="h-14 px-8 rounded-2xl bg-aduti-primary hover:bg-aduti-primary-hover text-white font-bold transition-all shadow-[0_15px_30px_-10px_rgba(19,37,75,0.3)] gap-3 hover:-translate-y-1 active:scale-95 text-sm"
               >
                 <MaterialIcon name="history_edu" className="w-5 h-5" />
                 Notre Histoire
@@ -122,7 +122,7 @@ export default function AboutPage() {
                   variant="outline"
                   className="h-14 px-8 rounded-2xl bg-white/50 backdrop-blur-sm border border-slate-200 hover:border-slate-300 text-slate-700 font-bold transition-all hover:bg-white gap-3 hover:-translate-y-1 text-sm w-full sm:w-auto"
                 >
-                  <MaterialIcon name="hub" className="w-5 h-5 text-[var(--aduti-primary)]" />
+                  <MaterialIcon name="hub" className="w-5 h-5 text-aduti-primary" />
                   Le Réseau
                 </Button>
               </Link>
@@ -140,7 +140,7 @@ export default function AboutPage() {
               {/* ADUTI logo — large */}
               <div className="relative z-10 w-full flex flex-col items-center gap-3">
                 <div className="relative">
-                  <div className="absolute inset-0 -m-4 bg-[var(--aduti-primary)]/5 rounded-full blur-2xl" />
+                  <div className="absolute inset-0 -m-4 bg-(--aduti-primary)/5 rounded-full blur-2xl" />
                   <div className="relative bg-slate-50 rounded-3xl p-6 shadow-sm border border-slate-100">
                     <Image
                       src="/logo_association.jpeg"
@@ -171,13 +171,13 @@ export default function AboutPage() {
               {/* Bottom decorative dots */}
               <div className="relative z-10 grid grid-cols-5 gap-2 opacity-30">
                 {Array.from({ length: 10 }).map((_, i) => (
-                  <div key={i} className="w-1.5 h-1.5 rounded-full bg-[var(--aduti-primary)]" />
+                  <div key={i} className="w-1.5 h-1.5 rounded-full bg-aduti-primary" />
                 ))}
               </div>
             </div>
 
             {/* Floating accent chips */}
-            <div className="absolute -top-4 -right-4 z-20 px-4 py-2 rounded-2xl bg-[var(--aduti-primary)] shadow-lg text-white text-xs font-semibold uppercase tracking-widest animate-float-slow" style={{ animationDelay: "2s" }}>
+            <div className="absolute -top-4 -right-4 z-20 px-4 py-2 rounded-2xl bg-aduti-primary shadow-lg text-white text-xs font-semibold uppercase tracking-widest animate-float-slow" style={{ animationDelay: "2s" }}>
               DUT · DTS
             </div>
             <div className="absolute -bottom-4 -left-4 z-20 px-4 py-2 rounded-2xl bg-white border border-slate-200 shadow-lg text-slate-600 text-xs font-semibold uppercase tracking-widest animate-float-slow" style={{ animationDelay: "3.5s" }}>
@@ -224,7 +224,7 @@ export default function AboutPage() {
                   }
                 ].map((item, i) => (
                   <div key={i} className="flex gap-8 p-8 rounded-3xl bg-white shadow-[0_10px_40px_rgba(0,0,0,0.03)] border border-slate-100 hover:shadow-2xl transition-all duration-500 group">
-                    <div className={`flex-shrink-0 w-16 h-16 rounded-2xl ${item.bg} flex items-center justify-center transition-transform group-hover:scale-110 group-hover:rotate-6`}>
+                    <div className={`shrink-0 w-16 h-16 rounded-2xl ${item.bg} flex items-center justify-center transition-transform group-hover:scale-110 group-hover:rotate-6`}>
                       <MaterialIcon name={item.icon} className={`w-8 h-8 ${item.color}`} />
                     </div>
                     <div className="space-y-2">
@@ -279,12 +279,12 @@ export default function AboutPage() {
         {/* Subtle Tech Background */}
         <div className="absolute inset-0 z-0 opacity-[0.03]" 
              style={{ backgroundImage: 'radial-gradient(var(--aduti-primary) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
-        <div className="absolute inset-0 z-0 bg-gradient-to-b from-white via-transparent to-white" />
+        <div className="absolute inset-0 z-0 bg-linear-to-b from-white via-transparent to-white" />
         
         <div className="max-w-7xl mx-auto relative z-10">
           <FadeInScroll className="text-center mb-32 space-y-6">
             <h2 className="font-[family-name:var(--font-display)] text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
-              Notre <span className="text-[var(--aduti-primary)]">Histoire</span>
+              Notre <span className="text-aduti-primary">Histoire</span>
             </h2>
             <p className="text-slate-400 font-bold text-sm uppercase tracking-[0.6em]">Depuis 1995</p>
           </FadeInScroll>
@@ -296,7 +296,7 @@ export default function AboutPage() {
                 title: "L'Origine",
                 icon: "history",
                 content: "L'ADUTI est née en 1995 de la volonté de jeunes étudiants passionnés d'informatique de l'INP-HB de promouvoir l'excellence académique et l'innovation technologique au sein de leur institution et au-delà. Depuis sa création, l'association s'est engagée à favoriser un environnement propice au développement personnel et professionnel des étudiants, tout en favorisant l'interaction et la collaboration entre les étudiants, les enseignants et les professionnels de l'industrie.",
-                color: "text-[var(--aduti-primary)]",
+                color: "text-aduti-primary",
                 bg: "bg-blue-50/50"
               },
               {
@@ -304,7 +304,7 @@ export default function AboutPage() {
                 title: "Développement",
                 icon: "visibility",
                 content: "Avec une vision axée sur l'émancipation des jeunes talents, l'ADUTI s'efforce d'encourager l'excellence académique, le développement personnel et professionnel, ainsi que la contribution significative à la communauté technologique nationale et internationale.",
-                color: "text-[var(--aduti-secondary)]",
+                color: "text-aduti-secondary",
                 bg: "bg-red-50/50"
               },
               {
@@ -341,7 +341,7 @@ export default function AboutPage() {
 
       {/* ESI & STIC */}
       <section className="relative overflow-hidden border-y border-slate-200 bg-slate-50 px-4 py-20 md:py-28">
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
+        <div className="absolute top-0 left-0 w-full h-px bg-linear-to-r from-transparent via-slate-200 to-transparent" />
         
         <div className="max-w-7xl mx-auto">
           <FadeInScroll className="relative mb-32 flex flex-col md:flex-row items-start md:items-end justify-between gap-16 md:gap-24">
@@ -352,19 +352,19 @@ export default function AboutPage() {
 
             <div className="relative z-10 max-w-2xl space-y-8">
               <div className="flex items-center gap-6">
-                <div className="h-px w-16 bg-gradient-to-r from-[#c2185b] to-transparent"></div>
+                <div className="h-px w-16 bg-linear-to-r from-[#c2185b] to-transparent"></div>
                 <span className="text-[#c2185b] font-bold text-sm lg:text-base uppercase tracking-wide">Excellence Académique</span>
               </div>
               
               <h2 className="font-[family-name:var(--font-display)] text-3xl font-bold leading-tight tracking-tight text-slate-900 md:text-4xler">
                 Le cadre<br/>
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#c2185b] to-[#f48fb1]">ESI-STIC</span>
+                <span className="text-transparent bg-clip-text bg-linear-to-r from-[#c2185b] to-[#f48fb1]">ESI-STIC</span>
               </h2>
             </div>
 
             <div className="relative z-10 md:max-w-lg w-full">
               {/* Vertical elegant accent line for typography support */}
-              <div className="absolute -left-8 top-2 bottom-6 w-[2px] bg-gradient-to-b from-[#c2185b] to-transparent hidden md:block rounded-full opacity-50" />
+              <div className="absolute -left-8 top-2 bottom-6 w-[2px] bg-linear-to-b from-[#c2185b] to-transparent hidden md:block rounded-full opacity-50" />
               
               <p className="text-slate-600 text-lg md:text-xl font-medium leading-relaxed">
                 L&apos;École Supérieure d&apos;Industrie (<strong className="text-slate-900 font-bold">ESI</strong>) regroupe les filières technologiques  et industrielle de l&apos;INP-HB. 
@@ -402,10 +402,10 @@ export default function AboutPage() {
 
             {/* Cycle Ingénieur */}
             <FadeInScroll delay={300} className="bg-white p-12 rounded-3xl border border-slate-100 shadow-2xl relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-40 h-40 bg-[var(--aduti-primary)]/5 rounded-bl-[6rem]" />
+              <div className="absolute top-0 right-0 w-40 h-40 bg-(--aduti-primary)/5 rounded-bl-[6rem]" />
               <div className="relative z-10 space-y-12">
                 <div className="flex items-center gap-6">
-                  <div className="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center text-[var(--aduti-primary)]">
+                  <div className="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center text-aduti-primary">
                     <MaterialIcon name="account_tree" className="w-10 h-10" />
                   </div>
                   <h3 className="text-3xl font-bold text-slate-900">Continuité en cycle Ingénieur</h3>
@@ -417,7 +417,7 @@ export default function AboutPage() {
 
                 <div className="flex gap-4 flex-wrap">
                   {["INFORMATIQUE", "RESEAUX ET TELECOMS", "EIT"].map((tag, i) => (
-                    <span key={i} className="px-5 py-2 rounded-full bg-blue-50 border border-blue-100 text-[var(--aduti-primary)] text-xs font-bold">
+                    <span key={i} className="px-5 py-2 rounded-full bg-blue-50 border border-blue-100 text-aduti-primary text-xs font-bold">
                       {tag}
                     </span>
                   ))}
@@ -435,7 +435,7 @@ export default function AboutPage() {
             {[
               { val: "100%", label: "Insertion Directe", sub: "Grandes Entreprises & Startups", color: "text-indigo-600" },
               { val: "+31", label: "Années d'Histoire", sub: "Fondée en 1995 à l'INP-HB", color: "text-slate-900" },
-              { val: "+3k", label: "Réseau Alumnis", sub: "Membres à travers le monde", color: "text-[var(--aduti-secondary)]" }
+              { val: "+3k", label: "Réseau Alumnis", sub: "Membres à travers le monde", color: "text-aduti-secondary" }
             ].map((stat, i) => (
               <FadeInScroll key={i} delay={i * 200} className="space-y-6 group">
                 <div className={`text-5xl md:text-7xl font-[family-name:var(--font-display)] font-bold ${stat.color} tracking-tighter transition-transform group-hover:scale-110 duration-500`}>

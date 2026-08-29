@@ -4,7 +4,7 @@ type Tone = "neutral" | "accent";
 
 const TONES: Record<Tone, string> = {
   neutral: "bg-slate-100 text-slate-600",
-  accent: "bg-[var(--aduti-primary)]/10 text-[var(--aduti-primary)]",
+  accent: "bg-(--aduti-primary)/10 text-aduti-primary",
 };
 
 export function StatusPill({

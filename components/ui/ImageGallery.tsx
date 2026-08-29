@@ -99,7 +99,7 @@ export function ImageGallery({ images, alt = '' }: ImageGalleryProps) {
       {/* Lightbox */}
       {lightboxIndex !== null && mounted && createPortal(
         <div
-          className="fixed inset-0 z-[99999] bg-black/98 flex items-center justify-center backdrop-blur-sm"
+          className="fixed inset-0 z-99999 bg-black/98 flex items-center justify-center backdrop-blur-sm"
           onClick={closeLightbox}
         >
           {/* Close */}
@@ -160,7 +160,7 @@ export function ImageGallery({ images, alt = '' }: ImageGalleryProps) {
               {images.map((img, idx) => (
                 <button
                   key={idx}
-                  className={`relative flex-shrink-0 w-16 h-16 rounded-xl overflow-hidden border-2 transition-all duration-300 ${
+                  className={`relative shrink-0 w-16 h-16 rounded-xl overflow-hidden border-2 transition-all duration-300 ${
                     idx === lightboxIndex
                       ? 'border-white scale-110 shadow-2xl shadow-blue-500/20'
                       : 'border-white/20 opacity-40 hover:opacity-100 hover:border-white/50'

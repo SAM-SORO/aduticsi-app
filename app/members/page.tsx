@@ -171,7 +171,7 @@ export default async function MembersPage({
                 <MaterialIcon name="group_off" className="w-14 h-14 text-slate-300 mb-4 block mx-auto" />
                 <h2 className="text-2xl font-bold text-slate-900 mb-2">Aucun membre trouvé</h2>
                 <p className="text-slate-500 font-medium">Réinitialisez vos filtres pour voir toute la communauté.</p>
-                <Link href="/members" className="mt-6 inline-flex items-center gap-2 text-[var(--aduti-primary)] font-bold hover:underline">
+                <Link href="/members" className="mt-6 inline-flex items-center gap-2 text-aduti-primary font-bold hover:underline">
                   <MaterialIcon name="restart_alt" className="w-4 h-4" />
                   Effacer les filtres
                 </Link>

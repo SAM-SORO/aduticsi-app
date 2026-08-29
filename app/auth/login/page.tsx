@@ -36,17 +36,17 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="min-h-[100dvh] flex items-center justify-center p-4 relative overflow-hidden bg-slate-50 font-sans">
+    <main className="min-h-dvh flex items-center justify-center p-4 relative overflow-hidden bg-slate-50 font-sans">
       {/* Bouton de retour en haut à gauche */}
       <div className="absolute top-6 left-6 sm:top-8 sm:left-8 z-50">
-        <BackButton className="bg-white/80 backdrop-blur-md px-4 py-2 rounded-full border border-slate-200/50 shadow-sm hover:border-[var(--aduti-primary)]/50 hover:bg-white" />
+        <BackButton className="bg-white/80 backdrop-blur-md px-4 py-2 rounded-full border border-slate-200/50 shadow-sm hover:border-(--aduti-primary)/50 hover:bg-white" />
       </div>
 
       {/* Bouton d'accueil en haut à droite */}
       <div className="absolute top-6 right-6 sm:top-8 sm:right-8 z-50">
         <Link 
            href="/"
-           className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-[var(--aduti-primary)] transition-colors w-fit focus:outline-none bg-white/80 backdrop-blur-md px-4 py-2 rounded-full border border-slate-200/50 shadow-sm hover:border-[var(--aduti-primary)]/50 hover:bg-white"
+           className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-aduti-primary transition-colors w-fit focus:outline-none bg-white/80 backdrop-blur-md px-4 py-2 rounded-full border border-slate-200/50 shadow-sm hover:border-(--aduti-primary)/50 hover:bg-white"
          >
            <Home className="w-4 h-4" />
            <span className="hidden sm:inline">Accueil</span>
@@ -71,9 +71,9 @@ export default function LoginPage() {
               priority
             />
           </div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--aduti-primary)]/5 border border-[var(--aduti-primary)]/20 backdrop-blur-sm mb-2">
-            <MaterialIcon name="lock" className="w-[15px] h-[15px] text-[var(--aduti-primary)]" />
-            <span className="text-[11px] font-bold text-[var(--aduti-primary)] tracking-widest uppercase">Uniquement réservé aux membres</span>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-(--aduti-primary)/5 border border-(--aduti-primary)/20 backdrop-blur-sm mb-2">
+            <MaterialIcon name="lock" className="w-[15px] h-[15px] text-aduti-primary" />
+            <span className="text-[11px] font-bold text-aduti-primary tracking-widest uppercase">Uniquement réservé aux membres</span>
           </div>
           {/* <h1 className="text-3xl font-bold text-slate-900 tracking-tight font-display">
             Se connecter
@@ -86,7 +86,7 @@ export default function LoginPage() {
             "absolute top-0 left-0 right-0 h-1.5 bg-slate-100 overflow-hidden z-20 transition-opacity duration-300",
             isPending ? "opacity-100" : "opacity-0"
           )}>
-            <div className="h-full bg-[var(--aduti-primary)] animate-shimmer w-full origin-left" />
+            <div className="h-full bg-aduti-primary animate-shimmer w-full origin-left" />
           </div>
 
           <div className="p-6 md:p-8">
@@ -108,7 +108,7 @@ export default function LoginPage() {
                       "block w-full px-5 py-3 tracking-wide bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 focus:outline-none focus:bg-white focus:ring-4 transition-all text-sm font-medium",
                       errors.email 
                         ? "border-red-500/50 ring-red-500/10 focus:ring-red-500/20 focus:border-red-500" 
-                        : "focus:ring-[var(--aduti-primary)]/10 focus:border-[var(--aduti-primary)]"
+                        : "focus:ring-(--aduti-primary)/10 focus:border-aduti-primary"
                     )}
                     disabled={isPending}
                     {...register("email")}
@@ -143,7 +143,7 @@ export default function LoginPage() {
                       "block w-full px-5 py-3 tracking-wide bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 focus:outline-none focus:bg-white focus:ring-4 transition-all text-sm font-medium",
                       errors.password 
                         ? "border-red-500/50 ring-red-500/10 focus:ring-red-500/20 focus:border-red-500" 
-                        : "focus:ring-[var(--aduti-primary)]/10 focus:border-[var(--aduti-primary)]"
+                        : "focus:ring-(--aduti-primary)/10 focus:border-aduti-primary"
                     )}
                     disabled={isPending}
                     {...register("password")}
@@ -167,7 +167,7 @@ export default function LoginPage() {
                 <div className="flex justify-end mt-1.5 mr-1">
                   <Link
                     href="/auth/forgot-password"
-                    className="text-xs font-semibold text-slate-500 hover:text-[var(--aduti-primary)] transition-colors underline decoration-transparent hover:decoration-[var(--aduti-primary)] underline-offset-4"
+                    className="text-xs font-semibold text-slate-500 hover:text-aduti-primary transition-colors underline decoration-transparent hover:decoration-aduti-primary underline-offset-4"
                   >
                     Mot de passe oublié ?
                   </Link>
@@ -178,7 +178,7 @@ export default function LoginPage() {
                 <button
                   type="submit"
                   disabled={isPending}
-                  className="w-full flex justify-center items-center gap-3 py-4 px-6 rounded-2xl shadow-xl shadow-blue-100 text-sm font-bold text-white bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest"
+                  className="w-full flex justify-center items-center gap-3 py-4 px-6 rounded-2xl shadow-xl shadow-blue-100 text-sm font-bold text-white bg-aduti-primary hover:bg-aduti-primary-hover focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest"
                 >
                   {isPending ? (
                      <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -193,7 +193,7 @@ export default function LoginPage() {
                 Pas encore enregistrer ?{" "}
                 <Link
                   href="/auth/register"
-                  className="font-semibold text-slate-500 hover:text-[var(--aduti-primary)] transition-colors underline decoration-transparent hover:decoration-[var(--aduti-primary)] underline-offset-4 tracking-wider"
+                  className="font-semibold text-slate-500 hover:text-aduti-primary transition-colors underline decoration-transparent hover:decoration-aduti-primary underline-offset-4 tracking-wider"
                 >
                   S&apos;enregistrer
                 </Link>
@@ -202,7 +202,7 @@ export default function LoginPage() {
                 Besoin d&apos;aide ?{" "}
                 <Link
                   href="/contact"
-                  className="font-semibold text-slate-500 hover:text-[var(--aduti-primary)] transition-colors underline decoration-transparent hover:decoration-[var(--aduti-primary)] underline-offset-4 tracking-wider"
+                  className="font-semibold text-slate-500 hover:text-aduti-primary transition-colors underline decoration-transparent hover:decoration-aduti-primary underline-offset-4 tracking-wider"
                 >
                   Contacter le support
                 </Link>

@@ -63,7 +63,7 @@ export function BinomagesClient({ combos }: { combos: PromoCombo[] }) {
       {/* Header */}
       {/* <div className="text-center max-w-2xl mx-auto space-y-4">
         <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
-          Famille <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--aduti-primary)] to-blue-600">ADUTI</span>
+          Famille <span className="text-transparent bg-clip-text bg-linear-to-r from-aduti-primary to-blue-600">ADUTI</span>
         </h1>
 
       </div> */}
@@ -87,7 +87,7 @@ export function BinomagesClient({ combos }: { combos: PromoCombo[] }) {
                   setSelectedCombo(e.target.value);
                   setCurrentPage(1);
                 }}
-                className="w-full bg-slate-50 border-none outline-none ring-0 text-slate-900 font-semibold px-4 py-3 rounded-xl focus:ring-2 focus:ring-[var(--aduti-primary)]/20 transition-all cursor-pointer"
+                className="w-full bg-slate-50 border-none outline-none ring-0 text-slate-900 font-semibold px-4 py-3 rounded-xl focus:ring-2 focus:ring-(--aduti-primary)/20 transition-all cursor-pointer"
               >
                 {combos.map((c) => (
                   <option key={c.label} value={c.label}>
@@ -113,7 +113,7 @@ export function BinomagesClient({ combos }: { combos: PromoCombo[] }) {
                     setSearchQuery(e.target.value);
                     setCurrentPage(1);
                   }}
-                  className="w-full bg-slate-50 border-none outline-none ring-0 text-slate-900 px-4 py-3 pl-12 rounded-xl focus:ring-2 focus:ring-[var(--aduti-primary)]/20 transition-all font-medium"
+                  className="w-full bg-slate-50 border-none outline-none ring-0 text-slate-900 px-4 py-3 pl-12 rounded-xl focus:ring-2 focus:ring-(--aduti-primary)/20 transition-all font-medium"
                 />
               </div>
             </div>
@@ -122,7 +122,7 @@ export function BinomagesClient({ combos }: { combos: PromoCombo[] }) {
           {/* Grid */}
           {isLoading ? (
             <div className="py-32 flex flex-col items-center justify-center space-y-4">
-              <Loader2 className="w-10 h-10 text-[var(--aduti-primary)] animate-spin" />
+              <Loader2 className="w-10 h-10 text-aduti-primary animate-spin" />
               <p className="text-slate-500 font-medium animate-pulse">Chargement des liens...</p>
             </div>
           ) : filteredBinomes.length === 0 ? (
@@ -138,7 +138,7 @@ export function BinomagesClient({ combos }: { combos: PromoCombo[] }) {
                     key={binome.id} 
                     className="group relative bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl border border-slate-100 transition-all duration-300 hover:-translate-y-1 block"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-br from-[var(--aduti-primary)]/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="absolute inset-0 bg-linear-to-br from-(--aduti-primary)/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
                     
                     <div className="relative z-10 flex flex-col h-full">
                       <div className="flex items-center justify-between mb-6 relative">
@@ -147,7 +147,7 @@ export function BinomagesClient({ combos }: { combos: PromoCombo[] }) {
                            href={`/members/${binome.parrain.slug ?? binome.parrain.id}?from=binomage`}
                            className="flex flex-col items-center text-center w-[45%] group/avatar hover:scale-105 transition-all cursor-pointer"
                          >
-                            <div className="size-20 md:size-24 rounded-full border-[3px] border-white shadow-lg overflow-hidden bg-slate-100 flex-shrink-0 z-10 mb-3 relative group-hover/avatar:ring-4 ring-[var(--aduti-primary)]/20 transition-all">
+                            <div className="size-20 md:size-24 rounded-full border-[3px] border-white shadow-lg overflow-hidden bg-slate-100 shrink-0 z-10 mb-3 relative group-hover/avatar:ring-4 ring-(--aduti-primary)/20 transition-all">
                               {binome.parrain.photo_url ? (
                                   <Image src={binome.parrain.photo_url} alt={`${binome.parrain.last_name.toUpperCase()} ${binome.parrain.first_name}`} fill className="object-cover" />
                               ) : (
@@ -157,11 +157,11 @@ export function BinomagesClient({ combos }: { combos: PromoCombo[] }) {
                               )}
                             </div>
                             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Parrain</span>
-                            <h3 className="font-bold text-slate-900 leading-tight text-sm md:text-base line-clamp-2 group-hover/avatar:text-[var(--aduti-primary)] transition-colors">{binome.parrain.last_name.toUpperCase()} {binome.parrain.first_name}</h3>
+                            <h3 className="font-bold text-slate-900 leading-tight text-sm md:text-base line-clamp-2 group-hover/avatar:text-aduti-primary transition-colors">{binome.parrain.last_name.toUpperCase()} {binome.parrain.first_name}</h3>
                          </Link>
   
                          {/* Lien */}
-                         <div className="absolute top-10 md:top-12 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 size-8 md:size-10 bg-white rounded-full shadow-md flex items-center justify-center border border-slate-100 text-[var(--aduti-primary)]">
+                         <div className="absolute top-10 md:top-12 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 size-8 md:size-10 bg-white rounded-full shadow-md flex items-center justify-center border border-slate-100 text-aduti-primary">
                             <Link2 className="w-4 h-4 md:w-5 md:h-5" />
                          </div>
   
@@ -170,7 +170,7 @@ export function BinomagesClient({ combos }: { combos: PromoCombo[] }) {
                            href={`/members/${binome.filleul.slug ?? binome.filleul.id}?from=binomage`}
                            className="flex flex-col items-center text-center w-[45%] group/avatar hover:scale-105 transition-all cursor-pointer"
                          >
-                            <div className="size-20 md:size-24 rounded-full border-[3px] border-white shadow-lg overflow-hidden bg-slate-100 flex-shrink-0 z-10 mb-3 relative group-hover/avatar:ring-4 ring-[var(--aduti-primary)]/20 transition-all">
+                            <div className="size-20 md:size-24 rounded-full border-[3px] border-white shadow-lg overflow-hidden bg-slate-100 shrink-0 z-10 mb-3 relative group-hover/avatar:ring-4 ring-(--aduti-primary)/20 transition-all">
                               {binome.filleul.photo_url ? (
                                   <Image src={binome.filleul.photo_url} alt={`${binome.filleul.last_name.toUpperCase()} ${binome.filleul.first_name}`} fill className="object-cover" />
                               ) : (
@@ -180,7 +180,7 @@ export function BinomagesClient({ combos }: { combos: PromoCombo[] }) {
                               )}
                             </div>
                             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Filleul</span>
-                            <h3 className="font-bold text-slate-900 leading-tight text-sm md:text-base line-clamp-2 group-hover/avatar:text-[var(--aduti-primary)] transition-colors">{binome.filleul.last_name.toUpperCase()} {binome.filleul.first_name}</h3>
+                            <h3 className="font-bold text-slate-900 leading-tight text-sm md:text-base line-clamp-2 group-hover/avatar:text-aduti-primary transition-colors">{binome.filleul.last_name.toUpperCase()} {binome.filleul.first_name}</h3>
                          </Link>
                       </div>
                     </div>

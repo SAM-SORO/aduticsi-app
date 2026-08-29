@@ -187,7 +187,7 @@ export function RegisterWizard({
               className={cn(
                 "flex size-8 shrink-0 items-center justify-center rounded-full text-xs font-semibold transition-colors",
                 i <= stepIndex
-                  ? "bg-[var(--aduti-primary)] text-white"
+                  ? "bg-aduti-primary text-white"
                   : "bg-slate-100 text-slate-400"
               )}
               aria-current={i === stepIndex ? "step" : undefined}
@@ -541,7 +541,7 @@ export function RegisterWizard({
             <Button
               type="submit"
               disabled={isPending}
-              className="h-12 rounded-2xl bg-[var(--aduti-primary)] px-8 font-bold text-white transition-colors hover:bg-[var(--aduti-primary-hover)]"
+              className="h-12 rounded-2xl bg-aduti-primary px-8 font-bold text-white transition-colors hover:bg-aduti-primary-hover"
             >
               {isPending && <Loader2 className="mr-2 size-4 animate-spin" />}
               {mode === "request" ? "Soumettre la demande" : "Créer mon compte"}
@@ -551,7 +551,7 @@ export function RegisterWizard({
               type="button"
               onClick={goNext}
               disabled={isPending}
-              className="h-12 rounded-2xl bg-[var(--aduti-primary)] px-8 font-bold text-white transition-colors hover:bg-[var(--aduti-primary-hover)]"
+              className="h-12 rounded-2xl bg-aduti-primary px-8 font-bold text-white transition-colors hover:bg-aduti-primary-hover"
             >
               Suivant
               <ArrowRight className="ml-2 size-4" />

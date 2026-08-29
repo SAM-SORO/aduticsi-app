@@ -52,7 +52,7 @@ export function ActivityActions({ activity, promotions, categories }: Omit<Activ
           <Button
             variant="ghost"
             size="icon"
-            className="h-8 w-8 rounded-full bg-white/80 backdrop-blur shadow-sm text-slate-600 hover:text-[var(--aduti-primary)] hover:bg-white transition-all"
+            className="h-8 w-8 rounded-full bg-white/80 backdrop-blur shadow-sm text-slate-600 hover:text-aduti-primary hover:bg-white transition-all"
           >
             <Pencil className="h-4 w-4" />
           </Button>
@@ -81,7 +81,7 @@ export function ActivityActions({ activity, promotions, categories }: Omit<Activ
 
       {/* Manual Modal Implementation to avoid Dialog nesting issues if needed, or just stay simple */}
       {isDeleteDialogOpen && (
-        <div className="fixed inset-0 z-[100] bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-100 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl shadow-xl max-w-sm w-full overflow-hidden animate-in zoom-in-95 duration-200">
             <div className="p-8 text-center">
               <div className="w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4">

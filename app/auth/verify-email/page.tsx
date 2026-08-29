@@ -6,13 +6,13 @@ import { TechBackdrop } from "@/components/tech-backdrop";
 
 export default function VerifyEmailPage() {
   return (
-    <main className="min-h-[100dvh] flex items-center justify-center p-4 relative overflow-hidden bg-slate-50 font-sans">
+    <main className="min-h-dvh flex items-center justify-center p-4 relative overflow-hidden bg-slate-50 font-sans">
       {/* Animated Background */}
         <TechBackdrop variant="grid" />
 
       <div className="w-full max-w-[500px] z-10 flex flex-col gap-6">
         <div className="text-center space-y-2 flex flex-col items-center">
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-white shadow-[0_20px_40px_-10px_rgba(0,0,0,0.1)] text-[var(--aduti-primary)] mb-4 border border-slate-100 ring-8 ring-white/50 animate-bounce-subtle">
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-white shadow-[0_20px_40px_-10px_rgba(0,0,0,0.1)] text-aduti-primary mb-4 border border-slate-100 ring-8 ring-white/50 animate-bounce-subtle">
             <MaterialIcon name="mark_email_unread" className="w-12 h-12" />
           </div>
           <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Vérifiez votre boîte mail</h1>
@@ -39,7 +39,7 @@ export default function VerifyEmailPage() {
               <div className="pt-6">
                 <Link 
                   href="/auth/login" 
-                  className="group w-full flex justify-center items-center gap-3 py-4 px-6 rounded-2xl shadow-xl shadow-blue-100 text-sm font-bold text-white bg-[var(--aduti-primary)] hover:bg-[var(--aduti-primary-hover)] focus:outline-none transition-all active:scale-[0.98] uppercase tracking-widest"
+                  className="group w-full flex justify-center items-center gap-3 py-4 px-6 rounded-2xl shadow-xl shadow-blue-100 text-sm font-bold text-white bg-aduti-primary hover:bg-aduti-primary-hover focus:outline-none transition-all active:scale-[0.98] uppercase tracking-widest"
                 >
                   <MaterialIcon name="arrow_back" className="w-5 h-5 transition-transform group-hover:-translate-x-1" />
                   Retour à la connexion

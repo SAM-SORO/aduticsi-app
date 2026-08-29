@@ -95,7 +95,7 @@ function WelcomeConfettiInner() {
   return (
     <div
       onClick={close}
-      className={`fixed inset-0 z-[100000] flex cursor-pointer items-center justify-center bg-slate-900/50 p-4 backdrop-blur-sm transition-opacity duration-300 ${
+      className={`fixed inset-0 z-100000 flex cursor-pointer items-center justify-center bg-slate-900/50 p-4 backdrop-blur-sm transition-opacity duration-300 ${
         closing || !visible ? "opacity-0" : "opacity-100"
       }`}
     >
@@ -119,7 +119,7 @@ function WelcomeConfettiInner() {
           <X className="size-5" />
         </button>
 
-        <div className="mx-auto flex size-16 items-center justify-center rounded-2xl bg-[var(--aduti-primary)]/10 text-[var(--aduti-primary)]">
+        <div className="mx-auto flex size-16 items-center justify-center rounded-2xl bg-(--aduti-primary)/10 text-aduti-primary">
           <PartyPopper className="size-8" />
         </div>
 
@@ -138,7 +138,7 @@ function WelcomeConfettiInner() {
         <button
           onClick={close}
           type="button"
-          className="mt-8 w-full rounded-2xl bg-[var(--aduti-primary)] px-8 py-3.5 font-bold text-white transition-colors hover:bg-[var(--aduti-primary-hover)]"
+          className="mt-8 w-full rounded-2xl bg-aduti-primary px-8 py-3.5 font-bold text-white transition-colors hover:bg-aduti-primary-hover"
         >
           Explorer la plateforme
         </button>

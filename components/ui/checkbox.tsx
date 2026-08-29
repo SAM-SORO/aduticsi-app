@@ -15,7 +15,7 @@ const Checkbox = React.forwardRef<
       checked={checked}
       onChange={(e) => onCheckedChange?.(e.target.checked)}
       className={cn(
-        "peer h-4 w-4 shrink-0 rounded-sm border border-[var(--aduti-primary)] appearance-none cursor-pointer transition-colors checked:bg-[var(--aduti-primary)] checked:border-[var(--aduti-primary)] focus:ring-2 focus:ring-[var(--aduti-primary)]/20 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50",
+        "peer h-4 w-4 shrink-0 rounded-sm border border-aduti-primary appearance-none cursor-pointer transition-colors checked:bg-aduti-primary checked:border-aduti-primary focus:ring-2 focus:ring-(--aduti-primary)/20 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50",
         className
       )}
       {...props}
