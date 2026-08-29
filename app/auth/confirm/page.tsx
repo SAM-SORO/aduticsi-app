@@ -89,7 +89,7 @@ function ConfirmEmailContent() {
 
 export default function ConfirmEmailPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen grid flex-1 place-items-center bg-slate-50"><div className="w-8 h-8 rounded-full border-4 border-slate-200 border-t-[var(--aduti-primary)] animate-spin" /></div>}>
+    <Suspense fallback={<div className="min-h-[100dvh] grid flex-1 place-items-center bg-slate-50"><div className="w-8 h-8 rounded-full border-4 border-slate-200 border-t-[var(--aduti-primary)] animate-spin" /></div>}>
       <ConfirmEmailContent />
     </Suspense>
   );

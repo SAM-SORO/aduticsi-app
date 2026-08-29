@@ -32,7 +32,7 @@ type RegisterMode = "choice" | "invitation" | "request"
 
 export default function RegisterPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-slate-50 flex items-center justify-center">Chargement...</div>}>
+    <Suspense fallback={<div className="min-h-[100dvh] bg-slate-50 flex items-center justify-center">Chargement...</div>}>
       <RegisterContent />
     </Suspense>
   );
@@ -648,7 +648,7 @@ function RegisterContent() {
 
 
   return (
-    <main className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-slate-50 font-sans">
+    <main className="min-h-[100dvh] flex items-center justify-center p-4 relative overflow-hidden bg-slate-50 font-sans">
       {/* Bouton de retour en haut à gauche */}
       {mode === "choice" ? 
         ( <>

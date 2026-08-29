@@ -55,7 +55,7 @@ export default function AboutPage() {
       `}</style>
 
     
-      <section className="relative min-h-screen flex items-center bg-white overflow-hidden">
+      <section className="relative min-h-[100dvh] flex items-center bg-white overflow-hidden">
         {/* Light atmosphere background */}
         <div className="absolute inset-0 z-0 pointer-events-none">
           {/* Subtle ambient glows matching landing page */}

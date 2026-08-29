@@ -13,7 +13,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const isProfile = pathname.startsWith("/profile");
 
   return (
-    <div className="flex min-h-screen flex-col bg-white text-slate-800">
+    <div className="flex min-h-[100dvh] flex-col bg-white text-slate-800">
       {!isDashboard && !isAuth && !isProfile && <SiteNavbar />}
       <main className="flex-1">{children}</main>
       {!isDashboard && !isAuth && (

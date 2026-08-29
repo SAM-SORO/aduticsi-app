@@ -5,7 +5,7 @@ import { MaterialIcon } from "@/components/icons/material-icon";
 
 export default function VerifyEmailPage() {
   return (
-    <main className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-slate-50 font-sans">
+    <main className="min-h-[100dvh] flex items-center justify-center p-4 relative overflow-hidden bg-slate-50 font-sans">
       {/* Animated Background */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-80">
         <div className="absolute top-[-20%] left-[-10%] w-[70vw] h-[70vw] bg-[radial-gradient(circle,rgba(19,37,75,0.15)_0%,transparent_60%)] rounded-full blur-[80px] animate-pulse-slow mix-blend-multiply" />
