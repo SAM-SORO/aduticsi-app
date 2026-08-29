@@ -281,7 +281,7 @@ export default function AboutPage() {
       <section id="notre-histoire" className="py-40 px-4 bg-white scroll-mt-20 relative overflow-hidden">
         {/* Subtle Tech Background */}
         <div className="absolute inset-0 z-0 opacity-[0.03]" 
-             style={{ backgroundImage: 'radial-gradient(#1392ec 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+             style={{ backgroundImage: 'radial-gradient(var(--aduti-primary) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
         <div className="absolute inset-0 z-0 bg-gradient-to-b from-white via-transparent to-white" />
         
         <div className="max-w-7xl mx-auto relative z-10">
