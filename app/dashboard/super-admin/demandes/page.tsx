@@ -1,9 +1,9 @@
 import { redirect } from "next/navigation";
+import { getPendingRegistrations } from "./actions";
+import { RegistrationsList } from "./registrationList";
 import { DashboardLayout } from "@/components/dashboard/DashboardShell";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
-import { getPendingRegistrations } from "./actions";
-import { RegistrationsList } from "./registrationList";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";

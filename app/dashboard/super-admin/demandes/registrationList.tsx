@@ -6,8 +6,8 @@ import { toast } from "sonner";
 import { Check, X, Calendar } from "lucide-react";
 import type { Prisma } from "@prisma/client";
 
-import { MaterialIcon } from "@/components/icons/material-icon";
 import { approveMember, rejectMember } from "./actions";
+import { MaterialIcon } from "@/components/icons/material-icon";
 
 type Registration = Prisma.MemberGetPayload<{ include: { promotion: true } }>;
 

@@ -1,0 +1,28 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "about": "À propos",
+    "activities": "Activités",
+    "members": "Membres",
+    "contact": "Contact",
+    "login": "Connexion",
+    "register": "Rejoindre",
+    "dashboard": "Tableau de bord",
+    "profile": "Mon profil",
+    "logout": "Déconnexion",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu"
+  },
+  "footer": {
+    "tagline": "Association des DUT et DTS en Informatique de l’INP-HB.",
+    "navigation": "Navigation",
+    "association": "L’association",
+    "legal": "Informations",
+    "rights": "Tous droits réservés."
+  },
+  "language": {
+    "label": "Langue",
+    "fr": "Français",
+    "en": "English"
+  }
+}

@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { toast } from "sonner";
 import { MaterialIcon } from "@/components/icons/material-icon";
 import { cn } from "@/lib/utils";
 import { updateProfileStatus } from "@/app/profile/actions";
-import { toast } from "sonner";
 
 interface ProfileVisibilityToggleProps {
   initialStatus: 'PUBLIC' | 'PRIVATE';

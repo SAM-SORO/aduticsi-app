@@ -5,6 +5,9 @@ import { Toaster } from "sonner";
 import { AppShell } from "@/components/app-shell";
 import { WelcomeConfetti } from "@/components/WelcomeConfetti";
 import { AuthErrorListener } from "@/components/AuthErrorListener";
+import { LanguageProvider } from "@/components/i18n/LanguageProvider";
+import { getDictionaryFor } from "@/lib/i18n";
+import { getLocale } from "@/lib/i18n/server";
 
 const inter = Inter({
   variable: "--font-body",
@@ -70,17 +73,22 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+  const dictionary = getDictionaryFor(locale);
+
   return (
-    <html lang="fr" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <body
         className={`${inter.variable} ${spaceGrotesk.variable} font-sans antialiased`}
       >
-        <AppShell>{children}</AppShell>
+        <LanguageProvider locale={locale} dictionary={dictionary}>
+          <AppShell>{children}</AppShell>
+        </LanguageProvider>
         <Toaster position="top-center" richColors />
         <WelcomeConfetti />
         <AuthErrorListener />

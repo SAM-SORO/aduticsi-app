@@ -25,17 +25,26 @@ import { logout } from "@/app/auth/actions";
 import { getProfile } from "@/app/profile/actions";
 // import du NavDropdown pour le menu "Activités" avec chargement dynamique des catégories
 import { NavDropdown } from "@/components/ui/nav-dropdown";
+import { useTranslations } from "@/components/i18n/LanguageProvider";
+import { LanguageSwitcher } from "@/components/i18n/LanguageSwitcher";
 
 
-const navLinks = [
-  { href: "/", label: "Accueil" },
-  { href: "/about", label: "À propos" },
-  { href: "/activities", label: "Activités" },
-  { href: "/members", label: "Membres" },
-  { href: "/contact", label: "Contact" },
-];
+// Les libelles viennent du dictionnaire : la cle reste stable, le texte suit
+// la langue choisie.
+const NAV_KEYS = [
+  { href: "/", key: "home" },
+  { href: "/about", key: "about" },
+  { href: "/activities", key: "activities" },
+  { href: "/members", key: "members" },
+  { href: "/contact", key: "contact" },
+] as const;
 
 export function SiteNavbar() {
+  const { t } = useTranslations();
+  const navLinks = NAV_KEYS.map((item) => ({
+    href: item.href,
+    label: t.nav[item.key],
+  }));
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState<AuthUser | null>(null);
@@ -251,7 +260,7 @@ export function SiteNavbar() {
           className
         )}
       >
-        <Link href="/auth/login">Se connecter</Link>
+        <Link href="/auth/login">{t.nav.login}</Link>
       </Button>
     );
   };
@@ -319,7 +328,8 @@ export function SiteNavbar() {
                 </Link>)
               ))}
             </nav>
-            <div className="flex items-center pl-4 border-l border-slate-200">
+            <div className="flex items-center gap-3 border-l border-slate-200 pl-4">
+              <LanguageSwitcher />
               {renderAuthButton()}
             </div>
           </div>
@@ -331,7 +341,7 @@ export function SiteNavbar() {
               size="icon"
               className="text-slate-800 p-2 hover:bg-slate-100/50 rounded-full transition-colors"
               onClick={() => setIsOpen(!isOpen)}
-              aria-label={isOpen ? "Fermer le menu" : "Ouvrir le menu"}
+              aria-label={isOpen ? t.nav.closeMenu : t.nav.openMenu}
             >
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </Button>
@@ -376,11 +386,11 @@ export function SiteNavbar() {
                       {link.label}
                     </Link>
                   ))}
-                  {!user && (
-                    <div className="w-full pt-4 mt-2 border-t border-slate-100">
-                      {renderAuthButton("w-full h-14 rounded-2xl text-lg font-bold outline-none")}
-                    </div>
-                  )}
+                  <div className="mt-2 w-full border-t border-slate-100 pt-4">
+                    <LanguageSwitcher className="mb-4" />
+                    {!user &&
+                      renderAuthButton("w-full h-14 rounded-2xl text-lg font-bold outline-none")}
+                  </div>
                 </nav>
               </div>
             </motion.div>

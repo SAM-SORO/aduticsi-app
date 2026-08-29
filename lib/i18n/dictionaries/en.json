@@ -1,0 +1,28 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "activities": "Activities",
+    "members": "Members",
+    "contact": "Contact",
+    "login": "Sign in",
+    "register": "Join us",
+    "dashboard": "Dashboard",
+    "profile": "My profile",
+    "logout": "Sign out",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
+  },
+  "footer": {
+    "tagline": "Association of Computer Science DUT and DTS graduates of INP-HB.",
+    "navigation": "Navigation",
+    "association": "The association",
+    "legal": "Information",
+    "rights": "All rights reserved."
+  },
+  "language": {
+    "label": "Language",
+    "fr": "Français",
+    "en": "English"
+  }
+}
