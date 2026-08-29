@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Search } from "lucide-react";
 import { ImageGallery } from "@/components/ui/ImageGallery";
+import { Pagination } from "@/components/ui/pagination";
+import { FilterBar } from "@/components/filters/FilterBar";
 
 import { prisma } from "@/lib/prisma";
-import { Input } from "@/components/ui/input";
-import { AutoSubmitSelect } from "@/components/ui/auto-submit-select";
 import { getActivitiesPaginated } from "@/app/dashboard/super-admin/activities/actions";
 import type { ActivityWithDetails } from "@/app/dashboard/super-admin/activities/actions";
 import { MaterialIcon } from "@/components/icons/material-icon";
@@ -79,66 +78,32 @@ export default async function ActivitiesPage({
 
       <section className="pb-24 px-4 bg-white">
         <div className="mx-auto max-w-7xl">
-          {/* Filter bar */}
-          <div className="bg-white p-6 md:p-8 rounded-3xl border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] flex flex-col xl:flex-row gap-4 items-center relative z-10 -mt-10">
-            {/* Search */}
-            <form className="relative w-full xl:flex-1" method="GET">
-              <input type="hidden" name="promo" value={promoId} />
-              <input type="hidden" name="category" value={categoryId} />
-              <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400">
-                <Search className="w-5 h-5" />
-              </div>
-              <Input
-                name="search"
-                className="block w-full pl-12 pr-4 py-4 h-14 bg-slate-50/50 border border-slate-100 rounded-2xl text-slate-900 placeholder-slate-400 focus:ring-8 focus:ring-[var(--aduti-primary)]/5 focus:border-[var(--aduti-primary)]/30 transition-all text-base hover:bg-white hover:border-slate-200 shadow-[0_2px_10px_rgba(0,0,0,0.02)]"
-                placeholder="Rechercher une activité..."
-                defaultValue={search}
-              />
-              <button type="submit" className="hidden" />
-            </form>
-
-            <div className="flex flex-col sm:flex-row gap-4 w-full xl:w-auto">
-              {/* Category filter */}
-              <form className="relative flex-1 min-w-full sm:min-w-[200px] xl:min-w-[220px] group/select" method="GET">
-                <input type="hidden" name="search" value={search} />
-                <input type="hidden" name="promo" value={promoId} />
-                <AutoSubmitSelect
-                  name="category"
-                  className="appearance-none w-full pl-4 pr-10 py-4 h-14 bg-white border border-slate-100 rounded-2xl text-slate-700 text-sm font-bold tracking-tight focus:ring-8 focus:ring-[var(--aduti-primary)]/5 focus:border-[var(--aduti-primary)]/30 cursor-pointer group-hover/select:border-slate-300 transition-all shadow-[0_2px_10px_rgba(0,0,0,0.02)]"
-                  defaultValue={categoryId}
-                >
-                  <option value="">Tous les types</option>
-                  {categories.map((c) => (
-                    <option key={c.id} value={c.id}>{c.name}</option>
-                  ))}
-                </AutoSubmitSelect>
-                <div className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-slate-400">
-                  <MaterialIcon name="expand_more" className="w-5 h-5" />
-                </div>
-              </form>
-
-              {/* Promo filter */}
-              <form className="relative flex-1 min-w-full sm:min-w-[200px] xl:min-w-[240px] group/select" method="GET">
-                <input type="hidden" name="search" value={search} />
-                <input type="hidden" name="category" value={categoryId} />
-                <AutoSubmitSelect
-                  name="promo"
-                  className="appearance-none w-full pl-4 pr-10 py-4 h-14 bg-white border border-slate-100 rounded-2xl text-slate-700 text-sm font-bold tracking-tight focus:ring-8 focus:ring-[var(--aduti-primary)]/5 focus:border-[var(--aduti-primary)]/30 cursor-pointer group-hover/select:border-slate-300 transition-all shadow-[0_2px_10px_rgba(0,0,0,0.02)]"
-                  defaultValue={promoId}
-                >
-                  <option value="">Toutes les Promotions</option>
-                  {promotions.map((p) => (
-                    <option key={p.id} value={p.id}>
-                      {p.name} ({p._count.activities})
-                    </option>
-                  ))}
-                </AutoSubmitSelect>
-                <div className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-slate-400">
-                  <MaterialIcon name="expand_more" className="w-5 h-5" />
-                </div>
-              </form>
-            </div>
-          </div>
+          <FilterBar
+            searchValue={search}
+            searchPlaceholder="Rechercher une activité, un thème, un lieu..."
+            filters={[
+              {
+                name: "promo",
+                placeholder: "Toutes promotions",
+                searchPlaceholder: "Rechercher une année...",
+                value: promoId,
+                options: [
+                  { value: "", label: "Toutes promotions" },
+                  ...promotions.map((p) => ({ value: p.id, label: p.name })),
+                ],
+              },
+              {
+                name: "category",
+                placeholder: "Toutes catégories",
+                searchPlaceholder: "Rechercher une catégorie...",
+                value: categoryId,
+                options: [
+                  { value: "", label: "Toutes catégories" },
+                  ...categories.map((c) => ({ value: c.id, label: c.name })),
+                ],
+              },
+            ]}
+          />
 
 
           <div className="mt-16">
@@ -226,36 +191,19 @@ export default async function ActivitiesPage({
               </div>
             )}
 
-            {/* Pagination */}
-            {totalPages > 1 && (
-              <div className="mt-20 flex justify-center pb-8 animate-in fade-in fill-mode-both duration-700 delay-300">
-                <nav className="flex items-center gap-2 bg-slate-50 p-2.5 rounded-2xl border border-slate-100">
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => {
-                    const isActive = p === currentPage;
-                    const sp = new URLSearchParams();
-                    if (search) sp.set("search", search);
-                    if (promoId) sp.set("promo", promoId);
-                    if (categoryId) sp.set("category", categoryId);
-                    sp.set("page", p.toString());
-                    const href = `/activities?${sp.toString()}`;
-
-                    return (
-                      <Link
-                        key={p}
-                        href={href}
-                        className={`w-12 h-12 flex items-center justify-center rounded-2xl transition-all active:scale-90 font-bold text-sm ${
-                          isActive
-                            ? "bg-[var(--aduti-primary)] text-white shadow-[0_8px_25px_rgba(37,99,235,0.3)] hover:bg-[var(--aduti-primary-hover)]"
-                            : "text-slate-400 hover:bg-white border border-transparent hover:border-slate-200"
-                        }`}
-                      >
-                        {p}
-                      </Link>
-                    );
-                  })}
-                </nav>
-              </div>
-            )}
+            <Pagination
+              className="mt-16 pb-8"
+              currentPage={currentPage}
+              totalPages={totalPages}
+              buildHref={(p) => {
+                const sp = new URLSearchParams();
+                if (search) sp.set("search", search);
+                if (promoId) sp.set("promo", promoId);
+                if (categoryId) sp.set("category", categoryId);
+                sp.set("page", p.toString());
+                return `/activities?${sp.toString()}`;
+              }}
+            />
           </div>
         </div>
       </section>

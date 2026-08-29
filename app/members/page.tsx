@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Search } from "lucide-react";
 
-import { AutoSubmitInput } from "@/components/ui/auto-submit-input";
-import { AutoSubmitSelect } from "@/components/ui/auto-submit-select";
 import { prisma } from "@/lib/prisma";
 import { MaterialIcon } from "@/components/icons/material-icon";
 import { MemberCard } from "@/components/members/MemberCard";
+import { Pagination } from "@/components/ui/pagination";
+import { FilterBar } from "@/components/filters/FilterBar";
 import { createClient } from "@/lib/supabase/server";
 
 const MEMBERS_PER_PAGE = 12;
@@ -116,67 +115,54 @@ export default async function MembersPage({
 
       <section className="pb-24 px-4 bg-white">
         <div className="mx-auto max-w-7xl">
-          {/* Filtres alignés sur le design admin dashboard */}
-          <div className="bg-white p-6 md:p-8 rounded-3xl border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] flex flex-col xl:flex-row gap-6 items-center relative z-10 -mt-10">
-            <form className="relative w-full xl:flex-1" method="GET">
-              <input type="hidden" name="promo" value={promoId} />
-              <input type="hidden" name="status" value={status} />
-              <input type="hidden" name="role" value={role} />
-              <input type="hidden" name="gender" value={gender} />
-              <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400">
-                <Search className="w-5 h-5 text-slate-400" />
-              </div>
-              <AutoSubmitInput
-                name="search"
-                className="block w-full pl-12 pr-4 py-4 h-14 bg-slate-50/50 border border-slate-100 rounded-2xl text-slate-900 placeholder-slate-400 focus:ring-8 focus:ring-[var(--aduti-primary)]/5 focus:border-[var(--aduti-primary)]/30 transition-all text-base hover:bg-white hover:border-slate-200 shadow-[0_2px_10px_rgba(0,0,0,0.02)]"
-                placeholder="Rechercher un membre"
-                defaultValue={search}
-                debounceMs={400}
-              />
-              <button type="submit" className="hidden" />
-            </form>
-
-            <div className="flex flex-wrap gap-3 w-full xl:w-auto">
-              {[
-                { name: "promo", defaultValue: promoId, options: [{ value: "", label: "Toutes Promotions" }, ...promotions.map(p => ({ value: p.id, label: p.name }))] },
-                { name: "status", defaultValue: status, options: [{ value: "", label: "Tous Statuts" }, { value: "STUDENT", label: "Étudiant" }, { value: "ALUMNI", label: "Alumni" }] },
-                  { name: "role", defaultValue: role, options: [
-                    // on va utiliser "adhérents" comme label pour le rôle vide
-                    { value: "", label: "Adhérents" },
-                    ...postes.map(p => ({ value: p.id, label: p.name })),
-                  ] },
-                  { name: "gender", defaultValue: gender, options: [
-                    { value: "", label: "Tous Genres" },
-                    { value: "MALE", label: "Masculin" },
-                    { value: "FEMALE", label: "Féminin" },
-                  ] },
-                ].map((filter) => (
-                  <form key={filter.name} className="relative flex-1 min-w-[calc(50%-6px)] sm:min-w-[160px] group/select" method="GET">
-                  <input type="hidden" name="search" value={search} />
-                  {filter.name !== "promo" && <input type="hidden" name="promo" value={promoId} />}
-                  {filter.name !== "status" && <input type="hidden" name="status" value={status} />}
-                  {filter.name !== "role" && <input type="hidden" name="role" value={role} />}
-                  {filter.name !== "gender" && <input type="hidden" name="gender" value={gender} />}
-                  
-                  <AutoSubmitSelect
-                    name={filter.name}
-                    className="appearance-none w-full pl-4 pr-10 py-4 h-14 bg-white border border-slate-100 rounded-2xl text-slate-700 text-sm font-bold tracking-tight focus:ring-8 focus:ring-[var(--aduti-primary)]/5 focus:border-[var(--aduti-primary)]/30 cursor-pointer group-hover/select:border-slate-300 transition-all shadow-[0_2px_10px_rgba(0,0,0,0.02)]"
-                    defaultValue={filter.defaultValue}
-                    /* AutoSubmitSelect handles onChange internally */
-                  >
-                    {filter.options.map((opt) => (
-                      <option key={opt.value} value={opt.value}>
-                        {opt.label}
-                      </option>
-                    ))}
-                  </AutoSubmitSelect>
-                  <div className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-slate-400">
-                    <MaterialIcon name="expand_more" className="w-5 h-5" />
-                  </div>
-                </form>
-              ))}
-            </div>
-          </div>
+          <FilterBar
+            searchValue={search}
+            searchPlaceholder="Rechercher un membre, un métier, une compétence..."
+            filters={[
+              {
+                name: "promo",
+                placeholder: "Toutes promotions",
+                searchPlaceholder: "Rechercher une année...",
+                value: promoId,
+                options: [
+                  { value: "", label: "Toutes promotions" },
+                  ...promotions.map((p) => ({ value: p.id, label: p.name })),
+                ],
+              },
+              {
+                name: "status",
+                placeholder: "Tous statuts",
+                searchPlaceholder: "Rechercher un statut...",
+                value: status,
+                options: [
+                  { value: "", label: "Tous statuts" },
+                  { value: "STUDENT", label: "Étudiant" },
+                  { value: "ALUMNI", label: "Alumni" },
+                ],
+              },
+              {
+                name: "role",
+                placeholder: "Adhérents",
+                searchPlaceholder: "Rechercher un poste...",
+                value: role,
+                options: [
+                  { value: "", label: "Adhérents" },
+                  ...postes.map((p) => ({ value: p.id, label: p.name })),
+                ],
+              },
+              {
+                name: "gender",
+                placeholder: "Tous genres",
+                searchPlaceholder: "Rechercher un genre...",
+                value: gender,
+                options: [
+                  { value: "", label: "Tous genres" },
+                  { value: "MALE", label: "Masculin" },
+                  { value: "FEMALE", label: "Féminin" },
+                ],
+              },
+            ]}
+          />
 
           <div className="mt-16">
             {/* Grille des membres */}
@@ -191,45 +177,28 @@ export default async function MembersPage({
                 </Link>
               </div>
             ) : (
-              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {members.map((member) => (
                   <MemberCard key={member.id} member={member} />
                 ))}
               </div>
             )}
 
-            {/* Pagination Dynamique */}
-            {totalPages > 1 && (
-              <div className="mt-20 flex justify-center pb-8 animate-in fade-in fill-mode-both duration-700 delay-300">
-                <nav className="flex items-center gap-2 bg-slate-50 p-2 rounded-2xl border border-slate-100">
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => {
-                    const isActive = p === currentPage;
-                    const sp = new URLSearchParams();
-                    if (search) sp.set("search", search);
-                    if (promoId) sp.set("promo", promoId);
-                    if (status) sp.set("status", status);
-                    if (role) sp.set("role", role);
-                    if (gender) sp.set("gender", gender);
-                    sp.set("page", p.toString());
-                    const href = `/members?${sp.toString()}`;
-
-                    return (
-                      <Link
-                        key={p}
-                        href={href}
-                        className={`w-11 h-11 flex items-center justify-center rounded-xl transition-all active:scale-90 font-bold ${
-                          isActive
-                            ? "bg-[var(--aduti-primary)] text-white shadow-[0_4px_20px_rgba(37,99,235,0.25)] hover:bg-[var(--aduti-primary-hover)]"
-                            : "text-slate-500 hover:bg-white border border-transparent hover:border-slate-200"
-                        }`}
-                      >
-                        {p}
-                      </Link>
-                    )
-                  })}
-                </nav>
-              </div>
-            )}
+            <Pagination
+              className="mt-16 pb-8"
+              currentPage={currentPage}
+              totalPages={totalPages}
+              buildHref={(p) => {
+                const sp = new URLSearchParams();
+                if (search) sp.set("search", search);
+                if (promoId) sp.set("promo", promoId);
+                if (status) sp.set("status", status);
+                if (role) sp.set("role", role);
+                if (gender) sp.set("gender", gender);
+                sp.set("page", p.toString());
+                return `/members?${sp.toString()}`;
+              }}
+            />
           </div>
         </div>
       </section>
