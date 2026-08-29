@@ -21,7 +21,7 @@ import {
 } from '@/schemas/auth.schema'
 import { verifyTurnstile } from '@/lib/captcha'
 import logger from '@/lib/logger'
-import { MAIL_LINK_VALIDITY_LABEL } from '@/lib/auth-links'
+import { MAIL_LINK_VALIDITY_SENTENCE } from '@/lib/auth-links'
 
 export async function login(data: LoginInput) {
   const supabase = await createClient()
@@ -239,7 +239,7 @@ export async function forgotPassword(email: string) {
 
   return {
     success: true,
-    message: `Un email vous a été envoyé. Le lien reste valable ${MAIL_LINK_VALIDITY_LABEL}.`,
+    message: `Un email vous a été envoyé. ${MAIL_LINK_VALIDITY_SENTENCE}`,
   }
 }
 // On remet en place la logique de gestion de lien d'invitation (token)

@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { MaterialIcon } from "@/components/icons/material-icon";
 import { TechBackdrop } from "@/components/tech-backdrop";
-import { MAIL_LINK_VALIDITY_LABEL } from "@/lib/auth-links";
+import { MAIL_LINK_VALIDITY_SENTENCE } from "@/lib/auth-links";
 import { BackButton } from "@/components/ui/back-button";
 
 export default function pendingReviewPage() {
@@ -41,8 +41,9 @@ export default function pendingReviewPage() {
                   <li>1. Un administrateur valide votre demande.</li>
                   <li>2. Vous recevez alors un email contenant un lien.</li>
                   <li>
-                    3. Ce lien vous permet de choisir votre mot de passe. Il reste
-                    valable {MAIL_LINK_VALIDITY_LABEL}.
+                    3. Ce lien vous permet de choisir votre mot de passe.
+                    {" "}
+                    {MAIL_LINK_VALIDITY_SENTENCE}
                   </li>
                 </ol>
                 <p className="mt-4 text-xs leading-normal text-slate-500">

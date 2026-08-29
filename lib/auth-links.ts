@@ -1,10 +1,13 @@
 /**
- * Duree de validite des liens envoyes par email.
+ * Phrase decrivant la validite des liens envoyes par email.
  *
- * GoTrue n'expose qu'un seul reglage, GOTRUE_MAILER_OTP_EXP, commun a tous ses
- * emails. Cette constante doit donc rester alignee sur sa valeur, exprimee en
- * secondes cote serveur : 48 h correspond a 172800.
+ * Aucune duree chiffree n'est annoncee : elle depend de GOTRUE_MAILER_OTP_EXP,
+ * reglage cote Supabase commun a tous les emails de GoTrue et hors de portee
+ * de l'application. Annoncer un nombre ici reviendrait a promettre un delai
+ * que le code ne controle pas.
+ *
+ * Pour afficher une duree precise, aligner cette constante sur la valeur reelle
+ * de GOTRUE_MAILER_OTP_EXP, par exemple "48 heures" pour 172800.
  */
-export const MAIL_LINK_VALIDITY_HOURS = 48;
-
-export const MAIL_LINK_VALIDITY_LABEL = "48 heures";
+export const MAIL_LINK_VALIDITY_SENTENCE =
+  "Ce lien est à usage unique et sa durée de validité est limitée.";
